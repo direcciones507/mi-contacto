@@ -228,3 +228,9 @@
 - UI: comprobar móvil, tableta, escritorio, navegación, búsquedas, privacidad, noindex, errores y QR antes de cerrar cada fase.
 - Mantener un registro de bloqueos y pendientes. No afirmar «todo verde» si existe una etapa sin pruebas o sin despliegue.
 - Puerta de salida: no avanzar a integración o lanzamiento si hay fallos críticos en componentes dependientes; sí se puede trabajar en tareas aisladas sin ocultar pendientes.
+
+## Corrección de integridad del buscador (30-oct-2026)
+- [x] Detectada y corregida en código la unión ambigua por nombres entre perfiles y localidades: `directory-query.js` ahora une mediante `region_id` y `locality_id` y filtra país/estado activo.
+- [x] Preparada `db/003_profile_geo_ids.sql` para agregar referencias de región/localidad a perfiles en PostgreSQL independiente.
+- [ ] **Validación pendiente:** ejecutar migraciones en base descartable, comprobar que la localidad pertenezca a la región seleccionada y evitar homónimos; no desplegar todavía.
+- [ ] Ejecutar suite Node. El entorno de ejecución disponible no pudo acceder a GitHub por DNS; no declarar verde la suite sin prueba real.
