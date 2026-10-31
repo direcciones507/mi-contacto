@@ -81,3 +81,10 @@
 - [ ] Definir si se permite reactivar después de vencer el destacado: propuesta volver a tarjeta básica sin recuperar prioridad ni fotos extra visibles.
 - [ ] Diseñar flujo OAuth Google, recuperación de estado, propiedad, edición, revisión ADMIN, auditoría y protección contra abuso.
 - [ ] Confirmar tratamiento de la URL/QR cuando se pausa: se recomienda página de ficha no disponible, sin revelar datos personales.
+
+## Confirmación de edición de perfil — 30-oct-2026
+- [x] El titular entra a **Mi perfil personal** desde su cuenta con Google y puede editar directamente foto principal, nombre, profesión/oficio, descripción, ubicación y datos de contacto.
+- [x] Guardar cambios sin generar una tarjeta nueva ni cobrar por cada edición; mantener enlace y QR estables.
+- [x] La tarjeta básica sigue siendo gratuita y permite una foto. El destacado de pago habilita cuatro fotos adicionales mientras esté vigente.
+- [x] Desde el mismo panel puede consultar estado, copiar enlace/QR, pausar y reactivar.
+- [ ] Definir límites de edición y moderación, almacenamiento de fotos extra tras vencer destacado y límite de uno o dos perfiles por cuenta.
