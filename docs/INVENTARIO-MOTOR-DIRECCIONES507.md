@@ -68,3 +68,11 @@ Auditar `server.ts`, `general-auth.ts`, `user-panel.ts`, `r2-storage.ts` y `paym
 - [ ] Selector y filtros geográficos dinámicos a partir de configuración, con datos territoriales validados; permitir distintos niveles administrativos según país.
 - [ ] Activación controlada por bandera de país tras completar catálogo, pruebas de registro/búsqueda y revisión de políticas, privacidad, pagos y disponibilidad operativa; no prometer cobertura hasta verificarla.
 - [ ] Mantener URLs y QR existentes estables al incorporar países nuevos; aislar perfiles y preservar compatibilidad con los ocho países iniciales.
+
+## URLs personales legibles y privacidad de indexación — decisión
+- [x] Cada tarjeta de persona tendrá una URL propia legible basada en nombre, por ejemplo `https://micontacto.online/maria-sofia` (ejemplo no reservado ni publicado).
+- [x] Los perfiles personales públicos serán accesibles mediante URL/QR y directorio interno si están activos, pero **no indexables por buscadores externos** (`noindex`, sin inclusión en sitemap). No confundir `noindex` con acceso privado.
+- [ ] Generar slug normalizado (acentos, espacios, caracteres especiales), validar unicidad en base de datos con reserva transaccional, y resolver colisiones (`maria-sofia-2`, etc.) sin sobrescribir perfiles.
+- [ ] Mantener slug, enlace y QR estables al editar nombre, foto, teléfono o ubicación. No permitir reutilizar slugs de perfiles borrados sin política explícita; evitar suplantación.
+- [ ] Si perfil está pausado o bloqueado, ocultar tarjeta en directorio y gestionar acceso directo con respuesta segura según política.
+- [ ] Añadir controles anti-enumeración y privacidad apropiados; evitar mostrar email. No declarar privacidad total por usar `noindex`.
