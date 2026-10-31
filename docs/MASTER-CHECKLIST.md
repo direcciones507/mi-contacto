@@ -184,3 +184,10 @@
 - [ ] Obtener y validar catálogo territorial para los ocho países; conectar filtros reales.
 - [ ] Ejecutar migración y pruebas en PostgreSQL descartable, incluyendo concurrencia y privacidad.
 - [ ] Implementar endpoint de disponibilidad de slug y alta transaccional, con error 409 para duplicados.
+
+## Corrección funcional: directorio geográfico frente a direcciones GPS (30-oct-2026)
+- [x] **Mi Contacto no debe tratar coordenadas GPS como mecanismo principal de búsqueda.** Direcciones507/LATAM genera enlaces de dirección desde país y coordenadas; Mi Contacto requiere búsqueda de personas por país → provincia/departamento/estado → ciudad/localidad, más nombre/profesión.
+- [x] W Anuncios (`https://www.wanuncios.com/`, `https://panama.wanuncios.com/`) es **referencia de UX geográfica**, no fuente de verdad ni autorización para copiar masivamente sus datos. Su portada muestra países y provincias; el formulario de Panamá selecciona país y provincia. No se verificó catálogo completo de ciudades.
+- [ ] Obtener catálogos territoriales verificables, con cobertura y licencia adecuadas, para ocho países; modelar relaciones jerárquicas, nombres y variantes locales. Validar especialmente provincias/comarcas de Panamá, no depender de una lista abreviada de clasificados.
+- [ ] Implementar búsqueda en base de datos por país/región/localidad y texto, sin requerir coordenadas; GPS separado y opcional para «Cómo llegar».
+- [ ] Sustituir opciones de muestra y filtros deshabilitados por datos reales; probar resultados, cambios de país y niveles vacíos.
