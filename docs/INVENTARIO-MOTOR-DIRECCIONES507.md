@@ -31,3 +31,13 @@ En rama `work/portada-directorio-20261030` existen `index.html`, `styles.css`, `
 ## Siguiente trabajo técnico
 
 Auditar `server.ts`, `general-auth.ts`, `user-panel.ts`, `r2-storage.ts` y `payment-routes.ts`; diseñar API de perfiles aislada y conectar **primero lectura pública de perfiles** con datos de prueba. Solo después habilitar escritura, Google y pagos.
+
+## Decisión geográfica: reutilización del catálogo LATAM
+
+- [x] Reutilizar el **motor de lugares/divisiones geográficas** de Direcciones507/LATAM para Mi Contacto; no reconstruir manualmente catálogos nacionales.
+- [ ] Auditar fuente real y contratos de país → provincia/departamento/estado → ciudad/localidad; verificar cobertura, nombres y diferencias por país.
+- [ ] Cascada de selectores para alta/edición de perfiles; opciones dependientes del país y región seleccionados.
+- [ ] Directorio público con filtros por país, división administrativa y ciudad/localidad, además de nombre/profesión.
+- [ ] Mantener coordenadas GPS editables **independientes** del catálogo administrativo y del enlace/QR persistente.
+- [ ] Evitar duplicar tablas, introducir listas inventadas o afectar datos existentes de Direcciones507.
+- [ ] Ejemplo de navegación: Panamá → Veraguas → Santiago; Panamá → Coclé → Penonomé/Aguadulce. Ejemplos no sustituyen catálogo real.
