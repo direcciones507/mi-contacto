@@ -127,3 +127,13 @@
 - [ ] Diseñar rutas propias (`/directorio`, `/mi-perfil`, `/p/:codigo`), sesiones y callback OAuth de Google que regrese a Mi Contacto.
 - [ ] Validar aislamiento de cuentas, autorización, cookies, CORS, subida de imágenes, URLs/QR estables y pruebas de navegación sin redirecciones inesperadas.
 - [ ] Verificar si el core existente soporta multiaplicación de forma segura; no conectar directamente a producción ni reutilizar tokens/cookies entre sitios sin evaluación.
+
+## Panel ADMIN y moderación — decisión 30-oct-2026
+- [x] Reutilizar el panel ADMIN de Direcciones507 con presentación prácticamente idéntica, adaptada a Mi Contacto.
+- [x] **Dos listados principales:** (1) Suscriptores / tarjetas destacadas pagadas; (2) No suscriptores / tarjetas gratuitas.
+- [x] Permitir revisar denuncias contra perfiles de cualquiera de los dos listados y actuar como administrador.
+- [ ] Flujo de denuncias: recibir motivo y perfil denunciado, consultar evidencia, revisar, descartar denuncia, bloquear/suspender perfil o eliminarlo según gravedad; mantener un estado de denuncia y notificar según política.
+- [ ] Al bloquear, impedir acceso público y aparición en directorio, manteniendo registro para revisión; impedir que el usuario reactive un bloqueo administrativo.
+- [ ] Eliminación con confirmación explícita, trazabilidad, autorización ADMIN y política de retención/borrado de fotos y datos; distinguir bloqueo reversible de eliminación irreversible.
+- [ ] Registrar auditoría de acciones (administrador, fecha, motivo, perfil) y proteger contra abuso de denuncias.
+- [ ] Probar que el estado de pago no impida moderación y que perfiles bloqueados no aparezcan por URL, QR, caché o búsquedas.
