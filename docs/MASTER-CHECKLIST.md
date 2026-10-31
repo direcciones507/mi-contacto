@@ -96,3 +96,13 @@
 - [x] **Dominio elegido: `micontacto.online`**; mostrado en búsqueda de Namecheap con promoción de USD 0.98/año para clientes elegibles. **Compra, titularidad y DNS no verificados**; no asumir dominio adquirido.
 - [ ] Confirmar compra y precio de renovación, luego preparar DNS y SSL solo con autorización.
 - [ ] Validar consentimiento para mostrar ubicación exacta; permitir ubicación aproximada cuando corresponda y prevenir exposición involuntaria de domicilios.
+
+## Investigación de almacenamiento Railway / R2 — 30-oct-2026
+- [x] Inspección **solo lectura** de Railway: proyecto `amused-enchantment`, servicio `ad507-core`, PostgreSQL independiente.
+- [x] El servicio `ad507-core` tiene nombres de variables `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_ACCOUNT_ID`, `R2_BUCKET`, `AD507_R2_CONFIGURATION_VERIFIED`. **No se leyeron ni copiaron valores secretos**.
+- [x] `ad507-core` no tiene volumen montado para fotos; PostgreSQL dispone de volumen para datos de base, no para archivos de imágenes.
+- [ ] Revisar en código la integración actual de subida/lectura R2 y su compatibilidad con las fotos de Mi Contacto.
+- [ ] Verificar en Cloudflare la política del bucket, cuotas, costos, CORS, acceso público/privado y organización de objetos; Railway por sí solo no acredita estos detalles.
+- [ ] Decidir entre **bucket R2 separado (recomendado)** o prefijo aislado en bucket existente, con permisos mínimos, sin reutilizar credenciales de producción.
+- [ ] Definir límites, compresión, borrado, protección contra abuso, fotos del destacado al expirar y consentimiento del titular.
+- [ ] Mantener la base de datos, servicio y despliegue de Mi Contacto independientes de Direcciones507; cero cambios en producción.
