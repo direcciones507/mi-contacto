@@ -208,3 +208,10 @@
 - [ ] Descargar y procesar los ocho extractos, revisar errores y homologar localidades/municipios/comarcas con fuentes oficiales.
 - [ ] Ejecutar pruebas y validar CSV; no declarar cobertura completa ni importación realizada.
 - [ ] Construir cargador validado de CSV a tablas territoriales aisladas y conectar filtros UI/API.
+
+## Validación territorial, seguimiento (30-oct-2026)
+- [x] Existe `scripts/validate-geonames-csv.mjs`, validador offline de cabecera, códigos, duplicados y divisiones faltantes.
+- [x] Existe `tests/validate-geonames.test.mjs`, prueba escrita para un CSV válido y uno con identificador duplicado.
+- [ ] Ejecutar todas las pruebas Node y corregir cualquier fallo encontrado; las pruebas escritas no equivalen a pruebas aprobadas.
+- [ ] Resolver antes de integrar la API la discrepancia entre filtros por IDs de región/localidad y columnas de texto en perfiles; no permitir homónimos o cruces de país.
+- [ ] Obtener extractos territoriales reales de ocho países y realizar revisión humana, sin cargar datos de muestra a producción.
