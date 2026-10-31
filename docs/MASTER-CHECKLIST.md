@@ -234,3 +234,9 @@
 - [x] Preparada `db/003_profile_geo_ids.sql` para agregar referencias de región/localidad a perfiles en PostgreSQL independiente.
 - [ ] **Validación pendiente:** ejecutar migraciones en base descartable, comprobar que la localidad pertenezca a la región seleccionada y evitar homónimos; no desplegar todavía.
 - [ ] Ejecutar suite Node. El entorno de ejecución disponible no pudo acceder a GitHub por DNS; no declarar verde la suite sin prueba real.
+
+## Integridad territorial reforzada (30-oct-2026)
+- [x] Preparada `db/004_geo_integrity.sql`: una región hija no puede pertenecer a otro país; una localidad seleccionada en perfil debe pertenecer exactamente a la región y país del perfil. Se refuerza en PostgreSQL con claves foráneas compuestas.
+- [ ] Ejecutar 001→004 en PostgreSQL descartable y probar casos negativos: región de otro país, localidad de otra región, localidad de otro país y región hija incompatible.
+- [ ] Verificar disponibilidad de catálogo real, importación y filtros en UI.
+- [ ] Suite Node sin ejecutar: la máquina de pruebas no resuelve `github.com`; **no afirmar verde** sin evidencia.
