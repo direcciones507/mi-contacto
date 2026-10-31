@@ -114,3 +114,9 @@
 - [ ] Auditar dependencias concretas del repositorio de Direcciones507 para identificar qué módulos pueden reutilizarse directamente y cuáles necesitan adaptación.
 - [ ] Elegir estrategia de reutilización (módulos compartidos, librería o copia versionada) y validar licencias, seguridad y despliegue independiente.
 - [ ] No declarar «solo cambio visual» como equivalencia técnica total hasta verificar diferencias de esquema, permisos, SEO y pagos.
+
+## Principio rector confirmado — 30-oct-2026
+- [x] **Mi Contacto será una adaptación del motor existente de Direcciones507/LATAM:** misma arquitectura funcional de tarjetas, panel, Google OAuth, ADMIN, enlaces, QR, coordenadas, navegación, fotografías y flujo de publicación, siempre que la auditoría confirme compatibilidad.
+- [x] **La diferencia principal es la identidad visual y el contenido personal**: Mi Contacto tendrá marca, interfaz, campos y reglas comerciales propios.
+- [x] Reutilizar el código probado, no desarrollar un motor paralelo ni modificar el servicio productivo de Direcciones507.
+- [ ] Evaluar extracción/copia versionada de módulos y adaptación de esquema, rutas, autorización y almacenamiento aislados antes de programar.
