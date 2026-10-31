@@ -246,3 +246,10 @@
 - [x] Preparada lógica `profile-service.js` para crear un borrador, normalizar slug, validar país y manejar conflictos de unicidad con HTTP 409. Pruebas escritas en `tests/profile-service.test.mjs`.
 - [ ] Conectar adaptador transaccional real a PostgreSQL aislado y autenticar el `accountId` en servidor; no confiar en un ID enviado por navegador.
 - [ ] Antes de publicar: pruebas integrales Node, PostgreSQL, seguridad, UI, privacidad, SEO, Railway y regresiones, con evidencias y semáforo verde. **No confundir pruebas escritas con ejecutadas.**
+
+## Autenticación aislada, fase de construcción (30-oct-2026)
+- [x] `profile-postgres.js` preparado: inserción de perfil y reserva de slug en una sola transacción, rollback y liberación de conexión; pruebas escritas en `tests/profile-postgres.test.mjs`.
+- [x] `auth-session.js` preparado: cookie propia `mc_session`, firma HMAC-SHA256, expiración, verificación temporal constante y secreto obligatorio; pruebas escritas en `tests/auth-session.test.mjs`.
+- [ ] Conectar OAuth Google real, verificar ID token/estado/nonce, establecer cuenta autenticada en servidor y proteger CSRF; no habilitar login hasta auditar el flujo completo.
+- [ ] Evaluar revocación de sesiones y rotación de secretos, protección de endpoints y pruebas de seguridad.
+- [ ] Pruebas Node y PostgreSQL pendientes de ejecución; Railway y producción sin cambios.
