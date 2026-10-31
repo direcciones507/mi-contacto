@@ -7,10 +7,10 @@ test("rechaza países fuera del lanzamiento",()=>assert.throws(()=>validateProfi
 test("requiere almacenamiento configurado",async()=>await assert.rejects(createProfile(data,{accountId:"x"}),/PROFILE_STORAGE_NOT_CONFIGURED/));
 test("crea perfil en borrador usando adaptador",async()=>{
  const r=await createProfile(data,{accountId:"google-subject",db:{createProfile:async x=>{assert.equal(x.status,"DRAFT");return {id:"profile-1"};}}});
- assert.deepEqual(r,{status:201,body:{id:"profile-1",slug:"maria-sofia"}});
+ assert.deepEqual(r,{status:201,body:{id:"profile-1",slug:"maria-sofia",country:"PA",url:"https://micontacto.online/pa/maria-sofia"}});
 });
 test("duplicado devuelve 409 con mensaje aprobado",async()=>{
- const db={createProfile:async()=>{throw Object.assign(new Error("duplicate"),{code:"23505",constraint:"profiles_slug_key"});}};
+ const db={createProfile:async()=>{throw Object.assign(new Error("duplicate"),{code:"23505",constraint:"profiles_country_slug_key"});}};
  const r=await createProfile(data,{accountId:"account",db});
  assert.equal(r.status,409);assert.match(r.body.message,/ya existe/);
 });
