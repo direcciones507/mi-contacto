@@ -61,3 +61,10 @@ Auditar `server.ts`, `general-auth.ts`, `user-panel.ts`, `r2-storage.ts` y `paym
 - [x] Fase inicial: los ocho países confirmados PA, CR, NI, SV, HN, GT, MX y CO, con el mismo funcionamiento geográfico que Direcciones507/LATAM.
 - [x] Fase posterior, **no incluida en el lanzamiento inicial**: preparar expansión hacia Sudamérica, comenzando por **Perú, Ecuador y Bolivia**, y evaluar después otros países más al sur.
 - [ ] Diseñar catálogo, configuración, validaciones y búsqueda para incorporar nuevos países sin reescribir el directorio; activar cada país únicamente cuando tenga divisiones/localidades y pruebas completas.
+
+## Países extensibles sin cambios de código por país — decisión adicional
+- [x] La expansión posterior podrá incluir **Cuba (CU)** y **República Dominicana (DO)**, además de Perú, Ecuador, Bolivia y otros países de América Latina y el Caribe; **no activarlos en el lanzamiento inicial**.
+- [ ] Diseñar alta de países mediante configuración/catálogo versionado, no condiciones especiales dispersas por país. Cada país define código ISO, nombre, divisiones administrativas, localidades, nomenclatura visible, prefijo telefónico y estado habilitado/deshabilitado.
+- [ ] Selector y filtros geográficos dinámicos a partir de configuración, con datos territoriales validados; permitir distintos niveles administrativos según país.
+- [ ] Activación controlada por bandera de país tras completar catálogo, pruebas de registro/búsqueda y revisión de políticas, privacidad, pagos y disponibilidad operativa; no prometer cobertura hasta verificarla.
+- [ ] Mantener URLs y QR existentes estables al incorporar países nuevos; aislar perfiles y preservar compatibilidad con los ocho países iniciales.
