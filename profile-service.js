@@ -17,7 +17,7 @@ export function slugConflictResponse(){
  return {status:409,body:{code:"SLUG_TAKEN",message:DUPLICATE_SLUG_MESSAGE}};
 }
 /** Application logic, requires an isolated DB adapter with an atomic transaction.
- * Adapter.createProfile must enforce UNIQUE(slug), UNIQUE(account_id), and reserve
+ * Adapter.createProfile must enforce UNIQUE(country_code,slug), UNIQUE(account_id,country_code), and reserve
  * slug in the same transaction. Never use a preflight check as the final authority.
  */
 export async function createProfile(input,{accountId,db}){
@@ -29,8 +29,8 @@ export async function createProfile(input,{accountId,db}){
  }catch(error){
   if(error?.code==="23505"&&["profiles_country_slug_key","profiles_slug_key"].includes(error?.constraint))return slugConflictResponse();
   if(error?.code==="23505"&&error?.constraint==="profile_slug_reservations_pkey")return slugConflictResponse();
-  if(error?.code==="23505"&&error?.constraint==="profiles_account_id_key")
-   return {status:409,body:{code:"ACCOUNT_PROFILE_EXISTS",message:"Esta cuenta ya tiene un perfil."}};
+  if(error?.code==="23505"&&["profiles_account_country_key","profiles_account_id_key"].includes(error?.constraint))
+   return {status:409,body:{code:"ACCOUNT_PROFILE_EXISTS",message:"Esta cuenta ya tiene un perfil en este país."}};
   throw error;
  }
 }
