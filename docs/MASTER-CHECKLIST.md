@@ -154,3 +154,12 @@
 - [ ] Si se modifica la fotografía principal, revocar «Foto verificada» hasta nueva revisión.
 - [ ] Evitar requerir documentos de identidad y no exponer el número de verificación en las fichas públicas.
 - [ ] Verificación voluntaria y gratuita para ambos planes; no automatizar la aprobación.
+
+## Pagos de Mi Contacto — decisión 30-oct-2026
+- [x] Reutilizar el mismo flujo de pago existente de Direcciones507/LATAM: selección, orden, instrucciones/pasarela, confirmación administrativa o automática según proveedor, activación y registro. Adaptarlo a destacado temporal de Mi Contacto.
+- [x] Precios destacados ratificados: 1 día USD 1.69; 5 días 7.99; 10 días 14.99; 15 días 21.99; 20 días 27.99; 25 días 31.99; 30 días 34.99.
+- [x] Perfil gratuito y verificación de fotografía sin cobro.
+- [ ] Auditar el código real de checkout, estados, confirmaciones, idempotencia, vigencia y permisos del motor antes de reutilizarlo. Evitar que un pago de Direcciones507 active servicios de Mi Contacto o viceversa.
+- [ ] Reutilizar Yappy para Panamá solo tras comprobar configuración y flujo real; no habilitar PayPal ni métodos LATAM no operativos.
+- [ ] Definir expiración exacta, renovación, manejo de pago pendiente/rechazado, reembolsos, cancelaciones, zona horaria, destacado vencido y comprobantes.
+- [ ] Probar todo con transacciones simuladas o entorno de pruebas; no cobrar, modificar producción ni activar pasarelas sin autorización.
