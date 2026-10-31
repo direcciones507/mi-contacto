@@ -88,3 +88,11 @@
 - [x] La tarjeta básica sigue siendo gratuita y permite una foto. El destacado de pago habilita cuatro fotos adicionales mientras esté vigente.
 - [x] Desde el mismo panel puede consultar estado, copiar enlace/QR, pausar y reactivar.
 - [ ] Definir límites de edición y moderación, almacenamiento de fotos extra tras vencer destacado y límite de uno o dos perfiles por cuenta.
+
+## Dominio y límite de cuenta — 30-oct-2026
+- [x] **Exactamente un perfil personal por cuenta Google**; imponer unicidad en base de datos y servidor, no solo en interfaz.
+- [x] El propietario puede actualizar el mismo perfil cuantas veces necesite: foto, teléfono/WhatsApp, descripción y coordenadas GPS cuando se traslade, sin crear otro perfil ni alterar su URL/QR.
+- [x] No cobrar por editar o cambiar coordenadas; la ficha básica sigue gratuita, solo se cobra el destacado.
+- [x] **Dominio elegido: `micontacto.online`**; mostrado en búsqueda de Namecheap con promoción de USD 0.98/año para clientes elegibles. **Compra, titularidad y DNS no verificados**; no asumir dominio adquirido.
+- [ ] Confirmar compra y precio de renovación, luego preparar DNS y SSL solo con autorización.
+- [ ] Validar consentimiento para mostrar ubicación exacta; permitir ubicación aproximada cuando corresponda y prevenir exposición involuntaria de domicilios.
