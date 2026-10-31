@@ -145,3 +145,12 @@
 - [ ] Al cambiar la foto principal, retirar el distintivo y requerir nueva revisión; permitir revocación por ADMIN y ante denuncias.
 - [ ] Diseñar el proceso sin exigir ni almacenar documentos de identidad salvo decisión posterior con controles de privacidad y retención.
 - [ ] Verificar que el distintivo no dependa del pago ni se otorgue automáticamente a destacados.
+
+## Verificación por WhatsApp exclusivo — decisión 30-oct-2026
+- [x] La verificación gratuita de la foto podrá realizarse por **videollamada de WhatsApp** o **video corto enviado a un número exclusivo** de Mi Contacto (número pendiente de definir).
+- [ ] Botón «Solicitar verificación» en Mi perfil, con solicitud/código único para relacionar video o llamada con el perfil.
+- [ ] ADMIN revisa coincidencia visual con foto principal, aprueba/rechaza y registra decisión sin afirmar identidad legal.
+- [ ] Informar previamente finalidad, uso, privacidad, canal WhatsApp y plazo corto de eliminación de videos; no publicar ni redistribuir material de verificación. Definir retención y acceso restringido.
+- [ ] Si se modifica la fotografía principal, revocar «Foto verificada» hasta nueva revisión.
+- [ ] Evitar requerir documentos de identidad y no exponer el número de verificación en las fichas públicas.
+- [ ] Verificación voluntaria y gratuita para ambos planes; no automatizar la aprobación.
