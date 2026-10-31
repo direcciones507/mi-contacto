@@ -28,3 +28,10 @@
 - El diseño de perfil profesional se reserva para **Empleos.pa**, con nombre de servicio provisional «Perfil Profesional Público», ficha indexable y compartible, sujeto a consentimiento del titular.
 - Mantener por ahora la decisión comercial anterior de Mi Contacto «solo por enlace de pago» como **pendiente de reconciliar**: el usuario indicó retirar la tercera tarjeta del diseño, pero no confirmó expresamente si elimina por completo esa modalidad comercial. No implementarla hasta aclararlo.
 - Ningún cambio en el repositorio ni producción de Empleos.pa por esta nota.
+
+## Nuevas instrucciones sobre panel (30-oct-2026)
+- Panel del titular inspirado en Direcciones507, acceso Google, gestión de tarjetas, edición, enlace/QR y estados.
+- «Cómo llegar» despliega Maps/Waze/Uber según disponibilidad.
+- Botón Pausar / Volver a publicar: pausa oculta la ficha pública, conserva datos, no devuelve dinero y no congela la vigencia de destacado.
+- Límite por cuenta pendiente de elegir: **1 o 2 perfiles**.
+- **Conflicto comercial por aclarar:** se mencionó pagar cada vez que se genera un perfil; hasta ahora la tarjeta básica gratuita y el destacado de pago siguen como última decisión inequívoca. No implementar cargo por crear sin confirmación.
