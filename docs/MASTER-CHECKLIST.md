@@ -273,3 +273,11 @@
 - [ ] Implementar adaptador transaccional `requestPublication`, comprobar propiedad de cuenta, validar pertenencia territorial y conectar formulario para mostrar el aviso junto al campo de enlace.
 - [ ] Conservar URL y QR publicados al cambiar ubicación; la publicación en otro país requiere un flujo explícito sin romper el enlace original.
 - [ ] Ejecutar pruebas y validar UI/SQL en entorno descartable antes de publicar.
+
+## Arquitectura de motor reutilizado e identidad independiente (30-oct-2026)
+- [x] Decisión: reutilizar patrones y componentes auditados de Direcciones507, adaptados a Mi Contacto, sin referencias visibles ni atribución de marca al usuario final.
+- [ ] Auditar licencias, dependencias y módulos antes de copiar código; no reutilizar credenciales, tokens ni datos de usuarios.
+- [ ] Motor propio de Mi Contacto con PostgreSQL, almacenamiento de fotos, OAuth, sesiones, administración, QR y URLs aislados.
+- [ ] Comprobar que HTML, metadatos, emails, Open Graph, QR, rutas, errores y panel ADMIN no muestran Direcciones507.
+- [ ] Integración entre plataformas solo mediante interfaces explícitas y autorizadas; no conectar directamente a producción de Direcciones507.
+- [ ] Pruebas de aislamiento, regresión, permisos y marca antes de publicar.
