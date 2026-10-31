@@ -56,3 +56,8 @@ Auditar `server.ts`, `general-auth.ts`, `user-panel.ts`, `r2-storage.ts` y `paym
 - [ ] Auditar exhaustivamente catálogo existente en Direcciones LATAM por país, regiones y localidades; documentar cobertura real y huecos. Completar o incorporar fuente validada si faltan subdivisiones; no afirmar que está completo sin comprobarlo.
 - [ ] Aplicar selector país → provincia/departamento/estado → ciudad/localidad a los ocho países, tanto al crear/editar perfiles como al buscar.
 - [ ] Pruebas de cascada, filtrado y casos sin resultados para cada país antes de declarar lista la fase.
+
+## Expansión geográfica posterior — decisión del usuario
+- [x] Fase inicial: los ocho países confirmados PA, CR, NI, SV, HN, GT, MX y CO, con el mismo funcionamiento geográfico que Direcciones507/LATAM.
+- [x] Fase posterior, **no incluida en el lanzamiento inicial**: preparar expansión hacia Sudamérica, comenzando por **Perú, Ecuador y Bolivia**, y evaluar después otros países más al sur.
+- [ ] Diseñar catálogo, configuración, validaciones y búsqueda para incorporar nuevos países sin reescribir el directorio; activar cada país únicamente cuando tenga divisiones/localidades y pruebas completas.
