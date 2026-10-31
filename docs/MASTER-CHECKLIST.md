@@ -52,3 +52,9 @@
 ## Registro
 - 30-oct-2026: consolidación de decisiones y aprobación de toda la escala de precios.
 - 30-oct-2026: inicio de documentación en el nuevo repositorio. Ningún despliegue ni integración de pagos.
+
+## Separación de producto aprobada (30-oct-2026)
+- La tercera tarjeta del mockup («solo por enlace», ejemplo de consultor) **no se desarrollará en Mi Contacto** como esa propuesta visual.
+- El diseño de perfil profesional se reserva para **Empleos.pa**, con nombre de servicio provisional «Perfil Profesional Público», ficha indexable y compartible, sujeto a consentimiento del titular.
+- Mantener por ahora la decisión comercial anterior de Mi Contacto «solo por enlace de pago» como **pendiente de reconciliar**: el usuario indicó retirar la tercera tarjeta del diseño, pero no confirmó expresamente si elimina por completo esa modalidad comercial. No implementarla hasta aclararlo.
+- Ningún cambio en el repositorio ni producción de Empleos.pa por esta nota.
