@@ -191,3 +191,12 @@
 - [ ] Obtener catálogos territoriales verificables, con cobertura y licencia adecuadas, para ocho países; modelar relaciones jerárquicas, nombres y variantes locales. Validar especialmente provincias/comarcas de Panamá, no depender de una lista abreviada de clasificados.
 - [ ] Implementar búsqueda en base de datos por país/región/localidad y texto, sin requerir coordenadas; GPS separado y opcional para «Cómo llegar».
 - [ ] Sustituir opciones de muestra y filtros deshabilitados por datos reales; probar resultados, cambios de país y niveles vacíos.
+
+## Avance técnico de directorio territorial — 30-oct-2026
+- [x] Fuente externa candidata identificada: GeoNames, descarga por país, CC BY con uso comercial y atribución; contrastar nombres y divisiones con fuentes oficiales antes de importar. geoBoundaries gbOpen CC BY 4.0 puede complementar divisiones. **GADM no apto para uso comercial sin permiso**. Fuentes: https://www.geonames.org/export/ , https://www.geoboundaries.org/api.html , https://gadm.org/license.html .
+- [x] Archivo `db/002_geography.sql` preparado con regiones jerárquicas y localidades por país, sin datos inventados. No ejecutado.
+- [x] Archivo `directory-query.js` preparado con búsqueda parametrizada por país, región, localidad y texto, solo perfiles activos, sin coordenadas; pruebas escritas en `tests/directory-query.test.mjs`.
+- [x] `package.json` configura Node ESM y comando de pruebas; **pruebas todavía no ejecutadas**.
+- [ ] Revisar coherencia de identificadores geográficos y persistencia del perfil antes de conectar SQL al servicio (actualmente perfil almacena nombres; catálogo usa IDs).
+- [ ] Importar datos con licencia y procedencia verificadas para los ocho países, resolver cambios territoriales y homónimos.
+- [ ] Ejecutar pruebas locales y en PostgreSQL descartable, después conectar API y UI.
