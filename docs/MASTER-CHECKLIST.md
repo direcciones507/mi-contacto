@@ -106,3 +106,11 @@
 - [ ] Decidir entre **bucket R2 separado (recomendado)** o prefijo aislado en bucket existente, con permisos mínimos, sin reutilizar credenciales de producción.
 - [ ] Definir límites, compresión, borrado, protección contra abuso, fotos del destacado al expirar y consentimiento del titular.
 - [ ] Mantener la base de datos, servicio y despliegue de Mi Contacto independientes de Direcciones507; cero cambios en producción.
+
+## Decisión arquitectónica ratificada — 30-oct-2026
+- [x] **Reutilizar el mismo motor funcional de Direcciones507/Direcciones LATAM** para Mi Contacto; no construir de cero autenticación, panel, tarjetas, fotos, enlaces, QR, coordenadas, navegación ni ADMIN cuando se puedan adaptar componentes existentes.
+- [x] El principal cambio será la **presentación visual** y la adaptación de reglas específicas de personas: una cuenta Google = un perfil, básica con una foto, destacada con cinco fotos, sin correo visible, botón Cómo llegar, noindex individual.
+- [x] Reutilización de código **sin modificar producción**, manteniendo dominio, servicio, base de datos, permisos y almacenamiento lógicamente aislados. La integración R2 existente se auditará para reaprovechar el adaptador, no necesariamente el bucket ni las credenciales.
+- [ ] Auditar dependencias concretas del repositorio de Direcciones507 para identificar qué módulos pueden reutilizarse directamente y cuáles necesitan adaptación.
+- [ ] Elegir estrategia de reutilización (módulos compartidos, librería o copia versionada) y validar licencias, seguridad y despliegue independiente.
+- [ ] No declarar «solo cambio visual» como equivalencia técnica total hasta verificar diferencias de esquema, permisos, SEO y pagos.
