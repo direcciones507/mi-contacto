@@ -49,3 +49,10 @@ Auditar `server.ts`, `general-auth.ts`, `user-panel.ts`, `r2-storage.ts` y `paym
 - [ ] Mostrar nombres de divisiones según país y alimentar desplegables del catálogo geográfico existente; nunca listas parciales hardcodeadas como fuente de verdad.
 - [ ] Permitir reiniciar filtros y mostrar resultados vacíos de forma clara. No fingir búsquedas reales hasta integrar la API.
 - [ ] Considerar Panamá como selección inicial del directorio en la primera versión, sin impedir seleccionar otros países LATAM autorizados.
+
+## Alcance geográfico ratificado: ocho países desde lanzamiento (30-oct-2026)
+- [x] Lanzamiento previsto **simultáneamente para los ocho países**: Panamá (PA), Costa Rica (CR), Nicaragua (NI), El Salvador (SV), Honduras (HN), Guatemala (GT), México (MX) y Colombia (CO). Ningún país queda como mero marcador visual.
+- [x] Sustituye la propuesta anterior de arrancar solo con Panamá: **Panamá puede ser el país preseleccionado en la interfaz, pero todos los ocho deben tener búsqueda geográfica funcional desde el lanzamiento**.
+- [ ] Auditar exhaustivamente catálogo existente en Direcciones LATAM por país, regiones y localidades; documentar cobertura real y huecos. Completar o incorporar fuente validada si faltan subdivisiones; no afirmar que está completo sin comprobarlo.
+- [ ] Aplicar selector país → provincia/departamento/estado → ciudad/localidad a los ocho países, tanto al crear/editar perfiles como al buscar.
+- [ ] Pruebas de cascada, filtrado y casos sin resultados para cada país antes de declarar lista la fase.
