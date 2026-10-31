@@ -260,3 +260,9 @@
 - [x] Actualizados `profile-slug.js`, `profile-postgres.js`, `profile-service.js` y sus pruebas para usar el país en URL, reserva y respuesta.
 - [ ] Antes de publicar: ejecutar migraciones 001-005 y pruebas de duplicados dentro de país, reutilización entre países, cambios de país, colisiones simultáneas, QR y rutas web.
 - [ ] Definir política de cambio de país para perfiles ya publicados: conservar URL anterior mediante redirección o mantener país del enlace fijo; nunca romper enlaces existentes.
+
+## Comprobación de nombre por país (30-oct-2026)
+- [x] `slug-availability.js`: verificación previa por país y slug normalizado, con mensaje de duplicado aprobado y sin renombrado automático.
+- [x] `tests/slug-availability.test.mjs`: casos escritos para ocupado en Panamá/libre en Costa Rica, duplicado local, entradas inválidas y consulta parametrizada.
+- [ ] Conectar consulta al formulario y endpoint autenticado, con límites de solicitudes; la comprobación previa es orientativa y el índice UNIQUE por país decide al guardar para evitar carreras.
+- [ ] Ejecutar pruebas en PostgreSQL descartable antes de publicar.
