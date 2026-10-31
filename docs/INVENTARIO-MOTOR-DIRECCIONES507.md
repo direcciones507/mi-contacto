@@ -41,3 +41,11 @@ Auditar `server.ts`, `general-auth.ts`, `user-panel.ts`, `r2-storage.ts` y `paym
 - [ ] Mantener coordenadas GPS editables **independientes** del catálogo administrativo y del enlace/QR persistente.
 - [ ] Evitar duplicar tablas, introducir listas inventadas o afectar datos existentes de Direcciones507.
 - [ ] Ejemplo de navegación: Panamá → Veraguas → Santiago; Panamá → Coclé → Penonomé/Aguadulce. Ejemplos no sustituyen catálogo real.
+
+## UX del buscador territorial — aclaración del usuario (30-oct-2026)
+- [x] El directorio se busca primero por **país**, luego opcionalmente **provincia/departamento/estado** y **ciudad/localidad**.
+- [x] Cada nivel funciona sin obligar al siguiente: país solo = resultados nacionales; país+provincia = resultados provinciales; país+provincia+localidad = resultados locales.
+- [x] Nombre, profesión o palabra clave es filtro opcional combinable con ubicación.
+- [ ] Mostrar nombres de divisiones según país y alimentar desplegables del catálogo geográfico existente; nunca listas parciales hardcodeadas como fuente de verdad.
+- [ ] Permitir reiniciar filtros y mostrar resultados vacíos de forma clara. No fingir búsquedas reales hasta integrar la API.
+- [ ] Considerar Panamá como selección inicial del directorio en la primera versión, sin impedir seleccionar otros países LATAM autorizados.
