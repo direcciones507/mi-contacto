@@ -137,3 +137,11 @@
 - [ ] Eliminación con confirmación explícita, trazabilidad, autorización ADMIN y política de retención/borrado de fotos y datos; distinguir bloqueo reversible de eliminación irreversible.
 - [ ] Registrar auditoría de acciones (administrador, fecha, motivo, perfil) y proteger contra abuso de denuncias.
 - [ ] Probar que el estado de pago no impida moderación y que perfiles bloqueados no aparezcan por URL, QR, caché o búsquedas.
+
+## Distintivo gratuito «Foto verificada» — decisión 30-oct-2026
+- [x] Incorporar una verificación **gratuita** de fotografía principal para generar confianza, disponible para tarjetas gratuitas y destacadas, sin cargo adicional.
+- [ ] ADMIN revisa y aprueba/rechaza solicitudes con criterios documentados; registrar fecha, versión de imagen y responsable.
+- [ ] Mostrar distintivo **«Foto verificada»** solo tras revisión efectiva; no afirmar «Identidad verificada» sin un procedimiento real de verificación de identidad.
+- [ ] Al cambiar la foto principal, retirar el distintivo y requerir nueva revisión; permitir revocación por ADMIN y ante denuncias.
+- [ ] Diseñar el proceso sin exigir ni almacenar documentos de identidad salvo decisión posterior con controles de privacidad y retención.
+- [ ] Verificar que el distintivo no dependa del pago ni se otorgue automáticamente a destacados.
