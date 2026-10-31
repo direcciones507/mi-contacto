@@ -215,3 +215,16 @@
 - [ ] Ejecutar todas las pruebas Node y corregir cualquier fallo encontrado; las pruebas escritas no equivalen a pruebas aprobadas.
 - [ ] Resolver antes de integrar la API la discrepancia entre filtros por IDs de región/localidad y columnas de texto en perfiles; no permitir homónimos o cruces de país.
 - [ ] Obtener extractos territoriales reales de ocho países y realizar revisión humana, sin cargar datos de muestra a producción.
+
+## Regla de calidad obligatoria: TODO VERDE (30-oct-2026)
+**Aprobado por el propietario:** no confundir código guardado con código validado. Mantener semáforo y evidencia por componente y etapa.
+- **VERDE:** prueba ejecutada, aprobada, con fecha, comando, resultado y referencia de commit/entorno.
+- **PENDIENTE:** código sin prueba ejecutada, integración faltante, o servicio aún no desplegado.
+- **ROJO:** error confirmado, prueba fallida, migración incompatible o regresión. Corregir antes de cerrar la etapa afectada.
+- GitHub: verificar estado de rama, cambios, comprobaciones y CI cuando esté permitido; no abrir PR ni ejecutar workflows que disparen despliegues sin autorización.
+- Local: ejecutar suites de pruebas y registrar resultados; pruebas escritas no cuentan como verdes hasta ejecutarlas.
+- PostgreSQL: probar migraciones, unicidad, permisos, aislamiento y reversibilidad en base descartable; nunca en base productiva.
+- Railway: revisar estado y despliegue **solo lectura** cuando haya entorno de Mi Contacto autorizado; sin reconectar servicios, activar despliegues ni gastar minutos por iniciativa propia.
+- UI: comprobar móvil, tableta, escritorio, navegación, búsquedas, privacidad, noindex, errores y QR antes de cerrar cada fase.
+- Mantener un registro de bloqueos y pendientes. No afirmar «todo verde» si existe una etapa sin pruebas o sin despliegue.
+- Puerta de salida: no avanzar a integración o lanzamiento si hay fallos críticos en componentes dependientes; sí se puede trabajar en tareas aisladas sin ocultar pendientes.
