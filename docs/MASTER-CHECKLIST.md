@@ -240,3 +240,9 @@
 - [ ] Ejecutar 001→004 en PostgreSQL descartable y probar casos negativos: región de otro país, localidad de otra región, localidad de otro país y región hija incompatible.
 - [ ] Verificar disponibilidad de catálogo real, importación y filtros en UI.
 - [ ] Suite Node sin ejecutar: la máquina de pruebas no resuelve `github.com`; **no afirmar verde** sin evidencia.
+
+## Decisión de secuencia de trabajo (30-oct-2026)
+- [x] El propietario autoriza **seguir construyendo todos los módulos antes de la etapa integral de pruebas previa a publicación**. Esta decisión sustituye la idea de detener cada avance hasta ejecutar todas las pruebas, **pero no autoriza publicar, desplegar, activar CI que despliegue ni ejecutar migraciones productivas**.
+- [x] Preparada lógica `profile-service.js` para crear un borrador, normalizar slug, validar país y manejar conflictos de unicidad con HTTP 409. Pruebas escritas en `tests/profile-service.test.mjs`.
+- [ ] Conectar adaptador transaccional real a PostgreSQL aislado y autenticar el `accountId` en servidor; no confiar en un ID enviado por navegador.
+- [ ] Antes de publicar: pruebas integrales Node, PostgreSQL, seguridad, UI, privacidad, SEO, Railway y regresiones, con evidencias y semáforo verde. **No confundir pruebas escritas con ejecutadas.**
