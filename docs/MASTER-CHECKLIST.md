@@ -296,3 +296,9 @@
 - [ ] Ejecutar SQL en PostgreSQL descartable, incluyendo 001-006, validar constraints y regresión de reservas.
 - [ ] Conectar registro, Mi perfil y publicación; una segunda publicación no debe modificar el enlace o QR del primer país.
 - [ ] Comprobar interacción con estados de revisión y límites de ocho perfiles por cuenta.
+
+## Revisión de continuidad autónoma (31-oct-2026)
+- [x] Inspección solo lectura del servicio Railway `ad507-developer` en `leveia-staging`: el panel está desplegado, su dominio corresponde al servicio y el inicio de sesión verifica un hash `scrypt` de `AD507_OWNER_PASSWORD_HASH`.
+- [ ] Acceso del propietario al panel: bloqueado por `INVALID_LOGIN`; restablecimiento de contraseña pendiente de decisión y operación manual segura. No se modificaron variables ni se reinició Railway.
+- [ ] Antes de encargar Mi Contacto al agente, comprobar que el registro de proyectos autorizados incluya `direcciones507/mi-contacto`, que tenga permisos mínimos y que el límite de presupuesto/tiempo no active CI ni despliegues. La existencia del panel no demuestra que pueda trabajar de forma desatendida.
+- [ ] No contar como avance funcional de Mi Contacto la recuperación del panel o la preparación del agente; las suites Node y SQL siguen pendientes de ejecución.
