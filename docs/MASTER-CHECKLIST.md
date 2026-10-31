@@ -120,3 +120,10 @@
 - [x] **La diferencia principal es la identidad visual y el contenido personal**: Mi Contacto tendrá marca, interfaz, campos y reglas comerciales propios.
 - [x] Reutilizar el código probado, no desarrollar un motor paralelo ni modificar el servicio productivo de Direcciones507.
 - [ ] Evaluar extracción/copia versionada de módulos y adaptación de esquema, rutas, autorización y almacenamiento aislados antes de programar.
+
+## Navegación transparente y sin redirecciones visibles — decisión 30-oct-2026
+- [x] El visitante debe permanecer en `micontacto.online` durante navegación, directorio, perfil, edición y consulta de tarjetas. No enviar al usuario a `direcciones507.com` mediante redirecciones 301/302 como arquitectura principal.
+- [x] Conectar la interfaz propia de Mi Contacto con el motor reutilizado de Direcciones507 mediante API/backend, proxy o módulos compartidos, según auditoría técnica. Evitar saltos de dominio, bucles y exposición de URLs internas.
+- [ ] Diseñar rutas propias (`/directorio`, `/mi-perfil`, `/p/:codigo`), sesiones y callback OAuth de Google que regrese a Mi Contacto.
+- [ ] Validar aislamiento de cuentas, autorización, cookies, CORS, subida de imágenes, URLs/QR estables y pruebas de navegación sin redirecciones inesperadas.
+- [ ] Verificar si el core existente soporta multiaplicación de forma segura; no conectar directamente a producción ni reutilizar tokens/cookies entre sitios sin evaluación.
