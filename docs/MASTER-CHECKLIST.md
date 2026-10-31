@@ -176,3 +176,11 @@
 - [ ] Crear formulario de perfil, fotografía y tarjeta compartible con QR/noindex.
 - [ ] Continuar con panel propietario, ADMIN, verificación fotográfica y pagos siguiendo el orden y dependencias de este checklist.
 **Regla aprobada:** nombre real puede repetirse; nombre de enlace no. Una vez reservado, URL y QR no cambian al editar perfil.
+
+## Avance técnico: auditoría territorial y esquema inicial (30-oct-2026)
+- [x] Auditado en solo lectura el código de configuración de países, esquema propuesto y documentación de Direcciones507/LATAM en `main`.
+- [x] Hallazgo: configuración de ocho países y etiquetas administrativas existente; **catálogo completo de regiones/localidades no identificado** en el árbol de código revisado. Documentado en `docs/AUDITORIA-GEOGRAFIA-Y-BASE-20261030.md`.
+- [x] Preparado `db/001_initial.sql` para base PostgreSQL independiente: cuentas Google, perfil único por cuenta, slug único, estados y coordenadas. **Archivo no ejecutado**.
+- [ ] Obtener y validar catálogo territorial para los ocho países; conectar filtros reales.
+- [ ] Ejecutar migración y pruebas en PostgreSQL descartable, incluyendo concurrencia y privacidad.
+- [ ] Implementar endpoint de disponibilidad de slug y alta transaccional, con error 409 para duplicados.
