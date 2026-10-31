@@ -21,8 +21,8 @@ export function profilePostgresAdapter(pool){
      [profileId,accountId,displayName,slug,country,profession,description,status]
     );
     await client.query(
-     "INSERT INTO micontacto.profile_slug_reservations(slug,profile_id) VALUES ($1,$2)",
-     [slug,profileId]
+     "INSERT INTO micontacto.profile_slug_reservations(country_code,slug,profile_id) VALUES ($1,$2,$3)",
+     [country,slug,profileId]
     );
     await client.query("COMMIT");
     return insert.rows[0];
