@@ -1,4 +1,4 @@
-import {normalizeSlug,validateSlug,DUPLICATE_SLUG_MESSAGE} from "./profile-slug.js";
+import {normalizeSlug,validateSlug,DUPLICATE_SLUG_MESSAGE,profileUrl} from "./profile-slug.js";
 export const PROFILE_STATUSES=Object.freeze(["DRAFT","PENDING_REVIEW","ACTIVE","PAUSED","BLOCKED","DELETED"]);
 export function validateProfileDraft(input){
  if(!input||typeof input!=="object")throw Error("INVALID_PROFILE");
@@ -25,9 +25,9 @@ export async function createProfile(input,{accountId,db}){
  const draft=validateProfileDraft(input);
  try {
   const created=await db.createProfile({...draft,accountId,status:"DRAFT"});
-  return {status:201,body:{id:created.id,slug:draft.slug}};
+  return {status:201,body:{id:created.id,slug:draft.slug,country:draft.country,url:profileUrl(draft.country,draft.slug)}};
  }catch(error){
-  if(error?.code==="23505"&&error?.constraint==="profiles_slug_key")return slugConflictResponse();
+  if(error?.code==="23505"&&["profiles_country_slug_key","profiles_slug_key"].includes(error?.constraint))return slugConflictResponse();
   if(error?.code==="23505"&&error?.constraint==="profile_slug_reservations_pkey")return slugConflictResponse();
   if(error?.code==="23505"&&error?.constraint==="profiles_account_id_key")
    return {status:409,body:{code:"ACCOUNT_PROFILE_EXISTS",message:"Esta cuenta ya tiene un perfil."}};
