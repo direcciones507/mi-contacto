@@ -266,3 +266,10 @@
 - [x] `tests/slug-availability.test.mjs`: casos escritos para ocupado en Panamá/libre en Costa Rica, duplicado local, entradas inválidas y consulta parametrizada.
 - [ ] Conectar consulta al formulario y endpoint autenticado, con límites de solicitudes; la comprobación previa es orientativa y el índice UNIQUE por país decide al guardar para evitar carreras.
 - [ ] Ejecutar pruebas en PostgreSQL descartable antes de publicar.
+
+## Aviso inmediato al solicitar publicación en otro país (30-oct-2026)
+- [x] `publication-service.js`: prepara solicitud de publicación con país, región, localidad y nombre de enlace. Si PostgreSQL detecta nombre ocupado en ese país, devuelve HTTP 409, campo `linkName` y mensaje de duplicado sin modificar automáticamente el nombre.
+- [x] `tests/publication-service.test.mjs`: cuatro pruebas escritas de duplicado, solicitud a revisión, ubicación obligatoria y protección de URL publicada.
+- [ ] Implementar adaptador transaccional `requestPublication`, comprobar propiedad de cuenta, validar pertenencia territorial y conectar formulario para mostrar el aviso junto al campo de enlace.
+- [ ] Conservar URL y QR publicados al cambiar ubicación; la publicación en otro país requiere un flujo explícito sin romper el enlace original.
+- [ ] Ejecutar pruebas y validar UI/SQL en entorno descartable antes de publicar.
