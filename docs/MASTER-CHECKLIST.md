@@ -288,3 +288,11 @@
 - [ ] La comprobación de configuración NO demuestra que la base de datos sea físicamente independiente; verificar infraestructura y credenciales antes de conectar.
 - [ ] Resolver modelo de múltiples países por cuenta: el esquema actual permite solo un perfil por cuenta; no afirmar que se pueden publicar varios países hasta diseñar esa ampliación y su protección de URLs/QR.
 - [ ] Integrar OAuth, almacenamiento, API, formularios, pagos, panel ADMIN y ejecutar pruebas integrales.
+
+## Tercera etapa: perfiles de una cuenta en múltiples países
+- [x] Migración `db/006_account_profiles_by_country.sql`: sustituye unicidad global de cuenta por `(account_id,country_code)`; una cuenta, máximo un perfil por país.
+- [x] `profile-service.js`: respuesta de conflicto específica para cuenta y país.
+- [x] `tests/multi-country-account.test.mjs`: prueba escrita de enlaces PA/CR de una misma cuenta; actualizada prueba de colisión local.
+- [ ] Ejecutar SQL en PostgreSQL descartable, incluyendo 001-006, validar constraints y regresión de reservas.
+- [ ] Conectar registro, Mi perfil y publicación; una segunda publicación no debe modificar el enlace o QR del primer país.
+- [ ] Comprobar interacción con estados de revisión y límites de ocho perfiles por cuenta.
