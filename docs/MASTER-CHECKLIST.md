@@ -58,3 +58,15 @@
 - El diseño de perfil profesional se reserva para **Empleos.pa**, con nombre de servicio provisional «Perfil Profesional Público», ficha indexable y compartible, sujeto a consentimiento del titular.
 - Mantener por ahora la decisión comercial anterior de Mi Contacto «solo por enlace de pago» como **pendiente de reconciliar**: el usuario indicó retirar la tercera tarjeta del diseño, pero no confirmó expresamente si elimina por completo esa modalidad comercial. No implementarla hasta aclararlo.
 - Ningún cambio en el repositorio ni producción de Empleos.pa por esta nota.
+
+## Diseño visual aprobado — 30 de octubre de 2026
+- [x] El usuario aprobó el mockup con directorio móvil, ficha personal y comparación de tarjeta gratuita/destacada, estética azul y blanco.
+- [x] **Solo dos tipos de tarjeta:** gratuita en directorio y destacada de pago. **Eliminar completamente** la modalidad de tarjeta privada de pago «solo por enlace» de Mi Contacto; el concepto de perfil profesional de la tercera tarjeta se documentó aparte en Empleos.pa.
+- [x] **No mostrar correo electrónico** ni botón de correo en las fichas de Mi Contacto.
+- [x] Tarjeta gratuita: una foto de perfil, nombre, profesión/oficio, localidad, descripción y contacto WhatsApp/llamada según autorización del titular; enlace/QR compartible.
+- [x] Tarjeta destacada: mismo contenido más cuatro fotos adicionales (**cinco en total contando la principal**), distintivo Destacado y prioridad en directorio durante vigencia contratada.
+- [x] Precios destacados aprobados sin cambios: 1/5/10/15/20/25/30 días = USD 1.69/7.99/14.99/21.99/27.99/31.99/34.99.
+- [x] Fichas individuales con noindex; el directorio puede ser público y rastreable, con consentimiento.
+- [ ] Diseñar componentes responsive a partir del mockup aprobado y validar en dispositivos.
+- [ ] Definir el comportamiento al vencer el destacado: volver a una foto visible sin borrar las cuatro adicionales sin política aprobada.
+- [ ] Resolver en documentación anterior cualquier mención a la modalidad solo por enlace como producto vigente: **esta decisión posterior la reemplaza**.
