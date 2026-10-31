@@ -163,3 +163,16 @@
 - [ ] Reutilizar Yappy para Panamá solo tras comprobar configuración y flujo real; no habilitar PayPal ni métodos LATAM no operativos.
 - [ ] Definir expiración exacta, renovación, manejo de pago pendiente/rechazado, reembolsos, cancelaciones, zona horaria, destacado vencido y comprobantes.
 - [ ] Probar todo con transacciones simuladas o entorno de pruebas; no cobrar, modificar producción ni activar pasarelas sin autorización.
+
+## Seguimiento técnico en rama aislada — 30-oct-2026
+**Fuente de orden:** este checklist maestro; las decisiones más recientes prevalecen sobre casillas antiguas contradictorias. Sin despliegue ni cambios en producción.
+- [x] Configuración inicial de ocho países en `countries.js`; parámetros de búsqueda y pruebas escritas.
+- [x] Primer prototipo responsive `index.html`, `styles.css`, `app.js`; aún no conectado a backend.
+- [x] Funciones puras de normalización, validación y URL de perfil en `profile-slug.js`; pruebas escritas.
+- [ ] Ejecutar pruebas en entorno local; no declarar aprobación sin ejecución.
+- [ ] Auditar catálogo territorial real de Direcciones507 y conectar región/localidad para los ocho países (actualmente deshabilitados en prototipo).
+- [ ] Implementar PostgreSQL independiente con `UNIQUE` para slug, reserva atómica, comprobación previa y conflicto 409. **No asignar sufijos automáticamente**: solicitar al usuario otro nombre de enlace.
+- [ ] Conectar registro Google con dominio/sesión aislados y límite un perfil por cuenta.
+- [ ] Crear formulario de perfil, fotografía y tarjeta compartible con QR/noindex.
+- [ ] Continuar con panel propietario, ADMIN, verificación fotográfica y pagos siguiendo el orden y dependencias de este checklist.
+**Regla aprobada:** nombre real puede repetirse; nombre de enlace no. Una vez reservado, URL y QR no cambian al editar perfil.
