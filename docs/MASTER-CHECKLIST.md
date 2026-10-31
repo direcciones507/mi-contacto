@@ -281,3 +281,10 @@
 - [ ] Comprobar que HTML, metadatos, emails, Open Graph, QR, rutas, errores y panel ADMIN no muestran Direcciones507.
 - [ ] Integración entre plataformas solo mediante interfaces explícitas y autorizadas; no conectar directamente a producción de Direcciones507.
 - [ ] Pruebas de aislamiento, regresión, permisos y marca antes de publicar.
+
+## Motor independiente, configuración inicial (30-oct-2026)
+- [x] `platform-config.js`: contrato de dominio, esquema, cookie y prefijo de almacenamiento propios.
+- [x] `tests/platform-config.test.mjs`: cuatro pruebas escritas, no ejecutadas.
+- [ ] La comprobación de configuración NO demuestra que la base de datos sea físicamente independiente; verificar infraestructura y credenciales antes de conectar.
+- [ ] Resolver modelo de múltiples países por cuenta: el esquema actual permite solo un perfil por cuenta; no afirmar que se pueden publicar varios países hasta diseñar esa ampliación y su protección de URLs/QR.
+- [ ] Integrar OAuth, almacenamiento, API, formularios, pagos, panel ADMIN y ejecutar pruebas integrales.
