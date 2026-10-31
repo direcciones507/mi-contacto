@@ -253,3 +253,10 @@
 - [ ] Conectar OAuth Google real, verificar ID token/estado/nonce, establecer cuenta autenticada en servidor y proteger CSRF; no habilitar login hasta auditar el flujo completo.
 - [ ] Evaluar revocación de sesiones y rotación de secretos, protección de endpoints y pruebas de seguridad.
 - [ ] Pruebas Node y PostgreSQL pendientes de ejecución; Railway y producción sin cambios.
+
+## Decisión aprobada: enlace único por país (30-oct-2026)
+- [x] Cada país tiene su propio espacio de nombres: `micontacto.online/pa/ana-sofia` y `/cr/ana-sofia` son enlaces distintos y válidos.
+- [x] Preparada migración aislada `db/005_country_scoped_slugs.sql`: unicidad `(country_code,slug)` en perfiles y reservas; preserva reservas previas asignándoles el país del perfil.
+- [x] Actualizados `profile-slug.js`, `profile-postgres.js`, `profile-service.js` y sus pruebas para usar el país en URL, reserva y respuesta.
+- [ ] Antes de publicar: ejecutar migraciones 001-005 y pruebas de duplicados dentro de país, reutilización entre países, cambios de país, colisiones simultáneas, QR y rutas web.
+- [ ] Definir política de cambio de país para perfiles ya publicados: conservar URL anterior mediante redirección o mantener país del enlace fijo; nunca romper enlaces existentes.
