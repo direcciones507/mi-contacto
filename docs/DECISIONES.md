@@ -35,3 +35,8 @@
 - Botón Pausar / Volver a publicar: pausa oculta la ficha pública, conserva datos, no devuelve dinero y no congela la vigencia de destacado.
 - Límite por cuenta pendiente de elegir: **1 o 2 perfiles**.
 - **Conflicto comercial por aclarar:** se mencionó pagar cada vez que se genera un perfil; hasta ahora la tarjeta básica gratuita y el destacado de pago siguen como última decisión inequívoca. No implementar cargo por crear sin confirmación.
+
+## Decisiones posteriores — 30-oct-2026
+- **Un perfil por cuenta Google**, editable sin generar nuevas fichas ni perder enlace/QR.
+- Cambio de coordenadas GPS, teléfono, WhatsApp, fotografía y descripción desde Mi perfil personal, sin cargo por edición.
+- Dominio elegido **micontacto.online**, pendiente de confirmar compra y configuración. Oferta vista en captura de Namecheap USD 0.98 primer año, sujeta a condiciones y renovación.
