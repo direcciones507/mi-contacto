@@ -200,3 +200,11 @@
 - [ ] Revisar coherencia de identificadores geográficos y persistencia del perfil antes de conectar SQL al servicio (actualmente perfil almacena nombres; catálogo usa IDs).
 - [ ] Importar datos con licencia y procedencia verificadas para los ocho países, resolver cambios territoriales y homónimos.
 - [ ] Ejecutar pruebas locales y en PostgreSQL descartable, después conectar API y UI.
+
+## Preparación de importación GeoNames (30-oct-2026)
+- [x] Documentación de formato GeoNames y atribución contrastada con la fuente oficial.
+- [x] Script offline `scripts/import-geonames.mjs` para generar CSV de localidades pobladas por país, con nombres de divisiones admin1/admin2 y sin escribir base de datos.
+- [x] Prueba de muestra escrita en `tests/import-geonames.test.mjs` y guía `docs/IMPORTACION-GEONAMES.md`.
+- [ ] Descargar y procesar los ocho extractos, revisar errores y homologar localidades/municipios/comarcas con fuentes oficiales.
+- [ ] Ejecutar pruebas y validar CSV; no declarar cobertura completa ni importación realizada.
+- [ ] Construir cargador validado de CSV a tablas territoriales aisladas y conectar filtros UI/API.
