@@ -70,3 +70,14 @@
 - [ ] Diseñar componentes responsive a partir del mockup aprobado y validar en dispositivos.
 - [ ] Definir el comportamiento al vencer el destacado: volver a una foto visible sin borrar las cuatro adicionales sin política aprobada.
 - [ ] Resolver en documentación anterior cualquier mención a la modalidad solo por enlace como producto vigente: **esta decisión posterior la reemplaza**.
+
+## Panel, navegación y pausa — 30 de octubre de 2026
+- [x] Reutilizar como referencia el flujo «Mi cuenta» de Direcciones507: acceso con Google, tarjetas administrables, editar, copiar enlace, QR y estado; sin acoplar producción.
+- [x] Tarjeta personal: botón desplegable **Cómo llegar** con Google Maps, Waze y Uber donde corresponda, usando ubicación proporcionada con consentimiento. No mostrar correo electrónico.
+- [x] Control **Pausar / Volver a publicar** desde el panel: al pausar, retirar la ficha de listados y deshabilitar su vista pública; conservar datos para restauración por propietario. Debe excluirse del sitemap y búsquedas internas mientras esté pausada.
+- [x] Pausar no implica reembolso ni congelación de los días pagados de destacado; el reloj de vigencia continúa.
+- [ ] Definir si se permite **uno o dos perfiles** por cuenta (no permitir creación ilimitada); imponer límite en servidor y panel.
+- [ ] Aclarar frase «cada vez que lo generan se paga» frente a la regla previamente aprobada de **tarjeta básica gratuita y destacado de pago**. No introducir cobro de creación hasta aprobación expresa.
+- [ ] Definir si se permite reactivar después de vencer el destacado: propuesta volver a tarjeta básica sin recuperar prioridad ni fotos extra visibles.
+- [ ] Diseñar flujo OAuth Google, recuperación de estado, propiedad, edición, revisión ADMIN, auditoría y protección contra abuso.
+- [ ] Confirmar tratamiento de la URL/QR cuando se pausa: se recomienda página de ficha no disponible, sin revelar datos personales.
