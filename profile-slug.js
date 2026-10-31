@@ -12,7 +12,10 @@ export function validateSlug(value) {
   return {ok:true,slug};
 }
 export const DUPLICATE_SLUG_MESSAGE = "Este nombre de enlace ya existe. Por favor, elige otro nombre para continuar.";
-export function profileUrl(slug, origin="https://micontacto.online") {
-  const v=validateSlug(slug);if(!v.ok || v.slug!==slug) throw Error("INVALID_SLUG");
-  return new URL("/"+slug,origin).href;
+export function profileUrl(country,slug,origin="https://micontacto.online") {
+ const c=String(country??"").toUpperCase();
+ if(!["PA","CR","NI","SV","HN","GT","MX","CO"].includes(c))throw Error("INVALID_COUNTRY");
+ const v=validateSlug(slug);
+ if(!v.ok||v.slug!==slug)throw Error("INVALID_SLUG");
+ return new URL("/"+c.toLowerCase()+"/"+slug,origin).href;
 }
