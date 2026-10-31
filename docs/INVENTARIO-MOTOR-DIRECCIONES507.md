@@ -76,3 +76,10 @@ Auditar `server.ts`, `general-auth.ts`, `user-panel.ts`, `r2-storage.ts` y `paym
 - [ ] Mantener slug, enlace y QR estables al editar nombre, foto, teléfono o ubicación. No permitir reutilizar slugs de perfiles borrados sin política explícita; evitar suplantación.
 - [ ] Si perfil está pausado o bloqueado, ocultar tarjeta en directorio y gestionar acceso directo con respuesta segura según política.
 - [ ] Añadir controles anti-enumeración y privacidad apropiados; evitar mostrar email. No declarar privacidad total por usar `noindex`.
+
+## Validación del nombre de enlace al crear perfil (30-oct-2026)
+- [x] El usuario elige un **nombre de enlace** legible durante el alta; es distinto del nombre real mostrado en la tarjeta.
+- [x] Si el slug ya existe, mostrar: **«Este nombre de enlace ya existe. Por favor, elige otro nombre para continuar.»** No asignar automáticamente sufijos ni cambiar el nombre personal sin consentimiento.
+- [ ] Comprobar disponibilidad contra base de datos al salir del campo y nuevamente en el guardado. La comprobación visual no reserva el nombre; resolver carreras con restricción UNIQUE y transacción, devolviendo conflicto HTTP 409 y el mismo mensaje.
+- [ ] Normalizar tildes, mayúsculas, espacios y caracteres; comprobar contra slugs reservados y no reutilizables, sin permitir suplantación.
+- [ ] Bloquear la publicación hasta que el usuario elija un slug disponible; conservarlo estable para enlaces y QR tras ediciones.
