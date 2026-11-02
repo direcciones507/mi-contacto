@@ -1,7 +1,110 @@
 # MI CONTACTO | Checklist maestro
 
-**Actualizado:** 30 de octubre de 2026  
-**Estado:** documentación inicial y arranque del proyecto, sin despliegue.
+**Actualizado:** 31 de octubre de 2026
+**Estado:** integración local comprobada, sin publicación ni servicios reales.
+
+## Estado vigente — continuación técnica local, 31-oct-2026
+
+Informe: [LOCAL-HARDENING-20261031.md](LOCAL-HARDENING-20261031.md). Rama `work/local-hardening-20261031`. Base `c58830d` / `264c526`. **75% → 75%**, misma matriz, sin elevar bloques cuyas validaciones externas siguen pendientes.
+
+- [x] Bundle completo del 75% recuperado y verificado; copia anterior intacta.
+- [x] Base: 78 aprobadas, 0 fallidas, 0 omitidas.
+- [x] Reglas/precios gratuitos y Destacados, milisegundos, pausa, QR y privacidad conservados.
+- [x] Almacenamiento local privado persistente, reapertura y revocación probados.
+- [x] Contrato de bucket exclusivo mediante simulación; ninguna conexión R2 real.
+- [x] Conservar foto privada ante COMMIT incierto; sin borrado automático de huérfanos.
+- [x] OAuth: scope mínimo, PKCE/state/nonce, errores/cancelación, sesiones vencidas y revocación de múltiples sesiones.
+- [x] Ocultación del propietario y solicitud de eliminación no destructiva, con revisión ADMIN auditada.
+- [x] Migración 009, fallo transaccional y rollback protegido; 001–008 conservadas.
+- [x] Propuesta de retención escrita, sin plazos ni purgas activados.
+- [x] Auditoría estructural de los ocho países, homónimos y cobertura municipal incompleta documentados; cero cambios al catálogo.
+- [x] Suite final: 106 aprobadas, 0 fallidas, 0 omitidas; integración 55 es subconjunto y no se suma.
+- [x] Tres recorridos Chromium móvil/tableta/escritorio, incluyendo privacidad y cierre de sesiones.
+- [x] Procedimiento nativo preparado con nueve grupos y plan explícito NOT_EXECUTED.
+- [ ] Ejecutar PostgreSQL nativo, multiconexión, contención, reinicio y pg_dump/pg_restore en entorno compatible.
+- [ ] Validar reloj/adelantos y operación al suspender país/cuenta; no inventar compensaciones.
+- [ ] Google/R2/base persistente reales, únicamente después de autorización expresa.
+- [ ] Revisión territorial nacional y equivalencias; no fusionar homónimos por su nombre.
+- [ ] Aprobar retención, resolución/cancelación de solicitudes, galerías vencidas, huérfanos y backups.
+- [ ] Pagos, suscripciones, avisos y renovación automática: deshabilitados.
+- [ ] Publicación, Railway, push/PR/Actions/deploy: NO autorizados ni ejecutados.
+
+Documentos: [PostgreSQL nativo](NATIVE-POSTGRES-PROCEDURE.md), [Fotos y Google](STORAGE-AND-GOOGLE-PREPARATION.md), [Retención propuesta](RETENTION-PROPOSAL.md). Evidencia: `docs/evidence/local-hardening-20261031/`.
+
+## Historial — Destacados con pausa, cierre al 75%
+
+Informe: [FEATURED-TIME-20261031.md](FEATURED-TIME-20261031.md). Matriz: [PROGRESS-20261031.json](PROGRESS-20261031.json). **70% → 75% de integración local**, con la misma matriz de diez bloques. No es preparación productiva.
+
+Las reglas actuales del propietario sustituyen toda referencia anterior a directorio gratuito o a solo por enlace de pago: **gratuita USD 0 solo por enlace/QR; directorio únicamente con Destacado activo, aprobación y consentimiento**. Se conserva el historial inferior sin reutilizarlo como regla vigente.
+
+- [x] Recuperar y verificar bundle/commits anteriores, trabajando en copia separada `work/featured-time-20261031`.
+- [x] Reproducir las 67 pruebas de base, sin fallos ni omisiones.
+- [x] Siete paquetes aprobados, cotizaciones preparadas sin cobros ni activación pública.
+- [x] Saldo persistido, activación efectiva, pausa/reanudación en segundos sin perder fracciones.
+- [x] Ejemplo 24 h → 12 h → pausa tres días → 12 h → agotamiento probado.
+- [x] Idempotencia de solicitudes y confirmaciones sintéticas; no reutilización entre perfiles.
+- [x] Gratuita, pausada y vencida fuera del directorio; enlace/QR estable sujeto a aprobación y bloqueo.
+- [x] Mi perfil: modalidad, paquete, uso/saldo, estado, activación y controles.
+- [x] ADMIN: propietario, aprobación, tiempos, historial, vencimiento y retiro auditado.
+- [x] Congelar saldo al editar, cambiar fotos o bloquear el perfil; no reanudar sin aprobación.
+- [x] Migraciones 001–008 en WASM descartable, compatibilidad anterior, fallos transaccionales y rollback protegido.
+- [x] Migración rechaza pausas antiguas, activaciones futuras y términos superpuestos sin sustituir datos.
+- [x] Suite final: **78 aprobadas, 0 fallidas, 0 omitidas**. Base y repeticiones no se suman.
+- [x] Tres recorridos Chromium 390/820/1440 con ficha, pausa/reanudación, directorio e historial ADMIN.
+- [ ] PostgreSQL nativo: concurrencia multiconexión, contención de reloj y backup/restauración de servidor.
+- [ ] Verificar sincronización del reloj y operación ante adelantos incorrectos; no prometer inmunidad a estos adelantos.
+- [ ] Persistencia/base física exclusiva, Google y R2 reales en fase futura autorizada.
+- [ ] Revisión territorial, retención, canal de verificación y reglas de compensación/acumulación/cambio de paquetes.
+- [ ] Adaptador real de pagos y su verificación: sin activar hasta autorización expresa.
+- [ ] Publicación: **NO autorizada; sin push/PR/Actions/deploy/cobros/avisos ni cambios a otros proyectos**.
+
+Evidencias: `docs/evidence/featured-time-20261031/`. El respaldo completo de esta etapa se verifica por clonación y fsck; ver informe de recuperación.
+
+## Historial — cierre de integración al 70%
+
+Informe: [INTENSIVE-DEVELOPMENT-20261031.md](INTENSIVE-DEVELOPMENT-20261031.md). Reproducción: [LOCAL-VALIDATION.md](LOCAL-VALIDATION.md). Matriz: [PROGRESS-20261031.json](PROGRESS-20261031.json). Esta sección describe el estado actual; las decisiones/pendientes históricos inferiores se conservan por trazabilidad y no deben interpretarse como un estado técnico actualizado.
+
+**Avance anterior reportado: 38%, sin fórmula recuperable. Base reevaluada con matriz explícita: 40%. Nuevo avance local: 70%.** No es avance de producción ni autorización de publicación.
+
+### Integración local ejecutada
+
+- [x] Repositorio/rama work/portada-directorio-20261030 y 5cac16c recuperados; trabajo nuevo en work/intensive-development-20261031. Sin cambios remotos ni a otros proyectos.
+- [x] Servidor HTTP loopback, base/fotos en memoria propias, assets restringidos, marca/dominio/cookie propios y sin lectura automática de credenciales de otros servicios.
+- [x] OAuth integrado con state/cookie, nonce, PKCE, JWT jose y sesiones revocables/CSRF; firma y flujo comprobados con claves/proveedor sintéticos. No configurar Google real por defecto.
+- [x] Un perfil por cuenta y país, máximo ocho; alta, conflictos 409, reserva permanente, edición/versionado, propiedad, identidad URL/QR inmutable.
+- [x] Mi perfil, fotografía/previsualización, datos de contacto/GPS con permisos explícitos, estados, revisión, pausa y reactivación sin eludir bloqueos ADMIN.
+- [x] Foto principal y cuatro adicionales solo con destacado vigente; JPG/PNG/WebP estáticos hasta 5 MB, decodificación/compresión/WebP/metadatos, fotos privadas y retirada lógica.
+- [x] Ficha pública adaptable sin correo, QR local decodificado, Maps/Waze/Uber por consentimiento, noindex/no-store y sitemap sin fichas.
+- [x] Directorio API/UI con país/región/distrito/localidad/categoría/texto/paginación, sin teléfonos/GPS en resultados y sin búsqueda por coordenadas.
+- [x] Ocho catálogos GeoNames con procedencia/licencia/hashes: 4.749 divisiones y 392.717 lugares poblados cargados en PostgreSQL WASM; cero padres inválidos, cuatro registros sin referencia suficiente excluidos. reviewed=false.
+- [x] ADMIN: listas gratuitas/destacadas/en revisión, aprobación/rechazo/bloqueo por versión y motivo; categorías, países, habilitación de regiones/localidades, denuncias y auditoría.
+- [x] Verificación de foto gratuita/manual, código de solicitud, imagen vigente y revocación al sustituir principal; no identidad legal ni recepción de documentos/videos.
+- [x] Precios destacados conservados: 1/5/10/15/20/25/30 días = USD 1.69/7.99/14.99/21.99/27.99/31.99/34.99. Quote sin pagos, lectura de vigencia/galería y retiro ADMIN; ninguna activación desde cliente.
+- [x] Migraciones 001–007 y rollback de preactivación 007 probados con perfil/reserva previos, fallo transaccional, rechazo con datos y reaplicación. Corregida la FK compuesta faltante de 003.
+- [x] Auditoría de dependencias: Sharp actualizado a 0.35.5 tras un hallazgo alto; auditoría final con cero vulnerabilidades conocidas. Pruebas y navegador repetidos tras la actualización.
+- [x] Suite final: 67 aprobadas / 0 fallidas / 0 omitidas; tres recorridos completos de navegador 390/820/1440 con HTTP+DB locales y cero tráfico externo. Las pruebas nativas/no ejecutadas no se presentan como aprobaciones.
+- [x] Se preservan diseño azul/blanco, decisiones/precios, módulos y pruebas anteriores. No se reutilizaron credenciales ni datos de Direcciones507/LATAM/Empleos.pa/LeveIA.
+
+### Gates y decisiones que siguen abiertos
+
+- [ ] Google real exclusivo de Mi Contacto, persistencia/base físicamente independiente, cliente/bucket R2 real y permisos/CORS/costos; no probado con servicios reales.
+- [ ] PostgreSQL nativo, concurrencia real, rendimiento y restauración de respaldo de base. PGlite serial no los sustituye.
+- [ ] Revisión humana/nacional de catálogos, reformas administrativas, homónimos y correspondencia de niveles; fuente verificable no significa catálogo oficial aprobado.
+- [ ] Destacados: expiración contractual/zona horaria, renovación, reembolsos/comprobantes y confirmación de pago; no activar órdenes/cobros ni recurrencia.
+- [ ] Solo por enlace: contradicción entre retirada anterior y mención actual; precio/vigencia no definidos. Funcionalidad no habilitada ni ofrecida gratis.
+- [ ] Retención/borrado físico de fotos, extras al expirar y eliminación irreversible de perfiles. Se conserva baja lógica segura; no destruir datos sin política.
+- [ ] Canal WhatsApp exclusivo, privacidad y retención de video para verificación; no se almacena material ni se envían mensajes reales.
+- [ ] Política final de moderación de ediciones/denuncias, notificaciones, menores/datos personales e indexación del directorio. Runtime local noindex global hasta revisión.
+- [ ] Dispositivos físicos Android/iPhone, Safari, accesibilidad completa, dominio/compra/DNS/SSL e infraestructura de Mi Contacto.
+- [ ] Publicación y activación únicamente tras autorización expresa. Ningún PR/push/Actions/Railway/despliegue/pago habilitado por este checklist.
+
+### Decisiones anteriores reconciliadas
+
+- La regla global de un perfil fue sustituida por **un perfil por país por cuenta** (migración 006 y pedido actual); el máximo técnico sigue siendo ocho.
+- El destacado incluye **cinco fotografías en total**, no una cantidad indefinida. Extras vencidas se ocultan sin borrado físico automático mientras falta política.
+- La modalidad solo por enlace no se considera producto vigente confirmado: permanece bloqueada hasta reconciliar la contradicción comercial.
+- Editar no cobra ni cambia URL/QR. La implementación local retira cambios a borrador para revisión; este criterio conservador está explícito y sujeto a la política final de moderación.
+- No se suma como progreso funcional la configuración o acceso al agente AD507 Developer.
 
 ## 1. Producto y directorio
 - [x] Marca y repositorio independientes de Direcciones507/LATAM/LeveIA.
@@ -163,3 +266,142 @@
 - [ ] Reutilizar Yappy para Panamá solo tras comprobar configuración y flujo real; no habilitar PayPal ni métodos LATAM no operativos.
 - [ ] Definir expiración exacta, renovación, manejo de pago pendiente/rechazado, reembolsos, cancelaciones, zona horaria, destacado vencido y comprobantes.
 - [ ] Probar todo con transacciones simuladas o entorno de pruebas; no cobrar, modificar producción ni activar pasarelas sin autorización.
+
+## Seguimiento técnico en rama aislada — 30-oct-2026
+**Fuente de orden:** este checklist maestro; las decisiones más recientes prevalecen sobre casillas antiguas contradictorias. Sin despliegue ni cambios en producción.
+- [x] Configuración inicial de ocho países en `countries.js`; parámetros de búsqueda y pruebas escritas.
+- [x] Primer prototipo responsive `index.html`, `styles.css`, `app.js`; aún no conectado a backend.
+- [x] Funciones puras de normalización, validación y URL de perfil en `profile-slug.js`; pruebas escritas.
+- [ ] Ejecutar pruebas en entorno local; no declarar aprobación sin ejecución.
+- [ ] Auditar catálogo territorial real de Direcciones507 y conectar región/localidad para los ocho países (actualmente deshabilitados en prototipo).
+- [ ] Implementar PostgreSQL independiente con `UNIQUE` para slug, reserva atómica, comprobación previa y conflicto 409. **No asignar sufijos automáticamente**: solicitar al usuario otro nombre de enlace.
+- [ ] Conectar registro Google con dominio/sesión aislados y límite un perfil por cuenta.
+- [ ] Crear formulario de perfil, fotografía y tarjeta compartible con QR/noindex.
+- [ ] Continuar con panel propietario, ADMIN, verificación fotográfica y pagos siguiendo el orden y dependencias de este checklist.
+**Regla aprobada:** nombre real puede repetirse; nombre de enlace no. Una vez reservado, URL y QR no cambian al editar perfil.
+
+## Avance técnico: auditoría territorial y esquema inicial (30-oct-2026)
+- [x] Auditado en solo lectura el código de configuración de países, esquema propuesto y documentación de Direcciones507/LATAM en `main`.
+- [x] Hallazgo: configuración de ocho países y etiquetas administrativas existente; **catálogo completo de regiones/localidades no identificado** en el árbol de código revisado. Documentado en `docs/AUDITORIA-GEOGRAFIA-Y-BASE-20261030.md`.
+- [x] Preparado `db/001_initial.sql` para base PostgreSQL independiente: cuentas Google, perfil único por cuenta, slug único, estados y coordenadas. **Archivo no ejecutado**.
+- [ ] Obtener y validar catálogo territorial para los ocho países; conectar filtros reales.
+- [ ] Ejecutar migración y pruebas en PostgreSQL descartable, incluyendo concurrencia y privacidad.
+- [ ] Implementar endpoint de disponibilidad de slug y alta transaccional, con error 409 para duplicados.
+
+## Corrección funcional: directorio geográfico frente a direcciones GPS (30-oct-2026)
+- [x] **Mi Contacto no debe tratar coordenadas GPS como mecanismo principal de búsqueda.** Direcciones507/LATAM genera enlaces de dirección desde país y coordenadas; Mi Contacto requiere búsqueda de personas por país → provincia/departamento/estado → ciudad/localidad, más nombre/profesión.
+- [x] W Anuncios (`https://www.wanuncios.com/`, `https://panama.wanuncios.com/`) es **referencia de UX geográfica**, no fuente de verdad ni autorización para copiar masivamente sus datos. Su portada muestra países y provincias; el formulario de Panamá selecciona país y provincia. No se verificó catálogo completo de ciudades.
+- [ ] Obtener catálogos territoriales verificables, con cobertura y licencia adecuadas, para ocho países; modelar relaciones jerárquicas, nombres y variantes locales. Validar especialmente provincias/comarcas de Panamá, no depender de una lista abreviada de clasificados.
+- [ ] Implementar búsqueda en base de datos por país/región/localidad y texto, sin requerir coordenadas; GPS separado y opcional para «Cómo llegar».
+- [ ] Sustituir opciones de muestra y filtros deshabilitados por datos reales; probar resultados, cambios de país y niveles vacíos.
+
+## Avance técnico de directorio territorial — 30-oct-2026
+- [x] Fuente externa candidata identificada: GeoNames, descarga por país, CC BY con uso comercial y atribución; contrastar nombres y divisiones con fuentes oficiales antes de importar. geoBoundaries gbOpen CC BY 4.0 puede complementar divisiones. **GADM no apto para uso comercial sin permiso**. Fuentes: https://www.geonames.org/export/ , https://www.geoboundaries.org/api.html , https://gadm.org/license.html .
+- [x] Archivo `db/002_geography.sql` preparado con regiones jerárquicas y localidades por país, sin datos inventados. No ejecutado.
+- [x] Archivo `directory-query.js` preparado con búsqueda parametrizada por país, región, localidad y texto, solo perfiles activos, sin coordenadas; pruebas escritas en `tests/directory-query.test.mjs`.
+- [x] `package.json` configura Node ESM y comando de pruebas; **pruebas todavía no ejecutadas**.
+- [ ] Revisar coherencia de identificadores geográficos y persistencia del perfil antes de conectar SQL al servicio (actualmente perfil almacena nombres; catálogo usa IDs).
+- [ ] Importar datos con licencia y procedencia verificadas para los ocho países, resolver cambios territoriales y homónimos.
+- [ ] Ejecutar pruebas locales y en PostgreSQL descartable, después conectar API y UI.
+
+## Preparación de importación GeoNames (30-oct-2026)
+- [x] Documentación de formato GeoNames y atribución contrastada con la fuente oficial.
+- [x] Script offline `scripts/import-geonames.mjs` para generar CSV de localidades pobladas por país, con nombres de divisiones admin1/admin2 y sin escribir base de datos.
+- [x] Prueba de muestra escrita en `tests/import-geonames.test.mjs` y guía `docs/IMPORTACION-GEONAMES.md`.
+- [ ] Descargar y procesar los ocho extractos, revisar errores y homologar localidades/municipios/comarcas con fuentes oficiales.
+- [ ] Ejecutar pruebas y validar CSV; no declarar cobertura completa ni importación realizada.
+- [ ] Construir cargador validado de CSV a tablas territoriales aisladas y conectar filtros UI/API.
+
+## Validación territorial, seguimiento (30-oct-2026)
+- [x] Existe `scripts/validate-geonames-csv.mjs`, validador offline de cabecera, códigos, duplicados y divisiones faltantes.
+- [x] Existe `tests/validate-geonames.test.mjs`, prueba escrita para un CSV válido y uno con identificador duplicado.
+- [ ] Ejecutar todas las pruebas Node y corregir cualquier fallo encontrado; las pruebas escritas no equivalen a pruebas aprobadas.
+- [ ] Resolver antes de integrar la API la discrepancia entre filtros por IDs de región/localidad y columnas de texto en perfiles; no permitir homónimos o cruces de país.
+- [ ] Obtener extractos territoriales reales de ocho países y realizar revisión humana, sin cargar datos de muestra a producción.
+
+## Regla de calidad obligatoria: TODO VERDE (30-oct-2026)
+**Aprobado por el propietario:** no confundir código guardado con código validado. Mantener semáforo y evidencia por componente y etapa.
+- **VERDE:** prueba ejecutada, aprobada, con fecha, comando, resultado y referencia de commit/entorno.
+- **PENDIENTE:** código sin prueba ejecutada, integración faltante, o servicio aún no desplegado.
+- **ROJO:** error confirmado, prueba fallida, migración incompatible o regresión. Corregir antes de cerrar la etapa afectada.
+- GitHub: verificar estado de rama, cambios, comprobaciones y CI cuando esté permitido; no abrir PR ni ejecutar workflows que disparen despliegues sin autorización.
+- Local: ejecutar suites de pruebas y registrar resultados; pruebas escritas no cuentan como verdes hasta ejecutarlas.
+- PostgreSQL: probar migraciones, unicidad, permisos, aislamiento y reversibilidad en base descartable; nunca en base productiva.
+- Railway: revisar estado y despliegue **solo lectura** cuando haya entorno de Mi Contacto autorizado; sin reconectar servicios, activar despliegues ni gastar minutos por iniciativa propia.
+- UI: comprobar móvil, tableta, escritorio, navegación, búsquedas, privacidad, noindex, errores y QR antes de cerrar cada fase.
+- Mantener un registro de bloqueos y pendientes. No afirmar «todo verde» si existe una etapa sin pruebas o sin despliegue.
+- Puerta de salida: no avanzar a integración o lanzamiento si hay fallos críticos en componentes dependientes; sí se puede trabajar en tareas aisladas sin ocultar pendientes.
+
+## Corrección de integridad del buscador (30-oct-2026)
+- [x] Detectada y corregida en código la unión ambigua por nombres entre perfiles y localidades: `directory-query.js` ahora une mediante `region_id` y `locality_id` y filtra país/estado activo.
+- [x] Preparada `db/003_profile_geo_ids.sql` para agregar referencias de región/localidad a perfiles en PostgreSQL independiente.
+- [ ] **Validación pendiente:** ejecutar migraciones en base descartable, comprobar que la localidad pertenezca a la región seleccionada y evitar homónimos; no desplegar todavía.
+- [ ] Ejecutar suite Node. El entorno de ejecución disponible no pudo acceder a GitHub por DNS; no declarar verde la suite sin prueba real.
+
+## Integridad territorial reforzada (30-oct-2026)
+- [x] Preparada `db/004_geo_integrity.sql`: una región hija no puede pertenecer a otro país; una localidad seleccionada en perfil debe pertenecer exactamente a la región y país del perfil. Se refuerza en PostgreSQL con claves foráneas compuestas.
+- [ ] Ejecutar 001→004 en PostgreSQL descartable y probar casos negativos: región de otro país, localidad de otra región, localidad de otro país y región hija incompatible.
+- [ ] Verificar disponibilidad de catálogo real, importación y filtros en UI.
+- [ ] Suite Node sin ejecutar: la máquina de pruebas no resuelve `github.com`; **no afirmar verde** sin evidencia.
+
+## Decisión de secuencia de trabajo (30-oct-2026)
+- [x] El propietario autoriza **seguir construyendo todos los módulos antes de la etapa integral de pruebas previa a publicación**. Esta decisión sustituye la idea de detener cada avance hasta ejecutar todas las pruebas, **pero no autoriza publicar, desplegar, activar CI que despliegue ni ejecutar migraciones productivas**.
+- [x] Preparada lógica `profile-service.js` para crear un borrador, normalizar slug, validar país y manejar conflictos de unicidad con HTTP 409. Pruebas escritas en `tests/profile-service.test.mjs`.
+- [ ] Conectar adaptador transaccional real a PostgreSQL aislado y autenticar el `accountId` en servidor; no confiar en un ID enviado por navegador.
+- [ ] Antes de publicar: pruebas integrales Node, PostgreSQL, seguridad, UI, privacidad, SEO, Railway y regresiones, con evidencias y semáforo verde. **No confundir pruebas escritas con ejecutadas.**
+
+## Autenticación aislada, fase de construcción (30-oct-2026)
+- [x] `profile-postgres.js` preparado: inserción de perfil y reserva de slug en una sola transacción, rollback y liberación de conexión; pruebas escritas en `tests/profile-postgres.test.mjs`.
+- [x] `auth-session.js` preparado: cookie propia `mc_session`, firma HMAC-SHA256, expiración, verificación temporal constante y secreto obligatorio; pruebas escritas en `tests/auth-session.test.mjs`.
+- [ ] Conectar OAuth Google real, verificar ID token/estado/nonce, establecer cuenta autenticada en servidor y proteger CSRF; no habilitar login hasta auditar el flujo completo.
+- [ ] Evaluar revocación de sesiones y rotación de secretos, protección de endpoints y pruebas de seguridad.
+- [ ] Pruebas Node y PostgreSQL pendientes de ejecución; Railway y producción sin cambios.
+
+## Decisión aprobada: enlace único por país (30-oct-2026)
+- [x] Cada país tiene su propio espacio de nombres: `micontacto.online/pa/ana-sofia` y `/cr/ana-sofia` son enlaces distintos y válidos.
+- [x] Preparada migración aislada `db/005_country_scoped_slugs.sql`: unicidad `(country_code,slug)` en perfiles y reservas; preserva reservas previas asignándoles el país del perfil.
+- [x] Actualizados `profile-slug.js`, `profile-postgres.js`, `profile-service.js` y sus pruebas para usar el país en URL, reserva y respuesta.
+- [ ] Antes de publicar: ejecutar migraciones 001-005 y pruebas de duplicados dentro de país, reutilización entre países, cambios de país, colisiones simultáneas, QR y rutas web.
+- [ ] Definir política de cambio de país para perfiles ya publicados: conservar URL anterior mediante redirección o mantener país del enlace fijo; nunca romper enlaces existentes.
+
+## Comprobación de nombre por país (30-oct-2026)
+- [x] `slug-availability.js`: verificación previa por país y slug normalizado, con mensaje de duplicado aprobado y sin renombrado automático.
+- [x] `tests/slug-availability.test.mjs`: casos escritos para ocupado en Panamá/libre en Costa Rica, duplicado local, entradas inválidas y consulta parametrizada.
+- [ ] Conectar consulta al formulario y endpoint autenticado, con límites de solicitudes; la comprobación previa es orientativa y el índice UNIQUE por país decide al guardar para evitar carreras.
+- [ ] Ejecutar pruebas en PostgreSQL descartable antes de publicar.
+
+## Aviso inmediato al solicitar publicación en otro país (30-oct-2026)
+- [x] `publication-service.js`: prepara solicitud de publicación con país, región, localidad y nombre de enlace. Si PostgreSQL detecta nombre ocupado en ese país, devuelve HTTP 409, campo `linkName` y mensaje de duplicado sin modificar automáticamente el nombre.
+- [x] `tests/publication-service.test.mjs`: cuatro pruebas escritas de duplicado, solicitud a revisión, ubicación obligatoria y protección de URL publicada.
+- [ ] Implementar adaptador transaccional `requestPublication`, comprobar propiedad de cuenta, validar pertenencia territorial y conectar formulario para mostrar el aviso junto al campo de enlace.
+- [ ] Conservar URL y QR publicados al cambiar ubicación; la publicación en otro país requiere un flujo explícito sin romper el enlace original.
+- [ ] Ejecutar pruebas y validar UI/SQL en entorno descartable antes de publicar.
+
+## Arquitectura de motor reutilizado e identidad independiente (30-oct-2026)
+- [x] Decisión: reutilizar patrones y componentes auditados de Direcciones507, adaptados a Mi Contacto, sin referencias visibles ni atribución de marca al usuario final.
+- [ ] Auditar licencias, dependencias y módulos antes de copiar código; no reutilizar credenciales, tokens ni datos de usuarios.
+- [ ] Motor propio de Mi Contacto con PostgreSQL, almacenamiento de fotos, OAuth, sesiones, administración, QR y URLs aislados.
+- [ ] Comprobar que HTML, metadatos, emails, Open Graph, QR, rutas, errores y panel ADMIN no muestran Direcciones507.
+- [ ] Integración entre plataformas solo mediante interfaces explícitas y autorizadas; no conectar directamente a producción de Direcciones507.
+- [ ] Pruebas de aislamiento, regresión, permisos y marca antes de publicar.
+
+## Motor independiente, configuración inicial (30-oct-2026)
+- [x] `platform-config.js`: contrato de dominio, esquema, cookie y prefijo de almacenamiento propios.
+- [x] `tests/platform-config.test.mjs`: cuatro pruebas escritas, no ejecutadas.
+- [ ] La comprobación de configuración NO demuestra que la base de datos sea físicamente independiente; verificar infraestructura y credenciales antes de conectar.
+- [ ] Resolver modelo de múltiples países por cuenta: el esquema actual permite solo un perfil por cuenta; no afirmar que se pueden publicar varios países hasta diseñar esa ampliación y su protección de URLs/QR.
+- [ ] Integrar OAuth, almacenamiento, API, formularios, pagos, panel ADMIN y ejecutar pruebas integrales.
+
+## Tercera etapa: perfiles de una cuenta en múltiples países
+- [x] Migración `db/006_account_profiles_by_country.sql`: sustituye unicidad global de cuenta por `(account_id,country_code)`; una cuenta, máximo un perfil por país.
+- [x] `profile-service.js`: respuesta de conflicto específica para cuenta y país.
+- [x] `tests/multi-country-account.test.mjs`: prueba escrita de enlaces PA/CR de una misma cuenta; actualizada prueba de colisión local.
+- [ ] Ejecutar SQL en PostgreSQL descartable, incluyendo 001-006, validar constraints y regresión de reservas.
+- [ ] Conectar registro, Mi perfil y publicación; una segunda publicación no debe modificar el enlace o QR del primer país.
+- [ ] Comprobar interacción con estados de revisión y límites de ocho perfiles por cuenta.
+
+## Revisión de continuidad autónoma (31-oct-2026)
+- [x] Inspección solo lectura del servicio Railway `ad507-developer` en `leveia-staging`: el panel está desplegado, su dominio corresponde al servicio y el inicio de sesión verifica un hash `scrypt` de `AD507_OWNER_PASSWORD_HASH`.
+- [ ] Acceso del propietario al panel: bloqueado por `INVALID_LOGIN`; restablecimiento de contraseña pendiente de decisión y operación manual segura. No se modificaron variables ni se reinició Railway.
+- [ ] Antes de encargar Mi Contacto al agente, comprobar que el registro de proyectos autorizados incluya `direcciones507/mi-contacto`, que tenga permisos mínimos y que el límite de presupuesto/tiempo no active CI ni despliegues. La existencia del panel no demuestra que pueda trabajar de forma desatendida.
+- [ ] No contar como avance funcional de Mi Contacto la recuperación del panel o la preparación del agente; las suites Node y SQL siguen pendientes de ejecución.

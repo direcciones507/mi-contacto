@@ -1,0 +1,105 @@
+{
+  "source": "https://download.geonames.org/export/dump/",
+  "license": "CC BY 4.0",
+  "attribution": "GeoNames (geonames.org)",
+  "reviewed": false,
+  "counts": {
+    "CO": 35932,
+    "CR": 5781,
+    "GT": 16979,
+    "HN": 12965,
+    "MX": 300305,
+    "NI": 2629,
+    "PA": 13238,
+    "SV": 4888
+  },
+  "quarantinedWithoutRegion": {
+    "CO": 1,
+    "CR": 0,
+    "GT": 0,
+    "HN": 0,
+    "MX": 1,
+    "NI": 1,
+    "PA": 0,
+    "SV": 1
+  },
+  "inputs": [
+    {
+      "file": "admin1CodesASCII.txt",
+      "url": "https://download.geonames.org/export/dump/admin1CodesASCII.txt",
+      "bytes": 151571,
+      "sha256": "2e4867f5397acb056ea26377601b57af37cb4c81399770225018e9e439e91ad3",
+      "lastModified": "Sat, 31 Oct 2026 02:57:22 GMT"
+    },
+    {
+      "file": "admin2Codes.txt",
+      "url": "https://download.geonames.org/export/dump/admin2Codes.txt",
+      "bytes": 2371898,
+      "sha256": "9fe333c9601e6daffd8cb2307f593dcdee048347efd899cea94863824eb172e2",
+      "lastModified": "Sat, 31 Oct 2026 02:57:22 GMT"
+    },
+    {
+      "file": "readme.txt",
+      "url": "https://download.geonames.org/export/dump/readme.txt",
+      "bytes": 8843,
+      "sha256": "b1957379b6c1242c700c98ac9a8aa0a09f56c3c0a50ee72175527005f48ef2c5",
+      "lastModified": "Sat, 31 Oct 2026 02:48:07 GMT"
+    },
+    {
+      "file": "PA.zip",
+      "url": "https://download.geonames.org/export/dump/PA.zip",
+      "bytes": 931970,
+      "sha256": "13b1714c809c7ce8887e1ed6dd316fe00153203d8ede02b5dfbf85a31ae27eae",
+      "lastModified": "Sat, 31 Oct 2026 02:54:48 GMT"
+    },
+    {
+      "file": "CR.zip",
+      "url": "https://download.geonames.org/export/dump/CR.zip",
+      "bytes": 586165,
+      "sha256": "60710ca59923dd82161bc98a6a978a030e5cb867eae73aa0f1276bea1cf8a413",
+      "lastModified": "Sat, 31 Oct 2026 02:51:34 GMT"
+    },
+    {
+      "file": "NI.zip",
+      "url": "https://download.geonames.org/export/dump/NI.zip",
+      "bytes": 234882,
+      "sha256": "eb566eb02c5c54c13559f7fa7e572bce049feaa0d65f86c02f3b245533d5538c",
+      "lastModified": "Sat, 31 Oct 2026 02:54:23 GMT"
+    },
+    {
+      "file": "SV.zip",
+      "url": "https://download.geonames.org/export/dump/SV.zip",
+      "bytes": 231952,
+      "sha256": "11da46257e575fd080cbcf89e488a84f9e4f974752c1a640d20ce8d467b02733",
+      "lastModified": "Sat, 31 Oct 2026 02:55:35 GMT"
+    },
+    {
+      "file": "HN.zip",
+      "url": "https://download.geonames.org/export/dump/HN.zip",
+      "bytes": 483381,
+      "sha256": "bc9f915435ea019c07089d4226cdfbc99c15074d8d4c832c63986180e57aed37",
+      "lastModified": "Sat, 31 Oct 2026 02:52:30 GMT"
+    },
+    {
+      "file": "GT.zip",
+      "url": "https://download.geonames.org/export/dump/GT.zip",
+      "bytes": 1047270,
+      "sha256": "ab02257a4b8722bf129d0d8e371b960a05290307e23dc00e3781efd6178e5fdf",
+      "lastModified": "Sat, 31 Oct 2026 02:52:29 GMT"
+    },
+    {
+      "file": "MX.zip",
+      "url": "https://download.geonames.org/export/dump/MX.zip",
+      "bytes": 15122329,
+      "sha256": "a7f51ffc86a0daf1f3db92e376a36fc7b1562e57255d3e14c3c1213a5f0b2abe",
+      "lastModified": "Sat, 31 Oct 2026 02:54:16 GMT"
+    },
+    {
+      "file": "CO.zip",
+      "url": "https://download.geonames.org/export/dump/CO.zip",
+      "bytes": 2249028,
+      "sha256": "53a051255c71e833a7062c9edf7412a1c5fa0cb74dd44395a7ecea3329c4da1b",
+      "lastModified": "Sat, 31 Oct 2026 02:51:34 GMT"
+    }
+  ]
+}

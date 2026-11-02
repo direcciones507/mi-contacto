@@ -1,0 +1,73 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> test:integration
+> node scripts/integration.mjs
+
+▶ OAuth local: errores firmados, cancelación, expiración y replay sin credenciales reales
+  ✔ cancelación consume state, limpia cookie y no llama al proveedor (22.962916ms)
+  ✔ state vencido, duplicado o de otro navegador no intercambia códigos (9.154102ms)
+  ✔ rechaza nonce sin crear cuenta ni filtrar errores (35.491748ms)
+  ✔ rechaza aud sin crear cuenta ni filtrar errores (13.733012ms)
+  ✔ rechaza iss sin crear cuenta ni filtrar errores (13.536769ms)
+  ✔ rechaza expired sin crear cuenta ni filtrar errores (30.045006ms)
+  ✔ rechaza signature sin crear cuenta ni filtrar errores (20.383062ms)
+  ✔ rechaza badjson sin crear cuenta ni filtrar errores (47.792566ms)
+  ✔ rechaza reject sin crear cuenta ni filtrar errores (13.732218ms)
+  ✔ rechaza network sin crear cuenta ni filtrar errores (30.367082ms)
+  ✔ error para navegador ofrece retorno seguro y no refleja datos del proveedor (21.116872ms)
+  ✔ identidad válida crea USER aunque el JWT sugiera ADMIN; callback de un solo uso (32.262015ms)
+✔ OAuth local: errores firmados, cancelación, expiración y replay sin credenciales reales (4782.384825ms)
+▶ sesiones: vencimientos, roles actuales, cookies ambiguas y revocación de múltiples dispositivos
+  ✔ cookies duplicadas o adulteradas no autentican (1.942834ms)
+  ✔ ADMIN se comprueba en base por solicitud, no en un rol firmado antiguo (6.871545ms)
+  ✔ logout-all requiere CSRF y revoca todas las sesiones del mismo usuario (15.851076ms)
+  ✔ vencimiento SQL y vencimiento de firma se validan independientemente (8.502077ms)
+✔ sesiones: vencimientos, roles actuales, cookies ambiguas y revocación de múltiples dispositivos (1363.185479ms)
+▶ Destacados: saldo persistido, privacidad, idempotencia y auditoría
+  ✔ gratuita solo por enlace y QR, nunca en directorio (149.605653ms)
+  ✔ siete paquetes exactos y el cliente no puede activar ni alterar saldo (652.938312ms)
+  ✔ 24h: 12h consumidas, pausa tres días y reanudar conserva exactamente 12h (217.990578ms)
+  ✔ reintentos, múltiples sesiones, ciclos subsegundo y reloj atrasado no regalan tiempo (316.446089ms)
+  ✔ agotamiento exacto, caída automática de resultados y enlace/QR intactos (111.559349ms)
+  ✔ consentimiento y privacidad siguen vigentes con saldo contratado (144.284947ms)
+  ✔ confirmación sintética no reutilizable y doble activación sin duplicar saldo (126.995444ms)
+  ✔ ADMIN ve propietario, tiempos e historial; bloqueo impide reanudar (140.455415ms)
+✔ Destacados: saldo persistido, privacidad, idempotencia y auditoría (6681.75937ms)
+✔ migraciones 001–009, compatibilidad y rollback no destructivo (4476.55648ms)
+✔ 008 conserva saldo de ventanas anteriores y rechaza downgrade con datos (1802.742584ms)
+✔ 008 rechaza pausas antiguas, activaciones futuras y términos superpuestos sin sustituir datos (1305.810666ms)
+▶ privacidad: ocultación reversible y solicitud de eliminación no destructiva
+  ✔ gratuita sin consentimiento de directorio se aprueba y publica solo por enlace (1431.800801ms)
+  ✔ ocultar exige propietario y CSRF; ocultar corta ficha, QR y fotos públicos (251.128301ms)
+  ✔ ocultación con Destacado congela saldo y mostrar no reanuda automáticamente (272.010758ms)
+  ✔ solicitud repetida registra una sola petición y bloquea republicación sin borrar (106.579747ms)
+  ✔ ADMIN acusa revisión con motivo y auditoría; no afirma ni ejecuta borrado físico (77.275197ms)
+✔ privacidad: ocultación reversible y solicitud de eliminación no destructiva (4846.549565ms)
+▶ integración real en PostgreSQL WASM aislado, sin servicios ni pagos
+  ✔ autenticación, ADMIN y CSRF (40.434194ms)
+  ✔ crear, duplicados por país, sin suplantar propietario ni roles (299.869729ms)
+  ✔ edición y ubicación: consentimiento, homónimos y bloqueo de identidad (174.066618ms)
+  ✔ fotos: MIME, tamaño, permisos, principal, galería protegida (381.181051ms)
+  ✔ publicación, revisión versionada y privacidad pública (257.490363ms)
+  ✔ pausa conserva URL/QR y no admite eludir bloqueo ADMIN (178.97882ms)
+  ✔ verificación gratis manual, revocada al cambiar foto principal (212.990529ms)
+  ✔ destacados: precios, fotos adicionales y fin exacto sin borrar datos (591.073055ms)
+  ✔ denuncias, moderación de pago/gratis y auditoría (47.189294ms)
+  ✔ catálogo real recuperado con procedencia y pertenencia exacta (1010.296359ms)
+  ✔ sesiones revocadas y ningún acceso por cookies de otra plataforma (4.459736ms)
+✔ integración real en PostgreSQL WASM aislado, sin servicios ni pagos (8487.322123ms)
+✔ OAuth completo: token firmado, PKCE, state por navegador, replay y registro aislado (946.513891ms)
+✔ almacenamiento aislado simulado exige bucket explícito y claves propias (1.095755ms)
+✔ la configuración de autenticación rechaza otros proyectos y protocolos inseguros (0.544231ms)
+✔ almacenamiento privado persistente: reapertura, inmutabilidad y rutas (117.692493ms)
+✔ almacenamiento rechaza raíz ajena, enlaces simbólicos, permisos y respuestas URL (27.982334ms)
+✔ fotos persistidas: privadas, reapertura HTTP, reemplazo y revocación sin borrar originales (4439.804147ms)
+✔ bucket exclusivo simulado: fallo SQL no revoca foto anterior ni borra un posible objeto confirmado (1435.332263ms)
+ℹ tests 55
+ℹ suites 0
+ℹ pass 55
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9891.68057

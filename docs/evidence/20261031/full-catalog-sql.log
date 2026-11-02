@@ -1,0 +1,43 @@
+{
+  "engine": "discardable PostgreSQL WASM; not native concurrency",
+  "regions": 4749,
+  "localities": 392717,
+  "reviewRequired": true,
+  "actual": [
+    {
+      "country_code": "CO",
+      "n": 35932
+    },
+    {
+      "country_code": "CR",
+      "n": 5781
+    },
+    {
+      "country_code": "GT",
+      "n": 16979
+    },
+    {
+      "country_code": "HN",
+      "n": 12965
+    },
+    {
+      "country_code": "MX",
+      "n": 300305
+    },
+    {
+      "country_code": "NI",
+      "n": 2629
+    },
+    {
+      "country_code": "PA",
+      "n": 13238
+    },
+    {
+      "country_code": "SV",
+      "n": 4888
+    }
+  ],
+  "invalidParents": 0,
+  "manualTerritorialReviewComplete": false,
+  "realProfiles": 0
+}

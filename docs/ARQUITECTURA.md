@@ -1,5 +1,7 @@
 # Arquitectura inicial (propuesta, no aprobada)
 
+> Documento histórico de propuesta. La arquitectura local implementada y sus límites se describen en LOCAL-VALIDATION.md e INTENSIVE-DEVELOPMENT-20261031.md. No existe LINK_ONLY_PAID habilitado ni integración de pago real. Las fichas utilizan el slug por país aprobado, conservando permanentemente su URL/QR; no se sustituyeron por una identidad opaca nueva. La infraestructura física y el almacenamiento real todavía requieren validación separada.
+
 ## Principios
 - Proyecto y despliegue independientes.
 - Base de datos, almacenamiento y secretos separados de Direcciones507/LATAM.

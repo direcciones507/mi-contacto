@@ -1,0 +1,32 @@
+{
+  "node": "v24.22.1",
+  "dependencies": {
+    "jose": {
+      "version": "6.2.14",
+      "license": "MIT"
+    },
+    "pg": {
+      "version": "8.23.1",
+      "license": "MIT"
+    },
+    "sharp": {
+      "version": "0.35.5",
+      "license": "Apache-2.0"
+    },
+    "qrcode": {
+      "version": "1.5.4",
+      "license": "MIT"
+    },
+    "@electric-sql/pglite": {
+      "version": "0.3.14",
+      "license": "Apache-2.0"
+    },
+    "jsqr": {
+      "version": "1.4.0",
+      "license": "Apache-2.0"
+    }
+  },
+  "browser": "Chromium 153.0.8010.0",
+  "playwright": "1.62.1",
+  "nativePostgresExecuted": false
+}

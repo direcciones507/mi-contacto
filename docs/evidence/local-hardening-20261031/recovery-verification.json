@@ -1,0 +1,25 @@
+{
+  "baselineCommits": [
+    "c58830d",
+    "264c526"
+  ],
+  "baseBundleVerified": true,
+  "baseBundleSha256": "a5e5080b3d41b6c9f9a9bb4d5d8e21f4458df24c5d3e1db5750b10802def9d1b",
+  "previousWorkingCopyClean": true,
+  "unchangedFiles": [
+    "db/001_initial.sql",
+    "db/002_geography.sql",
+    "db/003_profile_geo_ids.sql",
+    "db/004_geo_integrity.sql",
+    "db/005_country_scoped_slugs.sql",
+    "db/006_account_profiles_by_country.sql",
+    "db/007_runtime.sql",
+    "db/008_feature_time.sql",
+    "data/geonames-catalog.json.gz",
+    "data/catalog-provenance.json",
+    "package.json",
+    "package-lock.json"
+  ],
+  "newBranch": "work/local-hardening-20261031",
+  "nativeRunAttempted": false
+}

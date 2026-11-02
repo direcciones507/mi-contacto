@@ -1,0 +1,101 @@
+{
+  "date": "2026-10-31",
+  "previousReportedPercent": 38,
+  "previousReportFormulaRecovered": false,
+  "method": "10 equally weighted blocks; 0 absent, 0.5 partial, 1 locally integrated and verified; NOT production readiness",
+  "baselineCommit": "5cac16c3bc23278c53a6ba2ace2f36329f565e71",
+  "implementationCommit": "c6726cb",
+  "auditedBaselinePercent": 40.0,
+  "currentLocalPercent": 75,
+  "modules": [
+    {
+      "id": "isolation",
+      "name": "Runtime, configuración y datos aislados",
+      "weight": 10,
+      "baselineScore": 0.5,
+      "score": 1,
+      "evidence": "application.js; auth-runtime.js; local-database.mjs"
+    },
+    {
+      "id": "authentication",
+      "name": "Autenticación y sesiones",
+      "weight": 10,
+      "baselineScore": 0.5,
+      "score": 0.5,
+      "evidence": "auth-hardening.test.mjs; OAuth signed synthetic failures, sessions and revocation; real Google pending"
+    },
+    {
+      "id": "profiles",
+      "name": "Perfiles por país, propiedad y edición",
+      "weight": 10,
+      "baselineScore": 0.5,
+      "score": 1,
+      "evidence": "runtime.test.mjs; profiles_account_country_key; preserve_identity"
+    },
+    {
+      "id": "directory",
+      "name": "Directorio y geografía",
+      "weight": 10,
+      "baselineScore": 0.5,
+      "score": 0.5,
+      "evidence": "evidence/local-hardening-20261031/catalog-audit.json; 8 countries; national verification incomplete"
+    },
+    {
+      "id": "photos",
+      "name": "Fotos y almacenamiento duradero",
+      "weight": 10,
+      "baselineScore": 0,
+      "score": 0.5,
+      "evidence": "storage-private.test.mjs; private filesystem persistence and simulated bucket; R2 and retention pending"
+    },
+    {
+      "id": "public_card",
+      "name": "Ficha, URL, QR y privacidad",
+      "weight": 10,
+      "baselineScore": 0.5,
+      "score": 1,
+      "evidence": "privacy-requests.test.mjs; hidden public links/QR/photos; feature-time regression"
+    },
+    {
+      "id": "commercial",
+      "name": "Gratuito y destacados",
+      "weight": 10,
+      "baselineScore": 0.5,
+      "score": 1,
+      "evidence": "feature-time.test.mjs; feature-runtime.js; final-tests.log; browser-final.log; real payments NOT integrated/enabled",
+      "previousLocalScore": 0.5
+    },
+    {
+      "id": "admin",
+      "name": "ADMIN y moderación",
+      "weight": 10,
+      "baselineScore": 0,
+      "score": 0.5,
+      "evidence": "privacy-requests.test.mjs; audited removal acknowledgement; physical deletion policy unresolved"
+    },
+    {
+      "id": "experience",
+      "name": "Experiencia conectada en tres tamaños",
+      "weight": 10,
+      "baselineScore": 0.5,
+      "score": 1,
+      "evidence": "evidence/local-hardening-20261031/browser-final.log; 3 full viewport flows"
+    },
+    {
+      "id": "release",
+      "name": "Calidad y operación de release",
+      "weight": 10,
+      "baselineScore": 0.5,
+      "score": 0.5,
+      "evidence": "evidence/local-hardening-20261031/final-tests.log; native plan NOT_EXECUTED"
+    }
+  ],
+  "securityCommit": "961c540",
+  "contactValidationCommit": "11236fa",
+  "previousLocalPercent": 75,
+  "currentReport": "LOCAL-HARDENING-20261031.md",
+  "currentBranch": "work/local-hardening-20261031",
+  "scoreChangeReason": "No score increase: new local hardening retains partial blocks until native, real provider, territorial and retention validation.",
+  "featuredTimeImplementationCommit": "c58830d",
+  "localHardeningImplementationCommit": "da55d9b"
+}

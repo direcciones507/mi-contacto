@@ -1,0 +1,42 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> test:integration
+> node scripts/integration.mjs
+
+▶ Destacados: saldo persistido, privacidad, idempotencia y auditoría
+  ✔ gratuita solo por enlace y QR, nunca en directorio (89.48632ms)
+  ✔ siete paquetes exactos y el cliente no puede activar ni alterar saldo (508.457668ms)
+  ✔ 24h: 12h consumidas, pausa tres días y reanudar conserva exactamente 12h (181.638709ms)
+  ✔ reintentos, múltiples sesiones, ciclos subsegundo y reloj atrasado no regalan tiempo (229.213319ms)
+  ✔ agotamiento exacto, caída automática de resultados y enlace/QR intactos (70.007588ms)
+  ✔ consentimiento y privacidad siguen vigentes con saldo contratado (128.029102ms)
+  ✔ confirmación sintética no reutilizable y doble activación sin duplicar saldo (90.87703ms)
+  ✔ ADMIN ve propietario, tiempos e historial; bloqueo impide reanudar (114.94924ms)
+✔ Destacados: saldo persistido, privacidad, idempotencia y auditoría (4023.626394ms)
+✔ migraciones 001–008, compatibilidad y rollback no destructivo (2909.171371ms)
+✔ 008 conserva saldo de ventanas anteriores y rechaza downgrade con datos (1226.258591ms)
+✔ 008 rechaza pausas antiguas, activaciones futuras y términos superpuestos sin sustituir datos (1178.988872ms)
+▶ integración real en PostgreSQL WASM aislado, sin servicios ni pagos
+  ✔ autenticación, ADMIN y CSRF (27.33749ms)
+  ✔ crear, duplicados por país, sin suplantar propietario ni roles (211.718417ms)
+  ✔ edición y ubicación: consentimiento, homónimos y bloqueo de identidad (87.707193ms)
+  ✔ fotos: MIME, tamaño, permisos, principal, galería protegida (300.747309ms)
+  ✔ publicación, revisión versionada y privacidad pública (227.435799ms)
+  ✔ pausa conserva URL/QR y no admite eludir bloqueo ADMIN (116.459427ms)
+  ✔ verificación gratis manual, revocada al cambiar foto principal (120.639332ms)
+  ✔ destacados: precios, fotos adicionales y fin exacto sin borrar datos (636.483592ms)
+  ✔ denuncias, moderación de pago/gratis y auditoría (57.918474ms)
+  ✔ catálogo real recuperado con procedencia y pertenencia exacta (1182.883971ms)
+  ✔ sesiones revocadas y ningún acceso por cookies de otra plataforma (5.111905ms)
+✔ integración real en PostgreSQL WASM aislado, sin servicios ni pagos (5449.162279ms)
+✔ OAuth completo: token firmado, PKCE, state por navegador, replay y registro aislado (1078.275003ms)
+✔ almacenamiento aislado simulado exige bucket explícito y claves propias (1.045969ms)
+✔ la configuración de autenticación rechaza otros proyectos y protocolos inseguros (0.446073ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6939.359004

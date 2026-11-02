@@ -1,0 +1,86 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> test
+> node --test tests/*.test.mjs
+
+✔ sesión válida revela solo ID de cuenta (2.648055ms)
+✔ firma manipulada no autentica (0.542075ms)
+✔ sesión expirada no autentica (0.390977ms)
+✔ secretos débiles no se aceptan (1.119576ms)
+✔ cookie aislada, segura y HttpOnly (0.546659ms)
+✔ los ocho países de lanzamiento están configurados (2.969462ms)
+✔ cada país define tres niveles y prefijo (0.488829ms)
+✔ país desconocido no se acepta (0.221583ms)
+✔ filtro vacío no inventa región (0.280895ms)
+✔ query usa filtros codificados (0.390221ms)
+✔ país obligatorio y validado (2.115316ms)
+✔ no filtra por coordenadas (0.506638ms)
+✔ solo perfiles activos (0.300208ms)
+✔ región y localidad usan parámetros (1.309452ms)
+✔ localidad exige región (0.318434ms)
+✔ limita resultados (0.246198ms)
+✔ Google login requiere state nonce y PKCE (6.46605ms)
+✔ rechaza callback alterado o vencido (1.664093ms)
+✔ solo acepta claims previamente verificados y ligados al nonce (0.773309ms)
+✔ importador filtra país y localidades sin escribir base de datos (157.288258ms)
+✔ migraciones 001–007, compatibilidad y rollback no destructivo (2412.732744ms)
+✔ misma cuenta puede registrar un perfil por país (8.269465ms)
+✔ JPG PNG WebP se decodifican, comprimen y pierden metadatos privados (853.178047ms)
+✔ MIME falso, SVG y WebP animado se rechazan antes del almacenamiento (11.426883ms)
+✔ acepta configuración aislada (1.801303ms)
+✔ rechaza nombre de cookie ajeno (1.14274ms)
+✔ rechaza almacenamiento sin prefijo propio (0.284882ms)
+✔ exige base de datos propia configurada (0.245854ms)
+✔ inserta perfil y reserva slug en una transacción (6.699762ms)
+✔ revierte la transacción cuando falla la reserva (1.870816ms)
+✔ valida y normaliza el enlace (1.611403ms)
+✔ rechaza países fuera del lanzamiento (1.075126ms)
+✔ requiere almacenamiento configurado (0.844197ms)
+✔ crea perfil en borrador usando adaptador (3.424746ms)
+✔ duplicado devuelve 409 con mensaje aprobado (1.157658ms)
+✔ una cuenta no puede crear otro perfil en el mismo país (0.35739ms)
+✔ acentos y espacios (2.969503ms)
+✔ nombres equivalentes normalizan igual (0.283392ms)
+✔ reservados no se permiten (0.344708ms)
+✔ nombre corto no se permite (0.229147ms)
+✔ url estable con slug válido (0.288885ms)
+✔ mensaje de duplicado aprobado (0.265878ms)
+✔ mismo nombre permitido en distintos países (0.300317ms)
+✔ avisa al publicar si nombre ya existe en Costa Rica (1.979988ms)
+✔ solicita revisión con enlace del país y datos geográficos (0.323052ms)
+✔ no permite publicar sin localidad (0.226243ms)
+✔ enlace ya publicado no cambia de país (0.208419ms)
+▶ integración real en PostgreSQL WASM aislado, sin servicios ni pagos
+  ✔ autenticación, ADMIN y CSRF (16.540878ms)
+  ✔ crear, duplicados por país, sin suplantar propietario ni roles (134.223779ms)
+  ✔ edición y ubicación: consentimiento, homónimos y bloqueo de identidad (66.793845ms)
+  ✔ fotos: MIME, tamaño, permisos, principal, galería protegida (249.116053ms)
+  ✔ publicación, revisión versionada y privacidad pública (188.196842ms)
+  ✔ pausa conserva URL/QR y no admite eludir bloqueo ADMIN (23.928792ms)
+  ✔ verificación gratis manual, revocada al cambiar foto principal (115.675411ms)
+  ✔ destacados: precios, fotos adicionales y fin exacto sin borrar datos (394.414104ms)
+  ✔ denuncias, moderación de pago/gratis y auditoría (52.183571ms)
+  ✔ catálogo real recuperado con procedencia y pertenencia exacta (1108.455448ms)
+  ✔ sesiones revocadas y ningún acceso por cookies de otra plataforma (7.276689ms)
+✔ integración real en PostgreSQL WASM aislado, sin servicios ni pagos (4318.957401ms)
+✔ OAuth completo: token firmado, PKCE, state por navegador, replay y registro aislado (1004.180657ms)
+✔ almacenamiento aislado simulado exige bucket explícito y claves propias (0.700398ms)
+✔ la configuración de autenticación rechaza otros proyectos y protocolos inseguros (0.230324ms)
+✔ mismo nombre puede estar ocupado en PA y disponible en CR (2.72795ms)
+✔ rechaza duplicado en el mismo país sin renombrarlo (0.96489ms)
+✔ no consulta país inválido ni nombres reservados (0.434383ms)
+✔ consulta SQL usa país y nombre como parámetros (2.031076ms)
+✔ valida catálogo geográfico antes de cargarlo (241.231003ms)
+ℹ tests 67
+ℹ suites 0
+ℹ pass 67
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6082.750466
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.1
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+npm notice To update run: npm install -g npm@12.2.1
+npm notice

@@ -1,0 +1,793 @@
+{
+  "source": "existing GeoNames snapshot 2026-10-31, CC BY 4.0",
+  "sha256": "fdad820c15abf4595594333bef1c73e9e2738f39055bfc53d96ead14970e051f",
+  "structuralValidation": "PASS",
+  "invalidParents": 0,
+  "duplicateSourceIds": 0,
+  "crossCountrySourceIdConflicts": [],
+  "countries": [
+    {
+      "country": "PA",
+      "regions": 96,
+      "level1": 14,
+      "level2": 82,
+      "localities": 13238,
+      "localitiesWithOnlyLevel1": 159,
+      "duplicateNameGroupsWithinSameRegion": 573,
+      "duplicateRegionNameGroupsWithinSameParent": 0,
+      "regionExamples": [],
+      "examples": [
+        {
+          "name": "Vista Hermosa",
+          "region": "PA.08.0808",
+          "sourceIds": [
+            "3700031",
+            "10181512"
+          ]
+        },
+        {
+          "name": "Viralito",
+          "region": "PA.10.0905",
+          "sourceIds": [
+            "3700057",
+            "13449212"
+          ]
+        },
+        {
+          "name": "Vino Tinto",
+          "region": "PA.04.0301",
+          "sourceIds": [
+            "3700062",
+            "3700063"
+          ]
+        },
+        {
+          "name": "Lucha Franco",
+          "region": "PA.08.0808",
+          "sourceIds": [
+            "3700104",
+            "3704898"
+          ]
+        },
+        {
+          "name": "Valle Rico",
+          "region": "PA.07.0702",
+          "sourceIds": [
+            "3700221",
+            "12241841"
+          ]
+        },
+        {
+          "name": "Ustupo Yantupo",
+          "region": "PA.09",
+          "sourceIds": [
+            "3700266",
+            "3700267"
+          ]
+        },
+        {
+          "name": "Tulú Abajo",
+          "region": "PA.03.0206",
+          "sourceIds": [
+            "3700364",
+            "3700365"
+          ]
+        },
+        {
+          "name": "Tubualá",
+          "region": "PA.09.1001",
+          "sourceIds": [
+            "3700391",
+            "3700393"
+          ]
+        },
+        {
+          "name": "Tuancle Arriba",
+          "region": "PA.10.0905",
+          "sourceIds": [
+            "3700395",
+            "13449344"
+          ]
+        },
+        {
+          "name": "Tortuga",
+          "region": "PA.12.1203",
+          "sourceIds": [
+            "3700494",
+            "3700495"
+          ]
+        }
+      ],
+      "quarantinedWithoutRegion": 0
+    },
+    {
+      "country": "CO",
+      "regions": 1155,
+      "level1": 33,
+      "level2": 1122,
+      "localities": 35932,
+      "localitiesWithOnlyLevel1": 2927,
+      "duplicateNameGroupsWithinSameRegion": 1572,
+      "duplicateRegionNameGroupsWithinSameParent": 0,
+      "regionExamples": [],
+      "examples": [
+        {
+          "name": "Yumbo",
+          "region": "CO.29.76892",
+          "sourceIds": [
+            "3665657",
+            "3665658"
+          ]
+        },
+        {
+          "name": "Yarumal",
+          "region": "CO.02.05887",
+          "sourceIds": [
+            "3665741",
+            "3731756"
+          ]
+        },
+        {
+          "name": "Vistahermosa",
+          "region": "CO.38.47460",
+          "sourceIds": [
+            "3665856",
+            "3665857"
+          ]
+        },
+        {
+          "name": "Villa Sol",
+          "region": "CO.27.70820",
+          "sourceIds": [
+            "3665903",
+            "3665904"
+          ]
+        },
+        {
+          "name": "Villanueva",
+          "region": "CO.38.47318",
+          "sourceIds": [
+            "3665937",
+            "3665941"
+          ]
+        },
+        {
+          "name": "La Victoria",
+          "region": "CO.36.15401",
+          "sourceIds": [
+            "3666074",
+            "3775055"
+          ]
+        },
+        {
+          "name": "Versalles",
+          "region": "CO.02.05679",
+          "sourceIds": [
+            "3666097",
+            "3780671"
+          ]
+        },
+        {
+          "name": "Venecia",
+          "region": "CO.35.13473",
+          "sourceIds": [
+            "3666191",
+            "8015954"
+          ]
+        },
+        {
+          "name": "Venecia",
+          "region": "CO.02.05861",
+          "sourceIds": [
+            "3666193",
+            "3780555"
+          ]
+        },
+        {
+          "name": "Vega Grande",
+          "region": "CO.19.50606",
+          "sourceIds": [
+            "3666248",
+            "13408113"
+          ]
+        }
+      ],
+      "quarantinedWithoutRegion": 1
+    },
+    {
+      "country": "CR",
+      "regions": 89,
+      "level1": 7,
+      "level2": 82,
+      "localities": 5781,
+      "localitiesWithOnlyLevel1": 3483,
+      "duplicateNameGroupsWithinSameRegion": 360,
+      "duplicateRegionNameGroupsWithinSameParent": 0,
+      "regionExamples": [],
+      "examples": [
+        {
+          "name": "Venado",
+          "region": "CR.08.104",
+          "sourceIds": [
+            "3621116",
+            "13450479"
+          ]
+        },
+        {
+          "name": "Túnsula",
+          "region": "CR.06.704",
+          "sourceIds": [
+            "3621189",
+            "3621190"
+          ]
+        },
+        {
+          "name": "Torito",
+          "region": "CR.02.305",
+          "sourceIds": [
+            "3621258",
+            "3621259"
+          ]
+        },
+        {
+          "name": "Tigre",
+          "region": "CR.07.607",
+          "sourceIds": [
+            "3621293",
+            "3621294"
+          ]
+        },
+        {
+          "name": "San Ramón",
+          "region": "CR.07.601",
+          "sourceIds": [
+            "3621648",
+            "3621649"
+          ]
+        },
+        {
+          "name": "San Rafael",
+          "region": "CR.01.210",
+          "sourceIds": [
+            "3621673",
+            "3621674"
+          ]
+        },
+        {
+          "name": "San Rafael",
+          "region": "CR.07.601",
+          "sourceIds": [
+            "3621676",
+            "3621691",
+            "3621694"
+          ]
+        },
+        {
+          "name": "San Rafael",
+          "region": "CR.01.202",
+          "sourceIds": [
+            "3621679",
+            "13450241"
+          ]
+        },
+        {
+          "name": "San Rafael",
+          "region": "CR.01.201",
+          "sourceIds": [
+            "3621680",
+            "3621681"
+          ]
+        },
+        {
+          "name": "San Rafael",
+          "region": "CR.08.102",
+          "sourceIds": [
+            "3621689",
+            "8015510"
+          ]
+        }
+      ],
+      "quarantinedWithoutRegion": 0
+    },
+    {
+      "country": "GT",
+      "regions": 362,
+      "level1": 22,
+      "level2": 340,
+      "localities": 16979,
+      "localitiesWithOnlyLevel1": 8183,
+      "duplicateNameGroupsWithinSameRegion": 889,
+      "duplicateRegionNameGroupsWithinSameParent": 0,
+      "regionExamples": [],
+      "examples": [
+        {
+          "name": "San Isidro",
+          "region": "GT.17",
+          "sourceIds": [
+            "3519188",
+            "3590150",
+            "9637434",
+            "9638815",
+            "9638846",
+            "11475330",
+            "11475930",
+            "12015141"
+          ]
+        },
+        {
+          "name": "San Antonio",
+          "region": "GT.17",
+          "sourceIds": [
+            "3519890",
+            "9635038",
+            "9635060",
+            "9637379",
+            "11458554",
+            "11475696",
+            "11511569"
+          ]
+        },
+        {
+          "name": "Zarzal",
+          "region": "GT.04.2007",
+          "sourceIds": [
+            "3587528",
+            "3587529"
+          ]
+        },
+        {
+          "name": "Zanjón Seco",
+          "region": "GT.13",
+          "sourceIds": [
+            "3587563",
+            "9639015"
+          ]
+        },
+        {
+          "name": "Yerbabuena",
+          "region": "GT.17",
+          "sourceIds": [
+            "3587628",
+            "9635051"
+          ]
+        },
+        {
+          "name": "Yaltutú",
+          "region": "GT.12",
+          "sourceIds": [
+            "3587657",
+            "3759567"
+          ]
+        },
+        {
+          "name": "Xesuc",
+          "region": "GT.21",
+          "sourceIds": [
+            "3587743",
+            "11478156"
+          ]
+        },
+        {
+          "name": "Xeputul",
+          "region": "GT.14",
+          "sourceIds": [
+            "3587759",
+            "12064984"
+          ]
+        },
+        {
+          "name": "Xepec",
+          "region": "GT.19",
+          "sourceIds": [
+            "3587765",
+            "12018278"
+          ]
+        },
+        {
+          "name": "Xejuyup",
+          "region": "GT.21",
+          "sourceIds": [
+            "3587790",
+            "11477875",
+            "11478152"
+          ]
+        }
+      ],
+      "quarantinedWithoutRegion": 0
+    },
+    {
+      "country": "SV",
+      "regions": 58,
+      "level1": 14,
+      "level2": 44,
+      "localities": 4888,
+      "localitiesWithOnlyLevel1": 4886,
+      "duplicateNameGroupsWithinSameRegion": 390,
+      "duplicateRegionNameGroupsWithinSameParent": 0,
+      "regionExamples": [],
+      "examples": [
+        {
+          "name": "Zacamil",
+          "region": "SV.10",
+          "sourceIds": [
+            "3582808",
+            "3582809"
+          ]
+        },
+        {
+          "name": "Veracruz",
+          "region": "SV.06",
+          "sourceIds": [
+            "3582845",
+            "3582846"
+          ]
+        },
+        {
+          "name": "Valle Nuevo",
+          "region": "SV.02",
+          "sourceIds": [
+            "3582855",
+            "3582857"
+          ]
+        },
+        {
+          "name": "Valle Nuevo",
+          "region": "SV.05",
+          "sourceIds": [
+            "3582856",
+            "3582860"
+          ]
+        },
+        {
+          "name": "Valle Nuevo",
+          "region": "SV.13",
+          "sourceIds": [
+            "3582858",
+            "3582859",
+            "3582861"
+          ]
+        },
+        {
+          "name": "Valle Alegre",
+          "region": "SV.09",
+          "sourceIds": [
+            "3582872",
+            "3735320"
+          ]
+        },
+        {
+          "name": "Tres Ceibas",
+          "region": "SV.13",
+          "sourceIds": [
+            "3582905",
+            "3582906"
+          ]
+        },
+        {
+          "name": "Teosinte",
+          "region": "SV.03",
+          "sourceIds": [
+            "3582981",
+            "3582982",
+            "3582983"
+          ]
+        },
+        {
+          "name": "Santa Rosa",
+          "region": "SV.03",
+          "sourceIds": [
+            "3583219",
+            "3583220",
+            "3583221"
+          ]
+        },
+        {
+          "name": "Santa Rosa",
+          "region": "SV.05",
+          "sourceIds": [
+            "3583222",
+            "3583223",
+            "3583224",
+            "3733720"
+          ]
+        }
+      ],
+      "quarantinedWithoutRegion": 1
+    },
+    {
+      "country": "HN",
+      "regions": 316,
+      "level1": 18,
+      "level2": 298,
+      "localities": 12965,
+      "localitiesWithOnlyLevel1": 813,
+      "duplicateNameGroupsWithinSameRegion": 453,
+      "duplicateRegionNameGroupsWithinSameParent": 0,
+      "regionExamples": [],
+      "examples": [
+        {
+          "name": "Vallecito",
+          "region": "HN.15.1517",
+          "sourceIds": [
+            "3600432",
+            "3600434",
+            "3600435"
+          ]
+        },
+        {
+          "name": "Vallecito",
+          "region": "HN.04.0312",
+          "sourceIds": [
+            "3600439",
+            "3600440"
+          ]
+        },
+        {
+          "name": "Vallecillo",
+          "region": "HN.18.1811",
+          "sourceIds": [
+            "3600447",
+            "3600448"
+          ]
+        },
+        {
+          "name": "Trojas",
+          "region": "HN.18.1807",
+          "sourceIds": [
+            "3600597",
+            "3600598"
+          ]
+        },
+        {
+          "name": "Torrecillas",
+          "region": "HN.17.1701",
+          "sourceIds": [
+            "3600648",
+            "3600649",
+            "3826068"
+          ]
+        },
+        {
+          "name": "Tierra Fría",
+          "region": "HN.05.0421",
+          "sourceIds": [
+            "3600775",
+            "3600776"
+          ]
+        },
+        {
+          "name": "Tierra Blanca",
+          "region": "HN.08.0816",
+          "sourceIds": [
+            "3600805",
+            "3820392"
+          ]
+        },
+        {
+          "name": "Ticamaya",
+          "region": "HN.06.0502",
+          "sourceIds": [
+            "3600823",
+            "3600824"
+          ]
+        },
+        {
+          "name": "Terrero Prieto",
+          "region": "HN.08.0801",
+          "sourceIds": [
+            "3600851",
+            "3600852"
+          ]
+        },
+        {
+          "name": "Terrero Blanco",
+          "region": "HN.08.0810",
+          "sourceIds": [
+            "3600865",
+            "3600866"
+          ]
+        }
+      ],
+      "quarantinedWithoutRegion": 0
+    },
+    {
+      "country": "NI",
+      "regions": 170,
+      "level1": 17,
+      "level2": 153,
+      "localities": 2629,
+      "localitiesWithOnlyLevel1": 1654,
+      "duplicateNameGroupsWithinSameRegion": 62,
+      "duplicateRegionNameGroupsWithinSameParent": 0,
+      "regionExamples": [],
+      "examples": [
+        {
+          "name": "Santa Rosa",
+          "region": "NI.10",
+          "sourceIds": [
+            "3616403",
+            "3616404"
+          ]
+        },
+        {
+          "name": "Santa Rita",
+          "region": "NI.08",
+          "sourceIds": [
+            "3616419",
+            "3616423"
+          ]
+        },
+        {
+          "name": "Santa Rita",
+          "region": "NI.01",
+          "sourceIds": [
+            "3616420",
+            "3616425"
+          ]
+        },
+        {
+          "name": "Santa Rita",
+          "region": "NI.04",
+          "sourceIds": [
+            "3616422",
+            "3616424"
+          ]
+        },
+        {
+          "name": "Santa María",
+          "region": "NI.06",
+          "sourceIds": [
+            "3616446",
+            "8016366"
+          ]
+        },
+        {
+          "name": "Santa Isabel",
+          "region": "NI.01",
+          "sourceIds": [
+            "3616477",
+            "3616479"
+          ]
+        },
+        {
+          "name": "Santa Elena",
+          "region": "NI.08",
+          "sourceIds": [
+            "3616509",
+            "3616510"
+          ]
+        },
+        {
+          "name": "Santa Cruz",
+          "region": "NI.12",
+          "sourceIds": [
+            "3616522",
+            "3616524"
+          ]
+        },
+        {
+          "name": "Santa Clara",
+          "region": "NI.08",
+          "sourceIds": [
+            "3616537",
+            "3616538"
+          ]
+        },
+        {
+          "name": "San Pedro",
+          "region": "NI.12",
+          "sourceIds": [
+            "3616622",
+            "3828004"
+          ]
+        }
+      ],
+      "quarantinedWithoutRegion": 1
+    },
+    {
+      "country": "MX",
+      "regions": 2503,
+      "level1": 32,
+      "level2": 2471,
+      "localities": 300305,
+      "localitiesWithOnlyLevel1": 29279,
+      "duplicateNameGroupsWithinSameRegion": 19050,
+      "duplicateRegionNameGroupsWithinSameParent": 0,
+      "regionExamples": [],
+      "examples": [
+        {
+          "name": "El Estero",
+          "region": "MX.28.002",
+          "sourceIds": [
+            "3482870",
+            "8701021"
+          ]
+        },
+        {
+          "name": "Santa Teresa",
+          "region": "MX.28.003",
+          "sourceIds": [
+            "3482871",
+            "8700993",
+            "8701590",
+            "13574116"
+          ]
+        },
+        {
+          "name": "Esteros",
+          "region": "MX.28.003",
+          "sourceIds": [
+            "3482884",
+            "13416499"
+          ]
+        },
+        {
+          "name": "El Palomo",
+          "region": "MX.28.002",
+          "sourceIds": [
+            "3482902",
+            "13416489"
+          ]
+        },
+        {
+          "name": "La Gloria",
+          "region": "MX.28.003",
+          "sourceIds": [
+            "3482909",
+            "8700540"
+          ]
+        },
+        {
+          "name": "El Contrabando",
+          "region": "MX.28.003",
+          "sourceIds": [
+            "3482912",
+            "8700873"
+          ]
+        },
+        {
+          "name": "La Gloria",
+          "region": "MX.28.012",
+          "sourceIds": [
+            "3482917",
+            "8700017",
+            "13560089"
+          ]
+        },
+        {
+          "name": "González",
+          "region": "MX.28.012",
+          "sourceIds": [
+            "3482929",
+            "8700059"
+          ]
+        },
+        {
+          "name": "Las Águilas del Bernal",
+          "region": "MX.28.012",
+          "sourceIds": [
+            "3482932",
+            "8711038"
+          ]
+        },
+        {
+          "name": "Santa Martha",
+          "region": "MX.24.040",
+          "sourceIds": [
+            "3482946",
+            "9809522",
+            "9809555"
+          ]
+        }
+      ],
+      "quarantinedWithoutRegion": 1
+    }
+  ],
+  "nationalReviewComplete": false,
+  "changesToCatalog": 0,
+  "notes": [
+    "Homonyms are review candidates, not proof of erroneous or duplicate settlements. Never merge by name.",
+    "Level-1-only rows lack a verified municipal relation; no invented municipality.",
+    "National names, codes, boundaries and version dates require independent review before launch."
+  ]
+}

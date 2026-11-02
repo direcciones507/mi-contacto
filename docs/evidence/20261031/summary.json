@@ -1,0 +1,40 @@
+{
+  "node": {
+    "baselinePassed": 49,
+    "passed": 67,
+    "failed": 0,
+    "skipped": 0,
+    "finalLog": "final-validation.log"
+  },
+  "browser": {
+    "scenarios": 3,
+    "widths": [
+      390,
+      820,
+      1440
+    ],
+    "realLocalHttp": true,
+    "realWasmDatabase": true,
+    "log": "final-browser-validation.log"
+  },
+  "catalog": {
+    "countries": 8,
+    "regions": 4749,
+    "populatedPlaceRecords": 392717,
+    "invalidParents": 0,
+    "manualReviewComplete": false,
+    "sha256DerivedGzip": "fdad820c15abf4595594333bef1c73e9e2738f39055bfc53d96ead14970e051f"
+  },
+  "nativePostgres": false,
+  "realGoogle": false,
+  "realR2": false,
+  "realPayments": 0,
+  "productionChanged": false,
+  "dependencyAudit": {
+    "includesDev": true,
+    "knownVulnerabilities": 0,
+    "sharp": "0.35.5",
+    "securityCommit": "961c540"
+  },
+  "contactValidationCommit": "11236fa"
+}

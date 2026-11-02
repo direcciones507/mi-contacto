@@ -1,0 +1,78 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> test
+> node --test tests/*.test.mjs
+
+✔ sesión válida revela solo ID de cuenta (2.378035ms)
+✔ firma manipulada no autentica (0.264378ms)
+✔ sesión expirada no autentica (0.31871ms)
+✔ secretos débiles no se aceptan (0.672684ms)
+✔ cookie aislada, segura y HttpOnly (0.381095ms)
+✔ los ocho países de lanzamiento están configurados (3.470992ms)
+✔ cada país define tres niveles y prefijo (0.455897ms)
+✔ país desconocido no se acepta (0.197929ms)
+✔ filtro vacío no inventa región (0.228164ms)
+✔ query usa filtros codificados (0.261945ms)
+✔ país obligatorio y validado (1.469766ms)
+✔ no filtra por coordenadas (0.426493ms)
+✔ solo perfiles activos (0.260232ms)
+✔ región y localidad usan parámetros (1.098446ms)
+✔ localidad exige región (0.195014ms)
+✔ limita resultados (0.208164ms)
+✔ Google login requiere state nonce y PKCE (2.370313ms)
+✔ rechaza callback alterado o vencido (1.249023ms)
+✔ solo acepta claims previamente verificados y ligados al nonce (0.269256ms)
+✔ importador filtra país y localidades sin escribir base de datos (107.633238ms)
+✔ migraciones 001–007, compatibilidad y rollback no destructivo (1269.103275ms)
+✔ misma cuenta puede registrar un perfil por país (2.362211ms)
+✔ acepta configuración aislada (0.674988ms)
+✔ rechaza nombre de cookie ajeno (0.567956ms)
+✔ rechaza almacenamiento sin prefijo propio (0.193982ms)
+✔ exige base de datos propia configurada (0.103406ms)
+✔ inserta perfil y reserva slug en una transacción (2.240507ms)
+✔ revierte la transacción cuando falla la reserva (0.78292ms)
+✔ valida y normaliza el enlace (2.762574ms)
+✔ rechaza países fuera del lanzamiento (0.794658ms)
+✔ requiere almacenamiento configurado (0.297348ms)
+✔ crea perfil en borrador usando adaptador (1.020438ms)
+✔ duplicado devuelve 409 con mensaje aprobado (0.830867ms)
+✔ una cuenta no puede crear otro perfil en el mismo país (0.277418ms)
+✔ acentos y espacios (0.938575ms)
+✔ nombres equivalentes normalizan igual (0.134824ms)
+✔ reservados no se permiten (0.181193ms)
+✔ nombre corto no se permite (0.141022ms)
+✔ url estable con slug válido (0.181443ms)
+✔ mensaje de duplicado aprobado (2.651417ms)
+✔ mismo nombre permitido en distintos países (0.300694ms)
+✔ avisa al publicar si nombre ya existe en Costa Rica (1.087009ms)
+✔ solicita revisión con enlace del país y datos geográficos (0.365231ms)
+✔ no permite publicar sin localidad (0.186531ms)
+✔ enlace ya publicado no cambia de país (0.176957ms)
+▶ integración real en PostgreSQL WASM aislado, sin servicios ni pagos
+  ✔ autenticación, ADMIN y CSRF (11.555489ms)
+  ✔ crear, duplicados por país, sin suplantar propietario ni roles (34.365589ms)
+  ✔ edición y ubicación: consentimiento, homónimos y bloqueo de identidad (39.407122ms)
+  ✔ fotos: MIME, tamaño, permisos, principal, galería protegida (213.895031ms)
+  ✔ publicación, revisión versionada y privacidad pública (50.306473ms)
+  ✔ pausa conserva URL/QR y no admite eludir bloqueo ADMIN (17.773983ms)
+  ✔ verificación gratis manual, revocada al cambiar foto principal (76.294948ms)
+  ✔ destacados: precios, fotos adicionales y fin exacto sin borrar datos (80.217311ms)
+  ✔ denuncias, moderación de pago/gratis y auditoría (19.774648ms)
+  ✔ catálogo real recuperado con procedencia y pertenencia exacta (744.490441ms)
+  ✔ sesiones revocadas y ningún acceso por cookies de otra plataforma (2.968936ms)
+✔ integración real en PostgreSQL WASM aislado, sin servicios ni pagos (2469.245729ms)
+✔ OAuth completo: token firmado, PKCE, state por navegador, replay y registro aislado (748.028445ms)
+✔ almacenamiento aislado simulado exige bucket explícito y claves propias (0.799996ms)
+✔ mismo nombre puede estar ocupado en PA y disponible en CR (1.47257ms)
+✔ rechaza duplicado en el mismo país sin renombrarlo (0.35188ms)
+✔ no consulta país inválido ni nombres reservados (0.229566ms)
+✔ consulta SQL usa país y nombre como parámetros (0.98806ms)
+✔ valida catálogo geográfico antes de cargarlo (153.875841ms)
+ℹ tests 64
+ℹ suites 0
+ℹ pass 64
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3666.046893

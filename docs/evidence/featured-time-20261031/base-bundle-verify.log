@@ -1,0 +1,10 @@
+/workspace/scratch/1f38807790bf/mi-contacto-intensive-20261031.bundle is okay
+The bundle contains this ref:
+bb3e84585d84b6c584f3d2a3fd3d85025f31bc21 refs/heads/work/intensive-development-20261031
+The bundle records a complete history.
+The bundle uses this hash algorithm: sha1
+bb3e845 docs: record measured progress evidence and remaining Mi Contacto activation gates
+11236fa fix: require explicit international contact numbers for shared cards
+961c540 fix: update image decoder to sharp 0.35.5 after security audit
+c6726cb feat: integrate isolated Mi Contacto profiles directory media and administration locally
+5cac16c docs: registrar bloqueo de acceso y condiciones seguras para AD507 Developer

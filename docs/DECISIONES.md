@@ -1,5 +1,7 @@
 # Decisiones de Mi Contacto
 
+> Registro histórico. Estado vigente y contradicciones reconciliadas: MASTER-CHECKLIST.md, sección «Estado vigente — continuación intensiva 31-oct-2026». El límite actual es un perfil por país/cuenta; cinco fotos en total para destacado. Solo por enlace no está habilitado: la instrucción nueva lo menciona, la decisión anterior lo retiraba y faltan precio/vigencia. No interpretar las listas antiguas inferiores como autorización para cobrar o publicar.
+
 ## Aprobadas
 1. Proyecto independiente de Direcciones507, LATAM y LeveIA.
 2. Directorio geográfico público; fichas individuales no indexables en Google.
