@@ -1,0 +1,19 @@
+{
+  "projectId": "7d9a7fb0-df2f-487c-8885-d093e1a9c9de",
+  "environmentId": "4a65150e-8ee4-4d22-917e-3ae3de82a380",
+  "appServiceId": "11c5eb89-00ce-4928-bd4e-e2ce0c50d22a",
+  "postgresServiceId": "96597602-4db6-4287-8933-728bfc2549d9",
+  "patchId": "b70d2b73-f3e7-4469-906f-69b850814d64",
+  "state": "STAGED_NOT_DEPLOYED",
+  "sourceCommit": "dd53f5fff1fd35236ba254f26f6f58a07253ffa1",
+  "activationBlockedBy": "owner requires cost estimate approval before billable resources",
+  "costEstimateUsd48Hours": [
+    0.5,
+    1.5
+  ],
+  "hardSpendingCapConfigured": false,
+  "resourceLimitsApplied": false,
+  "otherProjectsModified": false,
+  "realPaymentsEnabled": false,
+  "dnsChanged": false
+}

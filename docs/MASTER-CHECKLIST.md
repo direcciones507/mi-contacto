@@ -1,3 +1,19 @@
+# Estado vigente — despliegue autorizado, costo pendiente de aprobación
+
+4 noviembre 2026. El propietario autorizó entorno/servicio/PostgreSQL/hostname Railway de pruebas, pero exige aprobación previa de cargos adicionales. [Preparación y presupuesto](RAILWAY-ACCEPTANCE-STAGED-20261104.md).
+
+- [x] Crear proyecto independiente `mi-contacto-acceptance` y entorno `acceptance`.
+- [x] Preparar servicio Node y PostgreSQL/volumen exclusivos mediante cambios pendientes, sin activar instancias.
+- [x] Preparar fuente fijada a `dd53f5f`, referencia a base exclusiva y flags de pagos/correo desactivados; revisar patch no destructivo.
+- [x] Consultar tarifas oficiales y estimar USD 0.50–1.50 para 48 h de pruebas ligeras; crédito restante no visible, no se promete costo adicional cero.
+- [ ] Aprobación del costo antes de activar recursos facturables. No se ha ejecutado accept-deploy.
+- [ ] Completar Google/almacenamiento/TLS/secreto exclusivos y límites de recursos. Arranque actual exige Google y almacenamiento persistente.
+- [ ] Desplegar, aplicar/verificar 001–012 en la versión PostgreSQL real, comprobar persistencia/reinicio/respaldo y entregar hostname HTTPS funcional.
+
+Los 133 tests, nueve grupos nativos y tres recorridos aprobados anteriores siguen referidos al runner de pruebas; no equivalen a despliegue Railway. No hay enlace público todavía. Sin cambios a main/DNS/otros proyectos ni cobros reales.
+
+---
+
 # Estado vigente — infraestructura de aceptación, 4 noviembre 2026
 
 Base `33ba696`, rama `work/infrastructure-acceptance-20261104`. Este bloque actualiza los bloqueos técnicos inferiores. Informe: [INFRASTRUCTURE-ACCEPTANCE-20261104.md](INFRASTRUCTURE-ACCEPTANCE-20261104.md). Configuración y accesos: [ACCEPTANCE-ENVIRONMENT-20261104.md](ACCEPTANCE-ENVIRONMENT-20261104.md).
