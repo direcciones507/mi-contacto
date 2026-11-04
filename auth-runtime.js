@@ -7,7 +7,7 @@ const hash=s=>createHash('sha256').update(s).digest('hex');
 const cookie=(req,name)=>{const values=(req.headers.get('cookie')??'').split(';').map(s=>s.trim()).filter(s=>s.startsWith(name+'='));return values.length===1?values[0].slice(name.length+1):null;};
 const equal=(a,b)=>{if(typeof a!=='string'||typeof b!=='string')return false;const x=Buffer.from(a),y=Buffer.from(b);return x.length===y.length&&timingSafeEqual(x,y);};
 const keys=createRemoteJWKSet(new URL('https://www.googleapis.com/oauth2/v3/certs'));
-export function createAuth(pool,{secret,origin,google=null,fetch:network=fetch,verifyToken=null,acceptance=false,now=()=>Date.now()}){
+export function createAuth(pool,{secret,origin,google=null,fetch:network=fetch,verifyToken=null,acceptance=false,acceptanceOwner=null,now=()=>Date.now()}){
  if(typeof secret!=='string'||Buffer.byteLength(secret)<32)throw Error('SESSION_SECRET_REQUIRED');
  const base=applicationOrigin(origin,{acceptance});
  const secure=base.protocol==='https:';
@@ -18,7 +18,7 @@ export function createAuth(pool,{secret,origin,google=null,fetch:network=fetch,v
   return {token,csrf,cookie:sessionCookie(token,{secure})};
  }
  async function current(req){
-  const token=cookie(req,'mc_session');const claims=verifySession(token,{secret,now:now()});if(!claims)return null;
+  const token=cookie(req,'mc_session');const claims=verifySession(token,{secret,now:now()});if(!claims)return null;if(acceptanceOwner&&claims.accountId===acceptanceOwner.accountId&&now()>=acceptanceOwner.expiresAt)return null;
   const r=await pool.query("SELECT a.id,a.role,s.csrf FROM micontacto.sessions s JOIN micontacto.accounts a ON a.id=s.account_id WHERE s.token_hash=$1 AND s.account_id=$2 AND s.expires_at>$3 AND a.status='ACTIVE'",[hash(token),claims.accountId,new Date(now()).toISOString()]);
   return r.rows[0]??null;
  }

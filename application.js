@@ -1,3 +1,4 @@
+import {acceptanceAccess} from './acceptance-access.js';
 import {sandboxPaymentPage} from './payment-view.js';
 import {paymentRuntime} from './payment-runtime.js';
 import {erasureRuntime} from './erasure.js';
@@ -16,11 +17,12 @@ import {featureQuote} from './feature-policy.js';
 import {COUNTRIES} from './countries.js';
 import {dashboard,publicProfile,layout} from './views.js';
 const uuid=/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
-export function createApplication({pool,secret,origin='https://micontacto.online',google=null,fetch:network,verifyToken,storage=memoryPhotoStorage(),simulation=false,paymentProvider=null,acceptance=false,now=()=>Date.now()}){
+export function createApplication({pool,secret,origin='https://micontacto.online',google=null,fetch:network,verifyToken,storage=memoryPhotoStorage(),simulation=false,paymentProvider=null,acceptance=false,acceptanceOwner=null,acceptanceReport=null,now=()=>Date.now()}){
  const features=featureRuntime(pool,{simulation});
  if(paymentProvider&&paymentProvider.domain!==origin)throw Error('INVALID_PAYMENT_CONFIGURATION');
  const payments=paymentRuntime(pool,{provider:paymentProvider});
- const auth=createAuth(pool,{secret,origin,google,fetch:network,verifyToken,acceptance,now}),profiles=profileRuntime(pool,{now,features,origin}),photos=photoRuntime(pool,profiles,storage,{now});
+ const auth=createAuth(pool,{secret,origin,google,fetch:network,verifyToken,acceptance,acceptanceOwner,now}),profiles=profileRuntime(pool,{now,features,origin}),photos=photoRuntime(pool,profiles,storage,{now});
+ const privateAccess=acceptanceAccess(pool,auth,{secret,origin,acceptance,config:acceptanceOwner,now});
  const privacy=privacyRuntime(pool,profiles),erasure=erasureRuntime(pool,storage);
  const rates=new Map();
  const readRates=new Map();
@@ -41,6 +43,8 @@ export function createApplication({pool,secret,origin='https://micontacto.online
    if(req.method==='GET'&&['/api/countries','/api/categories','/api/regions','/api/localities','/api/directory'].includes(path)&&!allowRead('directory',2000))return json(429,{error:'RATE_LIMITED'});
    if(path==='/api/payments/yappy/ipn'&&!allowRead('payment-ipn',600))return json(429,{error:'RATE_LIMITED'});
    if(path==='/api/payments/yappy/ipn'&&req.method==='GET')return json(200,await payments.confirm(url.searchParams));
+   const accessReply=await privateAccess.handle(req);if(accessReply)return secure(accessReply);
+   if(path==='/api/auth-options'&&req.method==='GET')return json(200,{googleEnabled:!!google?.clientId&&!!google?.clientSecret,acceptanceLoginEnabled:privateAccess.enabled()});
    const authReply=await auth.handle(req);if(authReply){
     if(path==='/auth/google/callback'&&authReply.status>=400&&req.headers.get('accept')?.includes('text/html')){
      const error=(await authReply.clone().json()).error;const messages={OAUTH_CANCELLED:'Cancelaste el acceso con Google. Puedes volver a intentarlo.',INVALID_OAUTH_STATE:'La solicitud venció o corresponde a otro navegador. Inicia el acceso nuevamente.',ACCOUNT_SUSPENDED:'El acceso a esta cuenta está restringido. Solicita revisión a administración.'};
@@ -98,6 +102,7 @@ export function createApplication({pool,secret,origin='https://micontacto.online
     const count=(rates.get(key)?.count??0)+1;if(count>60||!rates.has(key)&&rates.size>=4096)return json(429,{error:'RATE_LIMITED'});rates.set(key,{minute,count});
    }
    if(path.startsWith('/api/admin/')&&user.role!=='ADMIN')return json(403,{error:'FORBIDDEN'});
+   if(path==='/api/admin/acceptance/status'&&req.method==='GET'&&acceptance&&acceptanceReport)return json(200,acceptanceReport);
    if(path==='/api/payments/config'&&req.method==='GET')return json(200,{enabled:payments.enabled,environment:'test',liveCharges:false});
    const payment=path.match(/^\/api\/payments\/([a-f0-9-]{36})(?:\/(initialize))?$/);
    if(payment&&req.method==='GET'&&!payment[2])return json(200,await payments.read(user.id,payment[1]));
