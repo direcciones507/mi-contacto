@@ -1,3 +1,4 @@
+import {urlHash} from './erasure.js';
 import {normalizeSlug,validateSlug} from "./profile-slug.js";
 const countries=new Set(["PA","CR","NI","SV","HN","GT","MX","CO"]);
 /** Check for user feedback only; the UNIQUE(country_code,slug) constraint is authoritative at save. */
@@ -15,8 +16,8 @@ export function slugLookupPostgres(pool){
  if(!pool||typeof pool.query!=="function")throw Error("POSTGRES_POOL_REQUIRED");
  return {async isSlugTaken({country,slug}){
   const result=await pool.query(
-   "SELECT EXISTS(SELECT 1 FROM micontacto.profiles WHERE country_code=$1 AND slug=$2 UNION ALL SELECT 1 FROM micontacto.profile_slug_reservations WHERE country_code=$1 AND slug=$2) AS taken",
-   [country,slug]);
+   "SELECT EXISTS(SELECT 1 FROM micontacto.profiles WHERE url_country=$1 AND slug=$2 UNION ALL SELECT 1 FROM micontacto.profile_slug_reservations WHERE country_code=$1 AND slug=$2 UNION ALL SELECT 1 FROM micontacto.deleted_urls WHERE url_hash=$3) AS taken",
+   [country,slug,urlHash(country,slug)]);
   return result.rows[0]?.taken===true;
  }};
 }

@@ -1,3 +1,4 @@
+import {erasureRuntime} from './erasure.js';
 import {randomUUID} from 'node:crypto';
 import {readFileSync} from 'node:fs';
 import QRCode from 'qrcode';
@@ -16,17 +17,17 @@ const uuid=/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
 export function createApplication({pool,secret,origin='https://micontacto.online',google=null,fetch:network,verifyToken,storage=memoryPhotoStorage(),simulation=false,now=()=>Date.now()}){
  const features=featureRuntime(pool,{simulation});
  const auth=createAuth(pool,{secret,origin,google,fetch:network,verifyToken,now}),profiles=profileRuntime(pool,{now,features}),photos=photoRuntime(pool,profiles,storage,{now});
- const privacy=privacyRuntime(pool,profiles);
+ const privacy=privacyRuntime(pool,profiles),erasure=erasureRuntime(pool,storage);
  const rates=new Map();
  const readRates=new Map();
  function allowRead(key,max){const minute=Math.floor(now()/60000);for(const[k,v]of readRates)if(v.minute!==minute)readRates.delete(k);const count=(readRates.get(key)?.count??0)+1;if(count>max||!readRates.has(key)&&readRates.size>=4096)return false;readRates.set(key,{minute,count});return true;}
  const headers={'cache-control':'no-store','x-content-type-options':'nosniff','referrer-policy':'no-referrer','x-robots-tag':'noindex, nofollow','content-security-policy':"default-src 'self'; img-src 'self' blob:; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"};
  const json=(status,body)=>Response.json(body,{status,headers});
  const html=body=>new Response(body,{headers:{...headers,'content-type':'text/html; charset=utf-8'}});
- const allowedAssets={'/styles.css':'text/css','/runtime.css':'text/css','/app.js':'text/javascript','/directory-client.js':'text/javascript','/countries.js':'text/javascript','/dashboard.js':'text/javascript','/feature-policy.js':'text/javascript'};
- async function publicRow(country,slug){return (await pool.query("SELECT p.* FROM micontacto.profiles p JOIN micontacto.accounts a ON a.id=p.account_id JOIN micontacto.country_settings cs ON cs.code=p.country_code AND cs.enabled WHERE p.country_code=$1 AND p.slug=$2 AND NOT p.privacy_hidden AND p.status='ACTIVE' AND p.review_decision='APPROVED' AND a.status='ACTIVE'",[country,slug])).rows[0]??null;}
+ const allowedAssets={'/styles.css':'text/css','/runtime.css':'text/css','/app.js':'text/javascript','/directory-client.js':'text/javascript','/countries.js':'text/javascript','/dashboard.js':'text/javascript','/feature-policy.js':'text/javascript','/public-profile.js':'text/javascript'};
+ async function publicRow(country,slug){return (await pool.query("SELECT p.* FROM micontacto.profiles p JOIN micontacto.accounts a ON a.id=p.account_id JOIN micontacto.country_settings cs ON cs.code=p.country_code AND cs.enabled WHERE p.url_country=$1 AND p.slug=$2 AND NOT p.privacy_hidden AND p.status='ACTIVE' AND p.review_decision='APPROVED' AND a.status='ACTIVE'",[country,slug])).rows[0]??null;}
  async function bytes(req,limit){if(Number(req.headers.get('content-length'))>limit)throw Error('PAYLOAD_TOO_LARGE');const chunks=[];let n=0;const reader=req.body?.getReader();if(!reader)return Buffer.alloc(0);try{while(true){const {done,value}=await reader.read();if(done)break;n+=value.length;if(n>limit){await reader.cancel();throw Error('PAYLOAD_TOO_LARGE');}chunks.push(Buffer.from(value));}}finally{reader.releaseLock();}return Buffer.concat(chunks);}
- async function body(req){if(!req.headers.get('content-type')?.startsWith('application/json'))throw Error('JSON_REQUIRED');try{return JSON.parse((await bytes(req,16384)).toString());}catch(e){if(e.message==='PAYLOAD_TOO_LARGE')throw e;throw Error('INVALID_JSON');}}
+ async function body(req){if(!req.headers.get('content-type')?.startsWith('application/json'))throw Error('JSON_REQUIRED');try{const data=JSON.parse((await bytes(req,16384)).toString());if(!data||typeof data!=='object'||Array.isArray(data))throw Error('INVALID_JSON');return data;}catch(e){if(e.message==='PAYLOAD_TOO_LARGE')throw e;throw Error('INVALID_JSON');}}
  async function handle(req){
   const url=new URL(req.url),path=url.pathname;
   try{
@@ -68,9 +69,9 @@ export function createApplication({pool,secret,origin='https://micontacto.online
    const user=await auth.current(req);
    const mediaMatch=path.match(/^\/media\/([a-f0-9-]{36})\/([a-f0-9-]{36})$/);
    if(mediaMatch&&req.method==='GET'){
-    const row=(await pool.query("SELECT ph.*,p.account_id,p.country_code,p.slug FROM micontacto.photos ph JOIN micontacto.profiles p ON p.id=ph.profile_id WHERE ph.profile_id=$1 AND ph.id=$2 AND ph.state='ACTIVE'",[mediaMatch[1],mediaMatch[2]])).rows[0];if(!row)throw Error('NOT_FOUND');
+    const row=(await pool.query("SELECT ph.*,p.account_id,p.country_code,p.url_country,p.slug FROM micontacto.photos ph JOIN micontacto.profiles p ON p.id=ph.profile_id WHERE ph.profile_id=$1 AND ph.id=$2 AND ph.state='ACTIVE'",[mediaMatch[1],mediaMatch[2]])).rows[0];if(!row)throw Error('NOT_FOUND');
     if(user?.id!==row.account_id&&user?.role!=='ADMIN'){
-     const p=await publicRow(row.country_code,row.slug);if(!p||!(await profiles.decorate(p)).photos.some(x=>x.id===row.id))throw Error('NOT_FOUND');
+     const p=await publicRow(row.url_country,row.slug);if(!p||!(await profiles.decorate(p)).photos.some(x=>x.id===row.id))throw Error('NOT_FOUND');
     }
     const image=await storage.get(row.object_key);if(!image)throw Error('NOT_FOUND');return new Response(image,{headers:{...headers,'content-type':'image/webp'}});
    }
@@ -114,6 +115,7 @@ export function createApplication({pool,secret,origin='https://micontacto.online
     return json(200,{items:items.filter(p=>kind==='PENDING'?p.status==='PENDING_REVIEW':kind==='FEATURED'?p.has_feature:!p.featured).map(p=>({id:p.id,name:p.display_name,country:p.country_code,status:p.status,version:p.version,featured:p.featured})),limit:200});
    }
    if(path==='/api/admin/removals'&&req.method==='GET')return json(200,{items:(await pool.query('SELECT r.id,r.profile_id,r.state,r.requested_at,r.reviewed_at,p.display_name,p.account_id FROM micontacto.removal_requests r JOIN micontacto.profiles p ON p.id=r.profile_id ORDER BY r.requested_at DESC LIMIT 100')).rows});
+   const erase=path.match(/^\/api\/admin\/removals\/([a-f0-9-]{36})\/approve$/);if(erase&&req.method==='POST')return json(200,await erasure.approve(user.id,erase[1],await body(req)));
    const removal=path.match(/^\/api\/admin\/removals\/([a-f0-9-]{36})$/);if(removal&&req.method==='POST')return json(200,await privacy.acknowledge(user.id,removal[1],await body(req)));
    const adminProfile=path.match(/^\/api\/admin\/profiles\/([a-f0-9-]{36})$/);
    if(adminProfile&&req.method==='GET'){const p=(await pool.query('SELECT * FROM micontacto.profiles WHERE id=$1',[adminProfile[1]])).rows[0];if(!p)throw Error('NOT_FOUND');return json(200,await profiles.decorate(p,true));}
@@ -161,5 +163,5 @@ export function createApplication({pool,secret,origin='https://micontacto.online
   }
  }
  function secure(response){const h=new Headers(response.headers);for(const[k,v]of Object.entries(headers))h.set(k,v);return new Response(response.body,{status:response.status,headers:h});}
- return {handle,auth,profiles,photos,features,privacy};
+ return {handle,auth,profiles,photos,features,privacy,erasure};
 }

@@ -1,0 +1,2 @@
+const button=document.getElementById('shareProfile');
+button?.addEventListener('click',async()=>{const status=document.getElementById('shareStatus');try{const url=location.origin+location.pathname;if(navigator.share)await navigator.share({title:document.title,url});else{await navigator.clipboard.writeText(url);status.textContent='Enlace copiado.';}}catch(e){if(e.name!=='AbortError')status.textContent='Puedes copiar el enlace de esta página para compartirlo.';}});

@@ -30,10 +30,10 @@ test('integración real en PostgreSQL WASM aislado, sin servicios ni pagos',asyn
    assert.equal((await f.request('/api/profiles',{as:'other',method:'POST',body:{country:'PA',linkName:'persona-sintetica',displayName:'Otra persona'}})).status,409);
    assert.equal((await f.request('/api/profiles/'+id,{as:'other'})).status,404);
    assert.equal((await f.request('/api/profiles',{method:'POST',body:{country:'CR',linkName:'permitido',displayName:'Persona',role:'ADMIN'}})).status,400);
-   const cr=await f.request('/api/profiles',{method:'POST',body:{country:'CR',linkName:'persona-sintetica',displayName:'Persona sintética CR'}});assert.equal(cr.status,201);assert.notEqual((await cr.json()).url,'https://micontacto.online/pa/persona-sintetica');
+   const cr=await f.request('/api/profiles',{method:'POST',body:{country:'CR',linkName:'persona-sintetica',displayName:'Persona sintética CR'}});assert.equal(cr.status,409);
    const lookup=await(await f.request('/api/slugs?country=PA&linkName=persona-sintetica')).json();assert.equal(lookup.available,false);
-   for(const country of ['NI','SV','HN','GT','MX','CO'])assert.equal((await f.request('/api/profiles',{method:'POST',body:{country,linkName:'enlace-'+country.toLowerCase(),displayName:'Perfil sintético '+country}})).status,201);
-   assert.equal((await(await f.request('/api/profiles')).json()).items.length,8);
+   for(const country of ['NI','SV','HN','GT','MX','CO'])assert.equal((await f.request('/api/profiles',{method:'POST',body:{country,linkName:'enlace-'+country.toLowerCase(),displayName:'Perfil sintético '+country}})).status,409);
+   assert.equal((await(await f.request('/api/profiles')).json()).items.length,1);
    assert.equal((await f.request('/api/profiles',{method:'POST',body:{country:'PE',linkName:'no-permitido',displayName:'Perfil sintético'}})).status,400);
   });
   await t.test('edición y ubicación: consentimiento, homónimos y bloqueo de identidad',async()=>{

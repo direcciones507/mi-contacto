@@ -18,7 +18,7 @@ export function directoryQuery(filters = {}) {
  if(keyword){params.push("%"+keyword.replace(/[\\%_]/g,"\\$&")+"%");where.push("(p.display_name ILIKE $"+params.length+" ESCAPE E'\\\\' OR p.profession ILIKE $"+params.length+" ESCAPE E'\\\\')");}
  if(filters.categoryId){if(!/^[a-f0-9-]{36}$/.test(filters.categoryId))throw Error('INVALID_CATEGORY');params.push(filters.categoryId);where.push('p.category_id=$'+params.length);}
  params.push(limit,offset);
- return {sql:`SELECT p.id,p.slug,p.display_name,p.profession,p.country_code,CASE WHEN p.location_consent THEN r.name END AS region,CASE WHEN p.location_consent THEN l.name END AS locality,
+ return {sql:`SELECT p.id,p.slug,p.url_country,p.display_name,p.profession,p.country_code,CASE WHEN p.location_consent THEN r.name END AS region,CASE WHEN p.location_consent THEN l.name END AS locality,
  ${featureExistsSQL} AS featured,
  (SELECT ph.id FROM micontacto.photos ph WHERE ph.profile_id=p.id AND ph.role='MAIN' AND ph.state='ACTIVE') AS photo_id
 FROM micontacto.profiles p

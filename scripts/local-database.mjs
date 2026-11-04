@@ -1,8 +1,8 @@
 import {PGlite} from '@electric-sql/pglite';
 import {readFileSync,readdirSync} from 'node:fs';
 /** Single backend, serialized pg-compatible pool. Never a native concurrency claim. */
-export async function localDatabase(){
- const db=new PGlite();let queue=Promise.resolve();
+export async function localDatabase({dataDir}={}){
+ const db=new PGlite(dataDir);let queue=Promise.resolve();
  async function lock(){let release;const previous=queue;queue=new Promise(r=>{release=r;});await previous;return release;}
  const execute=async(text,values=[])=>values.length?db.query(text,values):(await db.exec(text)).at(-1)??{rows:[]};
  const pool={async query(text,values){const release=await lock();try{return await execute(text,values);}finally{release();}},async connect(){const release=await lock();return {query:execute,release};},async close(){await queue;await db.close();}};

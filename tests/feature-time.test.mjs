@@ -13,10 +13,10 @@ test('Destacados: saldo persistido, privacidad, idempotencia y auditoría',async
  await f.pool.query('INSERT INTO micontacto.synthetic_clock VALUES($1)',[new Date(clock)]);
  await f.pool.query(`CREATE OR REPLACE FUNCTION micontacto.feature_now() RETURNS timestamptz LANGUAGE sql VOLATILE AS $$ UPDATE micontacto.feature_clock SET high_water=greatest(high_water,(SELECT at FROM micontacto.synthetic_clock)) WHERE singleton RETURNING high_water $$`);
  const advance=async ms=>{clock+=ms;await f.pool.query('UPDATE micontacto.synthetic_clock SET at=$1',[new Date(clock)]);};
- const create=async(country='PA',as='owner')=>{const r=await f.request('/api/profiles',{as,method:'POST',body:{country,linkName:'saldo-'+randomUUID(),displayName:'Persona sintética'}});assert.equal(r.status,201);const id=(await r.json()).id;await f.pool.query("UPDATE micontacto.profiles SET status='ACTIVE',review_decision='APPROVED',directory_consent=true WHERE id=$1",[id]);return id;};
- const detail=async id=>(await f.app.profiles.detail(f.owner,id));
- const prepare=async(id,days)=>{const r=await f.request('/api/profiles/'+id+'/feature',{method:'POST',body:{days}});assert.equal(r.status,201);return r.json();};
- const activate=async(id,days,key='synthetic-'+randomUUID())=>{const term=await prepare(id,days);await f.app.features.activateSimulation(f.owner,id,term.id,key);return term;};
+ const owners=new Map();const create=async(country='PA',as=country==='CR'?'other':'owner')=>{const r=await f.request('/api/profiles',{as,method:'POST',body:{country,linkName:'saldo-'+randomUUID(),displayName:'Persona sintética'}});assert.equal(r.status,201);const id=(await r.json()).id;owners.set(id,as);await f.pool.query("UPDATE micontacto.profiles SET status='ACTIVE',review_decision='APPROVED',directory_consent=true WHERE id=$1",[id]);return id;};
+ const detail=async id=>(await f.app.profiles.detail(f[owners.get(id)],id));
+ const prepare=async(id,days)=>{const r=await f.request('/api/profiles/'+id+'/feature',{as:owners.get(id),method:'POST',body:{days}});assert.equal(r.status,201);return r.json();};
+ const activate=async(id,days,key='synthetic-'+randomUUID())=>{const term=await prepare(id,days);await f.app.features.activateSimulation(f[owners.get(id)],id,term.id,key);return term;};
  const directory=async()=>(await(await f.request('/api/directory?country=PA',{as:null})).json()).items;
  try{
   const id=await create();let term,path,qr;
@@ -55,14 +55,14 @@ test('Destacados: saldo persistido, privacidad, idempotencia y auditoría',async
    await f.pool.query('UPDATE micontacto.profiles SET directory_consent=false,phone=$2,whatsapp=$2,contact_consent=false WHERE id=$1',[privateId,'+50760000000']);
    assert.equal((await(await f.request('/api/directory?country=CR',{as:null})).json()).items.length,0);
    const page=await f.request('/cr/'+p.slug,{as:null});assert.equal(page.status,200);assert.doesNotMatch(await page.response.text(),/60000000/);
-   await f.request('/api/profiles/'+privateId+'/pause',{method:'POST'});assert.equal((await f.request('/api/profiles/'+privateId+'/resume',{method:'POST'})).status,409);
+   await f.request('/api/profiles/'+privateId+'/pause',{as:'other',method:'POST'});assert.equal((await f.request('/api/profiles/'+privateId+'/resume',{as:'other',method:'POST'})).status,409);
    await f.app.features.cancel(f.admin,term.id,'Fin de privacidad sintética');
   });
   await t.test('confirmación sintética no reutilizable y doble activación sin duplicar saldo',async()=>{
    const key='synthetic-'+randomUUID(),next=await prepare(id,5);
    await Promise.all([f.app.features.activateSimulation(f.owner,id,next.id,key),f.app.features.activateSimulation(f.owner,id,next.id,key)]);
    assert.equal((await detail(id)).featureTerms.filter(t=>t.state==='ACTIVE').length,1);
-   const cr=(await f.pool.query("SELECT id FROM micontacto.profiles WHERE country_code='CR' AND account_id=$1",[f.owner])).rows[0].id;await f.pool.query('UPDATE micontacto.profiles SET directory_consent=true WHERE id=$1',[cr]);const otherTerm=await prepare(cr,1);await assert.rejects(f.app.features.activateSimulation(f.owner,cr,otherTerm.id,key),e=>e.code==='23505');
+   const cr=(await f.pool.query("SELECT id FROM micontacto.profiles WHERE country_code='CR' AND account_id=$1",[f.other])).rows[0].id;await f.pool.query('UPDATE micontacto.profiles SET directory_consent=true WHERE id=$1',[cr]);const otherTerm=await prepare(cr,1);await assert.rejects(f.app.features.activateSimulation(f.other,cr,otherTerm.id,key),e=>e.code==='23505');
    assert.equal((await detail(cr)).featureTerms.find(t=>t.id===otherTerm.id).state,'PREPARED');
    assert.equal((await f.request('/api/profiles/'+id+'/feature',{method:'POST',body:{days:10}})).status,409);
   });

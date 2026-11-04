@@ -1,3 +1,37 @@
+# Estado vigente — cierre de construcción, 4 noviembre 2026
+
+Este bloque sustituye las reglas y estados históricos inferiores que resulten contradictorios. Pedido vigente: **un perfil por cuenta**, cambiar país sin duplicarlo y conservar URL/QR. Gratuito por enlace; directorio solo para Destacado elegible. No se activan cobros.
+
+Rama: `work/commercial-completion-20261104`. Base remota recuperada: `278fc54`, árbol idéntico al consolidado local `a6dcfba`. Informe: [COMMERCIAL-COMPLETION-20261104.md](COMMERCIAL-COMPLETION-20261104.md).
+
+- [x] Recuperar el código existente y conservar migraciones 001–009, datos de catálogo y pruebas.
+- [x] Unicidad global por cuenta en base/servidor/interfaz; 010 se detiene sin pérdida de datos si hay duplicados históricos.
+- [x] Separar país de ubicación y país del enlace; mudanza PA→CR conserva identidad, URL, QR y fotos.
+- [x] Pin Google Maps independiente con validación HTTPS/hosts; enlaces cortos no inventan coordenadas ni Waze.
+- [x] Compartir nativo/con alternativa copiar y descarga de QR desde ficha pública.
+- [x] Solicitud de borrado del titular y autorización ADMIN/CSRF; borrado transaccional de perfil/relaciones; archivos en cola persistente, reintentos y pruebas de rollback/fallo de almacenamiento.
+- [x] Sustitución y retirada de fotos encolan archivos no utilizados después de confirmar la transacción.
+- [x] Adaptador R2 mediante SDK real implementado, bucket privado y credenciales explícitas; pruebas de contrato con cliente sintético, **sin conexión R2 real**.
+- [x] Servidor persistente preparado, pool PostgreSQL/TLS, secreto estable, OAuth real configurable y almacenamiento obligatorio; **sin ejecución contra servicios reales**.
+- [x] Ejecutor explícito de migraciones con hashes, registro y exclusión concurrente; bloquea baseline desconocido de bases existentes.
+- [x] Reapertura de base PostgreSQL WASM en disco comprobada; no se presenta como servidor PostgreSQL nativo.
+- [x] 115 pruebas aprobadas / 0 fallidas / 0 omitidas. Auditoría producción: 0 vulnerabilidades conocidas.
+- [x] Chromium 390/820/1440: creación, edición, fotos, revisión ADMIN, mudanza, pin, directorio, compartir, QR/descarga, ocultación, borrado definitivo y cierre de sesiones; sin errores JS ni desbordamiento horizontal.
+- [x] Catálogo completo: 4.749 regiones y 392.717 localidades, 0 padres inválidos, ocho países. Procedencia/licencia preservadas.
+- [x] Instrucciones de entorno aislado, respaldo/recuperación y guía del propietario.
+- [ ] PostgreSQL nativo, multiconexión, concurrencia, reinicio de servidor y pg_dump/pg_restore: bloqueados por ausencia de binarios/permisos; no ejecutados.
+- [ ] Google real: faltan cliente/secret exclusivos y configuración de consentimiento/callback disponibles para esta sesión.
+- [ ] R2 real: faltan cuenta, credenciales restringidas y bucket privado exclusivos disponibles para esta sesión.
+- [ ] Cobertura territorial oficial/humana, reformas y equivalencias nacionales; integridad estructural aprobada no implica catálogo nacional aprobado.
+- [ ] Revisión legal final: responsable/canal de privacidad, consentimientos, menores, moderación, retención/backups y borrado en restauraciones. No se declara aprobación legal.
+- [ ] Pruebas Android físico/Safari y aceptación del propietario.
+- [ ] Autorización comercial de activación real de Destacados/pagos. La activación sintética sigue limitada a pruebas internas.
+- [ ] Producción: no autorizada; sin cambios a main, Railway ni otros proyectos.
+
+Las evidencias vigentes están en `docs/evidence/commercial-20261104/`. Los porcentajes históricos no se reinterpretan como preparación comercial. **Lanzamiento pendiente de integraciones y aprobaciones externas.**
+
+---
+
 # MI CONTACTO | Checklist maestro
 
 **Actualizado:** 31 de octubre de 2026

@@ -15,13 +15,14 @@ export function photoRuntime(pool,profiles,storage,{now=()=>Date.now()}={}){
     await storage.put(key,prepared);
     if(role==='MAIN')await tx.query("UPDATE micontacto.photos SET state='DELETED' WHERE profile_id=$1 AND role='MAIN' AND state='ACTIVE'",[id]);
     await tx.query("INSERT INTO micontacto.photos(id,profile_id,object_key,role,mime,bytes) VALUES($1,$2,$3,$4,'image/webp',$5)",[photo,id,key,role,prepared.length]);
+    await tx.query("INSERT INTO micontacto.storage_deletions(object_key) SELECT object_key FROM micontacto.photos WHERE profile_id=$1 AND state='DELETED' ON CONFLICT DO NOTHING",[id]);
     await invalidate(tx,id,role==='MAIN',account);await profiles.audit(tx,account,id,'PHOTO_UPLOADED');
     return {ok:true,id:photo};
    }); // Retain a private orphan on uncertain commit; never delete a possibly committed photo.
   },
   async remove(account,id,photo){return transaction(pool,async tx=>{const p=await profiles.owned(tx,account,id);profiles.writable(p);
    const row=(await tx.query("SELECT * FROM micontacto.photos WHERE id=$1 AND profile_id=$2 AND state='ACTIVE' FOR UPDATE",[photo,id])).rows[0];if(!row)throw Error('NOT_FOUND');
-   await tx.query("UPDATE micontacto.photos SET state='DELETED' WHERE id=$1",[photo]);await invalidate(tx,id,row.role==='MAIN',account);await profiles.audit(tx,account,id,'PHOTO_REMOVED');return {ok:true};
+   await tx.query("UPDATE micontacto.photos SET state='DELETED' WHERE id=$1",[photo]);await tx.query('INSERT INTO micontacto.storage_deletions(object_key) VALUES($1) ON CONFLICT DO NOTHING',[row.object_key]);await invalidate(tx,id,row.role==='MAIN',account);await profiles.audit(tx,account,id,'PHOTO_REMOVED');return {ok:true};
   });},
   async requestVerification(account,id){return transaction(pool,async tx=>{
    const p=await profiles.owned(tx,account,id);profiles.writable(p);

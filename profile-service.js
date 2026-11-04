@@ -32,7 +32,7 @@ export async function createProfile(input,{accountId,db}){
   if(error?.code==="23505"&&["profiles_country_slug_key","profiles_slug_key"].includes(error?.constraint))return slugConflictResponse();
   if(error?.code==="23505"&&error?.constraint==="profile_slug_reservations_pkey")return slugConflictResponse();
   if(error?.code==="23505"&&["profiles_account_country_key","profiles_account_id_key"].includes(error?.constraint))
-   return {status:409,body:{code:"ACCOUNT_PROFILE_EXISTS",message:"Esta cuenta ya tiene un perfil en este país."}};
+   return {status:409,body:{code:"ACCOUNT_PROFILE_EXISTS",message:"Esta cuenta ya tiene un perfil. Edita su ubicación para cambiar de país."}};
   throw error;
  }
 }

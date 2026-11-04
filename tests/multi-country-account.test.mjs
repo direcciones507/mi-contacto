@@ -2,14 +2,8 @@ import {test} from "node:test";
 import {strict as assert} from "node:assert";
 import {createProfile} from "../profile-service.js";
 const base={displayName:"Ana Sofía",linkName:"Ana Sofía",profession:"Docente"};
-test("misma cuenta puede registrar un perfil por país",async()=>{
- const countries=[];
- const db={createProfile:async x=>{countries.push(x.country);return {id:x.country};}};
- const pa=await createProfile({...base,country:"PA"},{accountId:"account",db});
- const cr=await createProfile({...base,country:"CR"},{accountId:"account",db});
- assert.equal(pa.status,201);
- assert.equal(cr.status,201);
- assert.equal(pa.body.url,"https://micontacto.online/pa/ana-sofia");
- assert.equal(cr.body.url,"https://micontacto.online/cr/ana-sofia");
- assert.deepEqual(countries,["PA","CR"]);
+test("conflicto de perfil por cuenta comunica que se debe editar el existente",async()=>{
+ const db={createProfile:async()=>{throw Object.assign(Error('duplicate'),{code:'23505',constraint:'profiles_account_id_key'});}};
+ const result=await createProfile({...base,country:'CR'},{accountId:'account',db});
+ assert.equal(result.status,409);assert.equal(result.body.code,'ACCOUNT_PROFILE_EXISTS');assert.match(result.body.message,/Edita su ubicación/);
 });

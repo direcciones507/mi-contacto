@@ -5,9 +5,13 @@
   "scripts": {
     "test": "node --test tests/*.test.mjs",
     "start:local": "node scripts/start-local.mjs",
-    "test:integration": "node scripts/integration.mjs"
+    "test:integration": "node scripts/integration.mjs",
+    "start": "node scripts/start-server.mjs",
+    "db:migrate:test": "node scripts/migrate.mjs --isolated-test",
+    "test:browser": "node scripts/browser-validation.mjs"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "3.1161.0",
     "jose": "6.2.14",
     "pg": "8.23.1",
     "qrcode": "1.5.4",
@@ -15,7 +19,8 @@
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.3.14",
-    "jsqr": "1.4.0"
+    "jsqr": "1.4.0",
+    "playwright": "1.56.1"
   },
   "engines": {
     "node": ">=24"

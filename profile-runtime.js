@@ -1,3 +1,4 @@
+import {validateMapsUrl} from './maps.js';
 import {randomUUID} from 'node:crypto';
 import {profilePostgresAdapter} from './profile-postgres.js';
 import {createProfile,validateProfileDraft} from './profile-service.js';
@@ -17,29 +18,32 @@ export function profileRuntime(pool,{now=()=>Date.now(),features=featureRuntime(
   const visible=owner?photos:visiblePhotos(photos,featured);
   const removal=owner?(await pool.query('SELECT id,state,requested_at,reviewed_at FROM micontacto.removal_requests WHERE profile_id=$1',[p.id])).rows[0]??null:null;
   const location=(await pool.query('SELECT r.name AS region,l.name AS locality FROM micontacto.geo_localities l JOIN micontacto.geo_regions r ON r.id=l.region_id WHERE l.id=$1 AND l.region_id=$2 AND l.country_code=$3',[p.locality_id,p.region_id,p.country_code])).rows[0]??{};
-  return {id:p.id,displayName:p.display_name,country:p.country_code,slug:p.slug,profession:p.profession??'',description:p.description??'',categoryId:p.category_id,regionId:owner||p.location_consent?p.region_id:null,localityId:owner||p.location_consent?p.locality_id:null,region:owner||p.location_consent?location.region:null,locality:owner||p.location_consent?location.locality:null,featured,photoVerified:!!p.photo_verified_id&&photos.some(x=>x.id===p.photo_verified_id&&x.role==='MAIN'),photos:visible.map(x=>({id:x.id,role:x.role,url:'/media/'+p.id+'/'+x.id})),url:profileUrl(p.country_code,p.slug),...(p.contact_consent?{phone:p.phone,whatsapp:p.whatsapp}:{}),...(p.location_consent?{latitude:p.latitude,longitude:p.longitude}:{}),...(owner?{ownerId:p.account_id,privacyHidden:p.privacy_hidden,removalRequest:removal,status:p.status,version:p.version,featureEvents:events,featureTerms:terms.map(t=>({id:t.id,days:t.days,amountCents:t.amount_cents,state:t.state,startsAt:t.starts_at,expiresAt:t.expires_at,usedSeconds:(t.days*86400000-Number(t.remaining_ms))/1000,remainingSeconds:Number(t.remaining_ms)/1000})),phone:p.phone??'',whatsapp:p.whatsapp??'',latitude:p.latitude,longitude:p.longitude,directoryConsent:p.directory_consent,contactConsent:p.contact_consent,locationConsent:p.location_consent,reviewReason:p.review_reason}: {})};
+  return {id:p.id,displayName:p.display_name,country:p.country_code,slug:p.slug,urlCountry:p.url_country,profession:p.profession??'',description:p.description??'',categoryId:p.category_id,regionId:owner||p.location_consent?p.region_id:null,localityId:owner||p.location_consent?p.locality_id:null,region:owner||p.location_consent?location.region:null,locality:owner||p.location_consent?location.locality:null,featured,photoVerified:!!p.photo_verified_id&&photos.some(x=>x.id===p.photo_verified_id&&x.role==='MAIN'),photos:visible.map(x=>({id:x.id,role:x.role,url:'/media/'+p.id+'/'+x.id})),url:profileUrl(p.url_country??p.country_code,p.slug),...(p.contact_consent?{phone:p.phone,whatsapp:p.whatsapp}:{}),...(p.location_consent?{latitude:p.latitude,longitude:p.longitude,mapsUrl:p.maps_url}:{}),...(owner?{ownerId:p.account_id,privacyHidden:p.privacy_hidden,removalRequest:removal,status:p.status,version:p.version,featureEvents:events,featureTerms:terms.map(t=>({id:t.id,days:t.days,amountCents:t.amount_cents,state:t.state,startsAt:t.starts_at,expiresAt:t.expires_at,usedSeconds:(t.days*86400000-Number(t.remaining_ms))/1000,remainingSeconds:Number(t.remaining_ms)/1000})),phone:p.phone??'',whatsapp:p.whatsapp??'',latitude:p.latitude,longitude:p.longitude,mapsUrl:p.maps_url,directoryConsent:p.directory_consent,contactConsent:p.contact_consent,locationConsent:p.location_consent,reviewReason:p.review_reason}: {})};
  }
  async function geo(tx,country,region,locality){
-  const r=await tx.query('SELECT l.id FROM micontacto.geo_localities l JOIN micontacto.geo_regions r ON r.id=l.region_id AND r.country_code=l.country_code WHERE l.id=$1 AND l.region_id=$2 AND l.country_code=$3 AND l.enabled AND r.enabled',[locality,region,country]);
+  const r=await tx.query('WITH RECURSIVE trail AS (SELECT id,parent_id,enabled FROM micontacto.geo_regions WHERE id=$2 AND country_code=$3 UNION ALL SELECT r.id,r.parent_id,r.enabled FROM micontacto.geo_regions r JOIN trail t ON t.parent_id=r.id WHERE r.country_code=$3) SELECT l.id FROM micontacto.geo_localities l WHERE l.id=$1 AND l.region_id=$2 AND l.country_code=$3 AND l.enabled AND EXISTS(SELECT 1 FROM trail) AND NOT EXISTS(SELECT 1 FROM trail WHERE NOT enabled)',[locality,region,country]);
   if(!r.rows.length)throw Error('INVALID_GEO_SELECTION');
  }
  async function update(account,id,input){
-  const allowed=['displayName','profession','description','phone','whatsapp','categoryId','regionId','localityId','latitude','longitude','directoryConsent','contactConsent','locationConsent','version'];
+  const allowed=['country','mapsUrl','displayName','profession','description','phone','whatsapp','categoryId','regionId','localityId','latitude','longitude','directoryConsent','contactConsent','locationConsent','version'];
   if(!input||Object.keys(input).some(k=>!allowed.includes(k)))throw Error('INVALID_PROFILE_FIELDS');
   return transaction(pool,async tx=>{
    const p=await owned(tx,account,id);writable(p);if(input.version!==p.version)throw Error('EDIT_CONFLICT');
-   const draft=validateProfileDraft({...input,country:p.country_code,linkName:p.slug});
+   const draft=validateProfileDraft({...input,country:input.country??p.country_code,linkName:p.slug});
    if(!draft.profession||String(input.profession).length>120||String(input.description??'').length>1000)throw Error('INVALID_PROFILE');
    const phone=value=>{const v=String(value??'').replace(/[ ().-]/g,'');if(v&&!/^\+[1-9][0-9]{6,14}$/.test(v))throw Error('INVALID_PHONE');return v||null;};
    const region=input.regionId==null||input.regionId===''?null:Number(input.regionId),locality=input.localityId==null||input.localityId===''?null:Number(input.localityId);
-   if(region||locality){if(!Number.isSafeInteger(region)||!Number.isSafeInteger(locality))throw Error('INVALID_GEO_SELECTION');await geo(tx,p.country_code,region,locality);}
+   if(region||locality){if(!Number.isSafeInteger(region)||!Number.isSafeInteger(locality))throw Error('INVALID_GEO_SELECTION');await geo(tx,draft.country,region,locality);}
    const latitude=input.latitude==null||input.latitude===''?null:Number(input.latitude),longitude=input.longitude==null||input.longitude===''?null:Number(input.longitude);
    if((latitude===null)!==(longitude===null)||latitude!==null&&(!Number.isFinite(latitude)||!Number.isFinite(longitude)||Math.abs(latitude)>90||Math.abs(longitude)>180||input.locationConsent!==true))throw Error('INVALID_COORDINATES');
    for(const k of ['directoryConsent','contactConsent','locationConsent'])if(typeof input[k]!=='boolean')throw Error('CONSENT_REQUIRED');
+   const mapsUrl=validateMapsUrl(input.mapsUrl);if(mapsUrl&&input.locationConsent!==true)throw Error('CONSENT_REQUIRED');
+   if(!(await tx.query('SELECT code FROM micontacto.country_settings WHERE code=$1 AND enabled',[draft.country])).rows.length)throw Error('INVALID_COUNTRY');
+   if(draft.country!==p.country_code&&(!region||!locality))throw Error('INVALID_GEO_SELECTION');
    const category=input.categoryId||null;
    if(category){if(!uuid.test(category)||(await tx.query('SELECT id FROM micontacto.categories WHERE id=$1 AND enabled',[category])).rows.length!==1)throw Error('INVALID_CATEGORY');}
    await features.suspend(tx,id,account,'Edición pendiente de nueva aprobación');
-   await tx.query("UPDATE micontacto.profiles SET display_name=$2,profession=$3,description=$4,phone=$5,whatsapp=$6,category_id=$7,region_id=$8,locality_id=$9,latitude=$10,longitude=$11,directory_consent=$12,contact_consent=$13,location_consent=$14,version=version+1,review_decision=NULL,review_reason=NULL,status='DRAFT',updated_at=now() WHERE id=$1",[id,draft.displayName,draft.profession,draft.description,phone(input.phone),phone(input.whatsapp),category,region,locality,latitude,longitude,input.directoryConsent,input.contactConsent,input.locationConsent]);
+   await tx.query("UPDATE micontacto.profiles SET country_code=$15,maps_url=$16,display_name=$2,profession=$3,description=$4,phone=$5,whatsapp=$6,category_id=$7,region_id=$8,locality_id=$9,latitude=$10,longitude=$11,directory_consent=$12,contact_consent=$13,location_consent=$14,version=version+1,review_decision=NULL,review_reason=NULL,status='DRAFT',updated_at=now() WHERE id=$1",[id,draft.displayName,draft.profession,draft.description,phone(input.phone),phone(input.whatsapp),category,region,locality,latitude,longitude,input.directoryConsent,input.contactConsent,input.locationConsent,draft.country,mapsUrl]);
    await audit(tx,account,id,'PROFILE_EDITED');return {ok:true,status:'DRAFT'};
   });
  }

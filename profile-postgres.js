@@ -1,3 +1,4 @@
+import {urlHash} from './erasure.js';
 import {randomUUID} from "node:crypto";
 
 /**
@@ -12,11 +13,12 @@ export function profilePostgresAdapter(pool){
    const client=await pool.connect();
    try{
     await client.query("BEGIN");
+    if((await client.query('SELECT url_hash FROM micontacto.deleted_urls WHERE url_hash=$1',[urlHash(country,slug)])).rows.length)throw Object.assign(Error('SLUG_TAKEN'),{code:'23505',constraint:'profiles_country_slug_key'});
     const profileId=randomUUID();
     const insert=await client.query(
      `INSERT INTO micontacto.profiles
-      (id,account_id,display_name,slug,country_code,profession,description,status)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+      (id,account_id,display_name,slug,country_code,profession,description,status,url_country)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$5)
       RETURNING id,slug`,
      [profileId,accountId,displayName,slug,country,profession,description,status]
     );

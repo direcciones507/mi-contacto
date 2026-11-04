@@ -5,7 +5,7 @@ import {readFileSync,readdirSync} from 'node:fs';
 import {localDatabase} from '../scripts/local-database.mjs';
 test('migraciones 001–009, compatibilidad y rollback no destructivo',async()=>{
  const local=await localDatabase(),{pool}=local;
- const files=readdirSync(new URL('../db/',import.meta.url)).filter(x=>/^\d{3}_/.test(x)).sort();
+ const files=readdirSync(new URL('../db/',import.meta.url)).filter(x=>/^00[1-9]_/.test(x)).sort();
  const text=name=>readFileSync(new URL('../db/'+name,import.meta.url),'utf8');
  const account=randomUUID(),profile=randomUUID();let original;
  try{

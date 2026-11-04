@@ -25,6 +25,6 @@ test("consulta SQL usa país y nombre como parámetros",async()=>{
  let sql,params;
  const db=slugLookupPostgres({query:async(q,p)=>{sql=q;params=p;return {rows:[{taken:true}]};}});
  assert.equal(await db.isSlugTaken({country:"CR",slug:"ana-sofia"}),true);
- assert.deepEqual(params,["CR","ana-sofia"]);
+ assert.deepEqual(params.slice(0,2),["CR","ana-sofia"]);assert.equal(params[2].length,64);
  assert.match(sql,/country_code=\$1 AND slug=\$2/);
 });

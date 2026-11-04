@@ -4,7 +4,7 @@ import {resolve,isAbsolute,join} from 'node:path';
 import {createHash,randomUUID} from 'node:crypto';
 import {validPhotoKey,MAX_PHOTO_BYTES} from './photo-storage.js';
 /** Dedicated private directory only. Nothing is discovered from env or other projects. */
-export async function localPhotoStorage({root,isolated=false}={}){
+export async function localPhotoStorage({root,isolated=false,allowDeletion=false}={}){
  if(!isolated||typeof root!=='string'||!isAbsolute(root)||resolve(root)==='/')throw Error('ISOLATED_STORAGE_REQUIRED');
  root=resolve(root);await mkdir(root,{recursive:true,mode:0o700});
  async function checkRoot(){const s=await lstat(root);if(!s.isDirectory()||s.isSymbolicLink()||(s.mode&0o077)!==0)throw Error('PRIVATE_STORAGE_REQUIRED');}
@@ -20,6 +20,6 @@ export async function localPhotoStorage({root,isolated=false}={}){
   },
   async get(key){const target=file(key);await checkRoot();let f;try{f=await open(target,constants.O_RDONLY|constants.O_NOFOLLOW);const s=await f.stat();if(!s.isFile()||s.size>MAX_PHOTO_BYTES||(s.mode&0o077)!==0)throw Error('INVALID_STORED_PHOTO');return await f.readFile();}catch(e){if(e.code==='ENOENT')return null;throw e;}finally{if(f)await f.close();}},
   // Reserved storage primitive; never invoked by runtime without an approved deletion policy.
-  async delete(key){file(key);throw Error('PHYSICAL_DELETION_DISABLED');}
+  async delete(key){const target=file(key);if(!allowDeletion)throw Error('PHYSICAL_DELETION_DISABLED');await checkRoot();await unlink(target).catch(e=>{if(e.code!=='ENOENT')throw e;});}
  };
 }
