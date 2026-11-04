@@ -65,5 +65,5 @@ export function profileRuntime(pool,{origin='https://micontacto.online',now=()=>
   const status=action==='APPROVE'?'ACTIVE':action==='REJECT'?'DRAFT':'BLOCKED';
   await tx.query('UPDATE micontacto.profiles SET status=$2,review_decision=$3,review_reason=$4,version=version+1 WHERE id=$1',[id,status,action==='APPROVE'?'APPROVED':'REJECTED',reason.trim()]);await audit(tx,actor,id,action,reason.trim());return {ok:true,status};
  });}
- return {features,owned,writable,audit,decorate,detail,update,requestPublication,pause,moderate,async create(account,input){return createProfile(input,{accountId:account,db:profilePostgresAdapter(pool)});}};
+ return {features,owned,writable,audit,decorate,detail,update,requestPublication,pause,moderate,async create(account,input){return createProfile(input,{accountId:account,db:profilePostgresAdapter(pool),origin});}};
 }

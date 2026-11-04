@@ -22,12 +22,12 @@ export function slugConflictResponse(){
  * Adapter.createProfile must enforce UNIQUE(country_code,slug), UNIQUE(account_id,country_code), and reserve
  * slug in the same transaction. Never use a preflight check as the final authority.
  */
-export async function createProfile(input,{accountId,db}){
+export async function createProfile(input,{accountId,db,origin="https://micontacto.online"}){
  if(!accountId||!db||typeof db.createProfile!=="function")throw Error("PROFILE_STORAGE_NOT_CONFIGURED");
  const draft=validateProfileDraft(input);
  try {
   const created=await db.createProfile({...draft,accountId,status:"DRAFT"});
-  return {status:201,body:{id:created.id,slug:draft.slug,country:draft.country,url:profileUrl(draft.country,draft.slug)}};
+  return {status:201,body:{id:created.id,slug:draft.slug,country:draft.country,url:profileUrl(draft.country,draft.slug,origin)}};
  }catch(error){
   if(error?.code==="23505"&&["profiles_country_slug_key","profiles_slug_key"].includes(error?.constraint))return slugConflictResponse();
   if(error?.code==="23505"&&error?.constraint==="profile_slug_reservations_pkey")return slugConflictResponse();
