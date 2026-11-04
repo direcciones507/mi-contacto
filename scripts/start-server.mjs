@@ -1,3 +1,5 @@
+import {receiptWorker} from '../payment-runtime.js';
+import {resendTestTransport} from '../receipt-resend.js';
 import {yappySandbox} from '../yappy-sandbox.js';
 import {createServer} from 'node:http';
 import {createApplication} from '../application.js';
@@ -13,6 +15,7 @@ if(!storage)throw Error('PERSISTENT_STORAGE_REQUIRED');
 if(!env.MC_GOOGLE_CLIENT_ID||!env.MC_GOOGLE_CLIENT_SECRET)throw Error('GOOGLE_CONFIGURATION_REQUIRED');
 const paymentProvider=env.MC_YAPPY_SANDBOX_ENABLED==='true'?yappySandbox({environment:'test',isolated:env.MC_YAPPY_ISOLATED==='true',merchantId:env.MC_YAPPY_MERCHANT_ID,domain:env.MC_ORIGIN,ipnUrl:env.MC_ORIGIN+'/api/payments/yappy/ipn',secret:env.MC_YAPPY_SECRET}):null;
 const app=createApplication({pool,paymentProvider,acceptance:env.MC_ACCEPTANCE_MODE==='true',secret:env.MC_SESSION_SECRET,origin:env.MC_ORIGIN,storage,google:{clientId:env.MC_GOOGLE_CLIENT_ID,clientSecret:env.MC_GOOGLE_CLIENT_SECRET}});
+const deliverReceipt=env.MC_EMAIL_TEST_ENABLED==='true'?receiptWorker(pool,resendTestTransport({apiKey:env.MC_RESEND_API_KEY,from:env.MC_EMAIL_FROM,allowedRecipients:(env.MC_EMAIL_TEST_RECIPIENTS??'').split(',').map(x=>x.trim()).filter(Boolean),isolated:env.MC_EMAIL_ISOLATED==='true',enabled:true})):null;
 const server=createServer(async(req,res)=>{try{
  const chunks=[];let size=0;for await(const part of req){size+=part.length;if(size>6*1024*1024){res.writeHead(413);res.end();return;}chunks.push(part);}
  const response=await app.handle(new Request(env.MC_ORIGIN+req.url,{method:req.method,headers:req.headers,...(!['GET','HEAD'].includes(req.method)?{body:Buffer.concat(chunks)}:{})}));
@@ -22,5 +25,8 @@ const server=createServer(async(req,res)=>{try{
 server.requestTimeout=20000;server.headersTimeout=10000;
 server.listen(Number(env.PORT??3000),env.MC_BIND_HOST??'127.0.0.1',()=>console.log('Mi Contacto iniciado; persistencia PostgreSQL y almacenamiento configurados.'));
 // Only queued, committed deletion work. Storage errors remain queued for retry.
+let sending=false;
+const receipts=deliverReceipt?setInterval(async()=>{if(sending)return;sending=true;try{await deliverReceipt();}catch{console.error('MC_RECEIPT_WORKER_UNAVAILABLE');}finally{sending=false;}},30000):null;
+receipts?.unref();
 const cleanup=setInterval(()=>app.erasure.cleanup().catch(()=>{}),60000);cleanup.unref();
-for(const signal of ['SIGINT','SIGTERM'])process.once(signal,()=>{clearInterval(cleanup);server.close(async()=>{await pool.end();process.exit(0);});setTimeout(()=>{server.closeAllConnections();},20000).unref();});
+for(const signal of ['SIGINT','SIGTERM'])process.once(signal,()=>{clearInterval(cleanup);if(receipts)clearInterval(receipts);server.close(async()=>{await pool.end();process.exit(0);});setTimeout(()=>{server.closeAllConnections();},20000).unref();});
