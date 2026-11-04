@@ -16,11 +16,11 @@ import {featureQuote} from './feature-policy.js';
 import {COUNTRIES} from './countries.js';
 import {dashboard,publicProfile,layout} from './views.js';
 const uuid=/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
-export function createApplication({pool,secret,origin='https://micontacto.online',google=null,fetch:network,verifyToken,storage=memoryPhotoStorage(),simulation=false,paymentProvider=null,now=()=>Date.now()}){
+export function createApplication({pool,secret,origin='https://micontacto.online',google=null,fetch:network,verifyToken,storage=memoryPhotoStorage(),simulation=false,paymentProvider=null,acceptance=false,now=()=>Date.now()}){
  const features=featureRuntime(pool,{simulation});
  if(paymentProvider&&paymentProvider.domain!==origin)throw Error('INVALID_PAYMENT_CONFIGURATION');
  const payments=paymentRuntime(pool,{provider:paymentProvider});
- const auth=createAuth(pool,{secret,origin,google,fetch:network,verifyToken,now}),profiles=profileRuntime(pool,{now,features}),photos=photoRuntime(pool,profiles,storage,{now});
+ const auth=createAuth(pool,{secret,origin,google,fetch:network,verifyToken,acceptance,now}),profiles=profileRuntime(pool,{now,features,origin}),photos=photoRuntime(pool,profiles,storage,{now});
  const privacy=privacyRuntime(pool,profiles),erasure=erasureRuntime(pool,storage);
  const rates=new Map();
  const readRates=new Map();

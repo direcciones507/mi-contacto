@@ -12,7 +12,7 @@ const storage=env.MC_STORAGE==='r2'?r2PhotoStorage({accountId:env.MC_R2_ACCOUNT_
 if(!storage)throw Error('PERSISTENT_STORAGE_REQUIRED');
 if(!env.MC_GOOGLE_CLIENT_ID||!env.MC_GOOGLE_CLIENT_SECRET)throw Error('GOOGLE_CONFIGURATION_REQUIRED');
 const paymentProvider=env.MC_YAPPY_SANDBOX_ENABLED==='true'?yappySandbox({environment:'test',isolated:env.MC_YAPPY_ISOLATED==='true',merchantId:env.MC_YAPPY_MERCHANT_ID,domain:env.MC_ORIGIN,ipnUrl:env.MC_ORIGIN+'/api/payments/yappy/ipn',secret:env.MC_YAPPY_SECRET}):null;
-const app=createApplication({pool,paymentProvider,secret:env.MC_SESSION_SECRET,origin:env.MC_ORIGIN,storage,google:{clientId:env.MC_GOOGLE_CLIENT_ID,clientSecret:env.MC_GOOGLE_CLIENT_SECRET}});
+const app=createApplication({pool,paymentProvider,acceptance:env.MC_ACCEPTANCE_MODE==='true',secret:env.MC_SESSION_SECRET,origin:env.MC_ORIGIN,storage,google:{clientId:env.MC_GOOGLE_CLIENT_ID,clientSecret:env.MC_GOOGLE_CLIENT_SECRET}});
 const server=createServer(async(req,res)=>{try{
  const chunks=[];let size=0;for await(const part of req){size+=part.length;if(size>6*1024*1024){res.writeHead(413);res.end();return;}chunks.push(part);}
  const response=await app.handle(new Request(env.MC_ORIGIN+req.url,{method:req.method,headers:req.headers,...(!['GET','HEAD'].includes(req.method)?{body:Buffer.concat(chunks)}:{})}));
