@@ -1,0 +1,46 @@
+{
+  "engine": "native PostgreSQL; owned disposable cluster",
+  "results": [
+    {
+      "name": "001–012 in order, old profile identity preserved, pgcrypto available",
+      "status": "PASS"
+    },
+    {
+      "name": "Distinct PostgreSQL backend PIDs, concurrent activation and confirmation replay",
+      "status": "PASS"
+    },
+    {
+      "name": "Concurrent pause/resume, exact millisecond balance and expiry",
+      "status": "PASS"
+    },
+    {
+      "name": "ADMIN block racing resume cannot publish or consume paused balance",
+      "status": "PASS"
+    },
+    {
+      "name": "Failed transaction rollback leaves original balance intact",
+      "status": "PASS"
+    },
+    {
+      "name": "Persistent clock contention observed as Lock wait, released without deadlock",
+      "status": "PASS"
+    },
+    {
+      "name": "pg_dump custom backup, pg_restore into another new database, full table fingerprints",
+      "status": "PASS"
+    },
+    {
+      "name": "Historical 001–009 empty-data downgrade and forward upgrade to 012",
+      "status": "PASS"
+    },
+    {
+      "name": "Server restart preserves balance, clock watermark and all synthetic rows",
+      "status": "PASS"
+    }
+  ],
+  "passed": 9,
+  "failed": 0,
+  "notExecuted": [],
+  "realProfiles": 0,
+  "externalConnections": 0
+}

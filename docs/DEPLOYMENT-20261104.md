@@ -1,3 +1,11 @@
+# Actualización vigente — infraestructura de aceptación
+
+Continuación: [ACCEPTANCE-ENVIRONMENT-20261104.md](ACCEPTANCE-ENVIRONMENT-20261104.md). PostgreSQL nativo y Chromium contra PostgreSQL ya fueron ejecutados y aprobados en un runner descartable de GitHub Actions; ver [informe](INFRASTRUCTURE-ACCEPTANCE-20261104.md). Esto sustituye los bloqueos locales históricos de esos dos componentes. No equivale a despliegue persistente ni a Google/R2/pagos/correo reales.
+
+El transporte Resend ya está conectado mediante opt-in exclusivo de prueba y lista de destinatarios. No se habilitó ni se envió correo. Configuración y acceso externo siguen pendientes. La pantalla de checkout existe; el componente Yappy externo debe validarse con UAT real.
+
+---
+
 # Preparación de despliegue — 4 noviembre 2026
 
 No se ha desplegado. No ejecutar estos pasos contra producción sin autorización posterior. No conectar servicios ni secretos de otros proyectos.

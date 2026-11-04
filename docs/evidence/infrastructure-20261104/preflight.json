@@ -1,0 +1,57 @@
+{
+  "groups": {
+    "runtime": {
+      "configured": false,
+      "missing": [
+        "MC_ORIGIN",
+        "MC_SESSION_SECRET"
+      ]
+    },
+    "postgres": {
+      "configured": false,
+      "missing": [
+        "MC_DATABASE_URL",
+        "MC_DATABASE_ISOLATED"
+      ]
+    },
+    "google": {
+      "configured": false,
+      "missing": [
+        "MC_GOOGLE_CLIENT_ID",
+        "MC_GOOGLE_CLIENT_SECRET"
+      ]
+    },
+    "r2": {
+      "configured": false,
+      "missing": [
+        "MC_R2_ACCOUNT_ID",
+        "MC_R2_ACCESS_KEY_ID",
+        "MC_R2_SECRET_ACCESS_KEY",
+        "MC_R2_BUCKET",
+        "MC_R2_ISOLATED"
+      ]
+    },
+    "yappyUat": {
+      "configured": false,
+      "missing": [
+        "MC_YAPPY_MERCHANT_ID",
+        "MC_YAPPY_SECRET",
+        "MC_YAPPY_ISOLATED"
+      ]
+    },
+    "emailTest": {
+      "configured": false,
+      "missing": [
+        "MC_RESEND_API_KEY",
+        "MC_EMAIL_FROM",
+        "MC_EMAIL_TEST_RECIPIENTS",
+        "MC_EMAIL_ISOLATED"
+      ]
+    }
+  },
+  "invalid": [],
+  "livePaymentsSupported": false,
+  "yappyUatEnabled": false,
+  "testEmailEnabled": false,
+  "readyForDedicatedServer": false
+}

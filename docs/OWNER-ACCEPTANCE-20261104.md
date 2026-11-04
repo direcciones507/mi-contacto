@@ -1,3 +1,11 @@
+# Actualización vigente — entorno de aceptación preparado
+
+PostgreSQL nativo y recorridos Chromium ya fueron desbloqueados en GitHub Actions. La ejecución final 41889443037 aprobó 133 pruebas, nueve grupos nativos y tres recorridos con checkout sintético. Evidencias: [INFRASTRUCTURE-ACCEPTANCE-20261104.md](INFRASTRUCTURE-ACCEPTANCE-20261104.md).
+
+Para tus pruebas físicas aún hace falta autorizar el despliegue del servicio/base exclusivos y cargar Google/R2/UAT/correo exclusivos. Se propone dominio temporal de Railway, sin tocar DNS público. No hay URL pública todavía. Configuración y accesos: [ACCEPTANCE-ENVIRONMENT-20261104.md](ACCEPTANCE-ENVIRONMENT-20261104.md).
+
+---
+
 # Pruebas del propietario
 
 Ejecutar en el entorno de prueba preparado con Google, PostgreSQL y fotos persistentes reales. No confundir el servidor efímero `start:local` con el servidor persistente `npm start`.

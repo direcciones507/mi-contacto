@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-04",
+  "testedCommit": "1b6f4f565af04339b23d98e552e047ba86da9bfc",
+  "runId": 41889443037,
+  "runUrl": "https://github.com/direcciones507/mi-contacto/actions/runs/41889443037",
+  "status": "success",
+  "nodeTests": {
+    "passed": 133,
+    "failed": 0,
+    "skipped": 0
+  },
+  "nativePostgres": {
+    "version": 16,
+    "groupsPassed": 9,
+    "failed": 0,
+    "externalDatabaseUsed": false
+  },
+  "browser": {
+    "widths": [
+      390,
+      820,
+      1440
+    ],
+    "nativePostgres": true,
+    "checkoutUI": true,
+    "paymentProvider": "synthetic",
+    "yappyComponent": "synthetic",
+    "jsErrors": 0,
+    "horizontalOverflow": false
+  },
+  "productionAuditVulnerabilities": 0,
+  "realGoogle": false,
+  "realR2": false,
+  "realYappyUat": false,
+  "realEmailSent": false,
+  "ownerPublicUrl": null,
+  "artifactId": 13353850733,
+  "artifactDigest": "sha256:9eb0fa156a7baa98d47958a400295f0abb0cffc39c0a2bdab45b25af704fc009"
+}

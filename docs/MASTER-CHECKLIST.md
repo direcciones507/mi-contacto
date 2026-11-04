@@ -1,3 +1,22 @@
+# Estado vigente — infraestructura de aceptación, 4 noviembre 2026
+
+Base `33ba696`, rama `work/infrastructure-acceptance-20261104`. Este bloque actualiza los bloqueos técnicos inferiores. Informe: [INFRASTRUCTURE-ACCEPTANCE-20261104.md](INFRASTRUCTURE-ACCEPTANCE-20261104.md). Configuración y accesos: [ACCEPTANCE-ENVIRONMENT-20261104.md](ACCEPTANCE-ENVIRONMENT-20261104.md).
+
+- [x] Runner real Ubuntu 24.04/Node 24/PostgreSQL 16/Chromium disponible y ejecutado en GitHub Actions.
+- [x] Suite Node: 133 aprobadas / cero fallidas / cero omitidas en primera ejecución integral aprobada; evidencia y commit exactos en informe.
+- [x] PostgreSQL nativo: nueve grupos aprobados, migraciones 001–012, identidad previa, multiconexión, concurrencia, saldo, bloqueo ADMIN, rollback, contención, backup/restauración y reinicio.
+- [x] Tres recorridos Chromium 390/820/1440 contra PostgreSQL nativo aprobados. Fotos/Google/proveedor de pagos externos no se presentan como servicios reales.
+- [x] Configuración de contenedor/servicio independiente, readiness DB, origen de aceptación opt-in, enlaces/QR del entorno y secreto persistente configurable. Sin despliegue.
+- [x] Preflight sin revelar valores; prueba R2 de objeto propio lista; transporte Resend de comprobantes de prueba y destinatarios explícitos preparado, apagado por defecto.
+- [ ] PostgreSQL persistente del entorno accesible al propietario: aún no aprovisionado. Las pruebas nativas usan clúster descartable.
+- [ ] Google/R2/Yappy UAT/correo reales: requieren recursos/credenciales exclusivos; no se conectaron ni enviaron mensajes reales.
+- [ ] Servicio accesible al propietario: pendiente autorización para recursos y despliegue exclusivos; propuesta con dominio temporal sin DNS preparada.
+- [ ] Revisión territorial humana, legal/retención, Android físico/Safari y aceptación del propietario.
+
+No se modifica el 90% histórico de construcción local ni se interpreta como aprobación comercial. Último recorrido ampliado aprobado: ejecución 41889443037 / commit `1b6f4f5`, 133 pruebas, nueve grupos nativos y tres recorridos de navegador con checkout. Evidencias finales en el cierre del informe; las simulaciones de proveedor/componente Yappy siguen siendo simulaciones.
+
+---
+
 # Estado vigente — sprint final, 4 noviembre 2026
 
 Este bloque actualiza los estados técnicos inferiores. Se preservan reglas y tarifas aprobadas. Base exacta `04204ea`; trabajo aislado en `work/final-sprint-20261104`. Informe: [FINAL-SPRINT-20261104.md](FINAL-SPRINT-20261104.md).
