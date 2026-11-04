@@ -1,5 +1,5 @@
 export const nativeCases=Object.freeze([
- '001–011 in order, old profile identity preserved, pgcrypto available',
+ '001–012 in order, old profile identity preserved, pgcrypto available',
  'Distinct PostgreSQL backend PIDs, concurrent activation and confirmation replay',
  'Concurrent pause/resume, exact millisecond balance and expiry',
  'ADMIN block racing resume cannot publish or consume paused balance',

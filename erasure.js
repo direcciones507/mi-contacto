@@ -14,6 +14,7 @@ export function erasureRuntime(pool,storage){
    await tx.query('INSERT INTO micontacto.storage_deletions(object_key) SELECT object_key FROM micontacto.photos WHERE profile_id=$1 ON CONFLICT DO NOTHING',[p.id]);
    await tx.query('UPDATE micontacto.profiles SET photo_verified_id=NULL WHERE id=$1',[p.id]);
    await tx.query('DELETE FROM micontacto.photo_verifications WHERE profile_id=$1',[p.id]);
+   await tx.query('DELETE FROM micontacto.payment_orders WHERE profile_id=$1',[p.id]);
    await tx.query('DELETE FROM micontacto.feature_events WHERE term_id IN (SELECT id FROM micontacto.feature_terms WHERE profile_id=$1)',[p.id]);
    for(const table of ['feature_terms','photos','reports','audit','profile_slug_reservations'])await tx.query('DELETE FROM micontacto.'+table+' WHERE profile_id=$1',[p.id]);
    await tx.query('DELETE FROM micontacto.profiles WHERE id=$1',[p.id]);

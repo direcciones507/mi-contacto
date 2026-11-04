@@ -1,3 +1,25 @@
+# Estado vigente — sprint final, 4 noviembre 2026
+
+Este bloque actualiza los estados técnicos inferiores. Se preservan reglas y tarifas aprobadas. Base exacta `04204ea`; trabajo aislado en `work/final-sprint-20261104`. Informe: [FINAL-SPRINT-20261104.md](FINAL-SPRINT-20261104.md).
+
+- [x] Recuperación y regresión completa: 126 pruebas aprobadas, cero fallidas/omitidas, proveedor y correo sintéticos, PostgreSQL WASM.
+- [x] Pantalla privada de checkout UAT y enlace condicional del panel; verificados acceso, HTML, CSP y propiedad vía API.
+- [x] Migración 012: órdenes UAT propias; precios aprobados; permisos/CSRF; idempotencia; inicialización incierta sin repetición de cargo.
+- [x] Callback firmado: dominio/estado/firma/parámetros duplicados; éxito tardío y replay; pago/saldo/comprobante atómicos con rollback probado.
+- [x] Activación UAT elegible o saldo íntegro en pausa por moderación/privacidad; sin eludir ADMIN.
+- [x] Cola durable de comprobantes de prueba: lease/reintentos/clave estable/revisión manual; borrar destinatarios al eliminar el perfil.
+- [x] Auditoría producción: 0 vulnerabilidades conocidas; ningún cobro/envío real ni despliegue.
+- [ ] Proveedor UAT real y transporte de correo real pendientes; pantalla de checkout UAT implementada y acceso/HTML comprobados por API, sin recorrido visual actual.
+- [ ] Navegador actual: lanzamiento Chromium bloqueado por permisos de sockets; no se reutilizan verdes históricos como actuales.
+- [ ] PostgreSQL nativo/concurrencia/reinicio/backup-restauración: bloqueados por ausencia de binarios y permisos del gestor de paquetes.
+- [ ] Google/R2 reales: sin configuración MC_* en este proceso; requiere credenciales exclusivas y entorno autorizado.
+- [ ] Entorno público para aceptación, dominio/HTTPS y producción: no desplegados ni autorizados.
+- [ ] Revisión territorial humana, legal/retención, Android físico/Safari y aceptación del propietario.
+
+**90% de construcción local según matriz explícita de diez áreas en el informe; 0/4 grupos de integraciones externas verificados en esta sesión. No listo para producción.**
+
+---
+
 # Estado vigente — cierre de construcción, 4 noviembre 2026
 
 Este bloque sustituye las reglas y estados históricos inferiores que resulten contradictorios. Pedido vigente: **un perfil por cuenta**, cambiar país sin duplicarlo y conservar URL/QR. Gratuito por enlace; directorio solo para Destacado elegible. No se activan cobros.

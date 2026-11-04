@@ -13,3 +13,10 @@ Ejecutar en el entorno de prueba preparado con Google, PostgreSQL y fotos persis
 9. Repetir formularios/ficha/directorio/ADMIN en tablet Android y computadora, verificando teclado, selección territorial, fotos y botones.
 
 Antes de producción: aprobar privacidad/términos, cobertura territorial, respaldo/retención y resultados reales de Google/R2/PostgreSQL. El propietario autoriza producción por separado.
+
+
+## Sprint final: pago de prueba
+
+Primero debe existir un entorno accesible autorizado y un comercio Yappy UAT exclusivo. Sin ellos esta prueba sigue pendiente. Al habilitar UAT, entra en Mi perfil de Panamá y abre **Probar pago Destacado**. Elige uno de los siete paquetes aprobados y un correo de pruebas acordado. Crea una orden; continúa con un número autorizado por Yappy UAT. Confirma el flujo externo y consulta el estado: el retorno visual por sí solo no marca pagado. Verifica PAID, saldo correcto y una sola orden ante recargas/notificación repetida. Perfil sin aprobación o bloqueado: saldo en pausa. Una operación incierta requiere conciliación; no repetir el cargo.
+
+El comprobante queda en cola hasta configurar el transporte de correo; no se anuncia envío completado sin esa conexión. Verificar entrega y ausencia de duplicados antes de aceptación. Esta versión solo genera comprobantes de prueba. Repetir en celular, tableta y computadora; los recorridos visuales actuales no pudieron ejecutarse por permisos de sockets del entorno.
