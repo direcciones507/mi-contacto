@@ -1,0 +1,32 @@
+{
+  "https": true,
+  "privateAccess": true,
+  "profileAndPhotoPersisted": true,
+  "urlUnchanged": true,
+  "publicCardAndQR": true,
+  "report": {
+    "bootedAt": "2026-11-04T19:59:24.814Z",
+    "processUid": 1000,
+    "bootCount": 2,
+    "postgresVersion": "18.6 (Debian 18.6-1.pgdg13+2)",
+    "migrations": 12,
+    "applied": [],
+    "verifiedTls": true,
+    "sslVersion": "TLSv1.3",
+    "persistenceFingerprint": "b915a590a42c3a094c1e39dd40b247bcd135c4d6f4b60e43cad03a9b4178bfdd",
+    "persistenceAfterRestart": true,
+    "backup": {
+      "createdAt": "2026-11-04T19:23:16.754Z",
+      "format": "pg_dump custom",
+      "restored": true,
+      "counts": {
+        "regions": 4749,
+        "localities": 392717,
+        "migrations": 12
+      }
+    },
+    "googleConfigured": false,
+    "r2Configured": false,
+    "realPaymentsEnabled": false
+  }
+}

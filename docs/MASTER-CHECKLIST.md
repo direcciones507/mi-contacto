@@ -1,16 +1,20 @@
-# Estado vigente — despliegue autorizado, costo pendiente de aprobación
+# Estado vigente — entorno Railway accesible y verificado
 
-4 noviembre 2026. El propietario autorizó entorno/servicio/PostgreSQL/hostname Railway de pruebas, pero exige aprobación previa de cargos adicionales. [Preparación y presupuesto](RAILWAY-ACCEPTANCE-STAGED-20261104.md).
+4 noviembre 2026. Costo de USD 0.50–1.50 estimado para 48 horas aprobado por el propietario. Informe y evidencias: [RAILWAY-LIVE-20261104.md](RAILWAY-LIVE-20261104.md). Este bloque sustituye los estados históricos inferiores.
 
-- [x] Crear proyecto independiente `mi-contacto-acceptance` y entorno `acceptance`.
-- [x] Preparar servicio Node y PostgreSQL/volumen exclusivos mediante cambios pendientes, sin activar instancias.
-- [x] Preparar fuente fijada a `dd53f5f`, referencia a base exclusiva y flags de pagos/correo desactivados; revisar patch no destructivo.
-- [x] Consultar tarifas oficiales y estimar USD 0.50–1.50 para 48 h de pruebas ligeras; crédito restante no visible, no se promete costo adicional cero.
-- [ ] Aprobación del costo antes de activar recursos facturables. No se ha ejecutado accept-deploy.
-- [ ] Completar Google/almacenamiento/TLS/secreto exclusivos y límites de recursos. Arranque actual exige Google y almacenamiento persistente.
-- [ ] Desplegar, aplicar/verificar 001–012 en la versión PostgreSQL real, comprobar persistencia/reinicio/respaldo y entregar hostname HTTPS funcional.
+- [x] Node 24 y PostgreSQL 18 exclusivos activos, HTTPS temporal funcional.
+- [x] Migraciones 001–012 verificadas y catálogo persistido.
+- [x] PostgreSQL con TLS verificado; respaldo pg_dump y restauración real comprobados.
+- [x] Perfil, fotografía, enlace y QR conservados tras reinicios de PostgreSQL y aplicación.
+- [x] Acceso privado temporal del propietario, sesión revocable y protección CSRF; cuenta preparada para crear su perfil.
+- [x] Ficha técnica, fotografía y QR de verificación eliminados mediante flujo usuario/ADMIN.
+- [x] Límites por servicio: 0.25 vCPU, 0.5 GB RAM, una réplica. Seguimiento cada seis horas programado.
+- [x] Cierre de cómputo programado para 6 noviembre 2026 a las 14:02:48 de Panamá; volúmenes conservados.
+- [x] CI del commit desplegado: 135 pruebas Node, nueve grupos PostgreSQL y tres recorridos Chromium aprobados; auditoría sin vulnerabilidades conocidas.
+- [ ] Google, R2, Yappy UAT y correo reales: faltan credenciales exclusivas. Fotos actuales en volumen privado; pagos y correo desactivados.
+- [ ] Aceptación del propietario en dispositivos físicos y revisión territorial/legal.
 
-Los 133 tests, nueve grupos nativos y tres recorridos aprobados anteriores siguen referidos al runner de pruebas; no equivalen a despliegue Railway. No hay enlace público todavía. Sin cambios a main/DNS/otros proyectos ni cobros reales.
+No se modifica main, DNS, otros proyectos ni se activan cobros reales. La estimación no es un límite de facturación; el almacenamiento conservado puede generar cargos menores tras detener cómputo.
 
 ---
 

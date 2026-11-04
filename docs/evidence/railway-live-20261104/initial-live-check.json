@@ -1,0 +1,11 @@
+{
+  "phase": "initial",
+  "https": true,
+  "privateLogin": true,
+  "profileCreatedPublished": true,
+  "photoReadback": true,
+  "qrReadback": true,
+  "profileUrl": "https://mi-contacto-acceptance-acceptance.up.railway.app/pa/qa-ac40cc980ebc",
+  "beforeBootCount": 1,
+  "ownerData": "technical synthetic fixture; will be removed after persistence checks"
+}
