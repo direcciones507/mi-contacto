@@ -1,0 +1,11 @@
+FROM node:24-bookworm
+RUN apt-get update && apt-get install -y --no-install-recommends postgresql-15 && rm -rf /var/lib/apt/lists/*
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+RUN npx playwright install --with-deps chromium
+COPY . .
+RUN mkdir -p /app/artifacts && chown -R node:node /app
+USER node
+ENV MC_PG_BIN=/usr/lib/postgresql/15/bin MC_BROWSER_DATABASE=native MC_BROWSER_EVIDENCE=/app/artifacts/browser
+CMD ["bash", "scripts/run-acceptance.sh"]

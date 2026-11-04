@@ -1,0 +1,55 @@
+name: Mi Contacto isolated acceptance
+on:
+  push:
+    branches: [work/infrastructure-acceptance-20261104]
+    paths-ignore: ['docs/**']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mc-acceptance-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  native-and-browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      MC_PG_BIN: /usr/lib/postgresql/16/bin
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - name: Install isolated test dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-16
+          npx playwright install --with-deps chromium
+      - name: Unit and integration regression
+        run: |
+          set -o pipefail
+          mkdir -p artifacts
+          npm test 2>&1 | tee artifacts/tests.log
+      - name: Native PostgreSQL migrations concurrency restart and recovery
+        run: |
+          set -o pipefail
+          node scripts/native-validation.mjs --run --pg-bin "$MC_PG_BIN" --evidence "$GITHUB_WORKSPACE/artifacts/native" 2>&1 | tee artifacts/native.log
+      - name: Browser journeys against native PostgreSQL
+        env:
+          MC_BROWSER_DATABASE: native
+          MC_BROWSER_EVIDENCE: ${{ github.workspace }}/artifacts/browser
+        run: |
+          set -o pipefail
+          npm run test:browser 2>&1 | tee artifacts/browser.log
+      - name: Production dependency audit
+        run: npm audit --omit=dev --json > artifacts/audit.json
+      - uses: actions/upload-artifact@v7.0.2
+        if: always()
+        with:
+          name: mi-contacto-acceptance-${{ github.sha }}
+          path: artifacts/
+          retention-days: 7

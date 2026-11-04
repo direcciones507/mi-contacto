@@ -1,0 +1,11 @@
+FROM node:24-bookworm-slim
+ENV NODE_ENV=production MC_BIND_HOST=0.0.0.0 PORT=3000
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --omit=dev && npm cache clean --force
+COPY --chown=node:node . .
+RUN mkdir -p /var/lib/mi-contacto/photos && chown -R node:node /var/lib/mi-contacto && chmod 700 /var/lib/mi-contacto/photos
+USER node
+EXPOSE 3000
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 CMD node scripts/healthcheck.mjs
+CMD ["node", "scripts/start-server.mjs"]

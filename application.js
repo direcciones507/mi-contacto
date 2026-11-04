@@ -35,6 +35,8 @@ export function createApplication({pool,secret,origin='https://micontacto.online
  async function handle(req){
   const url=new URL(req.url),path=url.pathname;
   try{
+   if(req.method==='GET'&&path==='/health/live')return json(200,{status:'alive'});
+   if(req.method==='GET'&&path==='/health/ready'){await pool.query('SELECT 1 AS healthy');return json(200,{status:'ready'});}
    if(path.startsWith('/auth/google')&&!allowRead('oauth',120))return json(429,{error:'RATE_LIMITED'});
    if(req.method==='GET'&&['/api/countries','/api/categories','/api/regions','/api/localities','/api/directory'].includes(path)&&!allowRead('directory',2000))return json(429,{error:'RATE_LIMITED'});
    if(path==='/api/payments/yappy/ipn'&&!allowRead('payment-ipn',600))return json(429,{error:'RATE_LIMITED'});
