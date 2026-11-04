@@ -1,0 +1,99 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync,writeFileSync} from 'node:fs';
+import {gunzipSync} from 'node:zlib';
+import {randomUUID} from 'node:crypto';
+import {testFixture} from '../scripts/test-fixture.mjs';
+import {applyTerritoryCorrections,territoryDisplayName,TERRITORY_CORRECTIONS} from '../territory-corrections.js';
+import {legalConfig,policyDigest,POLICY_VERSION,PRIVACY_TEXT,TERMS_TEXT} from '../legal.js';
+import {loadCatalog} from '../scripts/load-catalog.mjs';
+export const fixtureLegal=legalConfig({MC_LEGAL_APPROVED:'true',MC_LEGAL_CONTROLLER:'Responsable sintético',MC_PRIVACY_CONTACT:'privacy@example.invalid',MC_RETENTION_NOTICE:'Solo datos sintéticos del entorno aislado.',MC_PROCESSING_NOTICE:'Entorno local sintético; sin transferencias reales.'},{requireApproval:true});
+const sampleIds={PA:'3701117',CO:'3674962',CR:'3621849',GT:'3598132',SV:'3583361',HN:'3600949',NI:'3617763',MX:'4005539'};
+function representative(){const original=JSON.parse(gunzipSync(readFileSync(new URL('../data/geonames-catalog.json.gz',import.meta.url))));const corrected=applyTerritoryCorrections(original);const ids=new Set([...Object.values(sampleIds),...TERRITORY_CORRECTIONS.localities.map(l=>l.source)]),localities=corrected.localities.filter(l=>ids.has(l.source));const needed=new Set(localities.map(l=>l.region));for(const r of corrected.regions)if(needed.has(r.source)&&r.parent)needed.add(r.parent);return {original,corrected,subset:{regions:corrected.regions.filter(r=>needed.has(r.source)),localities}};}
+
+test('correcciones territoriales versionadas conservan origen/homónimos y reconocen cantones nuevos',()=>{
+ const {original,corrected}=representative();assert.equal(original.localities.find(l=>l.source==='3583361').region,'SV.10');assert.equal(corrected.localities.find(l=>l.source==='3583361').region,'SV.10.12954160');assert.equal(corrected.regions.filter(r=>r.country==='CR'&&r.level===2).length,84);
+ assert.equal(corrected.localities.find(l=>l.source==='3622812').region,'CR.06.703');assert.equal(corrected.localities.find(l=>l.source==='3622811').region,'CR.official.612');assert.equal(corrected.localities.length,original.localities.length);assert.deepEqual(applyTerritoryCorrections(corrected),corrected);
+ const changed=structuredClone(original);changed.localities.find(l=>l.source==='3583361').region='SV.01';assert.throws(()=>applyTerritoryCorrections(changed),/TERRITORY_PATCH_SOURCE_CHANGED/);
+ assert.equal(territoryDisplayName('Veraguas Province'),'Veraguas');assert.equal(territoryDisplayName('Mexico City'),'Ciudad de México');
+});
+
+test('directorio funcional representativo de ocho países con IDs reales de catálogo; base WASM, no nativa',async()=>{
+ const f=await testFixture({simulation:true}),{subset}=representative(),result=[];
+ try{
+  await loadCatalog(f.pool,{catalogData:subset});
+  for(const [country,source] of Object.entries(sampleIds)){
+   const location=(await f.pool.query('SELECT l.id,l.region_id,l.name,r.source_id AS region_source,r.parent_id FROM micontacto.geo_localities l JOIN micontacto.geo_regions r ON r.id=l.region_id WHERE l.country_code=$1 AND l.source_id=$2',[country,source])).rows[0];assert.ok(location);
+   const account=randomUUID();await f.pool.query('INSERT INTO micontacto.accounts(id,google_subject) VALUES($1,$2)',[account,'synthetic-territory-'+account]);const created=await f.app.profiles.create(account,{country,linkName:'territorio-'+country.toLowerCase(),displayName:'Persona sintética '+country,profession:'Prueba'});assert.equal(created.status,201);const id=created.body.id;
+   const p=await f.app.profiles.detail(account,id);await f.app.profiles.update(account,id,{version:p.version,displayName:p.displayName,profession:'Prueba',description:'',regionId:location.region_id,localityId:location.id,phone:'',whatsapp:'',latitude:null,longitude:null,directoryConsent:true,contactConsent:false,locationConsent:true});
+   await f.pool.query("UPDATE micontacto.profiles SET status='ACTIVE',review_decision='APPROVED' WHERE id=$1",[id]);const term=await f.app.features.prepare(account,id,1);await f.app.features.activateSimulation(account,id,term.id,'synthetic-territory-'+randomUUID());
+   const filtered='/api/directory?country='+country+'&regionId='+location.region_id+'&localityId='+location.id;const rows=(await(await f.request(filtered,{as:null})).json()).items;assert.equal(rows.length,1);assert.equal(rows[0].id,id);
+   const other=country==='PA'?'CR':'PA';assert.equal((await(await f.request('/api/directory?country='+other+'&regionId='+location.region_id+'&localityId='+location.id,{as:null})).json()).items.length,0);
+   const options=(await(await f.request('/api/localities?country='+country+'&regionId='+location.region_id,{as:null})).json()).items;assert.ok(options.find(l=>l.id===location.id)?.region_name);result.push({country,source,region:location.region_source,locality:location.name,correctTerritory:true,wrongCountryExcluded:true});
+  }
+  writeFileSync(new URL('../docs/evidence/real-integrations-20261104/territory-representative.json',import.meta.url),JSON.stringify({engine:'PostgreSQL WASM; not native',cases:result,fullCatalogRevalidation:false,manualNationalCertification:false},null,2)+'\n');
+ }finally{await f.pool.close();}
+});
+
+test('corregir territorio referenciado exige reconciliar perfil y revierte sin cambiar datos existentes',async()=>{
+ const f=await testFixture();try{
+  const {subset}=representative();await loadCatalog(f.pool,{catalogData:subset});const loc=(await f.pool.query("SELECT id,region_id FROM micontacto.geo_localities WHERE source_id='3583361' AND country_code='SV'")).rows[0];const id=(await f.app.profiles.create(f.owner,{country:'SV',linkName:'no-mover-datos',displayName:'Persona sintética'})).body.id;
+  await f.pool.query('UPDATE micontacto.profiles SET region_id=$2,locality_id=$3 WHERE id=$1',[id,loc.region_id,loc.id]);
+  const changed=structuredClone(subset),top=changed.regions.find(r=>r.source==='SV.10');changed.localities.find(l=>l.source==='3583361').region=top.source;
+  await assert.rejects(loadCatalog(f.pool,{catalogData:changed}),/GEO_CHANGE_REQUIRES_PROFILE_RECONCILIATION/);assert.equal((await f.pool.query('SELECT region_id FROM micontacto.geo_localities WHERE id=$1',[loc.id])).rows[0].region_id,loc.region_id);
+ }finally{await f.pool.close();}
+});
+
+test('privacidad y términos: borrador explícito, configuración productiva bloqueada hasta aprobación',async()=>{
+ assert.throws(()=>legalConfig({},{requireApproval:true}),/LEGAL_REVIEW_AND_CONTROLLER/);assert.throws(()=>legalConfig({MC_LEGAL_APPROVED:'true'},{requireApproval:true}),/LEGAL_REVIEW_AND_CONTROLLER/);assert.ok(PRIVACY_TEXT.length>5&&TERMS_TEXT.length>5);
+ const f=await testFixture();try{for(const path of ['/privacidad','/terminos']){const r=await f.request(path,{as:null});assert.equal(r.status,200);assert.match(await r.response.text(),/Borrador pendiente/);}}finally{await f.pool.close();}
+});
+
+test('aceptación legal por cuenta: explícita, versionada, CSRF, idempotente y previa a crear/publicar',async()=>{
+ const f=await testFixture({legal:fixtureLegal});try{
+  const info=await(await f.request('/api/legal',{as:null})).json();assert.equal(info.approved,true);assert.equal(info.version,POLICY_VERSION);assert.equal(info.policyDigest,policyDigest(fixtureLegal));const create=()=>f.request('/api/profiles',{method:'POST',body:{country:'PA',linkName:'consentimiento',displayName:'Persona sintética'}});
+  assert.equal((await create()).status,428);const acceptance={acceptTerms:true,acceptPrivacy:true,adult:true,version:info.version,policyDigest:info.policyDigest};
+  assert.equal((await f.request('/api/legal-consent',{method:'POST',csrf:false,body:acceptance})).status,403);assert.equal((await f.request('/api/legal-consent',{method:'POST',body:{...acceptance,adult:false}})).status,400);assert.equal((await f.request('/api/legal-consent',{method:'POST',body:{...acceptance,policyDigest:'0'.repeat(64)}})).status,400);
+  for(let i=0;i<2;i++)assert.equal((await f.request('/api/legal-consent',{method:'POST',body:acceptance})).status,200);assert.equal((await f.pool.query('SELECT count(*)::int AS n FROM micontacto.legal_consents')).rows[0].n,1);assert.equal((await(await f.request('/api/legal-consent',{as:'other'})).json()).accepted,false);assert.equal((await create()).status,201);
+  const {createApplication}=await import('../application.js');const changed=createApplication({pool:f.pool,secret:'synthetic-secret'.repeat(4),legal:{...fixtureLegal,retention:'Aviso materialmente distinto'}});assert.equal((await changed.handle(new Request(f.origin+'/api/legal'))).status,200);const {consentRuntime}=await import('../legal.js');assert.equal(await consentRuntime(f.pool,{...fixtureLegal,retention:'Aviso materialmente distinto'}).accepted(f.owner),false);
+ }finally{await f.pool.close();}
+});
+
+test('verificación real no conecta ni escribe con credenciales ausentes o bases no exclusivas',async()=>{
+ const {verifyRealServices,isolatedNativeConfig}=await import('../real-verification.js');const report=await verifyRealServices({env:{},run:true});assert.equal(report.productionReady,false);for(const name of ['postgresql','r2','google'])assert.equal(report[name].status,'BLOCKED');
+ assert.throws(()=>isolatedNativeConfig({MC_TEST_DATABASE_ISOLATED:'true',MC_TEST_DATABASE_URL:'postgres://localhost/production',MC_TEST_RESTORE_DATABASE_URL:'postgres://localhost/mi_contacto_test_restore'}),/DISTINCT_NAMED_TEST_DATABASES/);
+ assert.throws(()=>isolatedNativeConfig({MC_TEST_DATABASE_ISOLATED:'true',MC_TEST_DATABASE_URL:'postgres://localhost/mi_contacto_test_source',MC_TEST_RESTORE_DATABASE_URL:'postgres://localhost/mi_contacto_test_source'}),/DISTINCT_NAMED_TEST_DATABASES/);
+ const config=isolatedNativeConfig({MC_TEST_DATABASE_ISOLATED:'true',MC_TEST_DATABASE_URL:'postgres://localhost/mi_contacto_test_source',MC_TEST_RESTORE_DATABASE_URL:'postgres://localhost/mi_contacto_test_restore'});assert.equal(config.length,2);assert.equal(config[0].ssl,false);
+});
+
+test('readiness HTTP comprueba base; privacidad, seguridad de transporte y consentimiento no exponen secretos',async()=>{
+ const f=await testFixture({legal:fixtureLegal});try{
+  assert.equal((await f.request('/health/live',{as:null})).status,200);assert.equal((await f.request('/health/ready',{as:null})).status,200);const page=await f.request('/privacidad',{as:null});const html=await page.response.text();assert.match(html,/Responsable sintético/);assert.match(html,/privacy@example.invalid/);assert.doesNotMatch(html,/Borrador pendiente/);assert.match(page.response.headers.get('strict-transport-security'),/31536000/);
+  assert.equal((await f.request('/api/legal-consent',{as:null})).status,401);const result=await(await f.request('/api/legal',{as:null})).json();assert.deepEqual(Object.keys(result).sort(),['approved','policyDigest','privacyUrl','termsUrl','version']);
+ }finally{await f.pool.close();}
+});
+
+test('arranque persistente verifica todas las migraciones y rechaza registro parcial o alterado sin modificarlo',async()=>{
+ const f=await testFixture();try{
+  const {assertDatabaseReady}=await import('../database.js'),{readdirSync}=await import('node:fs'),{createHash}=await import('node:crypto');await assert.rejects(assertDatabaseReady(f.pool),/DATABASE_MIGRATIONS_REQUIRED/);
+  await f.pool.query('CREATE TABLE micontacto.schema_migrations(name text PRIMARY KEY,sha256 text NOT NULL)');for(const name of readdirSync(new URL('../db/',import.meta.url)).filter(n=>/^\d{3}_.*\.sql$/.test(n)))await f.pool.query('INSERT INTO micontacto.schema_migrations VALUES($1,$2)',[name,createHash('sha256').update(readFileSync(new URL('../db/'+name,import.meta.url))).digest('hex')]);assert.equal((await assertDatabaseReady(f.pool)).migrations,12);
+  await f.pool.query("UPDATE micontacto.schema_migrations SET sha256='alterado' WHERE name='012_legal_consent.sql'");await assert.rejects(assertDatabaseReady(f.pool),/MIGRATION_CHECKSUM_MISMATCH/);assert.equal((await f.pool.query("SELECT sha256 FROM micontacto.schema_migrations WHERE name='012_legal_consent.sql'")).rows[0].sha256,'alterado');
+ }finally{await f.pool.close();}
+});
+
+test('URL PostgreSQL inválida produce error redactado y no imprime el valor recibido',async()=>{
+ const {databaseConfig}=await import('../database.js');try{databaseConfig({MC_DATABASE_ISOLATED:'true',MC_DATABASE_URL:'invalid credential-like input'});assert.fail('must reject');}catch(e){assert.equal(e.message,'INVALID_DATABASE_URL');assert.equal('input' in e,false);assert.doesNotMatch(String(e),/credential-like/);}
+});
+
+test('origen de staging exige habilitación explícita y rechaza dominios ajenos',async()=>{
+ const {validateApplicationOrigin}=await import('../platform-config.js');const staging='https://mi-contacto-validation.up.railway.app';assert.throws(()=>validateApplicationOrigin(staging),/INVALID_ORIGIN/);assert.equal(validateApplicationOrigin(staging,{stage:'staging'}),staging);
+ for(const origin of ['https://direcciones507.com','https://direcciones.lat','https://empleospa.com','https://other.up.railway.app','https://mi-contacto-valid.up.railway.app.evil.test','http://mi-contacto-validation.up.railway.app'])assert.throws(()=>validateApplicationOrigin(origin,{stage:'staging'}),/INVALID_ORIGIN/);
+});
+
+test('Google callback, URL y QR apuntan al entorno autorizado de staging, nunca al dominio de producción',async()=>{
+ const origin='https://mi-contacto-validation.up.railway.app',f=await testFixture({origin,deploymentStage:'staging',google:{clientId:'synthetic-client',clientSecret:'synthetic-secret'}});try{
+  const login=await f.request('/auth/google',{as:null});assert.equal(login.status,302);assert.equal(new URL(login.response.headers.get('location')).searchParams.get('redirect_uri'),origin+'/auth/google/callback');
+  const created=await(await f.request('/api/profiles',{method:'POST',body:{country:'PA',linkName:'solo-staging',displayName:'Persona sintética'}})).json();assert.equal(created.url,origin+'/pa/solo-staging');assert.equal((await f.app.profiles.detail(f.owner,created.id)).url,created.url);
+  await f.pool.query("UPDATE micontacto.profiles SET status='ACTIVE',review_decision='APPROVED' WHERE id=$1",[created.id]);const svg=await(await f.request('/pa/solo-staging/qr.svg',{as:null})).response.text();const sharp=(await import('sharp')).default,jsQR=(await import('jsqr')).default;const {data,info}=await sharp(Buffer.from(svg)).resize(512,512).ensureAlpha().raw().toBuffer({resolveWithObject:true});assert.equal(jsQR(new Uint8ClampedArray(data),info.width,info.height).data,created.url);
+ }finally{await f.pool.close();}
+});

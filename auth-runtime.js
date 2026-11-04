@@ -1,3 +1,4 @@
+import {validateApplicationOrigin} from './platform-config.js';
 import {randomUUID,randomBytes,createHash,timingSafeEqual} from 'node:crypto';
 import {jwtVerify,createRemoteJWKSet} from 'jose';
 import {issueSession,verifySession,sessionCookie,clearSessionCookie} from './auth-session.js';
@@ -6,10 +7,9 @@ const hash=s=>createHash('sha256').update(s).digest('hex');
 const cookie=(req,name)=>{const values=(req.headers.get('cookie')??'').split(';').map(s=>s.trim()).filter(s=>s.startsWith(name+'='));return values.length===1?values[0].slice(name.length+1):null;};
 const equal=(a,b)=>{if(typeof a!=='string'||typeof b!=='string')return false;const x=Buffer.from(a),y=Buffer.from(b);return x.length===y.length&&timingSafeEqual(x,y);};
 const keys=createRemoteJWKSet(new URL('https://www.googleapis.com/oauth2/v3/certs'));
-export function createAuth(pool,{secret,origin,google=null,fetch:network=fetch,verifyToken=null,now=()=>Date.now()}){
+export function createAuth(pool,{secret,origin,deploymentStage='production',google=null,fetch:network=fetch,verifyToken=null,now=()=>Date.now()}){
  if(typeof secret!=='string'||Buffer.byteLength(secret)<32)throw Error('SESSION_SECRET_REQUIRED');
- const base=new URL(origin),local=base.protocol==='http:'&&['127.0.0.1','localhost'].includes(base.hostname);
- if(base.username||base.password||base.pathname!=='/'||base.search||base.hash||!local&&base.origin!=='https://micontacto.online')throw Error('INVALID_ORIGIN');
+ const base=new URL(validateApplicationOrigin(origin,{stage:deploymentStage}));
  const secure=base.protocol==='https:';
  const json=(status,body)=>Response.json(body,{status,headers:{'cache-control':'no-store'}});
  async function issue(accountId){

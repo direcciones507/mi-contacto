@@ -1,3 +1,4 @@
+import {applyTerritoryCorrections,TERRITORY_CORRECTIONS} from '../territory-corrections.js';
 import {readFileSync} from 'node:fs';
 import {gunzipSync} from 'node:zlib';
 import {createHash} from 'node:crypto';
@@ -12,9 +13,9 @@ export function validateCatalog(data){
  return {regions:regions.size,localities:localities.size};
 }
 /** Bulk import into the caller's isolated database, never fetches or discovers credentials. */
-export async function loadCatalog(pool,{selectedCountries=[...countries]}={}){
+export async function loadCatalog(pool,{selectedCountries=[...countries],catalogData=null}={}){
  if(selectedCountries.some(c=>!countries.has(c)))throw Error('INVALID_COUNTRY');
- const bytes=readFileSync(new URL('../data/geonames-catalog.json.gz',import.meta.url)),data=JSON.parse(gunzipSync(bytes));validateCatalog(data);
+ const bytes=readFileSync(new URL('../data/geonames-catalog.json.gz',import.meta.url)),data=catalogData??applyTerritoryCorrections(JSON.parse(gunzipSync(bytes)));validateCatalog(data);
  const regions=data.regions.filter(r=>selectedCountries.includes(r.country)),localities=data.localities.filter(l=>selectedCountries.includes(l.country));
  const client=await pool.connect();try{
   await client.query('BEGIN');
@@ -25,8 +26,8 @@ export async function loadCatalog(pool,{selectedCountries=[...countries]}={}){
   for(let i=0;i<localities.length;i+=5000)await client.query(`INSERT INTO micontacto.geo_localities(country_code,region_id,source_id,name)
    SELECT x.country,r.id,x.source,x.name FROM jsonb_to_recordset($1::jsonb) AS x(country text,source text,name text,region text)
    JOIN micontacto.geo_regions r ON r.country_code=x.country AND r.source_id=x.region
-   ON CONFLICT(country_code,source_id) DO UPDATE SET name=EXCLUDED.name`,[JSON.stringify(localities.slice(i,i+5000))]);
-  await client.query("INSERT INTO micontacto.catalog_sources(id,source_url,license,sha256,reviewed) VALUES($1,'https://download.geonames.org/export/dump/','CC BY 4.0',$2,false) ON CONFLICT(id) DO NOTHING",['geonames-20261031-'+selectedCountries.join('-'),createHash('sha256').update(bytes).digest('hex')]);
+   ON CONFLICT(country_code,source_id) DO UPDATE SET name=EXCLUDED.name,region_id=EXCLUDED.region_id`,[JSON.stringify(localities.slice(i,i+5000))]);
+  await client.query("INSERT INTO micontacto.catalog_sources(id,source_url,license,sha256,reviewed) VALUES($1,'https://download.geonames.org/export/dump/','CC BY 4.0',$2,false) ON CONFLICT(id) DO NOTHING",[(catalogData?'representative-test-':'geonames-20261031-corrected-'+TERRITORY_CORRECTIONS.version+'-')+selectedCountries.join('-'),createHash('sha256').update(catalogData?JSON.stringify(data):Buffer.concat([bytes,Buffer.from(JSON.stringify(TERRITORY_CORRECTIONS))])).digest('hex')]);
   await client.query('COMMIT');return {regions:regions.length,localities:localities.length,reviewRequired:true};
- }catch(e){await client.query('ROLLBACK');throw e;}finally{client.release();}
+ }catch(e){if(e.code==='23503'&&e.constraint==='profile_locality_in_selected_region_fk')e.message='GEO_CHANGE_REQUIRES_PROFILE_RECONCILIATION';await client.query('ROLLBACK');throw e;}finally{client.release();}
 }

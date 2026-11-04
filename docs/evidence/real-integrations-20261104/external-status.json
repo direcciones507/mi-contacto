@@ -1,0 +1,30 @@
+{
+  "checkedAt": "2026-11-04T06:24:30.477Z",
+  "productionReady": false,
+  "postgresql": {
+    "status": "BLOCKED",
+    "missing": [
+      "MC_TEST_DATABASE_URL",
+      "MC_TEST_RESTORE_DATABASE_URL",
+      "MC_TEST_DATABASE_ISOLATED"
+    ]
+  },
+  "r2": {
+    "status": "BLOCKED",
+    "missing": [
+      "MC_R2_ACCOUNT_ID",
+      "MC_R2_ACCESS_KEY_ID",
+      "MC_R2_SECRET_ACCESS_KEY",
+      "MC_R2_BUCKET",
+      "MC_R2_ISOLATED"
+    ]
+  },
+  "google": {
+    "status": "BLOCKED",
+    "missing": [
+      "MC_GOOGLE_CLIENT_ID",
+      "MC_GOOGLE_CLIENT_SECRET"
+    ],
+    "reason": "Real browser Google login/callback and owner consent are required; credentials alone are not verification."
+  }
+}

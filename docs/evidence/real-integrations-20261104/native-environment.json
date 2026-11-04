@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-11-04T06:18:43.138601+00:00",
+  "nativePostgresStatus": "BLOCKED",
+  "uid": 0,
+  "uidMap": "0          0          1",
+  "effectiveCapabilities": "0000000000000000",
+  "noNewPrivileges": "1",
+  "required": "Two dedicated empty native test databases; or a non-root execution environment for the native cluster/server restart tests. Native client tools have been prepared and version-checked in scratch.",
+  "serverRestartPerformed": false,
+  "backupRestorePerformed": false,
+  "toolsOnPATH": {
+    "postgres": false,
+    "initdb": false,
+    "pg_ctl": false,
+    "pg_dump": false,
+    "pg_restore": false,
+    "docker": false
+  },
+  "preparedClientTools": {
+    "pg_dump": "PostgreSQL 18.6 (Ubuntu 18.6-1.pgdg24.04+2)",
+    "pg_restore": "PostgreSQL 18.6 (Ubuntu 18.6-1.pgdg24.04+2)",
+    "versionCommandsPassed": true,
+    "systemInstallation": false,
+    "privilegedChanges": false
+  },
+  "nonRootNamespaceProbe": "unshare: write failed /proc/self/uid_map: Operation not permitted"
+}

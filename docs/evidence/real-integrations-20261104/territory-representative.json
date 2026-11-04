@@ -1,0 +1,71 @@
+{
+  "engine": "PostgreSQL WASM; not native",
+  "cases": [
+    {
+      "country": "PA",
+      "source": "3701117",
+      "region": "PA.10.0910",
+      "locality": "Santiago de Veraguas",
+      "correctTerritory": true,
+      "wrongCountryExcluded": true
+    },
+    {
+      "country": "CO",
+      "source": "3674962",
+      "region": "CO.02.05001",
+      "locality": "Medellín",
+      "correctTerritory": true,
+      "wrongCountryExcluded": true
+    },
+    {
+      "country": "CR",
+      "source": "3621849",
+      "region": "CR.08.101",
+      "locality": "San José",
+      "correctTerritory": true,
+      "wrongCountryExcluded": true
+    },
+    {
+      "country": "GT",
+      "source": "3598132",
+      "region": "GT.07.101",
+      "locality": "Guatemala City",
+      "correctTerritory": true,
+      "wrongCountryExcluded": true
+    },
+    {
+      "country": "SV",
+      "source": "3583361",
+      "region": "SV.10.12954160",
+      "locality": "San Salvador",
+      "correctTerritory": true,
+      "wrongCountryExcluded": true
+    },
+    {
+      "country": "HN",
+      "source": "3600949",
+      "region": "HN.08.0801",
+      "locality": "Tegucigalpa",
+      "correctTerritory": true,
+      "wrongCountryExcluded": true
+    },
+    {
+      "country": "NI",
+      "source": "3617763",
+      "region": "NI.10.5525",
+      "locality": "Managua",
+      "correctTerritory": true,
+      "wrongCountryExcluded": true
+    },
+    {
+      "country": "MX",
+      "source": "4005539",
+      "region": "MX.14.039",
+      "locality": "Guadalajara",
+      "correctTerritory": true,
+      "wrongCountryExcluded": true
+    }
+  ],
+  "fullCatalogRevalidation": false,
+  "manualNationalCertification": false
+}

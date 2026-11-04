@@ -8,7 +8,8 @@
     "test:integration": "node scripts/integration.mjs",
     "start": "node scripts/start-server.mjs",
     "db:migrate:test": "node scripts/migrate.mjs --isolated-test",
-    "test:browser": "node scripts/browser-validation.mjs"
+    "test:browser": "node scripts/browser-validation.mjs",
+    "verify:real": "node scripts/verify-real.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "3.1161.0",

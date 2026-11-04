@@ -1,0 +1,14 @@
+[
+  {
+    "package": "libpq5",
+    "version": "18.6-1.pgdg24.04+2",
+    "source": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-18/libpq5_18.6-1.pgdg24.04+2_amd64.deb",
+    "sha256": "b487c5ed2ceb9244c6a9d6ae65818ed6707c3c44a2e14488394ae4194c52c53b"
+  },
+  {
+    "package": "postgresql-client-18",
+    "version": "18.6-1.pgdg24.04+2",
+    "source": "https://apt.postgresql.org/pub/repos/apt/pool/main/p/postgresql-18/postgresql-client-18_18.6-1.pgdg24.04+2_amd64.deb",
+    "sha256": "b9d10d99a73bf7aa375be2fe36626c40499cfdf553d0ad174674a88a1b256b43"
+  }
+]

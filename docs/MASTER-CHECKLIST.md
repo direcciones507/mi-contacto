@@ -1,3 +1,31 @@
+# Fase final vigente — integraciones reales, 4 noviembre 2026
+
+Rama `work/real-integrations-20261104`, derivada de `04204ea`. [Informe vigente](REAL-INTEGRATIONS-20261104.md). Este bloque actualiza el estado técnico; los resultados históricos inferiores se conservan.
+
+- [x] Código anterior conservado; 115 pruebas de referencia siguen aprobadas.
+- [x] Suite final: **126 aprobadas, 0 fallidas, 0 omitidas**. Tres recorridos Chromium móvil/tableta/escritorio; sin errores JS ni desbordamiento. No dispositivos físicos.
+- [x] Revisión funcional representativa en ocho países con IDs reales y perfiles sintéticos; no se repitió la importación SQL completa de 392.717 localidades.
+- [x] Correcciones por ID: dos cantones de Costa Rica y cinco asignaciones verificadas; fuente intacta, homónimos conservados y rollback ante perfiles referenciados. No es homologación nacional completa.
+- [x] Textos de privacidad/términos implementados como borrador y exportados para revisión humana; responsable/contacto/retención/proveedores obligatorios para el arranque productivo.
+- [x] Aceptación explícita por cuenta de términos, privacidad y edad propuesta; versión/digest, CSRF, idempotencia y nueva aceptación al cambiar contenido. Migración 012.
+- [x] Staging controlado habilitable explícitamente, con callback/URL/QR del propio entorno; decodificación de QR probada; rechazo de dominios ajenos.
+- [x] Verificación completa de hashes de migraciones al arrancar; errores de URL redactados; readiness de base, HSTS y escucha web compatible con origen HTTPS.
+- [x] Ejecutor real PostgreSQL/R2 listo para recursos exclusivos; rechaza bases no vacías o de otro nombre; no sustituye Google real ni aprobación de producción.
+- [x] pg_dump/pg_restore nativos preparados sin instalación privilegiada; comandos de versión aprobados. Respaldo/restauración todavía NO ejecutados.
+- [x] Descubrimiento Railway solo lectura: 8 proyectos / 19 servicios; no se encontró un nombre exclusivo Mi Contacto. Sin lectura de secretos de otros proyectos ni cambios de infraestructura.
+- [x] Auditoría dependencias de producción: cero vulnerabilidades conocidas.
+- [ ] PostgreSQL nativo: faltan dos URLs exclusivas de prueba o un host no-root. La sesión mapea solo UID 0 y crear namespace de usuario falla con EPERM. Concurrencia/restauración/reinicio reales NO aprobados.
+- [ ] Google real: faltan cliente/secret exclusivos disponibles y entorno/callback autorizado. Cero logins reales verificados.
+- [ ] R2 real: faltan cuenta/bucket/claves exclusivos disponibles; revisar acceso público de dominios. Cero objetos reales verificados.
+- [ ] Cobertura territorial nacional/tercer nivel administrativo y faltantes de México; ver [anomalías concretas](TERRITORY-REVIEW-20261104.md).
+- [ ] Aprobación humana de [textos legales](LEGAL-DRAFT-20261104.md), responsable, tratamiento por país, edad mínima y retención/backups.
+- [ ] Autorización de entorno de pruebas en Railway y presupuesto si requiere recursos nuevos; propuesta concreta en `infra/mi-contacto-validation.json`, sin aplicar.
+- [ ] Aceptación física del propietario y autorización posterior de producción. Cobros siguen deshabilitados.
+
+**Estado: construcción local verificada; producción bloqueada por accesos, infraestructura y aprobaciones externas.** Evidencias en `docs/evidence/real-integrations-20261104/`. [Pasos exactos de pruebas reales](ACCEPTANCE-REAL-20261104.md).
+
+---
+
 # Estado vigente — cierre de construcción, 4 noviembre 2026
 
 Este bloque sustituye las reglas y estados históricos inferiores que resulten contradictorios. Pedido vigente: **un perfil por cuenta**, cambiar país sin duplicarlo y conservar URL/QR. Gratuito por enlace; directorio solo para Destacado elegible. No se activan cobros.

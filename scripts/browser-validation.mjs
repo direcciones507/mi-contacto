@@ -3,17 +3,18 @@ import {mkdirSync} from 'node:fs';
 import assert from 'node:assert/strict';
 import sharp from 'sharp';
 import {serveLocal} from './http-local.mjs';
+import {legalConfig} from '../legal.js';
 import {testFixture} from './test-fixture.mjs';
 const {chromium}=createRequire(import.meta.url)(process.env.MC_PLAYWRIGHT||'playwright');
 const out=process.env.MC_BROWSER_EVIDENCE;if(!out?.startsWith('/'))throw Error('EXPLICIT_LOCAL_EVIDENCE_REQUIRED');mkdirSync(out,{recursive:true});
 const browser=await chromium.launch({executablePath:process.env.MC_CHROMIUM,args:['--no-sandbox','--disable-dev-shm-usage','--no-zygote']});const results=[];
 try{for(const width of [390,820,1440]){
- let f;const server=await serveLocal(async origin=>{f=await testFixture({origin,simulation:true});return f.app;});
+ let f;const server=await serveLocal(async origin=>{f=await testFixture({origin,simulation:true,legal:legalConfig({MC_LEGAL_APPROVED:'true',MC_LEGAL_CONTROLLER:'Responsable sintético',MC_PRIVACY_CONTACT:'privacy@example.invalid',MC_RETENTION_NOTICE:'Solo pruebas sintéticas locales.',MC_PROCESSING_NOTICE:'Local; sin transferencias reales.'},{requireApproval:true})});return f.app;});
  const contexts=[];
  try{
   async function pageFor(as){const context=await browser.newContext({viewport:{width,height:1100}});contexts.push(context);await context.route('**/*',route=>new URL(route.request().url()).origin===server.origin?route.continue():route.abort());if(as)await context.addCookies([{name:'mc_session',value:f.sessions[as].token,url:server.origin}]);return context.newPage();}
   const owner=await pageFor('owner'),errors=[];owner.on('pageerror',e=>errors.push(e.message));
-  await owner.goto(server.origin+'/mi-perfil');await owner.getByRole('button',{name:'Crear mi perfil'}).click();
+  await owner.goto(server.origin+'/mi-perfil');await owner.getByLabel('Acepto los términos de servicio',{exact:true}).check();await owner.getByLabel('He leído y acepto la política de privacidad',{exact:true}).check();await owner.getByLabel('Declaro tener 18 años o más',{exact:true}).check();await owner.getByRole('button',{name:'Guardar aceptación',exact:true}).click();await owner.getByText('Aceptación guardada.',{exact:false}).waitFor();await owner.getByRole('button',{name:'Crear mi perfil'}).click();
   const form=owner.locator('#profileForm');await form.locator('[name=country]').selectOption('PA');await form.locator('[name=linkName]').fill('browser-'+width);await form.locator('[name=displayName]').fill('Persona sintética '+width);await form.locator('[name=profession]').fill('Oficio de prueba');
   await form.getByRole('button',{name:'Guardar sin publicar'}).click();await owner.getByText('Perfil creado como borrador.',{exact:false}).waitFor();
   await form.locator('[name=region]').selectOption(String(f.geo.PA.regionId));await form.locator('[name=localityId] option').nth(1).waitFor({state:'attached'});await form.locator('[name=localityId]').selectOption(String(f.geo.PA.localityId));await form.locator('[name=directoryConsent]').check();await form.locator('[name=contactConsent]').check();await form.locator('[name=phone]').fill('+50760000000');await form.locator('[name=whatsapp]').fill('+50760000000');
@@ -39,6 +40,6 @@ try{for(const width of [390,820,1440]){
   await visitor.goto(server.origin+'/mi-perfil');await visitor.getByText('El acceso con Google aún no está habilitado en esta vista local.',{exact:true}).waitFor();assert.equal(await visitor.locator('#accountPanel').isVisible(),false);
   await owner.goto(server.origin+'/admin');await owner.getByText('Acceso restringido a administración.',{exact:true}).waitFor();assert.equal(await owner.locator('#adminPanel').isVisible(),false);
   await owner.goto(server.origin+'/mi-perfil');await owner.getByRole('button',{name:'Cerrar todas las sesiones',exact:true}).click();await owner.getByText('El acceso con Google aún no está habilitado en esta vista local.',{exact:true}).waitFor();
-  assert.deepEqual(errors,[]);results.push({width,createEditUploadPublishApprove:true,realLocalHttp:true,realWasmDatabase:true,csrf:true,privateContactsByConsent:true,qrRendered:true,directory:true,pauseHidesDirectoryPreservesCard:true,resumeRestoresDirectory:true,freeExcluded:true,hideUnhide:true,authorizedPhysicalErasure:true,countryChangeStableURL:true,mapsPin:true,share:true,downloadQR:true,logoutAll:true,admin:true,adminFeatureHistory:true,unauthenticatedState:true,adminForbiddenState:true,overflow:false,externalRequests:0});
+  assert.deepEqual(errors,[]);results.push({width,createEditUploadPublishApprove:true,explicitVersionedLegalConsent:true,realLocalHttp:true,realWasmDatabase:true,csrf:true,privateContactsByConsent:true,qrRendered:true,directory:true,pauseHidesDirectoryPreservesCard:true,resumeRestoresDirectory:true,freeExcluded:true,hideUnhide:true,authorizedPhysicalErasure:true,countryChangeStableURL:true,mapsPin:true,share:true,downloadQR:true,logoutAll:true,admin:true,adminFeatureHistory:true,unauthenticatedState:true,adminForbiddenState:true,overflow:false,externalRequests:0});
  }finally{for(const c of contexts)await c.close();await server.close();await f?.local.pool.close();}
 }console.log(JSON.stringify({scenarios:results.length,results,nativePostgres:false,realGoogle:false,realPayments:0},null,2));}finally{await browser.close();}

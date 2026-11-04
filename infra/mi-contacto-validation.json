@@ -1,0 +1,49 @@
+{
+  "status": "PROPOSAL_NOT_APPLIED",
+  "provider": "Railway",
+  "projectName": "mi-contacto-validation",
+  "environmentName": "staging",
+  "source": {
+    "repository": "direcciones507/mi-contacto",
+    "branch": "work/real-integrations-20261104",
+    "mainChanges": false
+  },
+  "services": [
+    {
+      "name": "mi-contacto-web-validation",
+      "runtime": "Node >=24",
+      "startCommand": "npm start",
+      "healthcheckPath": "/health/ready",
+      "persistentStorage": "exclusive private Mi Contacto R2 bucket",
+      "environment": {
+        "MC_DEPLOYMENT_STAGE": "staging",
+        "MC_BIND_HOST": "0.0.0.0",
+        "MC_ORIGIN": "Exact authorized HTTPS test origin",
+        "MC_LEGAL_APPROVED": "Requires human approval; not enabled by this proposal"
+      }
+    },
+    {
+      "name": "mi-contacto-postgres-validation",
+      "runtime": "native PostgreSQL",
+      "dedicated": true,
+      "databases": [
+        "mi_contacto_test_source",
+        "mi_contacto_test_restore"
+      ],
+      "preserveExistingData": true
+    }
+  ],
+  "requiredPermissions": [
+    "Create and configure the exclusive test environment",
+    "Deploy only the derived work branch into that test environment",
+    "Run migrations in its empty dedicated databases",
+    "Restart its own test web/database services for persistence tests"
+  ],
+  "credentials": "Dedicated credentials injected through secure environment variables; no secrets in GitHub",
+  "google": "Dedicated OAuth client, consent screen and exact callback on the authorized test domain",
+  "r2": "Dedicated private bucket, restricted S3 keys, public managed/custom domains disabled",
+  "costAuthorization": "Owner must approve a budget before creating any resource that incurs charges",
+  "productionDeployment": false,
+  "paymentsEnabled": false,
+  "resourcesCreated": 0
+}

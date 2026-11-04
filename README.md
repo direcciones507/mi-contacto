@@ -6,13 +6,15 @@ Proyecto independiente de Direcciones507, Direcciones LATAM y LeveIA.
 
 ## Estado vigente — 4 noviembre 2026
 
-Construcción en rama aislada; sin producción, cobros ni despliegues. 115 pruebas automatizadas aprobadas y tres recorridos completos Chromium (390/820/1440). Ver [cierre verificable](docs/COMMERCIAL-COMPLETION-20261104.md).
+Construcción en rama aislada; sin producción, cobros ni despliegues. 126 pruebas automatizadas locales aprobadas y tres recorridos completos Chromium (390/820/1440). Ver [fase de integraciones reales y bloqueos](docs/REAL-INTEGRATIONS-20261104.md).
 
 - Exactamente un perfil personal por cuenta Google, con edición de país/localidad sin cambiar URL ni QR.
 - Gratuito: foto principal, descripción, contactos autorizados, pin de Maps, compartir y QR descargable. Accesible por enlace, fuera del directorio.
 - Destacado: hasta cinco fotos y directorio regional con aprobación, consentimiento y vigencia. Paquetes/pausa existentes conservados; no hay cobros, suscripciones ni activación comercial real autorizada.
 - ADMIN: revisión, moderación, catálogos, denuncias, verificación de foto y eliminación definitiva a solicitud del titular. Borrado transaccional con cola de fotos, reintentos y protección contra reutilización de enlaces eliminados.
 - Fichas individuales noindex y fuera del sitemap. Sin correo electrónico público.
+
+Novedades de la fase final: consentimiento legal versionado y textos en borrador; correcciones territoriales verificadas; origen/QR de staging; controles de arranque y ejecutor de verificaciones reales. La aprobación legal, las credenciales y los servicios reales siguen pendientes.
 
 ## Ejecutar y validar
 

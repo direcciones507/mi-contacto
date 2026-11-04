@@ -1,0 +1,22 @@
+{
+ "version":"2026-11-04.1",
+ "scope":"Correcciones representativas verificadas; no certificación nacional completa",
+ "regions":[
+  {"country":"CR","source":"CR.official.612","name":"Monteverde","level":2,"parent":"CR.07","officialCode":"612","evidence":"https://www.pgrweb.go.cr/DOCS/NORMAS/1/VIGENTE/D/2020-2029/2025-2029/2025/1953C/17275C.HTML"},
+  {"country":"CR","source":"CR.official.613","name":"Puerto Jiménez","level":2,"parent":"CR.07","officialCode":"613","evidence":"https://www.imprentanacional.go.cr/gaceta/?date=21%2F06%2F2022"}
+ ],
+ "localities":[
+  {"country":"CR","source":"3622811","expectedName":"Monte Verde","from":"CR.07.601","to":"CR.official.612","evidence":"https://www.pgrweb.go.cr/DOCS/NORMAS/1/VIGENTE/D/2020-2029/2025-2029/2025/1953C/17275C.HTML"},
+  {"country":"CR","source":"3621598","expectedName":"Santa Elena","from":"CR.07.601","to":"CR.official.612","evidence":"https://www.pgrweb.go.cr/DOCS/NORMAS/1/VIGENTE/D/2020-2029/2025-2029/2025/1953C/17275C.HTML"},
+  {"country":"CR","source":"3622248","expectedName":"Puerto Jiménez","from":"CR.07.607","to":"CR.official.613","evidence":"https://www.imprentanacional.go.cr/gaceta/?date=21%2F06%2F2022"},
+  {"country":"SV","source":"3583361","expectedName":"San Salvador","from":"SV.10","to":"SV.10.12954160","evidence":"https://sansalvador.gob.sv/contactenos/"},
+  {"country":"NI","source":"3617763","expectedName":"Managua","from":"NI.10","to":"NI.10.5525","evidence":"https://www.correos.gob.ni/postalcode/postalcodes.php"}
+ ],
+ "unresolved":[
+  "No se han homologado todos los corregimientos de Panamá ni distritos de Costa Rica/El Salvador; ciudad/localidad no equivale a tercer nivel administrativo.",
+  "México conserva 2471 municipios/alcaldías en la fuente base; INEGI informa 2478 a junio 2026. Faltan siete; no se inventan equivalencias ni límites.",
+  "La pertenencia completa de poblados a los nuevos cantones de Costa Rica exige cartografía/revisión adicional; solo se reasignan los tres identificadores verificados.",
+  "La localidad Mexico City abarca varias alcaldías; no se asigna arbitrariamente a una sola.",
+  "No se fusionan homónimos por nombre. Las asignaciones sin municipio fuera de los casos verificados siguen pendientes."
+ ]
+}
