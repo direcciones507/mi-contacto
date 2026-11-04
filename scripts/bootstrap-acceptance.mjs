@@ -1,6 +1,6 @@
 import {migrateDatabase} from '../database.js';
 import {loadCatalog} from './load-catalog.mjs';
-import {mkdir,readFile,writeFile} from 'node:fs/promises';
+import {mkdir,readFile,writeFile,rename} from 'node:fs/promises';
 import {createHash,randomUUID} from 'node:crypto';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
@@ -37,6 +37,6 @@ export async function bootstrapAcceptance(pool,env){
    }finally{await check.end();}
   }finally{await run('dropdb',['--maintenance-db='+pgEnv.PGDATABASE,restored]);}
  }
- const report={bootedAt:new Date().toISOString(),bootCount:(previous?.bootCount??0)+1,postgresVersion:(await pool.query('SHOW server_version')).rows[0].server_version,migrations:migrated,applied,verifiedTls:true,sslVersion:ssl.version,persistenceFingerprint:fingerprint,persistenceAfterRestart:!!previous,backup,googleConfigured:!!env.MC_GOOGLE_CLIENT_ID,r2Configured:env.MC_STORAGE==='r2',realPaymentsEnabled:false};
- await writeFile(reportPath,JSON.stringify(report,null,2),{mode:0o600});console.log('MC_ACCEPTANCE_CHECKS '+JSON.stringify(report));return report;
+ const report={bootedAt:new Date().toISOString(),processUid:process.getuid?.(),bootCount:(previous?.bootCount??0)+1,postgresVersion:(await pool.query('SHOW server_version')).rows[0].server_version,migrations:migrated,applied,verifiedTls:true,sslVersion:ssl.version,persistenceFingerprint:fingerprint,persistenceAfterRestart:!!previous,backup,googleConfigured:!!env.MC_GOOGLE_CLIENT_ID,r2Configured:env.MC_STORAGE==='r2',realPaymentsEnabled:false};
+ const pending=reportPath+'.pending';await writeFile(pending,JSON.stringify(report,null,2),{mode:0o600});await rename(pending,reportPath);console.log('MC_ACCEPTANCE_CHECKS '+JSON.stringify(report));return report;
 }

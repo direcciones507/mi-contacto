@@ -4,7 +4,7 @@ builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "node scripts/start-server.mjs"
+startCommand = "sh /app/docker/entrypoint.sh node /app/scripts/start-server.mjs"
 healthcheckPath = "/health/ready"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
