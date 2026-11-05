@@ -1,3 +1,22 @@
+# Fase 2 — Google y correo (5 noviembre 2026)
+
+Base `3fef6c6`; rama `work/phase2-real-auth-20261105`. Informe [PHASE2-AUTH-20261105.md](PHASE2-AUTH-20261105.md).
+
+- [x] Autenticación existente conservada; se bloquean remitentes de otros proyectos aun con aislamiento declarado.
+- [x] Registro, verificación, recuperación, cambio y revocación comprobados con correo simulado; tres recorridos Chromium 390/820/1440.
+- [x] Google simulado: PKCE, state, nonce, JWT, proveedor inválido, sesión y vinculación segura; cuenta y perfil existente conservados.
+- [x] 187 pruebas locales aprobadas, cero fallidas; 28 específicas aprobadas después de reforzar la conservación del perfil. PostgreSQL WASM, no integración nativa nueva.
+- [x] Dos contenedores/fotografías y código anterior preservados; no cambios en Railway, producción ni migraciones remotas.
+- [x] Proveedor real consultado sin modificaciones: no existe dominio Mi Contacto verificado en la conexión Resend; no usar remitentes de otros proyectos.
+- [ ] Fase 2 real: cliente Google exclusivo, dominio/remitente Mi Contacto verificado, clave de envío exclusiva, destinatario de aceptación autorizado y sesión del propietario.
+- [ ] Ejecutar workflow nativo preparado para esta rama; no había ejecución registrada al consultar GitHub.
+- [ ] Autorizar después configuración/despliegue y migración 016 con respaldo; sin aplicación remota en esta entrega.
+- [ ] Fase 3: Cloudflare R2 real.
+- [ ] Fase 4: Yappy Panamá + generador ADMIN; USD 1.90 por código, un día, caduca sin usar a 365 días, un solo uso. No implementado.
+- [ ] Fase 5: pruebas finales y lanzamiento Panamá.
+
+---
+
 # Decisión comercial pendiente de implementación — códigos prepagados Destacado (5 noviembre 2026)
 
 **Aprobado por el propietario; NO implementado ni desplegado.** Conservar precios y flujo directo existentes. Orden de ejecución: (1) fotografías [código y pruebas completados; falta aceptación/despliegue], (2) Google OAuth y correo reales, (3) R2 real, (4) pagos Yappy Panamá y códigos prepagados, (5) pruebas finales y lanzamiento Panamá. No activar cobros sin autorización.

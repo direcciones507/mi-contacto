@@ -1,0 +1,39 @@
+▶ OAuth local: errores firmados, cancelación, expiración y replay sin credenciales reales
+  ✔ cancelación consume state, limpia cookie y no llama al proveedor (23.116942ms)
+  ✔ state vencido, duplicado o de otro navegador no intercambia códigos (7.622606ms)
+  ✔ rechaza nonce sin crear cuenta ni filtrar errores (18.517523ms)
+  ✔ rechaza aud sin crear cuenta ni filtrar errores (12.37306ms)
+  ✔ rechaza iss sin crear cuenta ni filtrar errores (9.289244ms)
+  ✔ rechaza expired sin crear cuenta ni filtrar errores (11.540468ms)
+  ✔ rechaza signature sin crear cuenta ni filtrar errores (8.927809ms)
+  ✔ rechaza badjson sin crear cuenta ni filtrar errores (8.817123ms)
+  ✔ rechaza reject sin crear cuenta ni filtrar errores (9.102347ms)
+  ✔ rechaza network sin crear cuenta ni filtrar errores (14.728759ms)
+  ✔ error para navegador ofrece retorno seguro y no refleja datos del proveedor (7.964751ms)
+  ✔ identidad válida crea USER aunque el JWT sugiera ADMIN; callback de un solo uso (12.358884ms)
+✔ OAuth local: errores firmados, cancelación, expiración y replay sin credenciales reales (2215.397586ms)
+▶ sesiones: vencimientos, roles actuales, cookies ambiguas y revocación de múltiples dispositivos
+  ✔ cookies duplicadas o adulteradas no autentican (2.673575ms)
+  ✔ ADMIN se comprueba en base por solicitud, no en un rol firmado antiguo (13.835277ms)
+  ✔ logout-all requiere CSRF y revoca todas las sesiones del mismo usuario (33.741293ms)
+  ✔ vencimiento SQL y vencimiento de firma se validan independientemente (5.670142ms)
+✔ sesiones: vencimientos, roles actuales, cookies ambiguas y revocación de múltiples dispositivos (1294.472353ms)
+✔ contraseñas con sal y límites; transporte desactivado y aislamiento obligatorio (343.675356ms)
+▶ correo: verificación obligatoria, enlaces de un uso, recuperación, cambio y revocación
+  ✔ opciones y página, rechaza origen falso sin enviar (13.665476ms)
+  ✔ no hay cuenta habilitada ni sesión antes de verificar; contraseña confirma titularidad (435.05913ms)
+  ✔ registro existente no modifica contraseña; respuesta recuperación no enumera (341.887839ms)
+  ✔ cambio exige sesión, CSRF y contraseña actual; revoca todos los dispositivos (338.311778ms)
+  ✔ enlace vencido no cambia cuenta y límites persistentes detienen abuso (582.564435ms)
+✔ correo: verificación obligatoria, enlaces de un uso, recuperación, cambio y revocación (3952.452037ms)
+✔ vincular correo conserva cuenta y perfil; requiere misma sesión y no fusiona identidades (1614.856786ms)
+✔ Google vinculado explícitamente conserva cuenta; sesión distinta y conflicto no fusionan (1712.789262ms)
+✔ correo: rechaza remitentes de otros proyectos aun con aislamiento declarado (1.808435ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8001.1587

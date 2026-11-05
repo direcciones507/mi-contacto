@@ -1,0 +1,50 @@
+[
+  {
+    "width": 390,
+    "registration": true,
+    "verification": true,
+    "fragmentRemoved": true,
+    "login": true,
+    "recovery": true,
+    "passwordChange": true,
+    "sessionsRevoked": true,
+    "fivePhotoSlots": true,
+    "overflow": false,
+    "jsErrors": [],
+    "engine": "Chromium + local HTTP + PostgreSQL WASM",
+    "realMail": false,
+    "physicalDevice": false
+  },
+  {
+    "width": 820,
+    "registration": true,
+    "verification": true,
+    "fragmentRemoved": true,
+    "login": true,
+    "recovery": true,
+    "passwordChange": true,
+    "sessionsRevoked": true,
+    "fivePhotoSlots": true,
+    "overflow": false,
+    "jsErrors": [],
+    "engine": "Chromium + local HTTP + PostgreSQL WASM",
+    "realMail": false,
+    "physicalDevice": false
+  },
+  {
+    "width": 1440,
+    "registration": true,
+    "verification": true,
+    "fragmentRemoved": true,
+    "login": true,
+    "recovery": true,
+    "passwordChange": true,
+    "sessionsRevoked": true,
+    "fivePhotoSlots": true,
+    "overflow": false,
+    "jsErrors": [],
+    "engine": "Chromium + local HTTP + PostgreSQL WASM",
+    "realMail": false,
+    "physicalDevice": false
+  }
+]
