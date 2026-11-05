@@ -30,10 +30,13 @@ jobs:
           node-version: '24'
           cache: npm
       - run: npm ci
-      - name: Native PostgreSQL and browser dependencies
+      - name: Use native PostgreSQL and browser already present on the standard runner
         run: |
           test -x /usr/lib/postgresql/16/bin/postgres || (sudo apt-get update && sudo apt-get install -y postgresql-16)
-          npx playwright install --with-deps chromium
+          /usr/lib/postgresql/16/bin/postgres --version
+          browser_bin="$(command -v google-chrome || command -v chromium)"
+          "$browser_bin" --version
+          echo "MC_CHROMIUM=$browser_bin" >> "$GITHUB_ENV"
       - name: Integrated regression in local WASM
         run: node --test --test-concurrency=2 tests/*.test.mjs
       - name: Native 015 migration concurrency restart and backup restoration
