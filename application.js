@@ -1,3 +1,5 @@
+import {emailAuth} from './email-auth.js';
+import {authPage} from './email-auth-view.js';
 import {publicPhoto} from './watermark.js';
 import {moderationRuntime} from './moderation.js';
 import {protectionGate} from './protection-gate.js';
@@ -24,11 +26,12 @@ import {featureQuote} from './feature-policy.js';
 import {COUNTRIES} from './countries.js';
 import {dashboard,publicProfile,layout} from './views.js';
 const uuid=/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
-export function createApplication({pool,secret,origin='https://micontacto.online',google=null,fetch:network,verifyToken,storage=memoryPhotoStorage(),simulation=false,legal=legalConfig({}),paymentProvider=null,acceptance=false,acceptanceOwner=null,acceptanceReport=null,accessEvent=()=>{},now=()=>Date.now()}){
+export function createApplication({pool,secret,origin='https://micontacto.online',google=null,emailTransport=null,fetch:network,verifyToken,storage=memoryPhotoStorage(),simulation=false,legal=legalConfig({}),paymentProvider=null,acceptance=false,acceptanceOwner=null,acceptanceReport=null,accessEvent=()=>{},now=()=>Date.now()}){
  const features=featureRuntime(pool,{simulation});
  if(paymentProvider&&paymentProvider.domain!==origin)throw Error('INVALID_PAYMENT_CONFIGURATION');
  const payments=paymentRuntime(pool,{provider:paymentProvider});
  const auth=createAuth(pool,{secret,origin,google,fetch:network,verifyToken,acceptance,acceptanceOwner,now}),profiles=profileRuntime(pool,{now,features,origin}),photos=photoRuntime(pool,profiles,storage,{now});
+ const emailAccess=emailAuth(pool,auth,{origin,secret,transport:emailTransport,now});
  const privateAccess=acceptanceAccess(pool,auth,{secret,origin,acceptance,config:acceptanceOwner,onEvent:accessEvent,now});
  const privacy=privacyRuntime(pool,profiles),erasure=erasureRuntime(pool,storage);
  const consent=consentRuntime(pool,legal),moderation=moderationRuntime(pool,profiles),gate=protectionGate({secret,origin,digest:policyDigest(legal),now});
@@ -41,7 +44,7 @@ export function createApplication({pool,secret,origin='https://micontacto.online
  if(new URL(origin).protocol==='https:')headers['strict-transport-security']='max-age=31536000';
  const json=(status,body)=>Response.json(body,{status,headers});
  const html=body=>new Response(body,{headers:{...headers,'content-type':'text/html; charset=utf-8'}});
- const allowedAssets={'/protection-policy.js':'text/javascript','/report-client.js':'text/javascript','/payment-client.js':'text/javascript','/styles.css':'text/css','/runtime.css':'text/css','/app.js':'text/javascript','/directory-client.js':'text/javascript','/countries.js':'text/javascript','/dashboard.js':'text/javascript','/feature-policy.js':'text/javascript','/public-profile.js':'text/javascript'};
+ const allowedAssets={'/email-auth-client.js':'text/javascript','/protection-policy.js':'text/javascript','/report-client.js':'text/javascript','/payment-client.js':'text/javascript','/styles.css':'text/css','/runtime.css':'text/css','/app.js':'text/javascript','/directory-client.js':'text/javascript','/countries.js':'text/javascript','/dashboard.js':'text/javascript','/feature-policy.js':'text/javascript','/public-profile.js':'text/javascript'};
  async function publicRow(country,slug){return (await pool.query("SELECT p.* FROM micontacto.profiles p JOIN micontacto.accounts a ON a.id=p.account_id JOIN micontacto.country_settings cs ON cs.code=p.country_code AND cs.enabled WHERE p.url_country=$1 AND p.slug=$2 AND NOT p.privacy_hidden AND NOT p.moderation_restricted AND p.status='ACTIVE' AND p.review_decision='APPROVED' AND a.status='ACTIVE'",[country,slug])).rows[0]??null;}
  async function bytes(req,limit){if(Number(req.headers.get('content-length'))>limit)throw Error('PAYLOAD_TOO_LARGE');const chunks=[];let n=0;const reader=req.body?.getReader();if(!reader)return Buffer.alloc(0);try{while(true){const {done,value}=await reader.read();if(done)break;n+=value.length;if(n>limit){await reader.cancel();throw Error('PAYLOAD_TOO_LARGE');}chunks.push(Buffer.from(value));}}finally{reader.releaseLock();}return Buffer.concat(chunks);}
  async function body(req){if(!req.headers.get('content-type')?.startsWith('application/json'))throw Error('JSON_REQUIRED');try{const data=JSON.parse((await bytes(req,16384)).toString());if(!data||typeof data!=='object'||Array.isArray(data))throw Error('INVALID_JSON');return data;}catch(e){if(e.message==='PAYLOAD_TOO_LARGE')throw e;throw Error('INVALID_JSON');}}
@@ -55,9 +58,13 @@ export function createApplication({pool,secret,origin='https://micontacto.online
    if(path==='/api/payments/yappy/ipn'&&!allowRead('payment-ipn',600))return json(429,{error:'RATE_LIMITED'});
    if(path==='/api/payments/yappy/ipn'&&req.method==='GET')return json(200,await payments.confirm(url.searchParams));
    const gateReply=await gate.handle(req);if(gateReply)return secure(gateReply);
-   if(legal.enforce&&path.startsWith('/auth/google')&&!gate.accepted(req))return secure(new Response(null,{status:303,headers:{location:'/aviso'}}));
+   if(legal.enforce&&path.startsWith('/auth/google')&&!gate.accepted(req)){
+    const existing=await auth.current(req);if(!existing||!await consent.accepted(existing.id))return secure(new Response(null,{status:303,headers:{location:'/aviso'}}));
+   }
    const accessReply=await privateAccess.handle(req);if(accessReply)return secure(accessReply,true);
-   if(path==='/api/auth-options'&&req.method==='GET')return json(200,{googleEnabled:!!google?.clientId&&!!google?.clientSecret,acceptanceLoginEnabled:privateAccess.enabled()});
+   if(path==='/api/auth-options'&&req.method==='GET')return json(200,{emailEnabled:emailAccess.enabled,googleEnabled:!!google?.clientId&&!!google?.clientSecret,acceptanceLoginEnabled:privateAccess.enabled()});
+   const emailReply=await emailAccess.handle(req);if(emailReply)return secure(emailReply);
+   if(req.method==='GET'&&path==='/acceso')return html(authPage());
    const authReply=await auth.handle(req);if(authReply){
     if(path==='/auth/google/callback'&&authReply.status>=400&&req.headers.get('accept')?.includes('text/html')){
      const error=(await authReply.clone().json()).error;const messages={OAUTH_CANCELLED:'Cancelaste el acceso con Google. Puedes volver a intentarlo.',INVALID_OAUTH_STATE:'La solicitud venció o corresponde a otro navegador. Inicia el acceso nuevamente.',ACCOUNT_SUSPENDED:'El acceso a esta cuenta está restringido. Solicita revisión a administración.'};

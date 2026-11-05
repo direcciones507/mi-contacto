@@ -13,7 +13,7 @@ export async function bootstrapAcceptance(pool,env){
  const root='/var/lib/mi-contacto',reportPath=join(root,'acceptance-status.json');await mkdir(root,{recursive:true,mode:0o700});
  const preMigrationBackup=await protectUnificationMigration(pool,env,root);
  const applied=await migrateDatabase(pool);
- const migrated=Number((await pool.query('SELECT count(*) AS n FROM micontacto.schema_migrations')).rows[0].n);if(migrated!==14)throw Error('MIGRATION_COUNT_MISMATCH');
+ const migrated=Number((await pool.query('SELECT count(*) AS n FROM micontacto.schema_migrations')).rows[0].n);if(migrated!==15)throw Error('MIGRATION_COUNT_MISMATCH');
  if(!(await pool.query('SELECT id FROM micontacto.catalog_sources LIMIT 1')).rows.length)await loadCatalog(pool);
  const territoryCorrections=await applyVerifiedTerritories(pool);
  const id=env.MC_ACCEPTANCE_OWNER_ID;

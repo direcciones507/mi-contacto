@@ -69,7 +69,7 @@ test('readiness HTTP comprueba base; privacidad, seguridad de transporte y conse
 test('arranque persistente verifica todas las migraciones y rechaza registro parcial o alterado sin modificarlo',async()=>{
  const f=await testFixture();try{
   const {assertDatabaseReady}=await import('../database.js'),{readdirSync}=await import('node:fs'),{createHash}=await import('node:crypto');await assert.rejects(assertDatabaseReady(f.pool),/DATABASE_MIGRATIONS_REQUIRED/);
-  await f.pool.query('CREATE TABLE micontacto.schema_migrations(name text PRIMARY KEY,sha256 text NOT NULL)');for(const name of readdirSync(new URL('../db/',import.meta.url)).filter(n=>/^\d{3}_.*\.sql$/.test(n)))await f.pool.query('INSERT INTO micontacto.schema_migrations VALUES($1,$2)',[name,createHash('sha256').update(readFileSync(new URL('../db/'+name,import.meta.url))).digest('hex')]);assert.equal((await assertDatabaseReady(f.pool)).migrations,14);
+  await f.pool.query('CREATE TABLE micontacto.schema_migrations(name text PRIMARY KEY,sha256 text NOT NULL)');for(const name of readdirSync(new URL('../db/',import.meta.url)).filter(n=>/^\d{3}_.*\.sql$/.test(n)))await f.pool.query('INSERT INTO micontacto.schema_migrations VALUES($1,$2)',[name,createHash('sha256').update(readFileSync(new URL('../db/'+name,import.meta.url))).digest('hex')]);assert.equal((await assertDatabaseReady(f.pool)).migrations,15);
   await f.pool.query("UPDATE micontacto.schema_migrations SET sha256='alterado' WHERE name='013_legal_consent.sql'");await assert.rejects(assertDatabaseReady(f.pool),/MIGRATION_CHECKSUM_MISMATCH/);assert.equal((await f.pool.query("SELECT sha256 FROM micontacto.schema_migrations WHERE name='013_legal_consent.sql'")).rows[0].sha256,'alterado');
  }finally{await f.pool.close();}
 });
