@@ -5,7 +5,7 @@ import {authEmailTransport} from '../auth-email-transport.js';
 import {passwordWork} from '../password-work.js';
 const url=kind=>'https://micontacto.online/acceso#token='+'a'.repeat(43)+'&purpose='+kind;
 test('plantillas de registro, vinculación y recuperación: identidad, texto, HTML accesible y enlace de un uso',()=>{
- for(const kind of ['REGISTER','LINK','RESET']){const t=authenticationEmail({kind,url:url(kind),expiresMinutes:30});assert.match(t.subject,/Mi Contacto/);assert.match(t.html,/lang="es"/);assert.match(t.text,/una vez/);assert.match(t.text,/30 minutos/);assert(!t.html.includes('Direcciones507'));}
+ for(const kind of ['REGISTER','LINK','RESET']){const t=authenticationEmail({kind,url:url(kind),expiresMinutes:30});assert.match(t.subject,/Mi Contacto/);assert.match(t.html,/lang="es"/);assert.match(t.html,/<a href="https:\/\/micontacto.online\/acceso#token=/);assert.match(t.text,/una vez/);assert.match(t.text,/30 minutos/);assert(!t.html.includes('Direcciones507'));}
  const escaped=emailDocument({subject:'<script>',text:'<img src=x onerror=alert(1)>'});assert(!escaped.includes('<img'));assert.match(escaped,/&lt;img/);
  assert.throws(()=>authenticationEmail({kind:'UNKNOWN',url:url('RESET'),expiresMinutes:30}));
 });

@@ -9,7 +9,8 @@ export function authenticationEmail({kind,url,expiresMinutes}){
  const target=new URL(url);if(target.username||target.password||target.pathname!=='/acceso'||target.search||target.protocol!=='https:'&&!['localhost','127.0.0.1'].includes(target.hostname))throw Error('INVALID_AUTH_EMAIL');
  const fragment=new URLSearchParams(target.hash.slice(1));if(fragment.get('purpose')!==kind||! /^[A-Za-z0-9_-]{43}$/.test(fragment.get('token')??''))throw Error('INVALID_AUTH_EMAIL');
  const text=subject+'\n\nAbre este enlace en Mi Contacto y escribe '+(kind==='RESET'?'tu nueva contraseña':'la contraseña que elegiste en Mi Contacto')+':\n'+target.href+'\n\nEl enlace vence en '+expiresMinutes+' minutos y solo puede usarse una vez. Si no lo solicitaste, ignora este mensaje. Mi Contacto nunca te pedirá tu contraseña por correo.';
- return {subject,text,html:emailDocument({subject,text})};
+ const action='<p><a href="'+escape(target.href)+'" style="display:inline-block;background:#0a438f;color:white;padding:14px 20px;border-radius:8px;text-decoration:none">Abrir enlace seguro de Mi Contacto</a></p>';
+ return {subject,text,html:emailDocument({subject,text}).replace('</main>',action+'</main>')};
 }
 export async function confirmedEmailResponse(response){
  if(!response.ok)throw Error('EMAIL_PROVIDER_REJECTED');
