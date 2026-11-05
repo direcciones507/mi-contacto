@@ -24,12 +24,12 @@ import {featureQuote} from './feature-policy.js';
 import {COUNTRIES} from './countries.js';
 import {dashboard,publicProfile,layout} from './views.js';
 const uuid=/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
-export function createApplication({pool,secret,origin='https://micontacto.online',google=null,fetch:network,verifyToken,storage=memoryPhotoStorage(),simulation=false,legal=legalConfig({}),paymentProvider=null,acceptance=false,acceptanceOwner=null,acceptanceReport=null,now=()=>Date.now()}){
+export function createApplication({pool,secret,origin='https://micontacto.online',google=null,fetch:network,verifyToken,storage=memoryPhotoStorage(),simulation=false,legal=legalConfig({}),paymentProvider=null,acceptance=false,acceptanceOwner=null,acceptanceReport=null,accessEvent=()=>{},now=()=>Date.now()}){
  const features=featureRuntime(pool,{simulation});
  if(paymentProvider&&paymentProvider.domain!==origin)throw Error('INVALID_PAYMENT_CONFIGURATION');
  const payments=paymentRuntime(pool,{provider:paymentProvider});
  const auth=createAuth(pool,{secret,origin,google,fetch:network,verifyToken,acceptance,acceptanceOwner,now}),profiles=profileRuntime(pool,{now,features,origin}),photos=photoRuntime(pool,profiles,storage,{now});
- const privateAccess=acceptanceAccess(pool,auth,{secret,origin,acceptance,config:acceptanceOwner,now});
+ const privateAccess=acceptanceAccess(pool,auth,{secret,origin,acceptance,config:acceptanceOwner,onEvent:accessEvent,now});
  const privacy=privacyRuntime(pool,profiles),erasure=erasureRuntime(pool,storage);
  const consent=consentRuntime(pool,legal),moderation=moderationRuntime(pool,profiles),gate=protectionGate({secret,origin,digest:policyDigest(legal),now});
  const reportMac=value=>createHmac('sha256',secret).update('report:'+value).digest('base64url');

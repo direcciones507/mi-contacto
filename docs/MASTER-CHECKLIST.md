@@ -284,3 +284,13 @@ Esta sección sustituye estados históricos contradictorios para este alcance. B
 - [ ] Confirmar despliegue terminal SUCCESS y migración 014 en el servicio de aceptación existente.
 - [ ] Completar recorrido autenticado en Railway con sesión/código privado del propietario; no restablecer credenciales ni crear accesos alternativos.
 - [ ] Antes de producción: aprobación jurídica, responsable, contacto, retención/plazos y escalamiento; Google/R2 reales y dispositivos físicos.
+
+## Cierre de acceso privado — 5 de noviembre de 2026
+
+- [x] Base funcional `c8e8398`, sin alterar infraestructura ni código privado.
+- [x] POST anterior identificado como 401; no confundir con rechazo de origen 403. Causa exacta histórica no determinable por el mensaje genérico.
+- [x] Reproducción con código sintético: la segunda pestaña invalidaba la primera aun con código correcto; corregido conservando caducidad y protecciones.
+- [x] Diagnósticos enumerados del servidor sin secretos; mensajes de recuperación de cookies/formulario sin exponer el código.
+- [x] 159 pruebas aprobadas; cero fallidas. Tres recorridos autenticados Chromium locales por formulario: Android, iPad y escritorio; fotos, marca, denuncias y ADMIN.
+- [ ] Registrar despliegue SUCCESS y persistencia del servicio existente.
+- [ ] Completar recorrido autenticado Railway con el acceso original del propietario, sin generar ni recuperar credenciales alternativas.
