@@ -1,0 +1,33 @@
+✔ foto principal gratuita y cuatro extras vigentes; reemplazo al límite, propiedad y expiración (20165.624315ms)
+✔ multiple tabs and refresh preserve one expiring binding without exposing or changing the code (17482.539457ms)
+✔ wrong code does not invalidate another tab; exact code comparison and rate limit remain (14626.849336ms)
+✔ missing, duplicate, expired and mismatched cookies remain rejected with safe reason-only diagnostics (13567.55821ms)
+✔ origin and fetch-site checks reject cross-site, opaque and proxy-spoofed requests (8503.478324ms)
+✔ watermark embedded at center on vertical, square and horizontal photographs (768.119108ms)
+✔ acceptance draft requires three declarations and persists version; OAuth cannot start without notice (18457.081535ms)
+▶ public report, spam controls, ADMIN moderation, restricted originals, appeals and audit
+  ✔ all media returns pixel watermark; private object keys and unmarked query variants cannot expose originals (506.834143ms)
+  ✔ anonymous form enforces same origin cookie and signature, deduplicates and never auto hides (252.012052ms)
+  ✔ hide blocks link QR media and directory; owner cannot undo by toggling privacy (324.984096ms)
+  ✔ appeal is private, role guarded and resolution returns only to draft (125.42076ms)
+  ✔ account suspension revokes sessions; reauthentication permits only reads and appeals (272.326204ms)
+  ✔ withdrawal blocks profile QR and media; no auto publication after accepted appeal (143.679812ms)
+  ✔ sensitive hold denies photo even to ADMIN, deletion preserves held evidence and no automatic report is sent (118.080599ms)
+✔ public report, spam controls, ADMIN moderation, restricted originals, appeals and audit (11609.139286ms)
+✔ correcciones territoriales versionadas conservan origen/homónimos y reconocen cantones nuevos (2187.188286ms)
+✔ directorio funcional representativo de ocho países con IDs reales de catálogo; base WASM, no nativa (3309.7473ms)
+✔ corregir territorio referenciado exige reconciliar perfil y revierte sin cambiar datos existentes (1867.832074ms)
+✔ privacidad y términos: borrador explícito, configuración productiva bloqueada hasta aprobación (1104.233834ms)
+✔ aceptación legal por cuenta: explícita, versionada, CSRF, idempotente y previa a crear/publicar (1081.219095ms)
+✔ readiness HTTP comprueba base; privacidad, seguridad de transporte y consentimiento no exponen secretos (1053.218038ms)
+✔ arranque persistente verifica todas las migraciones y rechaza registro parcial o alterado sin modificarlo (1149.879716ms)
+✔ URL PostgreSQL inválida produce error redactado y no imprime el valor recibido (0.780438ms)
+✔ overlay selectivo en base existente crea cantones y preserva un perfil con territorio previo (1831.379702ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 72168.96258

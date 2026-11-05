@@ -1,3 +1,18 @@
+# Mejora visual — 5 de noviembre de 2026 (Panamá)
+
+Rama `work/visual-forms-20261105`, base `2928339`, conserva la construcción de acceso por correo de la rama anterior sin desplegarla.
+
+- [x] Consentimientos: enlaces legales separados, tres declaraciones con separación uniforme y etiquetas táctiles; acción principal azul y rechazo secundario. Textos, versión, digest, API y obligatoriedad conservados.
+- [x] Fotografías: botones compactos con mínimo táctil de 44 px, acciones agrupadas, previsualización uniforme, identificación de principal gratis y adicionales Destacado; instrucciones de borrador y bloqueo visibles.
+- [x] Rejilla adaptable: 390 px una columna, 820 px dos y 1440 px tres; sin desbordamiento ni errores JS en Chromium.
+- [x] 24 pruebas funcionales pertinentes aprobadas, cero fallidas/omitidas. Tres recorridos visuales/funcionales con consentimiento obligatorio, borrador, vista previa, reemplazo, retirada y bloqueo de galería; también denuncia y moderación sin regresión.
+- [x] Evidencias y reproducción: `docs/evidence/visual-forms-20261105/` y `scripts/visual-forms-browser.mjs`.
+- [ ] Dispositivos físicos y nueva presentación en Railway: no comprobados. No se desplegó esta rama.
+
+Sin cambios de autenticación, PostgreSQL, permisos, políticas legales, reglas de Destacado ni recursos. No se activaron pagos, infraestructura ni despliegues.
+
+---
+
 # Cierre verificable vigente — 5 de noviembre de 2026 (Panamá)
 
 Rama `work/continuous-close-20261105`, base remota real `3b4a8a5` posterior a `c8e8398`. Código nuevo: `3a1b7a5`. Este bloque sustituye las casillas históricas contradictorias para los componentes comprobados. Informe: [CONTINUOUS-CLOSE-20261105.md](CONTINUOUS-CLOSE-20261105.md).
