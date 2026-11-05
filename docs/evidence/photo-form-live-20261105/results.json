@@ -1,0 +1,35 @@
+{
+  "checkedAt": "2026-11-05T00:30:42.682Z",
+  "liveRailway": true,
+  "physicalDevices": false,
+  "proxyCertificateExceptionOnlyInTest": true,
+  "results": [
+    {
+      "device": "desktop",
+      "visibleSlots": 5,
+      "hasExistingProfile": false,
+      "extraSlotsLocked": true,
+      "privatePreviewAndDiscard": false,
+      "profileDataUnchanged": true,
+      "errors": []
+    },
+    {
+      "device": "phone",
+      "visibleSlots": 5,
+      "hasExistingProfile": false,
+      "extraSlotsLocked": true,
+      "privatePreviewAndDiscard": false,
+      "profileDataUnchanged": true,
+      "errors": []
+    },
+    {
+      "device": "tablet",
+      "visibleSlots": 5,
+      "hasExistingProfile": false,
+      "extraSlotsLocked": true,
+      "privatePreviewAndDiscard": false,
+      "profileDataUnchanged": true,
+      "errors": []
+    }
+  ]
+}
