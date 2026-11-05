@@ -1,3 +1,19 @@
+# Decisión comercial pendiente de implementación — códigos prepagados Destacado (5 noviembre 2026)
+
+**Aprobado por el propietario; NO implementado ni desplegado.** Conservar precios y flujo directo existentes. Orden de ejecución: (1) fotografías [código y pruebas completados; falta aceptación/despliegue], (2) Google OAuth y correo reales, (3) R2 real, (4) pagos Yappy Panamá y códigos prepagados, (5) pruebas finales y lanzamiento Panamá. No activar cobros sin autorización.
+
+- [x] **Regla comercial aprobada:** cada código cuesta **USD 1.90**, activa **exactamente 1 día (24 horas) de Destacado** desde su canje y se consume **una sola vez**. No existen códigos de varios días; 5 códigos son 5 activaciones independientes de un día, no un único código de cinco días.
+- [x] **Vigencia aprobada:** un código sin canjear caduca a los **365 días desde su emisión**. El cliente decide cuándo usar cada código dentro de ese plazo; el vencimiento de un código no cancela un Destacado ya activado.
+- [x] **Precio diferencial aprobado:** los códigos a USD 1.90/día son más caros que la compra directa por períodos, cuyos precios NO cambian: 1 día 1.69; 5 días 7.99; 10 días 14.99; 15 días 21.99; 20 días 27.99; 25 días 31.99; 30 días 34.99 (USD). Ejemplos: 5 códigos 9.50 frente a 5 días directos 7.99; 10 códigos 19.00 frente a 10 días directos 14.99. Mostrar esta diferencia claramente en el panel del cliente.
+- [ ] **Generador exclusivo ADMIN:** introducir cantidad libre (p. ej., 2, 3, 5, 10 o 12) y emitir exactamente esa cantidad de códigos únicos de 10 dígitos, generados criptográficamente en servidor, con límites razonables y auditoría; copiar por unidad o lote y compartir por WhatsApp. ADMIN registra entrega/venta tras recibir el pago acordado fuera de línea; no exigir un pago propio por cada emisión administrativa, pero sí autorización ADMIN y trazabilidad.
+- [ ] **Panel del cliente:** ofrecer claramente «Comprar Destacado» (planes directos más económicos), «Comprar códigos» (USD 1.90 cada uno, cantidad seleccionable, emisión solo tras pago confirmado) y «Tengo un código» (canjear). Permitir consultar, copiar y compartir los códigos adquiridos sin habilitar generación gratuita ni revelar códigos de otros usuarios.
+- [ ] **Canje y acumulación:** un código activa 24 horas; varios códigos pueden canjearse por separado cuando el titular quiera. Si ya existe Destacado activo, sumar el nuevo día al vencimiento actual sin perder tiempo; cada código se consume transaccionalmente una sola vez y solo en el perfil autenticado. No consumir código ante error.
+- [ ] **Estados y seguridad:** disponible, canjeado, vencido y anulado, con vínculo a emisión, comprador/entrega cuando proceda, perfil beneficiario y fechas. Evitar códigos predecibles, duplicados, doble canje, enumeración, fuerza bruta y filtraciones en logs; validación atómica con PostgreSQL, rate limiting, idempotencia, CSRF, permisos y auditoría. Entrega/consulta de códigos en canal autenticado seguro.
+- [ ] **Pagos:** Panamá primero, Yappy real cuando sea autorizado; comprobante por correo. Separar emisión ADMIN fuera de línea y emisión por compra online tras confirmación verificable del proveedor; mantener pasarelas por país desacopladas y preparadas, sin activar otros países ni proveedores sin autorización.
+- [ ] **Pruebas:** cantidad exacta generada; 10 dígitos y unicidad; precio/tabla comparativa; envío/copia WhatsApp; canje único; acumulación; expiración a 365 días; simultaneidad; pagos aprobados/rechazados/duplicados; abuso; controles ADMIN y cliente; móvil/tableta/escritorio; sin cargos reales en pruebas.
+
+---
+
 # Dos contenedores y ciclo de fotografías — 5 noviembre 2026
 
 Rama `work/two-photo-containers-cleanup-20261105`, base vigente `1ca028d` de `work/final-integration-acceptance-20261105`. Implementación `4fbe7a1`. Informe: [TWO-PHOTO-CONTAINERS-20261105.md](TWO-PHOTO-CONTAINERS-20261105.md).
