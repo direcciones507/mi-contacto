@@ -1,0 +1,210 @@
+{
+  "runId": 42065348124,
+  "commit": "4fbe7a194529085cf98b79d3c648d9d2596ea432",
+  "conclusion": "success",
+  "physical": [
+    {
+      "engine": "PostgreSQL WASM",
+      "physicalStorage": "private local filesystem",
+      "operations": [
+        {
+          "role": "MAIN",
+          "replacedId": "25700658-e25e-4425-9d1f-499e22eda2a1",
+          "oldFileExists": false,
+          "oldRowExists": false,
+          "newFileExists": true,
+          "otherProfilePreserved": true
+        },
+        {
+          "role": "MAIN",
+          "removedId": "9dba5a51-2872-419d-b95e-edf1b10bef0a",
+          "fileExists": false,
+          "rowExists": false
+        },
+        {
+          "role": "GALLERY",
+          "position": 1,
+          "oldFileExists": false,
+          "replacementFileExistsAfterRemove": false,
+          "otherProfilePreserved": true
+        },
+        {
+          "role": "GALLERY",
+          "position": 2,
+          "oldFileExists": false,
+          "replacementFileExistsAfterRemove": false,
+          "otherProfilePreserved": true
+        },
+        {
+          "role": "GALLERY",
+          "position": 3,
+          "oldFileExists": false,
+          "replacementFileExistsAfterRemove": false,
+          "otherProfilePreserved": true
+        },
+        {
+          "role": "GALLERY",
+          "position": 4,
+          "oldFileExists": false,
+          "replacementFileExistsAfterRemove": false,
+          "otherProfilePreserved": true
+        }
+      ],
+      "finalFiles": 2,
+      "activePhotos": 2,
+      "pendingDeletion": 0,
+      "uploadIntents": 0,
+      "temporaryFiles": 0
+    },
+    {
+      "engine": "native PostgreSQL",
+      "physicalStorage": "private local filesystem",
+      "operations": [
+        {
+          "role": "MAIN",
+          "replacedId": "73c6c809-0b0b-47ac-9118-245818ad0f64",
+          "oldFileExists": false,
+          "oldRowExists": false,
+          "newFileExists": true,
+          "otherProfilePreserved": true
+        },
+        {
+          "role": "MAIN",
+          "removedId": "90026412-b134-4d29-ba82-685d7e5760fe",
+          "fileExists": false,
+          "rowExists": false
+        },
+        {
+          "role": "GALLERY",
+          "position": 1,
+          "oldFileExists": false,
+          "replacementFileExistsAfterRemove": false,
+          "otherProfilePreserved": true
+        },
+        {
+          "role": "GALLERY",
+          "position": 2,
+          "oldFileExists": false,
+          "replacementFileExistsAfterRemove": false,
+          "otherProfilePreserved": true
+        },
+        {
+          "role": "GALLERY",
+          "position": 3,
+          "oldFileExists": false,
+          "replacementFileExistsAfterRemove": false,
+          "otherProfilePreserved": true
+        },
+        {
+          "role": "GALLERY",
+          "position": 4,
+          "oldFileExists": false,
+          "replacementFileExistsAfterRemove": false,
+          "otherProfilePreserved": true
+        }
+      ],
+      "finalFiles": 2,
+      "activePhotos": 2,
+      "pendingDeletion": 0,
+      "uploadIntents": 0,
+      "temporaryFiles": 0
+    }
+  ],
+  "browser": [
+    {
+      "width": 390,
+      "consent": true,
+      "create": true,
+      "uploadPreviewReplaceRemove": true,
+      "freeGalleryLocked": true,
+      "pixelWatermark": true,
+      "publicReport": true,
+      "adminHide": true,
+      "appeal": true,
+      "audit": true,
+      "jsErrors": [],
+      "overflow": false,
+      "device": "Android phone emulation",
+      "photoContainers": 2,
+      "galleryPositions": 4,
+      "activeGalleryPreviews": 4,
+      "galleryColumns": 1,
+      "touchTargets": true,
+      "legalLinksSeparated": true,
+      "threeMandatoryDeclarations": true,
+      "primarySecondaryActions": true,
+      "privateLogin": true,
+      "multipleTabs": true,
+      "cookies": true,
+      "csrfRejected": true,
+      "adminLogin": true,
+      "engine": "Chromium + local HTTP + native PostgreSQL"
+    },
+    {
+      "width": 820,
+      "consent": true,
+      "create": true,
+      "uploadPreviewReplaceRemove": true,
+      "freeGalleryLocked": true,
+      "pixelWatermark": true,
+      "publicReport": true,
+      "adminHide": true,
+      "appeal": true,
+      "audit": true,
+      "jsErrors": [],
+      "overflow": false,
+      "device": "iPad emulation",
+      "photoContainers": 2,
+      "galleryPositions": 4,
+      "activeGalleryPreviews": 4,
+      "galleryColumns": 2,
+      "touchTargets": true,
+      "legalLinksSeparated": true,
+      "threeMandatoryDeclarations": true,
+      "primarySecondaryActions": true,
+      "privateLogin": true,
+      "multipleTabs": true,
+      "cookies": true,
+      "csrfRejected": true,
+      "adminLogin": true,
+      "engine": "Chromium + local HTTP + native PostgreSQL"
+    },
+    {
+      "width": 1440,
+      "consent": true,
+      "create": true,
+      "uploadPreviewReplaceRemove": true,
+      "freeGalleryLocked": true,
+      "pixelWatermark": true,
+      "publicReport": true,
+      "adminHide": true,
+      "appeal": true,
+      "audit": true,
+      "jsErrors": [],
+      "overflow": false,
+      "device": "desktop",
+      "photoContainers": 2,
+      "galleryPositions": 4,
+      "activeGalleryPreviews": 4,
+      "galleryColumns": 2,
+      "touchTargets": true,
+      "legalLinksSeparated": true,
+      "threeMandatoryDeclarations": true,
+      "primarySecondaryActions": true,
+      "privateLogin": true,
+      "multipleTabs": true,
+      "cookies": true,
+      "csrfRejected": true,
+      "adminLogin": true,
+      "engine": "Chromium + local HTTP + native PostgreSQL"
+    }
+  ],
+  "counts": [
+    "2026-11-05T16:32:34.4844944Z ℹ tests 186",
+    "2026-11-05T16:32:34.4845456Z ℹ pass 186",
+    "2026-11-05T16:32:34.4845683Z ℹ fail 0",
+    "2026-11-05T16:32:49.3531443Z ℹ tests 24",
+    "2026-11-05T16:32:49.3531974Z ℹ pass 24",
+    "2026-11-05T16:32:49.3532249Z ℹ fail 0"
+  ]
+}

@@ -1,3 +1,24 @@
+# Dos contenedores y ciclo de fotografías — 5 noviembre 2026
+
+Rama `work/two-photo-containers-cleanup-20261105`, base vigente `1ca028d` de `work/final-integration-acceptance-20261105`. Implementación `4fbe7a1`. Informe: [TWO-PHOTO-CONTAINERS-20261105.md](TWO-PHOTO-CONTAINERS-20261105.md).
+
+- [x] Dos contenedores principales: foto de perfil gratuita y Galería Destacado con cuatro posiciones internas estables; vista previa, reemplazo y retirada por posición.
+- [x] La elegibilidad y el máximo de cuatro fotos de Destacado se mantienen; celular/tableta/escritorio comprobados.
+- [x] Nueva imagen normalizada, escrita y leída/verificada por SHA-256 antes de cambiar la referencia; eliminación física posterior al COMMIT.
+- [x] Borrado de archivos y metadatos retirados/reemplazados; protección de referencias activas, verificación vigente, retención sensible y otros perfiles.
+- [x] Intentos nuevos persistidos antes de escribir; reconciliación de cargas incompletas/COMMIT incierto; reintentos durables con espera progresiva y recuperación tras reinicio.
+- [x] Limpieza controlada de temporales propios vencidos; sin barrido masivo de fotografías antiguas ni listado/purga R2.
+- [x] Migración 016 aditiva preparada y comprobada en PostgreSQL nativo; conserva las cinco fotos activas anteriores y asigna posiciones sin cambiar IDs, archivos ni enlaces.
+- [x] CI exacto 4fbe7a1: 186 pruebas de regresión + 24 pruebas nativas, cero fallidas; tres recorridos Chrome con PostgreSQL nativo y cuatro vistas previas de galería.
+- [x] Evidencia física real de archivos de prueba: principal y cuatro posiciones eliminadas; al cierre solo dos archivos y dos fotos activas de dos perfiles, cero colas/intentos/temporales pendientes.
+- [x] Adaptador R2 verificado con cliente SDK simulado: PUT, GET, DELETE exactos, reintentos y cuatro posiciones.
+- [ ] R2 real requiere configuración exclusiva y comprobación de permisos/bucket; no se certifica un proveedor real mediante el cliente simulado.
+- [ ] Sin desplegar ni aplicar 016 a Railway: se requiere autorización posterior. Ningún archivo, usuario, fotografía o dato remoto modificado en esta entrega.
+
+No se modificaron reglas comerciales, autenticación, producción, recursos ni pagos. No se tocaron otros proyectos.
+
+---
+
 # Integración final y aceptación desplegada — 5 noviembre 2026 (Panamá)
 
 Rama consolidada `work/final-integration-acceptance-20261105`, versión desplegada `826bdee`. Contiene `2928339` y `0fb2277` por historial directo; sin conflictos. Informe: [FINAL-INTEGRATION-ACCEPTANCE-20261105.md](FINAL-INTEGRATION-ACCEPTANCE-20261105.md).

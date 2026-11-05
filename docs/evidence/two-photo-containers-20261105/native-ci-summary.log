@@ -1,0 +1,47 @@
+2026-11-05T16:32:12.8209432Z ▶ private volume: main and all four fixed gallery positions replace/remove physically; no historical files
+2026-11-05T16:32:12.8211444Z   ✔ main replacement verifies new bytes and removes old object and row before returning (74.883989ms)
+2026-11-05T16:32:12.8323641Z   ✔ main removal physically deletes, protecting the other profile (36.79007ms)
+2026-11-05T16:32:12.9853486Z   ✔ gallery position 1 replacement/removal deletes its exact file and preserves other positions (115.463044ms)
+2026-11-05T16:32:13.0749348Z   ✔ gallery position 2 replacement/removal deletes its exact file and preserves other positions (90.929205ms)
+2026-11-05T16:32:13.1677304Z   ✔ gallery position 3 replacement/removal deletes its exact file and preserves other positions (92.634673ms)
+2026-11-05T16:32:13.2570009Z   ✔ gallery position 4 replacement/removal deletes its exact file and preserves other positions (87.203365ms)
+2026-11-05T16:32:13.2585968Z PHOTO_PHYSICAL_EVIDENCE {"engine":"PostgreSQL WASM","physicalStorage":"private local filesystem","operations":[{"role":"MAIN","replacedId":"25700658-e25e-4425-9d1f-499e22eda2a1","oldFileExists":false,"oldRowExists":false,"newFileExists":true,"otherProfilePreserved":true},{"role":"MAIN","removedId":"9dba5a51-2872-419d-b95e-edf1b10bef0a","fileExists":false,"rowExists":false},{"role":"GALLERY","position":1,"oldFileExists":false,"replacementFileExistsAfterRemove":false,"otherProfilePreserved":true},{"role":"GALLERY","position":2,"oldFileExists":false,"replacementFileExistsAfterRemove":false,"otherProfilePreserved":true},{"role":"GALLERY","position":3,"oldFileExists":false,"replacementFileExistsAfterRemove":false,"otherProfilePreserved":true},{"role":"GALLERY","position":4,"oldFileExists":false,"replacementFileExistsAfterRemove":false,"otherProfilePreserved":true}],"finalFiles":2,"activePhotos":2,"pendingDeletion":0,"uploadIntents":0,"temporaryFiles":0}
+2026-11-05T16:32:13.2675373Z ✔ private volume: main and all four fixed gallery positions replace/remove physically; no historical files (2504.998057ms)
+2026-11-05T16:32:14.3368974Z ▶ storage failures: read-back validation, partial writes, durable retries, active references and legal hold
+2026-11-05T16:32:14.3398018Z   ✔ failed or corrupt upload preserves active old image and removes the failed new file (145.030923ms)
+2026-11-05T16:32:14.4738767Z   ✔ delete success without actual removal is rejected and durable retries finish it (100.82089ms)
+2026-11-05T16:32:14.5462224Z   ✔ an active reference prevents deletion even when wrongly queued (60.641246ms)
+2026-11-05T16:32:14.5904975Z   ✔ failed deletion remains queued; legal hold retains only until explicitly released (93.43948ms)
+2026-11-05T16:32:14.5924310Z ✔ storage failures: read-back validation, partial writes, durable retries, active references and legal hold (1324.941357ms)
+2026-11-05T16:32:15.4710446Z ✔ controlled orphan recovery cleans expired new intents and stale temp files; never scans historical photo objects (878.146615ms)
+2026-11-05T16:32:16.6339602Z ✔ concurrent main replacements leave one live object; committed-but-unacknowledged upload is never deleted (1161.579791ms)
+2026-11-05T16:32:17.7134874Z ✔ R2 SDK adapter: verified put, automatic exact-key deletion, retries and four positions with isolated fake bucket (1080.404813ms)
+2026-11-05T16:32:18.4339433Z ✔ 016 migration preserves existing five active photos and assigns stable gallery positions without deleting data (720.425036ms)
+2026-11-05T16:32:19.3405329Z ✔ concurrent gallery writes and replacements cannot exceed four positions or remove another active slot (907.105433ms)
+2026-11-05T16:32:34.4844944Z ℹ tests 186
+2026-11-05T16:32:34.4845456Z ℹ pass 186
+2026-11-05T16:32:34.4845683Z ℹ fail 0
+2026-11-05T16:32:41.8965153Z   ✔ server restart and actual pg_dump/pg_restore preserve 015 data and old profile (920.531888ms)
+2026-11-05T16:32:43.0815456Z ▶ private volume: main and all four fixed gallery positions replace/remove physically; no historical files
+2026-11-05T16:32:43.0817078Z   ✔ main replacement verifies new bytes and removes old object and row before returning (31.033491ms)
+2026-11-05T16:32:43.0817870Z   ✔ main removal physically deletes, protecting the other profile (25.159239ms)
+2026-11-05T16:32:43.0818486Z   ✔ gallery position 1 replacement/removal deletes its exact file and preserves other positions (45.777317ms)
+2026-11-05T16:32:43.0819144Z   ✔ gallery position 2 replacement/removal deletes its exact file and preserves other positions (159.969926ms)
+2026-11-05T16:32:43.0819782Z   ✔ gallery position 3 replacement/removal deletes its exact file and preserves other positions (43.945259ms)
+2026-11-05T16:32:43.0820412Z   ✔ gallery position 4 replacement/removal deletes its exact file and preserves other positions (35.778457ms)
+2026-11-05T16:32:43.0823854Z PHOTO_PHYSICAL_EVIDENCE {"engine":"native PostgreSQL","physicalStorage":"private local filesystem","operations":[{"role":"MAIN","replacedId":"73c6c809-0b0b-47ac-9118-245818ad0f64","oldFileExists":false,"oldRowExists":false,"newFileExists":true,"otherProfilePreserved":true},{"role":"MAIN","removedId":"90026412-b134-4d29-ba82-685d7e5760fe","fileExists":false,"rowExists":false},{"role":"GALLERY","position":1,"oldFileExists":false,"replacementFileExistsAfterRemove":false,"otherProfilePreserved":true},{"role":"GALLERY","position":2,"oldFileExists":false,"replacementFileExistsAfterRemove":false,"otherProfilePreserved":true},{"role":"GALLERY","position":3,"oldFileExists":false,"replacementFileExistsAfterRemove":false,"otherProfilePreserved":true},{"role":"GALLERY","position":4,"oldFileExists":false,"replacementFileExistsAfterRemove":false,"otherProfilePreserved":true}],"finalFiles":2,"activePhotos":2,"pendingDeletion":0,"uploadIntents":0,"temporaryFiles":0}
+2026-11-05T16:32:43.0826776Z ✔ private volume: main and all four fixed gallery positions replace/remove physically; no historical files (6726.245346ms)
+2026-11-05T16:32:43.0827815Z ▶ storage failures: read-back validation, partial writes, durable retries, active references and legal hold
+2026-11-05T16:32:43.0828449Z   ✔ failed or corrupt upload preserves active old image and removes the failed new file (23.395103ms)
+2026-11-05T16:32:43.3408315Z   ✔ delete success without actual removal is rejected and durable retries finish it (259.147929ms)
+2026-11-05T16:32:43.3498585Z   ✔ an active reference prevents deletion even when wrongly queued (9.162862ms)
+2026-11-05T16:32:43.3672149Z   ✔ failed deletion remains queued; legal hold retains only until explicitly released (15.493139ms)
+2026-11-05T16:32:43.5479693Z ✔ storage failures: read-back validation, partial writes, durable retries, active references and legal hold (2038.052562ms)
+2026-11-05T16:32:44.6264524Z ✔ controlled orphan recovery cleans expired new intents and stale temp files; never scans historical photo objects (1078.384886ms)
+2026-11-05T16:32:45.7891898Z ✔ concurrent main replacements leave one live object; committed-but-unacknowledged upload is never deleted (1162.422664ms)
+2026-11-05T16:32:46.8699051Z ✔ R2 SDK adapter: verified put, automatic exact-key deletion, retries and four positions with isolated fake bucket (1080.691311ms)
+2026-11-05T16:32:48.1713574Z ✔ 016 migration preserves existing five active photos and assigns stable gallery positions without deleting data (1301.53252ms)
+2026-11-05T16:32:49.3371488Z ✔ concurrent gallery writes and replacements cannot exceed four positions or remove another active slot (1165.841656ms)
+2026-11-05T16:32:49.3531443Z ℹ tests 24
+2026-11-05T16:32:49.3531974Z ℹ pass 24
+2026-11-05T16:32:49.3532249Z ℹ fail 0
