@@ -1,0 +1,39 @@
+{
+  "checkedAt": "2026-11-05T00:34:55.995Z",
+  "liveRailway": true,
+  "physicalDevices": false,
+  "syntheticProfileRemoved": true,
+  "realCharges": false,
+  "results": [
+    {
+      "device": "desktop",
+      "upload": true,
+      "privatePreview": true,
+      "replace": true,
+      "remove": true,
+      "invalidFileRejected": true,
+      "galleryRejectedWithoutFeatured": true,
+      "oldPhotoRevoked": true
+    },
+    {
+      "device": "phone",
+      "upload": true,
+      "privatePreview": true,
+      "replace": true,
+      "remove": true,
+      "invalidFileRejected": true,
+      "galleryRejectedWithoutFeatured": true,
+      "oldPhotoRevoked": true
+    },
+    {
+      "device": "tablet",
+      "upload": true,
+      "privatePreview": true,
+      "replace": true,
+      "remove": true,
+      "invalidFileRejected": true,
+      "galleryRejectedWithoutFeatured": true,
+      "oldPhotoRevoked": true
+    }
+  ]
+}

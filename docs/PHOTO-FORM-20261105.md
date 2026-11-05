@@ -13,3 +13,5 @@ Los adicionales requieren saldo vigente ACTIVE/PAUSED según las reglas existent
 135 pruebas Node aprobadas. CI incluye nueve grupos PostgreSQL y tres recorridos Chromium. Evidencia del entorno real en evidence/photo-form-live-20261105. Los tamaños de celular/tableta/computadora son emulados en Chromium, no dispositivos físicos. El proxy de pruebas requiere excepción de su CA en el navegador de prueba, sin modificar TLS de la aplicación.
 
 Para el propietario: abrir /mi-perfil, crear y guardar borrador si hace falta, ir a Fotografías de tu perfil, seleccionar principal, revisar y Guardar fotografía. Los cuatro adicionales permanecen bloqueados hasta contar con Destacado vigente.
+
+Verificación real final: subida, vista previa, reemplazo, retirada, archivo inválido y rechazo de galería sin Destacado aprobados en computadora, teléfono y tableta emulados. Perfil técnico exclusivo eliminado mediante solicitud del titular y aprobación ADMIN; cuenta de aceptación quedó sin perfiles. Resultados: evidence/photo-form-live-20261105/upload-results.json.
