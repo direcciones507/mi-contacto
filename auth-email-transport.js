@@ -2,6 +2,8 @@
 export function authEmailTransport(env,{fetch:network=fetch}={}){
  if(env.MC_AUTH_EMAIL_ENABLED!=='true')return null;
  if(env.MC_EMAIL_ISOLATED!=='true'||!env.MC_RESEND_API_KEY||! /^[^<>\s@]+@[^<>\s@]+\.[^<>\s@]+$/.test(env.MC_EMAIL_FROM??''))throw Error('AUTH_EMAIL_CONFIGURATION_REQUIRED');
+ const senderDomain=env.MC_EMAIL_FROM.split('@')[1].toLowerCase();
+ if(!['micontacto.online','mail.micontacto.online'].includes(senderDomain))throw Error('AUTH_EMAIL_MI_CONTACTO_DOMAIN_REQUIRED');
  const recipients=(env.MC_AUTH_EMAIL_RECIPIENTS??'').split(',').map(x=>x.trim().toLowerCase()).filter(Boolean);
  if(env.MC_ACCEPTANCE_MODE==='true'&&!recipients.length)throw Error('AUTH_EMAIL_TEST_ALLOWLIST_REQUIRED');
  return async({to,kind,url,idempotencyKey,expiresMinutes})=>{

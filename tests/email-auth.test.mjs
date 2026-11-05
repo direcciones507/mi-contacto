@@ -6,8 +6,8 @@ import {authEmailTransport} from '../auth-email-transport.js';
 
 test('contraseñas con sal y límites; transporte desactivado y aislamiento obligatorio',async()=>{
  const a=await hashPassword('synthetic-password-1'),b=await hashPassword('synthetic-password-1');assert.notEqual(a,b);assert(await verifyPassword('synthetic-password-1',a));assert(!await verifyPassword('incorrect',a));assert(!await verifyPassword('x',null));await assert.rejects(hashPassword('short'));
- assert.equal(authEmailTransport({}),null);assert.throws(()=>authEmailTransport({MC_AUTH_EMAIL_ENABLED:'true'}));assert.throws(()=>authEmailTransport({MC_AUTH_EMAIL_ENABLED:'true',MC_EMAIL_ISOLATED:'true',MC_RESEND_API_KEY:'synthetic',MC_EMAIL_FROM:'test@example.test',MC_ACCEPTANCE_MODE:'true'}));
- let payload;const transport=authEmailTransport({MC_AUTH_EMAIL_ENABLED:'true',MC_EMAIL_ISOLATED:'true',MC_RESEND_API_KEY:'synthetic',MC_EMAIL_FROM:'test@example.test',MC_ACCEPTANCE_MODE:'true',MC_AUTH_EMAIL_RECIPIENTS:'owner@example.test'},{fetch:async(url,options)=>{payload=JSON.parse(options.body);assert.equal(options.redirect,'error');return new Response('{}');}});
+ assert.equal(authEmailTransport({}),null);assert.throws(()=>authEmailTransport({MC_AUTH_EMAIL_ENABLED:'true'}));assert.throws(()=>authEmailTransport({MC_AUTH_EMAIL_ENABLED:'true',MC_EMAIL_ISOLATED:'true',MC_RESEND_API_KEY:'synthetic',MC_EMAIL_FROM:'acceso@mail.micontacto.online',MC_ACCEPTANCE_MODE:'true'}));
+ let payload;const transport=authEmailTransport({MC_AUTH_EMAIL_ENABLED:'true',MC_EMAIL_ISOLATED:'true',MC_RESEND_API_KEY:'synthetic',MC_EMAIL_FROM:'acceso@mail.micontacto.online',MC_ACCEPTANCE_MODE:'true',MC_AUTH_EMAIL_RECIPIENTS:'owner@example.test'},{fetch:async(url,options)=>{payload=JSON.parse(options.body);assert.equal(options.redirect,'error');return new Response('{}');}});
  await assert.rejects(transport({to:'other@example.test'}));await transport({to:'owner@example.test',kind:'RESET',url:'https://micontacto.online/acceso#token=synthetic',idempotencyKey:'synthetic',expiresMinutes:30});assert.match(payload.subject,/Mi Contacto/);assert.match(payload.text,/30 minutos/);
 });
 
@@ -77,3 +77,7 @@ test('Google vinculado explícitamente conserva cuenta; sesión distinta y confl
   result=await f.request('/auth/google/callback?state='+state+'&code=synthetic',{headers:{cookie:'mc_oauth='+state+'; mc_session='+f.sessions.other.token}});assert.equal(result.status,400);assert.equal((await result.json()).error,'IDENTITY_ALREADY_LINKED');assert.equal((await f.pool.query('SELECT google_subject FROM micontacto.accounts WHERE id=$1',[f.other])).rows[0].google_subject,null);
  }finally{await f.pool.close();}
 });
+
+ test('correo: rechaza remitentes de otros proyectos aun con aislamiento declarado',()=>{
+ for(const domain of ['mail.direcciones507.com','mail.empleospa.com','mail.micontacto.online.example.test'])assert.throws(()=>authEmailTransport({MC_AUTH_EMAIL_ENABLED:'true',MC_EMAIL_ISOLATED:'true',MC_RESEND_API_KEY:'synthetic',MC_EMAIL_FROM:'acceso@'+domain}),/AUTH_EMAIL_MI_CONTACTO_DOMAIN_REQUIRED/);
+ });

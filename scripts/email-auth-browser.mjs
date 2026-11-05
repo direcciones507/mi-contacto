@@ -3,7 +3,7 @@ import {mkdir,writeFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
 import {serveLocal} from './http-local.mjs';
 import {testFixture} from './test-fixture.mjs';
-const out=new URL('../docs/evidence/continuous-close-20261105/',import.meta.url);await mkdir(out,{recursive:true});
+const out=new URL('../docs/evidence/phase2-auth-20261105/',import.meta.url);await mkdir(out,{recursive:true});
 const browser=await chromium.launch({executablePath:process.env.MC_CHROMIUM,args:['--no-sandbox','--disable-dev-shm-usage']}),results=[];
 try{for(const width of [390,820,1440]){
  let f,sent=[];const server=await serveLocal(async origin=>{f=await testFixture({origin,emailTransport:async value=>sent.push(value)});return f.app;});
@@ -14,7 +14,7 @@ try{for(const width of [390,820,1440]){
  try{
   await enter('register');await page.getByText(/Si la solicitud es válida/).waitFor();assert.equal(sent.length,1);
   await page.goto(sent.at(-1).url);await page.locator('#confirmEmail').waitFor({state:'visible'});assert.equal(new URL(page.url()).hash,'');await page.locator('#confirmEmail [name=password]').fill(pw);await page.locator('#confirmEmail button').click();await page.getByText(/Correo confirmado/).waitFor();
-  await enter('login');await page.waitForURL(server.origin+'/mi-perfil');await page.locator('#accountPanel').waitFor({state:'visible'});assert.equal(await page.locator('.photo-slot').count(),5);
+  await enter('login');await page.waitForURL(server.origin+'/mi-perfil');await page.locator('#accountPanel').waitFor({state:'visible'});assert.equal(await page.locator('.photo-slot').count(),5);assert.equal(await page.locator('.photo-container').count(),2);
   const session=await (await context.request.get(server.origin+'/api/session')).json();assert.equal(session.user.role,'USER');
   await enter('recover');await page.getByText(/Si la solicitud es válida/).waitFor();await page.goto(sent.at(-1).url);await page.locator('#confirmEmail [name=password]').fill(next);await page.locator('#confirmEmail button').click();await page.getByText(/Correo confirmado/).waitFor();assert.equal((await context.request.get(server.origin+'/api/session')).status(),401);
   await enter('login',next);await page.waitForURL(server.origin+'/mi-perfil');await access('change');await page.locator('#emailAccess [name=currentPassword]').fill(next);await page.locator('#emailAccess [name=password]').fill(pw);await page.locator('#emailAccess button').click();await page.getByText(/Contraseña actualizada/).waitFor();assert.equal((await context.request.get(server.origin+'/api/session')).status(),401);
