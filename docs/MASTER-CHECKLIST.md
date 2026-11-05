@@ -265,3 +265,22 @@ Este bloque actualiza los estados técnicos inferiores. Se preservan reglas y ta
 - [ ] Acceso del propietario al panel: bloqueado por `INVALID_LOGIN`; restablecimiento de contraseña pendiente de decisión y operación manual segura. No se modificaron variables ni se reinició Railway.
 - [ ] Antes de encargar Mi Contacto al agente, comprobar que el registro de proyectos autorizados incluya `direcciones507/mi-contacto`, que tenga permisos mínimos y que el límite de presupuesto/tiempo no active CI ni despliegues. La existencia del panel no demuestra que pueda trabajar de forma desatendida.
 - [ ] No contar como avance funcional de Mi Contacto la recuperación del panel o la preparación del agente; las suites Node y SQL siguen pendientes de ejecución.
+
+## Protección y moderación — 4 de noviembre de 2026 (Panamá)
+
+Esta sección sustituye estados históricos contradictorios para este alcance. Base conservada: `50eb6ac`, descendiente del entorno que contiene `161d178`; las mejoras selectivas de `1487ee1` ya estaban integradas. Se mantiene un perfil por cuenta y enlace/QR estable al mudarse.
+
+- [x] Aviso previo al acceso Google, tres declaraciones sin marcar y rechazo sin continuar.
+- [x] Consentimiento también obligatorio en aceptación con textos en borrador; versión, digest, declaraciones y fecha persistidos.
+- [x] Políticas de comunidad, fotografías, menores, identidad, denuncias, suspensión y apelación; borradores jurídicos de Panamá.
+- [x] Foto principal gratuita y cuatro espacios condicionados a Destacado; vista previa, reemplazo, eliminación y continuación al guardar borrador.
+- [x] Marca de agua central en los píxeles de cada entrega, incluyendo imágenes anteriores y miniaturas. Original normalizado privado; no existe entrega HTTP sin marca.
+- [x] Denuncia pública con motivos, descripción y evidencia textual opcional; CSRF, límites persistentes, duplicados y privacidad.
+- [x] ADMIN: revisión, ocultación, suspensión de cuenta, solicitud de correcciones, descarte, retirada de acceso y retención sensible.
+- [x] Apelaciones privadas y auditoría; aceptar apelación devuelve a borrador, sin publicación automática.
+- [x] Retención sensible impide entrega incluso a ADMIN y detiene limpieza de esos archivos; escalamiento humano sin envío automático a autoridades.
+- [x] 155 pruebas automatizadas aprobadas, 0 fallidas; tres recorridos de regresión Chromium y tres nuevos recorridos de protección en 390/820/1440. PostgreSQL WASM local, no dispositivos físicos.
+- [x] Auditoría de dependencias de producción: cero vulnerabilidades conocidas.
+- [ ] Confirmar despliegue terminal SUCCESS y migración 014 en el servicio de aceptación existente.
+- [ ] Completar recorrido autenticado en Railway con sesión/código privado del propietario; no restablecer credenciales ni crear accesos alternativos.
+- [ ] Antes de producción: aprobación jurídica, responsable, contacto, retención/plazos y escalamiento; Google/R2 reales y dispositivos físicos.

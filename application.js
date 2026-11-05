@@ -1,10 +1,15 @@
+import {publicPhoto} from './watermark.js';
+import {moderationRuntime} from './moderation.js';
+import {protectionGate} from './protection-gate.js';
+import {policyDigest} from './legal.js';
+import {reportPage} from './report-view.js';
 import {legalPage,legalConfig,consentRuntime} from './legal.js';
 import {territoryDisplayName} from './territory-corrections.js';
 import {acceptanceAccess} from './acceptance-access.js';
 import {sandboxPaymentPage} from './payment-view.js';
 import {paymentRuntime} from './payment-runtime.js';
 import {erasureRuntime} from './erasure.js';
-import {randomUUID} from 'node:crypto';
+import {randomUUID,randomBytes,createHmac,timingSafeEqual} from 'node:crypto';
 import {readFileSync} from 'node:fs';
 import QRCode from 'qrcode';
 import {createAuth} from './auth-runtime.js';
@@ -26,7 +31,9 @@ export function createApplication({pool,secret,origin='https://micontacto.online
  const auth=createAuth(pool,{secret,origin,google,fetch:network,verifyToken,acceptance,acceptanceOwner,now}),profiles=profileRuntime(pool,{now,features,origin}),photos=photoRuntime(pool,profiles,storage,{now});
  const privateAccess=acceptanceAccess(pool,auth,{secret,origin,acceptance,config:acceptanceOwner,now});
  const privacy=privacyRuntime(pool,profiles),erasure=erasureRuntime(pool,storage);
- const consent=consentRuntime(pool,legal);
+ const consent=consentRuntime(pool,legal),moderation=moderationRuntime(pool,profiles),gate=protectionGate({secret,origin,digest:policyDigest(legal),now});
+ const reportMac=value=>createHmac('sha256',secret).update('report:'+value).digest('base64url');
+ const reportCookie=req=>(req.headers.get('cookie')??'').split(';').map(x=>x.trim()).find(x=>x.startsWith('mc_report='))?.slice(10)??'';
  const rates=new Map();
  const readRates=new Map();
  function allowRead(key,max){const minute=Math.floor(now()/60000);for(const[k,v]of readRates)if(v.minute!==minute)readRates.delete(k);const count=(readRates.get(key)?.count??0)+1;if(count>max||!readRates.has(key)&&readRates.size>=4096)return false;readRates.set(key,{minute,count});return true;}
@@ -34,8 +41,8 @@ export function createApplication({pool,secret,origin='https://micontacto.online
  if(new URL(origin).protocol==='https:')headers['strict-transport-security']='max-age=31536000';
  const json=(status,body)=>Response.json(body,{status,headers});
  const html=body=>new Response(body,{headers:{...headers,'content-type':'text/html; charset=utf-8'}});
- const allowedAssets={'/payment-client.js':'text/javascript','/styles.css':'text/css','/runtime.css':'text/css','/app.js':'text/javascript','/directory-client.js':'text/javascript','/countries.js':'text/javascript','/dashboard.js':'text/javascript','/feature-policy.js':'text/javascript','/public-profile.js':'text/javascript'};
- async function publicRow(country,slug){return (await pool.query("SELECT p.* FROM micontacto.profiles p JOIN micontacto.accounts a ON a.id=p.account_id JOIN micontacto.country_settings cs ON cs.code=p.country_code AND cs.enabled WHERE p.url_country=$1 AND p.slug=$2 AND NOT p.privacy_hidden AND p.status='ACTIVE' AND p.review_decision='APPROVED' AND a.status='ACTIVE'",[country,slug])).rows[0]??null;}
+ const allowedAssets={'/protection-policy.js':'text/javascript','/report-client.js':'text/javascript','/payment-client.js':'text/javascript','/styles.css':'text/css','/runtime.css':'text/css','/app.js':'text/javascript','/directory-client.js':'text/javascript','/countries.js':'text/javascript','/dashboard.js':'text/javascript','/feature-policy.js':'text/javascript','/public-profile.js':'text/javascript'};
+ async function publicRow(country,slug){return (await pool.query("SELECT p.* FROM micontacto.profiles p JOIN micontacto.accounts a ON a.id=p.account_id JOIN micontacto.country_settings cs ON cs.code=p.country_code AND cs.enabled WHERE p.url_country=$1 AND p.slug=$2 AND NOT p.privacy_hidden AND NOT p.moderation_restricted AND p.status='ACTIVE' AND p.review_decision='APPROVED' AND a.status='ACTIVE'",[country,slug])).rows[0]??null;}
  async function bytes(req,limit){if(Number(req.headers.get('content-length'))>limit)throw Error('PAYLOAD_TOO_LARGE');const chunks=[];let n=0;const reader=req.body?.getReader();if(!reader)return Buffer.alloc(0);try{while(true){const {done,value}=await reader.read();if(done)break;n+=value.length;if(n>limit){await reader.cancel();throw Error('PAYLOAD_TOO_LARGE');}chunks.push(Buffer.from(value));}}finally{reader.releaseLock();}return Buffer.concat(chunks);}
  async function body(req){if(!req.headers.get('content-type')?.startsWith('application/json'))throw Error('JSON_REQUIRED');try{const data=JSON.parse((await bytes(req,16384)).toString());if(!data||typeof data!=='object'||Array.isArray(data))throw Error('INVALID_JSON');return data;}catch(e){if(e.message==='PAYLOAD_TOO_LARGE')throw e;throw Error('INVALID_JSON');}}
  async function handle(req){
@@ -47,18 +54,20 @@ export function createApplication({pool,secret,origin='https://micontacto.online
    if(req.method==='GET'&&['/api/countries','/api/categories','/api/regions','/api/localities','/api/directory'].includes(path)&&!allowRead('directory',2000))return json(429,{error:'RATE_LIMITED'});
    if(path==='/api/payments/yappy/ipn'&&!allowRead('payment-ipn',600))return json(429,{error:'RATE_LIMITED'});
    if(path==='/api/payments/yappy/ipn'&&req.method==='GET')return json(200,await payments.confirm(url.searchParams));
+   const gateReply=await gate.handle(req);if(gateReply)return secure(gateReply);
+   if(legal.enforce&&path.startsWith('/auth/google')&&!gate.accepted(req))return secure(new Response(null,{status:303,headers:{location:'/aviso'}}));
    const accessReply=await privateAccess.handle(req);if(accessReply)return secure(accessReply,true);
    if(path==='/api/auth-options'&&req.method==='GET')return json(200,{googleEnabled:!!google?.clientId&&!!google?.clientSecret,acceptanceLoginEnabled:privateAccess.enabled()});
    const authReply=await auth.handle(req);if(authReply){
     if(path==='/auth/google/callback'&&authReply.status>=400&&req.headers.get('accept')?.includes('text/html')){
      const error=(await authReply.clone().json()).error;const messages={OAUTH_CANCELLED:'Cancelaste el acceso con Google. Puedes volver a intentarlo.',INVALID_OAUTH_STATE:'La solicitud venció o corresponde a otro navegador. Inicia el acceso nuevamente.',ACCOUNT_SUSPENDED:'El acceso a esta cuenta está restringido. Solicita revisión a administración.'};
      const content='<p role="alert">'+(messages[error]??'No se pudo verificar el acceso con Google. Vuelve a intentarlo en unos minutos.')+'</p><a class="btn btn-primary" href="/mi-perfil">Volver a Mi perfil</a>';const h=new Headers(authReply.headers);h.set('content-type','text/html; charset=utf-8');h.set('vary','Accept');return secure(new Response(layout('Acceso no completado',content,{script:null}),{status:authReply.status,headers:h}));
-    }return secure(authReply);
+    }if(legal.enforce&&path==='/auth/google/callback'&&authReply.status===302&&gate.accepted(req)){const token=authReply.headers.getSetCookie().find(x=>x.startsWith('mc_session='))?.split(';')[0];if(token){const account=await auth.current(new Request(origin+'/api/session',{headers:{cookie:token}}));if(account)await consent.accept(account.id,{acceptTerms:true,acceptPrivacy:true,adult:true,version:legal.version,policyDigest:policyDigest(legal)});}}return secure(authReply);
    }
    if(req.method==='GET'&&Object.hasOwn(allowedAssets,path))return new Response(readFileSync(new URL('.'+path,import.meta.url)),{headers:{...headers,'content-type':allowedAssets[path]}});
    if(req.method==='GET'&&path==='/')return html(readFileSync(new URL('./index.html',import.meta.url),'utf8'));
    if(req.method==='GET'&&path==='/api/legal')return json(200,consent.publicInfo);
-   if(req.method==='GET'&&['/privacidad','/terminos'].includes(path))return html(legalPage(path==='/privacidad'?'privacy':'terms',legal));
+   if(req.method==='GET'&&['/privacidad','/terminos','/comunidad'].includes(path))return html(legalPage(path==='/privacidad'?'privacy':path==='/comunidad'?'community':'terms',legal));
    if(req.method==='GET'&&path==='/mi-perfil')return html(dashboard(false));
    if(req.method==='GET'&&path==='/admin')return html(dashboard(true));
    if(req.method==='GET'&&path==='/robots.txt')return new Response('User-agent: *\nDisallow: /api/\nDisallow: /media/\nDisallow: /admin\nDisallow: /mi-perfil\nSitemap: https://micontacto.online/sitemap.xml\n',{headers:{...headers,'content-type':'text/plain'}});
@@ -84,14 +93,28 @@ export function createApplication({pool,secret,origin='https://micontacto.online
     const view=await profiles.decorate(p);
     return publicMatch[3]?new Response(await QRCode.toString(view.url,{type:'svg',errorCorrectionLevel:'M',margin:4}),{headers:{...headers,'content-type':'image/svg+xml'}}):html(publicProfile(view));
    }
+   const reportPageMatch=path.match(/^\/reportar\/([a-f0-9-]{36})$/);
+   if(reportPageMatch&&req.method==='GET'){
+    if(!allowRead('report-form',300))return json(429,{error:'RATE_LIMITED'});
+    const id=reportPageMatch[1],p=(await pool.query('SELECT url_country,slug FROM micontacto.profiles WHERE id=$1',[id])).rows[0];if(!p||!await publicRow(p.url_country,p.slug))throw Error('NOT_FOUND');
+    let token=reportCookie(req);if(!/^[a-f0-9]{48}$/.test(token))token=randomBytes(24).toString('hex');
+    const r=html(reportPage(id,reportMac(token)));r.headers.set('set-cookie','mc_report='+token+'; HttpOnly; SameSite=Strict; Path=/; Max-Age=86400'+(origin.startsWith('https:')?'; Secure':''));return r;
+   }
+   if(path==='/api/public-reports'&&req.method==='POST'){
+    const token=reportCookie(req),mac=req.headers.get('x-mc-report')??'';
+    if(req.headers.get('origin')!==origin||req.headers.get('sec-fetch-site')==='cross-site'||!/^[a-f0-9]{48}$/.test(token)||mac.length!==43||!timingSafeEqual(Buffer.from(mac),Buffer.from(reportMac(token))))throw Error('CSRF_DENIED');
+    if(!allowRead('report-submit',100))return json(429,{error:'RATE_LIMITED'});
+    const data=await body(req);if(data.website||Object.keys(data).some(k=>!['profileId','category','reason','evidence','website'].includes(k)))throw Error('INVALID_REPORT');
+    return json(201,await moderation.report(data,token));
+   }
    const user=await auth.current(req);
    const mediaMatch=path.match(/^\/media\/([a-f0-9-]{36})\/([a-f0-9-]{36})$/);
    if(mediaMatch&&req.method==='GET'){
-    const row=(await pool.query("SELECT ph.*,p.account_id,p.country_code,p.url_country,p.slug FROM micontacto.photos ph JOIN micontacto.profiles p ON p.id=ph.profile_id WHERE ph.profile_id=$1 AND ph.id=$2 AND ph.state='ACTIVE'",[mediaMatch[1],mediaMatch[2]])).rows[0];if(!row)throw Error('NOT_FOUND');
+    const row=(await pool.query("SELECT ph.*,p.account_id,p.country_code,p.url_country,p.slug,p.sensitive_hold,p.moderation_restricted,p.status AS profile_status FROM micontacto.photos ph JOIN micontacto.profiles p ON p.id=ph.profile_id WHERE ph.profile_id=$1 AND ph.id=$2 AND ph.state='ACTIVE'",[mediaMatch[1],mediaMatch[2]])).rows[0];if(!row||row.sensitive_hold||row.profile_status==='DELETED')throw Error('NOT_FOUND');
     if(user?.id!==row.account_id&&user?.role!=='ADMIN'){
      const p=await publicRow(row.url_country,row.slug);if(!p||!(await profiles.decorate(p)).photos.some(x=>x.id===row.id))throw Error('NOT_FOUND');
     }
-    const image=await storage.get(row.object_key);if(!image)throw Error('NOT_FOUND');return new Response(image,{headers:{...headers,'content-type':'image/webp'}});
+    const image=await storage.get(row.object_key);if(!image)throw Error('NOT_FOUND');return new Response(await publicPhoto(image),{headers:{...headers,'content-type':'image/webp','x-mc-watermark':'center-v1'}});
    }
    const paymentPage=path.match(/^\/pago-prueba\/([a-f0-9-]{36})$/);
    if(paymentPage&&req.method==='GET'){
@@ -101,6 +124,7 @@ export function createApplication({pool,secret,origin='https://micontacto.online
    }
    if(!path.startsWith('/api/'))return json(404,{error:'NOT_FOUND'});
    if(!user)return json(401,{error:'UNAUTHENTICATED'});
+   if(user.status==='SUSPENDED'&&!(req.method==='GET'&&!path.startsWith('/api/admin/')||req.method==='POST'&&/^\/api\/profiles\/[a-f0-9-]{36}\/appeal$/.test(path)))return json(403,{error:'ACCOUNT_SUSPENDED'});
    if(!['GET','POST','PATCH','DELETE'].includes(req.method))return json(405,{error:'METHOD_NOT_ALLOWED'});
    if(req.method!=='GET'){
     auth.requireWrite(req,user);const minute=Math.floor(now()/60000),key=user.id+':'+minute;
@@ -109,7 +133,8 @@ export function createApplication({pool,secret,origin='https://micontacto.online
    }
    if(path==='/api/legal-consent'&&req.method==='GET')return json(200,{accepted:await consent.accepted(user.id),...consent.publicInfo});
    if(path==='/api/legal-consent'&&req.method==='POST')return json(200,await consent.accept(user.id,await body(req)));
-   if((path==='/api/profiles'&&req.method==='POST'||/\/publish$/.test(path)&&req.method==='POST')&&!await consent.accepted(user.id))throw Error('LEGAL_ACCEPTANCE_REQUIRED');
+   if((path==='/api/profiles'&&req.method==='POST'||/\/(publish|photos)$/.test(path)&&req.method==='POST')&&!await consent.accepted(user.id))throw Error('LEGAL_ACCEPTANCE_REQUIRED');
+   const appealMatch=path.match(/^\/api\/profiles\/([a-f0-9-]{36})\/appeal$/);if(appealMatch&&req.method==='POST')return json(201,await moderation.appeal(user.id,appealMatch[1],await body(req)));
    if(path.startsWith('/api/admin/')&&user.role!=='ADMIN')return json(403,{error:'FORBIDDEN'});
    if(path==='/api/admin/acceptance/status'&&req.method==='GET'&&acceptance&&acceptanceReport)return json(200,acceptanceReport);
    if(path==='/api/payments/config'&&req.method==='GET')return json(200,{enabled:payments.enabled,environment:'test',liveCharges:false});
@@ -175,16 +200,13 @@ export function createApplication({pool,secret,origin='https://micontacto.online
    }
    if(path==='/api/admin/verifications'&&req.method==='GET')return json(200,{items:(await pool.query("SELECT v.id,v.profile_id,v.photo_id,v.code,v.state,p.display_name FROM micontacto.photo_verifications v JOIN micontacto.profiles p ON p.id=v.profile_id WHERE v.state='PENDING' ORDER BY v.created_at LIMIT 100")).rows});
    const verification=path.match(/^\/api\/admin\/verifications\/([a-f0-9-]{36})$/);if(verification&&req.method==='POST')return json(200,await photos.reviewVerification(user.id,verification[1],await body(req)));
-   if(path==='/api/reports'&&req.method==='POST'){
-    const data=await body(req);if(!uuid.test(data.profileId)||typeof data.reason!=='string'||data.reason.trim().length<5||data.reason.length>1000)throw Error('INVALID_REPORT');
-    const p=(await pool.query("SELECT id FROM micontacto.profiles WHERE id=$1 AND NOT privacy_hidden AND status='ACTIVE' AND review_decision='APPROVED'",[data.profileId])).rows[0];if(!p)throw Error('NOT_FOUND');const id=randomUUID();await pool.query('INSERT INTO micontacto.reports(id,profile_id,reporter_id,reason) VALUES($1,$2,$3,$4)',[id,p.id,user.id,data.reason.trim()]);return json(201,{id});
-   }
-   if(path==='/api/admin/reports'&&req.method==='GET')return json(200,{items:(await pool.query("SELECT id,profile_id,reason,state FROM micontacto.reports WHERE state='OPEN' ORDER BY created_at LIMIT 100")).rows});
+   if(path==='/api/reports'&&req.method==='POST')return json(201,await moderation.report(await body(req),'account:'+user.id,user.id));
+   if(path==='/api/admin/reports'&&req.method==='GET')return json(200,{items:(await pool.query('SELECT r.id,r.profile_id,r.category,r.reason,r.evidence,r.state,r.created_at,r.reviewed_at,p.display_name,p.sensitive_hold FROM micontacto.reports r JOIN micontacto.profiles p ON p.id=r.profile_id ORDER BY r.created_at DESC LIMIT 100')).rows});
    const report=path.match(/^\/api\/admin\/reports\/([a-f0-9-]{36})$/);
-   if(report&&req.method==='POST'){
-    const data=await body(req);if(!['DISMISSED','ACTIONED'].includes(data.state)||typeof data.reason!=='string'||data.reason.trim().length<3||data.reason.length>500)throw Error('INVALID_REPORT');
-    await transaction(pool,async tx=>{const r=await tx.query("UPDATE micontacto.reports SET state=$2 WHERE id=$1 AND state='OPEN' RETURNING profile_id",[report[1],data.state]);if(!r.rows.length)throw Error('NOT_FOUND');await profiles.audit(tx,user.id,r.rows[0].profile_id,'REPORT_'+data.state,data.reason);});return json(200,{ok:true});
-   }
+   if(report&&req.method==='POST'){const data=await body(req);if(data.state==='DISMISSED')data.action='DISMISS';return json(200,await moderation.act(user.id,report[1],data));}
+   if(path==='/api/admin/appeals'&&req.method==='GET')return json(200,{items:(await pool.query('SELECT id,profile_id,reason,state,created_at FROM micontacto.appeals ORDER BY created_at DESC LIMIT 100')).rows});
+   const appeal=path.match(/^\/api\/admin\/appeals\/([a-f0-9-]{36})$/);if(appeal&&req.method==='POST')return json(200,await moderation.reviewAppeal(user.id,appeal[1],await body(req)));
+   if(path==='/api/admin/moderation-events'&&req.method==='GET')return json(200,{items:(await pool.query('SELECT * FROM micontacto.moderation_events ORDER BY created_at DESC LIMIT 100')).rows});
    if(path==='/api/admin/audit'&&req.method==='GET')return json(200,{items:(await pool.query('SELECT actor_id,profile_id,action,reason,created_at FROM micontacto.audit ORDER BY created_at DESC LIMIT 100')).rows});
    const cancel=path.match(/^\/api\/admin\/featured\/([a-f0-9-]{36})\/cancel$/);
    if(cancel&&req.method==='POST'){
@@ -194,10 +216,10 @@ export function createApplication({pool,secret,origin='https://micontacto.online
    return json(404,{error:'NOT_FOUND'});
   }catch(e){
    const message=e.message;
-   const status=message==='NOT_FOUND'?404:['FORBIDDEN','CSRF_DENIED'].includes(message)?403:/^(INVALID_|PHOTO_REQUIRED|CONSENT_REQUIRED|JSON_REQUIRED|REASON_REQUIRED|VERIFICATION_REVIEW_REQUIRED|PUBLICATION_REQUIREMENTS)/.test(message)?400:message==='LEGAL_ACCEPTANCE_REQUIRED'?428:message==='PAYLOAD_TOO_LARGE'?413:/^(PROFILE_LOCKED|EDIT_CONFLICT|GALLERY_NOT_AVAILABLE|VERIFICATION_STALE|FEATURE_CONFLICT|PAYMENT_CONFLICT|REMOVAL_PENDING)/.test(message)||e.code==='23505'?409:e.code==='23503'||e.code==='23514'||e.code==='22P02'?400:503;
+   const status=message==='REPORT_RATE_LIMITED'?429:message==='NOT_FOUND'?404:['FORBIDDEN','CSRF_DENIED'].includes(message)?403:/^(INVALID_|PHOTO_REQUIRED|CONSENT_REQUIRED|JSON_REQUIRED|REASON_REQUIRED|VERIFICATION_REVIEW_REQUIRED|PUBLICATION_REQUIREMENTS)/.test(message)?400:message==='LEGAL_ACCEPTANCE_REQUIRED'?428:message==='PAYLOAD_TOO_LARGE'?413:/^(PROFILE_LOCKED|EDIT_CONFLICT|GALLERY_NOT_AVAILABLE|VERIFICATION_STALE|FEATURE_CONFLICT|PAYMENT_CONFLICT|REMOVAL_PENDING)/.test(message)||e.code==='23505'?409:e.code==='23503'||e.code==='23514'||e.code==='22P02'?400:503;
    return json(status,{error:status===503?'OPERATION_UNAVAILABLE':e.code==='23505'?'DUPLICATE_RECORD':['23503','23514','22P02'].includes(e.code)?'INVALID_DATA':message});
   }
  }
  function secure(response,sameOriginForm=false){const h=new Headers(response.headers);for(const[k,v]of Object.entries(headers))h.set(k,v);if(sameOriginForm)h.set('referrer-policy','same-origin');return new Response(response.body,{status:response.status,headers:h});}
- return {handle,auth,profiles,photos,features,payments,privacy,erasure};
+ return {handle,auth,profiles,photos,features,payments,privacy,erasure,moderation};
 }

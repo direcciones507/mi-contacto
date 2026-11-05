@@ -1,0 +1,51 @@
+{
+  "physicalDevices": false,
+  "liveRailway": false,
+  "results": [
+    {
+      "width": 390,
+      "consent": true,
+      "create": true,
+      "uploadPreviewReplaceRemove": true,
+      "freeGalleryLocked": true,
+      "pixelWatermark": true,
+      "publicReport": true,
+      "adminHide": true,
+      "appeal": true,
+      "audit": true,
+      "jsErrors": [],
+      "overflow": false,
+      "engine": "Chromium + local HTTP + PostgreSQL WASM"
+    },
+    {
+      "width": 820,
+      "consent": true,
+      "create": true,
+      "uploadPreviewReplaceRemove": true,
+      "freeGalleryLocked": true,
+      "pixelWatermark": true,
+      "publicReport": true,
+      "adminHide": true,
+      "appeal": true,
+      "audit": true,
+      "jsErrors": [],
+      "overflow": false,
+      "engine": "Chromium + local HTTP + PostgreSQL WASM"
+    },
+    {
+      "width": 1440,
+      "consent": true,
+      "create": true,
+      "uploadPreviewReplaceRemove": true,
+      "freeGalleryLocked": true,
+      "pixelWatermark": true,
+      "publicReport": true,
+      "adminHide": true,
+      "appeal": true,
+      "audit": true,
+      "jsErrors": [],
+      "overflow": false,
+      "engine": "Chromium + local HTTP + PostgreSQL WASM"
+    }
+  ]
+}

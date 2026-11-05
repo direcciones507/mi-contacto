@@ -1,7 +1,8 @@
+import {COMMUNITY,DECLARATIONS} from './protection-policy.js';
 import {PHOTO_NOTICE_ITEMS} from './content-policy.js';
 import {createHash} from 'node:crypto';
 import {layout} from './views.js';
-export const POLICY_VERSION='2026-11-04.2';
+export const POLICY_VERSION='2026-11-05.1';
 export const PRIVACY_TEXT=[
  ['Qué datos tratamos','Usamos el identificador que Google verifica para administrar tu cuenta y sesiones. El perfil contiene tu nombre, fotografía, descripción y los contactos y ubicación que decidas proporcionar. No pedimos una dirección física.'],
  ['Para qué los usamos','Administramos tu perfil, revisamos solicitudes, mostramos los datos que autorices, prevenimos abusos y atendemos solicitudes de privacidad. No activamos cobros ni suscripciones en esta versión.'],
@@ -23,19 +24,19 @@ export const TERMS_TEXT=[
  ['Cambios y contacto','Una modificación material de estos textos debe publicar una nueva versión y requerir nueva aceptación. El responsable y el canal de contacto se indican abajo. Estas condiciones no declaran renuncia a derechos obligatorios del usuario. La revisión legal de países habilitados sigue a cargo del responsable.']
 ];
 export function legalConfig(env=process.env,{requireApproval=false}={}){
- const config={approved:env.MC_LEGAL_APPROVED==='true',version:POLICY_VERSION,controller:env.MC_LEGAL_CONTROLLER??'',contact:env.MC_PRIVACY_CONTACT??'',retention:env.MC_RETENTION_NOTICE??'',processing:env.MC_PROCESSING_NOTICE??''};
+ const config={approved:env.MC_LEGAL_APPROVED==='true',enforce:env.MC_LEGAL_APPROVED==='true'||env.MC_ACCEPTANCE_MODE==='true',version:POLICY_VERSION,controller:env.MC_LEGAL_CONTROLLER??'',contact:env.MC_PRIVACY_CONTACT??'',retention:env.MC_RETENTION_NOTICE??'',processing:env.MC_PROCESSING_NOTICE??''};
  if(requireApproval&&(!config.approved||[config.controller,config.contact,config.retention,config.processing].some(x=>!x.trim()||x.length>2000)))throw Error('LEGAL_REVIEW_AND_CONTROLLER_DETAILS_REQUIRED');
  return config;
 }
-export const policyDigest=config=>createHash('sha256').update(JSON.stringify({version:config.version,controller:config.controller,contact:config.contact,retention:config.retention,processing:config.processing,privacy:PRIVACY_TEXT,terms:TERMS_TEXT})).digest('hex');
+export const policyDigest=config=>createHash('sha256').update(JSON.stringify({version:config.version,controller:config.controller,contact:config.contact,retention:config.retention,processing:config.processing,privacy:PRIVACY_TEXT,terms:TERMS_TEXT,community:COMMUNITY,declarations:DECLARATIONS})).digest('hex');
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function legalPage(kind,config=legalConfig({})){
- const title=kind==='privacy'?'Política de privacidad':'Términos de servicio',sections=kind==='privacy'?PRIVACY_TEXT:TERMS_TEXT;
- return layout(title,(config.approved?'':'<p role="alert">Borrador pendiente de revisión y aprobación del responsable. No habilita el lanzamiento.</p>')+'<p>Versión '+esc(config.version)+'</p>'+sections.map(([h,p])=>'<section><h2>'+esc(h)+'</h2><p>'+esc(p)+'</p></section>').join('')+'<h2>Responsable y atención</h2><p>Responsable: '+esc(config.controller||'Pendiente de confirmar')+'</p><p>Canal de privacidad: '+esc(config.contact||'Pendiente de confirmar')+'</p><p>Conservación y respaldos: '+esc(config.retention||'Política pendiente de aprobación')+'</p><p>Proveedores y ubicación de tratamiento: '+esc(config.processing||'Pendiente de confirmar')+'</p>',{script:null});
+ const title=kind==='privacy'?'Política de privacidad':kind==='community'?'Normas de la Comunidad y políticas de protección':'Términos y Condiciones',sections=kind==='privacy'?PRIVACY_TEXT:kind==='community'?COMMUNITY:[...TERMS_TEXT,...COMMUNITY];
+ return layout(title,(config.approved?'':'<p role="alert">Borrador pendiente de revisión jurídica conforme a la legislación aplicable en Panamá y aprobación del responsable. No habilita el lanzamiento.</p>')+'<p>Versión '+esc(config.version)+'</p>'+sections.map(([h,p])=>'<section><h2>'+esc(h)+'</h2><p>'+esc(p)+'</p></section>').join('')+'<h2>Responsable y atención</h2><p>Responsable: '+esc(config.controller||'Pendiente de confirmar')+'</p><p>Canal de privacidad: '+esc(config.contact||'Pendiente de confirmar')+'</p><p>Conservación y respaldos: '+esc(config.retention||'Política pendiente de aprobación')+'</p><p>Proveedores y ubicación de tratamiento: '+esc(config.processing||'Pendiente de confirmar')+'</p>',{script:null});
 }
 export function consentRuntime(pool,config){
  const digest=policyDigest(config);
- async function accepted(account){return !config.approved||!!(await pool.query('SELECT account_id FROM micontacto.legal_consents WHERE account_id=$1 AND policy_version=$2 AND policy_digest=$3',[account,config.version,digest])).rows[0];}
- async function accept(account,input){if(!config.approved)throw Error('LEGAL_REVIEW_PENDING');if(!input||input.acceptTerms!==true||input.acceptPrivacy!==true||input.adult!==true||input.version!==config.version||input.policyDigest!==digest||Object.keys(input).some(k=>!['acceptTerms','acceptPrivacy','adult','version','policyDigest'].includes(k)))throw Error('INVALID_LEGAL_ACCEPTANCE');await pool.query('INSERT INTO micontacto.legal_consents(account_id,policy_version,policy_digest) VALUES($1,$2,$3) ON CONFLICT DO NOTHING',[account,config.version,digest]);return {accepted:true,version:config.version,policyDigest:digest};}
+ async function accepted(account){return !config.enforce||!!(await pool.query('SELECT account_id FROM micontacto.legal_consents WHERE account_id=$1 AND policy_version=$2 AND policy_digest=$3',[account,config.version,digest])).rows[0];}
+ async function accept(account,input){if(!input||input.acceptTerms!==true||input.acceptPrivacy!==true||input.adult!==true||input.version!==config.version||input.policyDigest!==digest||Object.keys(input).some(k=>!['acceptTerms','acceptPrivacy','adult','version','policyDigest'].includes(k)))throw Error('INVALID_LEGAL_ACCEPTANCE');await pool.query('INSERT INTO micontacto.legal_consents(account_id,policy_version,policy_digest,declarations) VALUES($1,$2,$3,$4::jsonb) ON CONFLICT DO NOTHING',[account,config.version,digest,JSON.stringify({adult:true,authenticity:true,policies:true})]);return {accepted:true,version:config.version,policyDigest:digest};}
  return {accepted,accept,publicInfo:{approved:config.approved,version:config.version,policyDigest:digest,privacyUrl:'/privacidad',termsUrl:'/terminos'}};
 }

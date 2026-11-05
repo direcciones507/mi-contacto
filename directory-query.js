@@ -11,7 +11,7 @@ export function directoryQuery(filters = {}) {
  const limit=Math.min(50,Math.max(1,Number(filters.limit)||20));
  const offset=Math.max(0,Number(filters.offset)||0);
  if(!Number.isSafeInteger(limit)||!Number.isSafeInteger(offset))throw Error("INVALID_PAGE");
- const where=[featureExistsSQL,"NOT p.privacy_hidden","p.review_decision='APPROVED'","p.status = 'ACTIVE'","p.directory_consent=true","a.status='ACTIVE'","p.country_code = $1","EXISTS(SELECT 1 FROM micontacto.country_settings cs WHERE cs.code=p.country_code AND cs.enabled)"];
+ const where=[featureExistsSQL,"NOT p.privacy_hidden","NOT p.moderation_restricted","p.review_decision='APPROVED'","p.status = 'ACTIVE'","p.directory_consent=true","a.status='ACTIVE'","p.country_code = $1","EXISTS(SELECT 1 FROM micontacto.country_settings cs WHERE cs.code=p.country_code AND cs.enabled)"];
  const params=[country];
  if(region!==null){where.push("p.location_consent=true");params.push(region);where.push("p.region_id IN (WITH RECURSIVE scope AS (SELECT id FROM micontacto.geo_regions WHERE id=$"+params.length+" AND country_code=$1 AND enabled UNION ALL SELECT r.id FROM micontacto.geo_regions r JOIN scope s ON r.parent_id=s.id WHERE r.country_code=$1 AND r.enabled) SELECT id FROM scope)");}
  if(locality!==null){params.push(locality);where.push("p.locality_id = $"+params.length);}

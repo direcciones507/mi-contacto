@@ -19,7 +19,7 @@ export function createAuth(pool,{secret,origin,google=null,fetch:network=fetch,v
  }
  async function current(req){
   const token=cookie(req,'mc_session');const claims=verifySession(token,{secret,now:now()});if(!claims)return null;if(acceptanceOwner&&claims.accountId===acceptanceOwner.accountId&&now()>=acceptanceOwner.expiresAt)return null;
-  const r=await pool.query("SELECT a.id,a.role,s.csrf FROM micontacto.sessions s JOIN micontacto.accounts a ON a.id=s.account_id WHERE s.token_hash=$1 AND s.account_id=$2 AND s.expires_at>$3 AND a.status='ACTIVE'",[hash(token),claims.accountId,new Date(now()).toISOString()]);
+  const r=await pool.query("SELECT a.id,a.role,a.status,s.csrf FROM micontacto.sessions s JOIN micontacto.accounts a ON a.id=s.account_id WHERE s.token_hash=$1 AND s.account_id=$2 AND s.expires_at>$3",[hash(token),claims.accountId,new Date(now()).toISOString()]);
   return r.rows[0]??null;
  }
  function requireWrite(req,user){
@@ -28,7 +28,7 @@ export function createAuth(pool,{secret,origin,google=null,fetch:network=fetch,v
  async function handle(req){
   const url=new URL(req.url);
   if(url.pathname==='/api/auth-options'&&req.method==='GET')return json(200,{googleEnabled:!!google?.clientId&&!!google?.clientSecret});
-  if(url.pathname==='/api/session'&&req.method==='GET'){const user=await current(req);return user?json(200,{user:{id:user.id,role:user.role},csrf:user.csrf}):json(401,{error:'UNAUTHENTICATED'});}
+  if(url.pathname==='/api/session'&&req.method==='GET'){const user=await current(req);return user?json(200,{user:{id:user.id,role:user.role,status:user.status},csrf:user.csrf}):json(401,{error:'UNAUTHENTICATED'});}
   if(['/auth/logout','/auth/logout-all'].includes(url.pathname)&&req.method==='POST'){
    const user=await current(req);if(!user)return json(401,{error:'UNAUTHENTICATED'});requireWrite(req,user);
    if(url.pathname==='/auth/logout-all')await pool.query('DELETE FROM micontacto.sessions WHERE account_id=$1',[user.id]);else await pool.query('DELETE FROM micontacto.sessions WHERE token_hash=$1',[hash(cookie(req,'mc_session'))]);
@@ -58,7 +58,7 @@ export function createAuth(pool,{secret,origin,google=null,fetch:network=fetch,v
   let claims;try{claims=verifyToken?await verifyToken(token): (await jwtVerify(token,keys,{algorithms:['RS256'],audience:google.clientId,issuer:['accounts.google.com','https://accounts.google.com'],currentDate:new Date(now())})).payload;}catch{throw Error('INVALID_GOOGLE_IDENTITY');}
   const identity=validateVerifiedGoogleClaims(claims,{clientId:google.clientId,nonce:saved.rows[0].nonce,now:Math.floor(now()/1000)});
   const r=await pool.query('INSERT INTO micontacto.accounts(id,google_subject) VALUES($1,$2) ON CONFLICT(google_subject) DO UPDATE SET google_subject=EXCLUDED.google_subject RETURNING id,status',[randomUUID(),identity.googleSubject]);
-  if(r.rows[0].status!=='ACTIVE')throw Error('ACCOUNT_SUSPENDED');
+  // Suspended accounts receive a limited session for private appeals only.
   const session=await issue(r.rows[0].id);const headers=new Headers({location:'/mi-perfil','cache-control':'no-store'});headers.append('set-cookie',session.cookie);headers.append('set-cookie',`mc_oauth=; Path=/auth/google/callback; HttpOnly; SameSite=Lax; Max-Age=0${secure?'; Secure':''}`);
   return new Response(null,{status:302,headers});
   }catch(e){const code=['INVALID_OAUTH_STATE','INVALID_OAUTH_CODE','INVALID_OAUTH_RESPONSE','INVALID_GOOGLE_IDENTITY','OAUTH_CANCELLED','ACCOUNT_SUSPENDED'].includes(e.message)?e.message:'GOOGLE_UNAVAILABLE';const status=code==='ACCOUNT_SUSPENDED'?403:code==='GOOGLE_UNAVAILABLE'?503:400;const result=json(status,{error:code});result.headers.set('set-cookie',`mc_oauth=; Path=/auth/google/callback; HttpOnly; SameSite=Lax; Max-Age=0${secure?'; Secure':''}`);return result;}
