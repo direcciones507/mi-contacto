@@ -1,0 +1,57 @@
+{
+  "checkedAt": "2026-11-05T15:00:26.613256+00:00",
+  "readOnly": true,
+  "project": "7d9a7fb0-df2f-487c-8885-d093e1a9c9de",
+  "environment": "acceptance",
+  "liveCommit": "3b4a8a558131f5c501f810e65a778564c2397ee4",
+  "deployment": "44ab02b9-d2b9-4d68-842b-f17dbe3541a8",
+  "deploymentStatus": "SUCCESS",
+  "application": "online",
+  "postgres": "online",
+  "runningReplicasPerService": 1,
+  "pendingChanges": false,
+  "migrations": 14,
+  "verifiedTls": true,
+  "persistenceAfterRestart": true,
+  "priorBackupRestored": true,
+  "authenticatedRailwayTest": false,
+  "googleEnabled": false,
+  "emailEnabled": false,
+  "r2Configured": false,
+  "publicChecks": [
+    {
+      "path": "/health/ready",
+      "status": 200
+    },
+    {
+      "path": "/api/auth-options",
+      "status": 200
+    },
+    {
+      "path": "/api/session",
+      "status": 401
+    },
+    {
+      "path": "/mi-perfil",
+      "status": 200
+    },
+    {
+      "path": "/acceso-pruebas",
+      "status": 200
+    },
+    {
+      "path": "/api/legal",
+      "status": 200
+    },
+    {
+      "path": "/api/countries",
+      "status": 200
+    },
+    {
+      "path": "/api/directory?country=PA",
+      "status": 200
+    }
+  ],
+  "newCodeDeployed": false,
+  "newMigrationApplied": false
+}

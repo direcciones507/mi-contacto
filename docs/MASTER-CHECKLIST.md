@@ -1,3 +1,25 @@
+# Cierre verificable vigente — 5 de noviembre de 2026 (Panamá)
+
+Rama `work/continuous-close-20261105`, base remota real `3b4a8a5` posterior a `c8e8398`. Código nuevo: `3a1b7a5`. Este bloque sustituye las casillas históricas contradictorias para los componentes comprobados. Informe: [CONTINUOUS-CLOSE-20261105.md](CONTINUOUS-CLOSE-20261105.md).
+
+- [x] Acceso privado existente: corrección de pestañas/refresco conservada; origen, cookie, CSRF, caducidad, credencial y ADMIN conservados. Versión desplegada `3b4a8a5`, Railway `SUCCESS` y ambos servicios online comprobados en lectura.
+- [x] Construidos registro por correo, verificación previa a habilitar la identidad, login, recuperación de un uso, cambio y revocación de sesiones; envío desactivado por defecto.
+- [x] Vinculación explícita Google/correo comprobando titularidad y misma sesión; no fusiona identidades de cuentas distintas ni duplica el perfil de la cuenta vinculada.
+- [x] Corregida confirmación desde el enlace en la misma pestaña; se procesa hashchange y se retira el token de la barra de dirección.
+- [x] Migración aditiva 015 preparada; checksum, startup y respaldo previo actualizados. No aplicada a PostgreSQL remoto.
+- [x] Regresión final: 168 pruebas aprobadas, 0 fallidas/omitidas; PostgreSQL WASM local. Auditoría de producción: 0 vulnerabilidades conocidas.
+- [x] Tres recorridos Chromium 390/820/1440: acceso privado mediante formulario, multipestaña, CSRF, consentimientos, fotografías principal/galería bloqueada, vista previa, reemplazo/retirada, marca, denuncia, ADMIN, apelación y auditoría.
+- [x] Tres recorridos Chromium 390/820/1440: registro, verificación en la misma pestaña, login, recuperación, cambio y revocación. Correo sintético, sin envíos reales.
+- [x] Directorio/territorio, perfil/QR estable, Maps, privacidad y persistencia local cubiertos por regresión. PostgreSQL remoto responde readiness; logs de la versión desplegada confirman TLS y persistencia tras reinicio.
+- [ ] Nueva rama y migración 015 aún no desplegadas; Google/correo/R2 reales continúan sin configuración exclusiva. No presentar el nuevo acceso por correo como disponible en Railway.
+- [ ] Migración 015 y concurrencia en PostgreSQL nativo actual: pendientes; el ejecutor disponible es root y el arnés nativo exige entorno no root existente. No sustituir esta prueba por WASM.
+- [ ] Recorrido autenticado de Railway: requiere que el propietario abra su sesión original; no se leyó, generó ni restableció su código.
+- [ ] Aprobación jurídica/territorial y pruebas en Android/iPad físicos siguen pendientes del propietario.
+
+No se desplegó a producción ni se modificaron infraestructura, recursos, credenciales, datos, pagos u otros proyectos. No se ejecutaron Actions ni se activaron envíos reales.
+
+---
+
 # Unificación vigente — fotografías y aceptación existente
 
 Rama `work/photos-unification-20261105`, derivada de `1febb25` en `work/infrastructure-acceptance-20261104` (contiene `161d178`). Integración selectiva de `1487ee1`. Informe: [UNIFICATION-PHOTOS-20261105.md](UNIFICATION-PHOTOS-20261105.md).
