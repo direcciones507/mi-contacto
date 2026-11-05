@@ -1,0 +1,54 @@
+{
+  "checkedAt": "2026-11-05T00:14:54.739Z",
+  "phase": "after",
+  "liveRailway": true,
+  "physicalDevices": false,
+  "proxyCertificateExceptionOnlyInTest": true,
+  "results": [
+    {
+      "device": "desktop",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "policy": "same-origin",
+      "post": {
+        "origin": "https://mi-contacto-acceptance-acceptance.up.railway.app",
+        "fetchSite": "same-origin",
+        "contentType": "application/x-www-form-urlencoded"
+      },
+      "status": 303,
+      "createProfileEditorOpened": true
+    },
+    {
+      "device": "phone",
+      "viewport": {
+        "width": 412,
+        "height": 839
+      },
+      "policy": "same-origin",
+      "post": {
+        "origin": "https://mi-contacto-acceptance-acceptance.up.railway.app",
+        "fetchSite": "same-origin",
+        "contentType": "application/x-www-form-urlencoded"
+      },
+      "status": 303,
+      "createProfileEditorOpened": true
+    },
+    {
+      "device": "tablet",
+      "viewport": {
+        "width": 810,
+        "height": 1080
+      },
+      "policy": "same-origin",
+      "post": {
+        "origin": "https://mi-contacto-acceptance-acceptance.up.railway.app",
+        "fetchSite": "same-origin",
+        "contentType": "application/x-www-form-urlencoded"
+      },
+      "status": 303,
+      "createProfileEditorOpened": true
+    }
+  ]
+}

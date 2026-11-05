@@ -1,5 +1,7 @@
 # Estado vigente — entorno Railway accesible y verificado
 
+Corrección del acceso del 4 noviembre, noche de Panamá: [ACCESS-FIX-20261105.md](ACCESS-FIX-20261105.md). Formulario con política same-origin y controles CSRF conservados.
+
 4 noviembre 2026. Costo de USD 0.50–1.50 estimado para 48 horas aprobado por el propietario. Informe y evidencias: [RAILWAY-LIVE-20261104.md](RAILWAY-LIVE-20261104.md). Este bloque sustituye los estados históricos inferiores.
 
 - [x] Node 24 y PostgreSQL 18 exclusivos activos, HTTPS temporal funcional.

@@ -1,0 +1,54 @@
+{
+  "checkedAt": "2026-11-05T00:13:59.682Z",
+  "phase": "before",
+  "liveRailway": true,
+  "physicalDevices": false,
+  "proxyCertificateExceptionOnlyInTest": true,
+  "results": [
+    {
+      "device": "desktop",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "policy": "no-referrer",
+      "post": {
+        "origin": "null",
+        "fetchSite": "same-origin",
+        "contentType": "application/x-www-form-urlencoded"
+      },
+      "status": 403,
+      "createProfileEditorOpened": false
+    },
+    {
+      "device": "phone",
+      "viewport": {
+        "width": 412,
+        "height": 839
+      },
+      "policy": "no-referrer",
+      "post": {
+        "origin": "null",
+        "fetchSite": "same-origin",
+        "contentType": "application/x-www-form-urlencoded"
+      },
+      "status": 403,
+      "createProfileEditorOpened": false
+    },
+    {
+      "device": "tablet",
+      "viewport": {
+        "width": 810,
+        "height": 1080
+      },
+      "policy": "no-referrer",
+      "post": {
+        "origin": "null",
+        "fetchSite": "same-origin",
+        "contentType": "application/x-www-form-urlencoded"
+      },
+      "status": 403,
+      "createProfileEditorOpened": false
+    }
+  ]
+}
