@@ -1,9 +1,12 @@
 import {randomBytes,createHash,createHmac,timingSafeEqual} from 'node:crypto';
 import {layout} from './views.js';
+import {applicationOrigin} from './origin-policy.js';
 const hash=s=>createHash('sha256').update(s).digest('hex');
 export function acceptanceAccess(pool,auth,{secret,origin,acceptance=false,config=null,now=()=>Date.now()}){
  if(config&&(!acceptance||new URL(origin).hostname==='micontacto.online'))throw Error('PRIVATE_ACCEPTANCE_ONLY');
  if(config&&(!/^[a-f0-9-]{36}$/.test(config.accountId??'')||!/^[a-f0-9]{64}$/.test(config.codeHash??'')||!Number.isFinite(config.expiresAt)))throw Error('INVALID_ACCEPTANCE_ACCESS');
+ // Compare with the configured public origin, never the proxy Host/X-Forwarded-* headers.
+ const publicOrigin=applicationOrigin(origin,{acceptance}).origin;
  const enabled=()=>!!config&&now()<config.expiresAt;
  const sign=s=>createHmac('sha256',secret).update('mc-acceptance:'+s).digest('hex');
  const same=(a,b)=>typeof a==='string'&&typeof b==='string'&&Buffer.byteLength(a)===Buffer.byteLength(b)&&timingSafeEqual(Buffer.from(a),Buffer.from(b));
@@ -19,7 +22,7 @@ export function acceptanceAccess(pool,auth,{secret,origin,acceptance=false,confi
    const token=challenge();return html(200,'<section class="contact-card"><p>Acceso temporal de aceptación. Google todavía no está conectado. Usa solamente datos de prueba.</p><form method="post" action="/acceso-pruebas"><input type="hidden" name="challenge" value="'+token+'"><label>Código privado<input type="password" name="code" minlength="20" maxlength="128" autocomplete="current-password" required></label><button type="submit">Entrar a pruebas</button></form></section>',{'set-cookie':cookie(token)});
   }
   if(req.method!=='POST')return new Response(null,{status:405});
-  if(req.headers.get('origin')!==origin||req.headers.get('sec-fetch-site')==='cross-site')return new Response('Solicitud no permitida.',{status:403});
+  if(req.headers.get('origin')!==publicOrigin||req.headers.get('sec-fetch-site')==='cross-site')return new Response('Solicitud no permitida.',{status:403});
   const current=Math.floor(now()/60000);if(minute!==current){minute=current;attempts=0;}if(++attempts>10)return new Response('Espera un minuto antes de reintentar.',{status:429});
   if(!req.headers.get('content-type')?.startsWith('application/x-www-form-urlencoded'))return new Response(null,{status:400});
   let size=0;const chunks=[];for await(const part of req.body??[]){size+=part.length;if(size>4096)return new Response(null,{status:413});chunks.push(Buffer.from(part));}

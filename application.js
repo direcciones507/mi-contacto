@@ -43,7 +43,7 @@ export function createApplication({pool,secret,origin='https://micontacto.online
    if(req.method==='GET'&&['/api/countries','/api/categories','/api/regions','/api/localities','/api/directory'].includes(path)&&!allowRead('directory',2000))return json(429,{error:'RATE_LIMITED'});
    if(path==='/api/payments/yappy/ipn'&&!allowRead('payment-ipn',600))return json(429,{error:'RATE_LIMITED'});
    if(path==='/api/payments/yappy/ipn'&&req.method==='GET')return json(200,await payments.confirm(url.searchParams));
-   const accessReply=await privateAccess.handle(req);if(accessReply)return secure(accessReply);
+   const accessReply=await privateAccess.handle(req);if(accessReply)return secure(accessReply,true);
    if(path==='/api/auth-options'&&req.method==='GET')return json(200,{googleEnabled:!!google?.clientId&&!!google?.clientSecret,acceptanceLoginEnabled:privateAccess.enabled()});
    const authReply=await auth.handle(req);if(authReply){
     if(path==='/auth/google/callback'&&authReply.status>=400&&req.headers.get('accept')?.includes('text/html')){
@@ -189,6 +189,6 @@ export function createApplication({pool,secret,origin='https://micontacto.online
    return json(status,{error:status===503?'OPERATION_UNAVAILABLE':e.code==='23505'?'DUPLICATE_RECORD':['23503','23514','22P02'].includes(e.code)?'INVALID_DATA':message});
   }
  }
- function secure(response){const h=new Headers(response.headers);for(const[k,v]of Object.entries(headers))h.set(k,v);return new Response(response.body,{status:response.status,headers:h});}
+ function secure(response,sameOriginForm=false){const h=new Headers(response.headers);for(const[k,v]of Object.entries(headers))h.set(k,v);if(sameOriginForm)h.set('referrer-policy','same-origin');return new Response(response.body,{status:response.status,headers:h});}
  return {handle,auth,profiles,photos,features,payments,privacy,erasure};
 }
