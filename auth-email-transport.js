@@ -1,13 +1,17 @@
-/** Explicit, isolated transactional email only. No account or sender is provisioned. */
+import {authenticationEmail,confirmedEmailResponse} from './transactional-email.js';
+/** Exclusive sender and explicit acceptance recipients. No messages are sent on startup. */
 export function authEmailTransport(env,{fetch:network=fetch}={}){
  if(env.MC_AUTH_EMAIL_ENABLED!=='true')return null;
- if(env.MC_EMAIL_ISOLATED!=='true'||!env.MC_RESEND_API_KEY||! /^[^<>\s@]+@[^<>\s@]+\.[^<>\s@]+$/.test(env.MC_EMAIL_FROM??''))throw Error('AUTH_EMAIL_CONFIGURATION_REQUIRED');
+ if(env.MC_EMAIL_ISOLATED!=='true'||!env.MC_RESEND_API_KEY||! /^[a-zA-Z0-9._%+-]+@(?:mail\.)?micontacto\.online$/.test(env.MC_EMAIL_FROM??''))throw Error('AUTH_EMAIL_CONFIGURATION_REQUIRED');
  const recipients=(env.MC_AUTH_EMAIL_RECIPIENTS??'').split(',').map(x=>x.trim().toLowerCase()).filter(Boolean);
  if(env.MC_ACCEPTANCE_MODE==='true'&&!recipients.length)throw Error('AUTH_EMAIL_TEST_ALLOWLIST_REQUIRED');
+ if(recipients.length>10||recipients.some(v=>! /^[^<>\s@]+@[^<>\s@]+\.[^<>\s@]+$/.test(v)))throw Error('AUTH_EMAIL_TEST_ALLOWLIST_REQUIRED');
+ const origin=new URL(env.MC_ORIGIN??'https://micontacto.online').origin;
  return async({to,kind,url,idempotencyKey,expiresMinutes})=>{
-  if(recipients.length&&!recipients.includes(to))throw Error('AUTH_EMAIL_RECIPIENT_NOT_ALLOWED');
-  const title=kind==='RESET'?'Restablece tu contraseña de Mi Contacto':'Confirma tu correo en Mi Contacto';
-  const response=await network('https://api.resend.com/emails',{method:'POST',redirect:'error',signal:AbortSignal.timeout(10000),headers:{authorization:'Bearer '+env.MC_RESEND_API_KEY,'content-type':'application/json','idempotency-key':idempotencyKey},body:JSON.stringify({from:'Mi Contacto <'+env.MC_EMAIL_FROM+'>',to:[to],subject:title,text:title+'\n\nAbre el enlace y escribe '+(kind==='RESET'?'tu nueva contraseña':'la contraseña que elegiste en Mi Contacto')+':\n'+url+'\n\nEl enlace vence en '+expiresMinutes+' minutos y solo puede usarse una vez. Si no lo solicitaste, ignora este mensaje.'})});
-  if(!response.ok)throw Error('AUTH_EMAIL_SEND_FAILED');
+  if(typeof to!=='string'||! /^[^<>\s@]+@[^<>\s@]+\.[^<>\s@]+$/.test(to)||recipients.length&&!recipients.includes(to.toLowerCase()))throw Error('AUTH_EMAIL_RECIPIENT_NOT_ALLOWED');
+  if(new URL(url).origin!==origin||! /^mc-auth-[a-f0-9]{64}$/.test(idempotencyKey??''))throw Error('INVALID_AUTH_EMAIL');
+  const template=authenticationEmail({kind,url,expiresMinutes});
+  const response=await network('https://api.resend.com/emails',{method:'POST',redirect:'error',signal:AbortSignal.timeout(10000),headers:{authorization:'Bearer '+env.MC_RESEND_API_KEY,'content-type':'application/json','idempotency-key':idempotencyKey},body:JSON.stringify({from:'Mi Contacto <'+env.MC_EMAIL_FROM+'>',to:[to],...template})});
+  return confirmedEmailResponse(response);
  };
 }

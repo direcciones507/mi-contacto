@@ -2,9 +2,9 @@ import {COMMUNITY,DECLARATIONS} from './protection-policy.js';
 import {PHOTO_NOTICE_ITEMS} from './content-policy.js';
 import {createHash} from 'node:crypto';
 import {layout} from './views.js';
-export const POLICY_VERSION='2026-11-05.1';
+export const POLICY_VERSION='2026-11-05.2';
 export const PRIVACY_TEXT=[
- ['Qué datos tratamos','Usamos el identificador que Google verifica para administrar tu cuenta y sesiones. El perfil contiene tu nombre, fotografía, descripción y los contactos y ubicación que decidas proporcionar. No pedimos una dirección física.'],
+ ['Qué datos tratamos','Usamos la identidad verificada por Google o tu correo verificado y una contraseña protegida mediante hash para administrar tu cuenta y sesiones. Los enlaces de verificación y recuperación son temporales y de un solo uso. El perfil contiene tu nombre, fotografía, descripción y los contactos y ubicación que decidas proporcionar. No pedimos una dirección física.'],
  ['Para qué los usamos','Administramos tu perfil, revisamos solicitudes, mostramos los datos que autorices, prevenimos abusos y atendemos solicitudes de privacidad. No activamos cobros ni suscripciones en esta versión.'],
  ['Qué se hace público','Una ficha aprobada se abre por enlace y puede reenviarse. El enlace no es una contraseña. Las fichas solicitan no indexación, pero no se garantiza que terceros no guarden copias. Teléfono, WhatsApp y ubicación dependen de tu autorización. El directorio requiere consentimiento, aprobación y un Destacado activo.'],
  ['Fotografías y ubicación','Las fotos se validan y se almacenan en el destino privado configurado. El servidor comprueba permisos antes de entregarlas. La galería adicional depende de la vigencia del Destacado. Google Maps recibe el enlace del pin cuando abres la navegación; Waze se ofrece solo con coordenadas válidas.'],
@@ -15,8 +15,8 @@ export const PRIVACY_TEXT=[
 ];
 export const TERMS_TEXT=[
  ['Aviso previo de fotografías y contenido permitido',PHOTO_NOTICE_ITEMS.join(' ')],
- ['El servicio','Mi Contacto permite mantener un perfil personal por cuenta Google. Puedes cambiar de país y localidad conservando la URL y el QR originales. Un cambio de país no crea otro perfil ni cambia el país escrito en tu enlace original.'],
- ['Tu cuenta y contenido','Accede con tu propia cuenta Google. Debes tener autorización para publicar textos, fotografías y datos de contacto. No suplantes a otras personas ni publiques contenido ilícito, abusivo o engañoso. La verificación de fotografía no acredita identidad legal ni certifica tu actividad.'],
+ ['El servicio','Mi Contacto permite mantener un perfil personal por cuenta, con acceso por Google o correo verificado. Puedes cambiar de país y localidad conservando la URL y el QR originales. Un cambio de país no crea otro perfil ni cambia el país escrito en tu enlace original.'],
+ ['Tu cuenta y contenido','Accede con tu propia cuenta Google o correo verificado. Vincular ambos métodos exige comprobar su titularidad y no crea otro perfil. Debes tener autorización para publicar textos, fotografías y datos de contacto. No suplantes a otras personas ni publiques contenido ilícito, abusivo o engañoso. La verificación de fotografía no acredita identidad legal ni certifica tu actividad.'],
  ['Publicación y visibilidad','Crear o editar un borrador no lo publica. La publicación y sus cambios están sujetos a revisión. El perfil gratuito se comparte por enlace o QR. El directorio y hasta cuatro fotos adicionales requieren Destacado elegible, aprobación y los consentimientos correspondientes.'],
  ['Precios y pagos','Los paquetes mostrados son información comercial. En esta versión no se procesan cobros, suscripciones ni renovaciones automáticas. Antes de habilitar pagos deberán aprobarse y comunicarse condiciones específicas de contratación, impuestos, vigencia y atención de reclamos.'],
  ['Moderación y eliminación','ADMIN puede rechazar o bloquear contenido con motivo registrado. Puedes ocultar tu perfil y solicitar su eliminación definitiva. La autorización ADMIN y la cola de archivos controlan el borrado. Solicitar revisión no garantiza aprobación.'],

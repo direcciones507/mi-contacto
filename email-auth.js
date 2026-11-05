@@ -1,7 +1,9 @@
 import {randomBytes,randomUUID,createHash,createHmac,scrypt as derive,timingSafeEqual} from 'node:crypto';
 import {promisify} from 'node:util';
+import {passwordWork} from './password-work.js';
 import {transaction} from './profile-runtime.js';
-const scrypt=promisify(derive),digest=s=>createHash('sha256').update(s).digest('hex');
+const deriveAsync=promisify(derive),runPassword=passwordWork();
+const scrypt=(...args)=>runPassword(()=>deriveAsync(...args)),digest=s=>createHash('sha256').update(s).digest('hex');
 const equal=(a,b)=>a.length===b.length&&timingSafeEqual(a,b);
 const cookie=req=>{const v=(req.headers.get('cookie')??'').split(';').map(x=>x.trim()).filter(x=>x.startsWith('mc_session='));return v.length===1?v[0].slice(11):'';};
 export async function hashPassword(password){
