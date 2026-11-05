@@ -132,7 +132,7 @@ export function createApplication({pool,secret,origin='https://micontacto.online
     if(req.method==='POST'&&action==='feature'){const data=await body(req);if(Object.keys(data).some(k=>k!=='days'))throw Error('INVALID_FEATURE_FIELDS');return json(201,await features.prepare(user.id,id,data.days));}
     if(req.method==='POST'&&action==='publish')return json(202,await profiles.requestPublication(user.id,id));
     if(req.method==='POST'&&['pause','resume'].includes(action))return json(200,await profiles.pause(user.id,id,action==='resume'));
-    if(req.method==='POST'&&action==='photos')return json(201,await photos.upload(user.id,id,url.searchParams.get('role')??'MAIN',await bytes(req,MAX_PHOTO_BYTES),req.headers.get('content-type')));
+    if(req.method==='POST'&&action==='photos')return json(201,await photos.upload(user.id,id,url.searchParams.get('role')??'MAIN',await bytes(req,MAX_PHOTO_BYTES),req.headers.get('content-type'),url.searchParams.get('replace')));
     if(req.method==='DELETE'&&action==='photos'&&photo)return json(200,await photos.remove(user.id,id,photo));
     if(req.method==='POST'&&action==='verification')return json(201,await photos.requestVerification(user.id,id));
    }

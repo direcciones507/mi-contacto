@@ -4,15 +4,17 @@ import {preparePhoto} from './photo-storage.js';
 export function photoRuntime(pool,profiles,storage,{now=()=>Date.now()}={}){
  async function invalidate(tx,id,main,actor){await profiles.features.suspend(tx,id,actor,'Fotografía pendiente de nueva aprobación');await tx.query('UPDATE micontacto.profiles SET photo_verified_id=CASE WHEN $2 THEN NULL ELSE photo_verified_id END,review_decision=NULL,status=CASE WHEN status=\'PAUSED\' THEN \'PAUSED\' ELSE \'DRAFT\' END,version=version+1 WHERE id=$1',[id,main]);if(main)await tx.query("UPDATE micontacto.photo_verifications SET state='REVOKED' WHERE profile_id=$1 AND state IN ('PENDING','APPROVED')",[id]);}
  return {
-  async upload(account,id,role,bytes,mime){
+  async upload(account,id,role,bytes,mime,replace=null){
    if(!['MAIN','GALLERY'].includes(role))throw Error('INVALID_PHOTO_ROLE');
    const prepared=await preparePhoto(bytes,mime),photo=randomUUID(),key='mi-contacto/'+id+'/'+photo+'.webp';
    return transaction(pool,async tx=>{
     const p=await profiles.owned(tx,account,id);profiles.writable(p);
     const current=(await tx.query("SELECT * FROM micontacto.photos WHERE profile_id=$1 AND state='ACTIVE'",[id])).rows;
     const hasFeature=(await tx.query("SELECT EXISTS(SELECT 1 FROM micontacto.feature_terms f WHERE f.profile_id=$1 AND f.state IN ('ACTIVE','PAUSED') AND micontacto.feature_remaining(f,micontacto.feature_now())>0) AS active",[id])).rows[0].active;
-    if(role==='GALLERY'&&(!hasFeature||current.filter(x=>x.role==='GALLERY').length>=4))throw Error('GALLERY_NOT_AVAILABLE');
+    if(replace&&(role!=='GALLERY'||!current.some(x=>x.id===replace&&x.role==='GALLERY')))throw Error('NOT_FOUND');
+    if(role==='GALLERY'&&(!hasFeature||current.filter(x=>x.role==='GALLERY'&&x.id!==replace).length>=4))throw Error('GALLERY_NOT_AVAILABLE');
     await storage.put(key,prepared);
+    if(replace)await tx.query("UPDATE micontacto.photos SET state='DELETED' WHERE id=$1 AND profile_id=$2",[replace,id]);
     if(role==='MAIN')await tx.query("UPDATE micontacto.photos SET state='DELETED' WHERE profile_id=$1 AND role='MAIN' AND state='ACTIVE'",[id]);
     await tx.query("INSERT INTO micontacto.photos(id,profile_id,object_key,role,mime,bytes) VALUES($1,$2,$3,$4,'image/webp',$5)",[photo,id,key,role,prepared.length]);
     await tx.query("INSERT INTO micontacto.storage_deletions(object_key) SELECT object_key FROM micontacto.photos WHERE profile_id=$1 AND state='DELETED' ON CONFLICT DO NOTHING",[id]);
