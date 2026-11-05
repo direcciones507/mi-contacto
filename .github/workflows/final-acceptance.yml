@@ -1,0 +1,48 @@
+name: Mi Contacto final native acceptance
+on:
+  push:
+    branches: [work/final-integration-acceptance-20261105]
+    paths:
+      - '.github/workflows/final-acceptance.yml'
+      - '*.js'
+      - '*.css'
+      - 'db/**'
+      - 'scripts/**'
+      - 'tests/**'
+      - 'package*.json'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mc-final-acceptance-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  native-015-and-browser:
+    if: github.event.repository.private == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - name: Native PostgreSQL and browser dependencies
+        run: |
+          test -x /usr/lib/postgresql/16/bin/postgres || (sudo apt-get update && sudo apt-get install -y postgresql-16)
+          npx playwright install --with-deps chromium
+      - name: Integrated regression in local WASM
+        run: node --test --test-concurrency=2 tests/*.test.mjs
+      - name: Native 015 migration concurrency restart and backup restoration
+        env:
+          MC_TEST_NATIVE_POSTGRES_BIN: /usr/lib/postgresql/16/bin
+        run: node --test scripts/native-auth-validation.mjs tests/email-auth.test.mjs tests/auth-hardening.test.mjs
+      - name: Visual and functional journeys against native PostgreSQL
+        env:
+          MC_TEST_NATIVE_POSTGRES_BIN: /usr/lib/postgresql/16/bin
+        run: |
+          node scripts/visual-forms-browser.mjs
+          node scripts/email-auth-browser.mjs

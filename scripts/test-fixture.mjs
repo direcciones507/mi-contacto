@@ -1,8 +1,9 @@
+import {nativeTestDatabase} from './native/test-database.mjs';
 import {randomUUID} from 'node:crypto';
 import {localDatabase} from './local-database.mjs';
 import {createApplication} from '../application.js';
 /** Synthetic fixture only, no HTTP test-login endpoint and no persisted credentials. */
-export async function testFixture({origin='https://micontacto.online',google=null,emailTransport=null,fetch,verifyToken,simulation=false,paymentProvider,storage,now,legal,acceptance=false,databaseFactory=localDatabase}={}){
+export async function testFixture({origin='https://micontacto.online',google=null,emailTransport=null,fetch,verifyToken,simulation=false,paymentProvider,storage,now,legal,acceptance=false,databaseFactory=process.env.MC_TEST_NATIVE_POSTGRES_BIN?()=>nativeTestDatabase({bin:process.env.MC_TEST_NATIVE_POSTGRES_BIN}):localDatabase}={}){
  const local=await databaseFactory();await local.migrate();const {pool}=local;
  const owner=randomUUID(),other=randomUUID(),admin=randomUUID();
  for(const[id,role]of[[owner,'USER'],[other,'USER'],[admin,'ADMIN']])await pool.query('INSERT INTO micontacto.accounts(id,google_subject,role) VALUES($1,$2,$3)',[id,'synthetic-'+id,role]);
