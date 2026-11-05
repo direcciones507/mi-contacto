@@ -1,0 +1,101 @@
+{
+  "checkedAt": "2026-11-05T15:38:00Z",
+  "authorizedWindow": {
+    "usdEstimate": [
+      0.5,
+      1.5
+    ],
+    "startsAt": "2026-11-04T19:02:48Z",
+    "stopsAt": "2026-11-06T19:02:48Z",
+    "monitorEnabled": true
+  },
+  "limitsPerService": {
+    "vCPUs": 0.25,
+    "memoryBytes": 500000000,
+    "replicas": 1
+  },
+  "node": {
+    "service": {
+      "id": "11c5eb89-00ce-4928-bd4e-e2ce0c50d22a",
+      "name": "mi-contacto-acceptance"
+    },
+    "environment": {
+      "id": "4a65150e-8ee4-4d22-917e-3ae3de82a380",
+      "name": "acceptance"
+    },
+    "metrics": [
+      {
+        "measurement": "CPU_USAGE",
+        "current": 0.0001322666666666667,
+        "average": 0.00021848208420078617,
+        "min": 0,
+        "max": 0.030967783333333332,
+        "sampleCount": 1441
+      },
+      {
+        "measurement": "MEMORY_USAGE_GB",
+        "current": 0.052774912,
+        "average": 0.041367360133240764,
+        "min": 0,
+        "max": 0.186923008,
+        "sampleCount": 1441
+      },
+      {
+        "measurement": "DISK_USAGE_GB",
+        "current": 0.03239936,
+        "average": 0.024196598406661784,
+        "min": 0,
+        "max": 0.03239936,
+        "sampleCount": 1441
+      }
+    ]
+  },
+  "postgres": {
+    "service": {
+      "id": "96597602-4db6-4287-8933-728bfc2549d9",
+      "name": "Postgres"
+    },
+    "environment": {
+      "id": "4a65150e-8ee4-4d22-917e-3ae3de82a380",
+      "name": "acceptance"
+    },
+    "metrics": [
+      {
+        "measurement": "CPU_USAGE",
+        "current": 0.00040395,
+        "average": 0.0005871745662734216,
+        "min": 0,
+        "max": 0.09712575,
+        "sampleCount": 1441
+      },
+      {
+        "measurement": "MEMORY_USAGE_GB",
+        "current": 0.088301568,
+        "average": 0.0663822461068704,
+        "min": 0,
+        "max": 0.391135232,
+        "sampleCount": 1441
+      },
+      {
+        "measurement": "DISK_USAGE_GB",
+        "current": 1.284333568,
+        "average": 1.0918547936377796,
+        "min": 0,
+        "max": 1.323708416,
+        "sampleCount": 1441
+      }
+    ]
+  },
+  "projected48HoursUSD": 0.10773770264555729,
+  "projectionOnly": true,
+  "invoiceVisible": false,
+  "exclusions": [
+    "existing subscription",
+    "network egress",
+    "unobserved future peaks"
+  ],
+  "newServices": false,
+  "resourceIncreases": false,
+  "deadlineGuardBeforeMigration": true,
+  "pricingSource": "https://docs.railway.com/pricing/plans"
+}

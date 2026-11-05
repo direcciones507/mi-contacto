@@ -1,0 +1,80 @@
+{
+  "at": "2026-11-05T15:52:50.628Z",
+  "origin": "https://mi-contacto-acceptance-acceptance.up.railway.app",
+  "authenticated": false,
+  "realEmail": false,
+  "physicalDevices": false,
+  "checks": [
+    {
+      "path": "/health/ready",
+      "status": 200
+    },
+    {
+      "path": "/api/session",
+      "status": 401
+    },
+    {
+      "path": "/api/auth-options",
+      "status": 200
+    },
+    {
+      "path": "/api/legal",
+      "status": 200
+    },
+    {
+      "path": "/api/countries",
+      "status": 200
+    },
+    {
+      "path": "/api/directory?country=PA",
+      "status": 200
+    },
+    {
+      "path": "/runtime.css",
+      "status": 200,
+      "exactSourceMatch": true,
+      "sha256": "cbcc58ffe6b32f3af0566b8464f29e9113ace5b34a948639c6ab434b041c81b1"
+    },
+    {
+      "path": "/dashboard.js",
+      "status": 200,
+      "exactSourceMatch": true,
+      "sha256": "7a5b28e8ec5fab9660fb46c8319e916455a8010bc9134412a1a1b55af528f64c"
+    }
+  ],
+  "screens": [
+    {
+      "width": 390,
+      "consentRequired": true,
+      "legalLinksSeparated": true,
+      "privateForm": true,
+      "noCredentialEntered": true,
+      "overflow": false,
+      "jsErrors": []
+    },
+    {
+      "width": 820,
+      "consentRequired": true,
+      "legalLinksSeparated": true,
+      "privateForm": true,
+      "noCredentialEntered": true,
+      "overflow": false,
+      "jsErrors": []
+    },
+    {
+      "width": 1440,
+      "consentRequired": true,
+      "legalLinksSeparated": true,
+      "privateForm": true,
+      "noCredentialEntered": true,
+      "overflow": false,
+      "jsErrors": []
+    }
+  ],
+  "options": {
+    "emailEnabled": false,
+    "googleEnabled": false,
+    "acceptanceLoginEnabled": true
+  },
+  "transport": "HTTPS via runtime proxy with provided CA pinned; Node HTTPS checks verify certificates"
+}

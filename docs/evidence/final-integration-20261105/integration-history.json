@@ -1,0 +1,14 @@
+{
+  "branches": [
+    "work/continuous-close-20261105",
+    "work/visual-forms-20261105"
+  ],
+  "continuousHead": "2928339e0e79ae61068a6e58ee417d33ea8a5f5c",
+  "visualHead": "0fb22773e8ce8e59a88ae21c7e89e7c9d19e4756",
+  "visualContainsContinuous": true,
+  "consolidatedBranch": "work/final-integration-acceptance-20261105",
+  "applicationCommit": "826bdee9efe4912b88d7e5bdaf5020f6645f0600",
+  "conflicts": 0,
+  "privateCredentialsChanged": false,
+  "resourceChanges": false
+}

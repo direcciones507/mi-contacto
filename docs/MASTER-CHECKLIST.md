@@ -1,3 +1,23 @@
+# Integración final y aceptación desplegada — 5 noviembre 2026 (Panamá)
+
+Rama consolidada `work/final-integration-acceptance-20261105`, versión desplegada `826bdee`. Contiene `2928339` y `0fb2277` por historial directo; sin conflictos. Informe: [FINAL-INTEGRATION-ACCEPTANCE-20261105.md](FINAL-INTEGRATION-ACCEPTANCE-20261105.md).
+
+- [x] Autenticación construida, mejoras visuales y funcionalidades anteriores reunidas sin reconstrucción. Código de acceso privado y secretos conservados.
+- [x] Migración 015 validada en PostgreSQL nativo: datos anteriores, sesión, identidad y perfil preservados; conexiones distintas, confirmación concurrente de un uso, unicidad/rollback, carrera login/restablecimiento, reinicio y pg_dump/pg_restore reales aprobados.
+- [x] CI exacto `826bdee`: 169 pruebas WASM + 33 pruebas nativas, cero fallidas/omitidas; seis recorridos Chrome contra PostgreSQL nativo en 390/820/1440. Google y correo de prueba sintéticos.
+- [x] Presupuesto estimado original y recursos comprobados; proyección observacional aproximada USD 0.11/48 h, no factura ni tope garantizado. No ampliación de recursos ni servicios.
+- [x] Cierre original 6 noviembre 2026 14:02:48 Panamá, confirmado por el arranque real; guardia previa a DB impide extensión no autorizada.
+- [x] Railway existente: despliegue `0228d3a0-b922-4a43-abed-5f0ace24a84f`, SUCCESS; respaldo previo de 4,710,650 bytes, archivo legible, migración 015 aplicada sobre PostgreSQL 18.6 con TLS verificado.
+- [x] Persistencia de la cuenta de aceptación tras reinicio confirmada; aplicación y PostgreSQL online, una réplica cada uno, sin trabajo pendiente. PostgreSQL no reiniciado ni reemplazado en esta entrega.
+- [x] Railway público real: ocho comprobaciones HTTP esperadas, incluidos sesión 401 y recursos CSS/JS idénticos a Git; tres recorridos de aviso y acceso privado, sin introducir código, sin errores JS ni desbordamiento. Capturas guardadas.
+- [ ] Propietario: recorrido autenticado en Railway con su código original y dispositivos físicos; carga real de fotos/marca/ADMIN con esa sesión aún no certificada.
+- [ ] Configuración exclusiva del propietario: Google OAuth, correo/remitente verificado y R2 real. Siguen desactivados; volumen privado existente activo. Pagos reales apagados.
+- [ ] Aprobación territorial y jurídica final para producción; producción sin cambios.
+
+Este bloque sustituye los pendientes históricos de integración/migración/despliegue inferiores; no sustituye las validaciones exclusivas del propietario.
+
+---
+
 # Mejora visual — 5 de noviembre de 2026 (Panamá)
 
 Rama `work/visual-forms-20261105`, base `2928339`, conserva la construcción de acceso por correo de la rama anterior sin desplegarla.

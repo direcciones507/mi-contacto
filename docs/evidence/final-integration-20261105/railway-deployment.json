@@ -1,0 +1,25 @@
+{
+  "deployment": "0228d3a0-b922-4a43-abed-5f0ace24a84f",
+  "commit": "826bdee9efe4912b88d7e5bdaf5020f6645f0600",
+  "status": "SUCCESS",
+  "bootedAt": "2026-11-05T15:50:12.993Z",
+  "postgresVersion": "18.6 (Debian 18.6-1.pgdg13+2)",
+  "migrations": 15,
+  "applied": [
+    "015_email_auth.sql"
+  ],
+  "verifiedTls": true,
+  "persistenceAfterRestart": true,
+  "bootCount": 8,
+  "backup": {
+    "createdAt": "2026-11-05T15:50:12.749Z",
+    "bytes": 4710650,
+    "archiveReadable": true,
+    "restoreExecuted": false
+  },
+  "priorBackupRestored": true,
+  "deadline": "2026-11-06T19:02:48.000Z",
+  "realPaymentsEnabled": false,
+  "googleConfigured": false,
+  "r2Configured": false
+}
