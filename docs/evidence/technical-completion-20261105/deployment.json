@@ -1,0 +1,14 @@
+{
+  "commit": "9f2a26ab55185122dec4999a1bd3038c833d3ed9",
+  "deployment": "23357c20-33b7-4710-9460-0419f0c24df2",
+  "status": "SUCCESS",
+  "applicationOnline": true,
+  "postgresOnline": true,
+  "newResources": 0,
+  "newMigrations": 0,
+  "resourcesUnchanged": true,
+  "livePayments": false,
+  "realGoogle": false,
+  "realEmail": false,
+  "realR2": false
+}

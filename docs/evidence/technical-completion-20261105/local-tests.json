@@ -1,0 +1,12 @@
+{
+  "suite": "node --test --test-concurrency=2 tests/*.test.mjs",
+  "passed": 173,
+  "failed": 0,
+  "skipped": 0,
+  "database": "PostgreSQL WASM; native validation separately in GitHub Actions",
+  "productionDependencyAudit": {
+    "total": 0
+  },
+  "newPaidResources": 0,
+  "invoiceAccessible": false
+}

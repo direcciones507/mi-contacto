@@ -1,3 +1,21 @@
+# Terminación técnica — estado verificable 5 noviembre 2026
+
+Informe vigente: [TECHNICAL-COMPLETION-20261105.md](TECHNICAL-COMPLETION-20261105.md). Conserva integración final, base, datos y recursos existentes.
+
+- [x] Construcción de acceso Google/correo, verificación, recuperación, vinculación, sesiones y perfil único conservada.
+- [x] Plantillas HTML/texto y remitente exclusivo; transporte confirmado, validación e idempotencia. Trabajo de contraseña concurrente acotado.
+- [x] Preflight admite Google o correo configurado; política de privacidad actualizada para ambos.
+- [x] Código 9f2a26a desplegado con SUCCESS; CI exacto 42130842667 SUCCESS; 173 pruebas locales, PostgreSQL nativo y seis recorridos de navegador aprobados; auditoría cero vulnerabilidades.
+- [x] Logout de sesión de prueba verificado en Railway; cuenta/perfiles/datos conservados.
+- [x] Acceso privado original y sesión ADMIN reales comprobados en tres tamaños de navegador, con CSRF y rechazo externo, sin cambios de datos.
+- [x] Perfiles, directorio, QR/Maps, fotografías/marca/permisos, denuncia, moderación, apelación, consentimientos, auditoría y eliminación cubiertos por regresión existente.
+- [ ] Google/R2/correo reales: requieren credenciales exclusivas y remitente verificado. No se sustituyen por proveedores simulados.
+- [ ] Pruebas físicas y aceptación legal/territorial del propietario; Yappy y dominio definitivo pendientes de su conexión.
+
+Los bloques siguientes son históricos; no convierten simulaciones en integraciones externas verificadas ni sustituyen los resultados del informe vigente.
+
+---
+
 # Integración final y aceptación desplegada — 5 noviembre 2026 (Panamá)
 
 Rama consolidada `work/final-integration-acceptance-20261105`, versión desplegada `826bdee`. Contiene `2928339` y `0fb2277` por historial directo; sin conflictos. Informe: [FINAL-INTEGRATION-ACCEPTANCE-20261105.md](FINAL-INTEGRATION-ACCEPTANCE-20261105.md).

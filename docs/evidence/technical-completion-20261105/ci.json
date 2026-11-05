@@ -1,0 +1,9 @@
+{
+  "run": 42130842667,
+  "commit": "9f2a26ab55185122dec4999a1bd3038c833d3ed9",
+  "conclusion": "success",
+  "regression": "success",
+  "nativePostgresConcurrencyRestartRestore": "success",
+  "browserJourneys": 6,
+  "physicalDevices": false
+}
