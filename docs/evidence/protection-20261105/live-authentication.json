@@ -1,0 +1,10 @@
+{
+  "liveRailway": true,
+  "secureCredentialSubmission": true,
+  "credentialValuesCaptured": false,
+  "authenticatedJourney": false,
+  "siteMessage": "No se pudo verificar el acceso.",
+  "credentialsReset": false,
+  "retries": 0,
+  "result": "Final authenticated photo/admin verification remains pending"
+}
