@@ -1,0 +1,19 @@
+2026-11-05T17:03:33.6016478Z ✔ adaptador reutilizado: sin configuración no envía ni usa variables ajenas (2.237787ms)
+2026-11-05T17:03:33.6017710Z ✔ adaptador reutilizado: contrato Resend, idempotencia y fallo cerrado (59.154713ms)
+2026-11-05T17:03:33.6024264Z ✔ lector reutilizado: cookies Mi Contacto independientes, duplicados y codificación inválida (3.193268ms)
+2026-11-05T17:03:50.7579699Z PHOTO_PHYSICAL_EVIDENCE {"engine":"PostgreSQL WASM","physicalStorage":"private local filesystem","operations":[{"role":"MAIN","replacedId":"a6d625d6-46f3-4c91-9963-85f2ed3528e0","oldFileExists":false,"oldRowExists":false,"newFileExists":true,"otherProfilePreserved":true},{"role":"MAIN","removedId":"474fe312-6b6c-477b-8b98-ef7031b140cc","fileExists":false,"rowExists":false},{"role":"GALLERY","position":1,"oldFileExists":false,"replacementFileExistsAfterRemove":false,"otherProfilePreserved":true},{"role":"GALLERY","position":2,"oldFileExists":false,"replacementFileExistsAfterRemove":false,"otherProfilePreserved":true},{"role":"GALLERY","position":3,"oldFileExists":false,"replacementFileExistsAfterRemove":false,"otherProfilePreserved":true},{"role":"GALLERY","position":4,"oldFileExists":false,"replacementFileExistsAfterRemove":false,"otherProfilePreserved":true}],"finalFiles":2,"activePhotos":2,"pendingDeletion":0,"uploadIntents":0,"temporaryFiles":0}
+2026-11-05T17:04:15.8425677Z ℹ tests 191
+2026-11-05T17:04:15.8426414Z ℹ pass 191
+2026-11-05T17:04:15.8426727Z ℹ fail 0
+2026-11-05T17:04:15.8427395Z ℹ skipped 0
+2026-11-05T17:04:17.6127445Z ▶ native 015: existing data, concurrent confirmation, rollback, reset races and restart/restore
+2026-11-05T17:04:18.5551588Z   ✔ server restart and actual pg_dump/pg_restore preserve 015 data and old profile (601.207447ms)
+2026-11-05T17:04:18.7128376Z ✔ native 015: existing data, concurrent confirmation, rollback, reset races and restart/restore (2603.244935ms)
+2026-11-05T17:04:19.0535817Z ✔ adaptador reutilizado: sin configuración no envía ni usa variables ajenas (1.597628ms)
+2026-11-05T17:04:19.0536592Z ✔ adaptador reutilizado: contrato Resend, idempotencia y fallo cerrado (36.019655ms)
+2026-11-05T17:04:19.0538561Z ✔ lector reutilizado: cookies Mi Contacto independientes, duplicados y codificación inválida (2.76723ms)
+2026-11-05T17:04:21.1257713Z ℹ tests 38
+2026-11-05T17:04:21.1258262Z ℹ pass 38
+2026-11-05T17:04:21.1258468Z ℹ fail 0
+2026-11-05T17:04:21.1258924Z ℹ skipped 0
+2026-11-05T17:04:29.5277403Z [{"width":390,"registration":true,"verification":true,"fragmentRemoved":true,"login":true,"recovery":true,"passwordChange":true,"sessionsRevoked":true,"fivePhotoSlots":true,"overflow":false,"jsErrors":[],"engine":"Chromium + local HTTP + native PostgreSQL","realMail":false,"physicalDevice":false},{"width":820,"registration":true,"verification":true,"fragmentRemoved":true,"login":true,"recovery":true,"passwordChange":true,"sessionsRevoked":true,"fivePhotoSlots":true,"overflow":false,"jsErrors":[],"engine":"Chromium + local HTTP + native PostgreSQL","realMail":false,"physicalDevice":false},{"width":1440,"registration":true,"verification":true,"fragmentRemoved":true,"login":true,"recovery":true,"passwordChange":true,"sessionsRevoked":true,"fivePhotoSlots":true,"overflow":false,"jsErrors":[],"engine":"Chromium + local HTTP + native PostgreSQL","realMail":false,"physicalDevice":false}]

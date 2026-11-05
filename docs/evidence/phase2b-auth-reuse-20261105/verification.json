@@ -1,0 +1,26 @@
+{
+  "commit": "3083fb14fbadbd36cfddebb9b59c35b616ef225b",
+  "runId": 42070770154,
+  "jobId": 127397749532,
+  "conclusion": "success",
+  "regression": {
+    "pass": 191,
+    "fail": 0,
+    "skipped": 0,
+    "engine": "PostgreSQL WASM"
+  },
+  "native": {
+    "pass": 38,
+    "fail": 0,
+    "skipped": 0
+  },
+  "browserWidths": [
+    390,
+    820,
+    1440
+  ],
+  "providerGoogle": "synthetic",
+  "providerMail": "synthetic",
+  "railwayMutations": 0,
+  "remoteMigrations": 0
+}

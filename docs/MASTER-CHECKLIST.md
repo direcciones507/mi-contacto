@@ -1,3 +1,23 @@
+# Fase 2B — reutilización compatible de autenticación (5 noviembre 2026)
+
+Rama `work/phase2b-auth-reuse-20261105`; código `3083fb1`.
+Informe: [PHASE2B-AUTH-REUSE-20261105.md](PHASE2B-AUTH-REUSE-20261105.md).
+
+- [x] Comparados módulos de autenticación y panel del origen fijado en 3576029d; origen solo lectura.
+- [x] Mailer Resend y lector de cookies originales portados e integrados; configuración, cookies, usuarios y secretos propios.
+- [x] Autenticación y vinculación segura existentes conservadas, con identidad exclusiva Mi Contacto.
+- [x] CI 42070770154 SUCCESS: 191 regresión + 38 específicas nativas; cero fallidas/omitidas.
+- [x] Tres recorridos Chromium con PostgreSQL nativo en 390/820/1440; proveedores sintéticos, sin errores JS ni desbordamiento.
+- [x] Evidencia de logs y resumen persistida; fotografías, migraciones y reglas comerciales conservadas.
+- [ ] Google y correo reales: cliente OAuth propio, dominio/remitente verificado, clave exclusiva y destinatario autorizado.
+- [ ] Autorización posterior de configuración/despliegue y migración 016 con respaldo; Railway no modificado.
+- [ ] Recorrido real del propietario y dispositivos físicos.
+- [ ] Fase 3 R2 real; fase 4 Yappy/generador ADMIN de USD 1.90 (un día, 365 días sin usar, único uso); fase 5 lanzamiento Panamá.
+
+Este bloque actualiza la validación nativa pendiente de la fase 2 anterior; no convierte proveedores simulados en integraciones reales.
+
+---
+
 # Fase 2 — Google y correo (5 noviembre 2026)
 
 Base `3fef6c6`; rama `work/phase2-real-auth-20261105`. Informe [PHASE2-AUTH-20261105.md](PHASE2-AUTH-20261105.md).
