@@ -49,7 +49,7 @@ test('eliminación: solicitud titular, ADMIN CSRF, borrado SQL, QR invalidado y 
   const result=await f.request(path,{as:'admin',method:'POST',body});assert.equal(result.status,200);const removed=await result.json();assert.equal(removed.profileDeleted,true);assert.equal(removed.physicalDeletion,false);assert.equal(removed.objects.pending,1);
   for(const table of ['profiles','photos','removal_requests','profile_slug_reservations'])assert.equal(Number((await f.pool.query('SELECT count(*) AS n FROM micontacto.'+table)).rows[0].n),0);
   for(const path of ['/pa/supprimer-profil','/pa/supprimer-profil/qr.svg','/media/'+id+'/'+photo])assert.equal((await f.request(path,{as:null})).status,404);
-  assert.ok(await storage.get(key));fail=false;assert.equal((await f.app.erasure.cleanup()).pending,0);assert.equal(await storage.get(key),null);
+  assert.ok(await storage.get(key));fail=false;await f.pool.query('UPDATE micontacto.storage_deletions SET next_attempt_at=now()');assert.equal((await f.app.erasure.cleanup()).pending,0);assert.equal(await storage.get(key),null);
   const reused=await f.request('/api/profiles',{method:'POST',body:{country:'PA',linkName:'supprimer-profil',displayName:'Reutilización'}});assert.equal(reused.status,409);
   assert.equal((await f.pool.query("SELECT count(*) AS n FROM micontacto.audit WHERE action='PROFILE_ERASED'")).rows[0].n,1);
  }finally{await f.pool.close();}
@@ -102,6 +102,6 @@ test('cola de fotos reemplazadas elimina solo archivos retirados; almacenamiento
   const bytes=await sharp({create:{width:20,height:20,channels:3,background:'blue'}}).png().toBuffer();
   await f.request('/api/profiles/'+id+'/photos',{method:'POST',raw:true,body:bytes});const first=(await f.pool.query('SELECT object_key FROM micontacto.photos WHERE profile_id=$1',[id])).rows[0].object_key;
   const response=await f.request('/api/profiles/'+id+'/photos',{method:'POST',raw:true,body:bytes});assert.equal(response.status,201);const latest=(await response.json()).id;
-  assert.ok(await storage.get(first));assert.equal((await f.app.erasure.cleanup()).pending,0);assert.equal(await storage.get(first),null);assert.equal((await f.request('/media/'+id+'/'+latest)).status,200);
+  assert.equal(await storage.get(first),null);assert.equal((await f.app.erasure.cleanup()).pending,0);assert.equal(await storage.get(first),null);assert.equal((await f.request('/media/'+id+'/'+latest)).status,200);
  }finally{await f?.pool.close();await rm(root,{recursive:true,force:true});}
 });

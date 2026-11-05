@@ -60,7 +60,7 @@ test('bucket exclusivo simulado: fallo SQL no revoca foto anterior ni borra un p
   await f.pool.query("CREATE FUNCTION micontacto.synthetic_audit_failure() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN IF NEW.action='PHOTO_UPLOADED' THEN RAISE EXCEPTION 'SYNTHETIC_AUDIT_FAILURE'; END IF; RETURN NEW; END $$; CREATE TRIGGER synthetic_audit_failure BEFORE INSERT ON micontacto.audit FOR EACH ROW EXECUTE FUNCTION micontacto.synthetic_audit_failure()");
   const failed=await f.request('/api/profiles/'+id+'/photos',{method:'POST',raw:true,body:bytes});assert.equal(failed.status,503);assert.deepEqual(await failed.json(),{error:'OPERATION_UNAVAILABLE'});
   assert.equal((await f.request('/media/'+id+'/'+photo)).status,200);assert.equal((await f.pool.query('SELECT count(*)::int AS n FROM micontacto.photos WHERE profile_id=$1',[id])).rows[0].n,1);
-  assert.equal(objects.size,2);assert.deepEqual(deleted,[]);const orphan=[...objects.keys()].find(k=>!k.endsWith('/'+photo+'.webp')).split('/').at(-1).replace('.webp','');assert.equal((await f.request('/media/'+id+'/'+orphan)).status,404);
-  failPut=true;assert.equal((await f.request('/api/profiles/'+id+'/photos',{method:'POST',raw:true,body:bytes})).status,503);assert.equal(objects.size,2);assert.equal((await f.request('/media/'+id+'/'+photo)).status,200);
+  assert.equal(objects.size,1);assert.equal(deleted.length,1);assert.ok(!deleted.some(k=>k.endsWith('/'+photo+'.webp')));
+  failPut=true;assert.equal((await f.request('/api/profiles/'+id+'/photos',{method:'POST',raw:true,body:bytes})).status,503);assert.equal(objects.size,1);assert.equal((await f.request('/media/'+id+'/'+photo)).status,200);
  }finally{await f.pool.close();}
 });

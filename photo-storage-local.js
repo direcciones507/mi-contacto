@@ -19,7 +19,8 @@ export async function localPhotoStorage({root,isolated=false,allowDeletion=false
    finally{if(f)await f.close();await unlink(temp).catch(e=>{if(e.code!=='ENOENT')throw e;});}
   },
   async get(key){const target=file(key);await checkRoot();let f;try{f=await open(target,constants.O_RDONLY|constants.O_NOFOLLOW);const s=await f.stat();if(!s.isFile()||s.size>MAX_PHOTO_BYTES||(s.mode&0o077)!==0)throw Error('INVALID_STORED_PHOTO');return await f.readFile();}catch(e){if(e.code==='ENOENT')return null;throw e;}finally{if(f)await f.close();}},
+  async cleanupTemporary({before,limit=50}){if(!allowDeletion)throw Error('PHYSICAL_DELETION_DISABLED');await checkRoot();let deleted=0;for(const name of await readdir(root)){if(deleted>=limit)break;if(!/^\.pending-[a-f0-9-]{36}$/.test(name))continue;const target=join(root,name);const stat=await lstat(target).catch(()=>null);if(!stat?.isFile()||stat.isSymbolicLink()||stat.mtimeMs>=before)continue;await unlink(target).catch(e=>{if(e.code!=='ENOENT')throw e;});deleted++;}return {deleted};},
   // Reserved storage primitive; never invoked by runtime without an approved deletion policy.
-  async delete(key){const target=file(key);if(!allowDeletion)throw Error('PHYSICAL_DELETION_DISABLED');await checkRoot();await unlink(target).catch(e=>{if(e.code!=='ENOENT')throw e;});}
+  async delete(key){const target=file(key);if(!allowDeletion)throw Error('PHYSICAL_DELETION_DISABLED');await checkRoot();await unlink(target).catch(e=>{if(e.code!=='ENOENT')throw e;});const dir=await open(root,constants.O_RDONLY);try{await dir.sync();}finally{await dir.close();}}
  };
 }
