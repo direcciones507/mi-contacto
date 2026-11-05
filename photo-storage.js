@@ -1,3 +1,4 @@
+import {allowedPhotoBucket} from './provider-reuse.js';
 import sharp from 'sharp';
 export const MAX_PHOTO_BYTES=5*1024*1024;
 export async function preparePhoto(bytes,mime){
@@ -15,7 +16,7 @@ export function memoryPhotoStorage(){
  const objects=new Map();return {async put(key,bytes){if(!keyOK(key))throw Error('INVALID_OBJECT_KEY');objects.set(key,Buffer.from(bytes));},async get(key){if(!keyOK(key))throw Error('INVALID_OBJECT_KEY');return objects.get(key)??null;},async delete(key){if(!keyOK(key))throw Error('INVALID_OBJECT_KEY');objects.delete(key);}};
 }
 /** Explicit, private, dedicated bucket only. No credentials or production configuration discovery. */
-export function isolatedObjectStorage({client,bucket,isolated=false}){
- if(!isolated||!/^mi-contacto-[a-z0-9][a-z0-9-]{1,48}$/.test(bucket??'')||!client?.putObject||!client?.getObject||!client?.deleteObject)throw Error('ISOLATED_STORAGE_REQUIRED');
+export function isolatedObjectStorage({client,bucket,isolated=false,reuseExistingBucket=false}){
+ if(!isolated||!allowedPhotoBucket(bucket,{reuseExistingBucket})||!client?.putObject||!client?.getObject||!client?.deleteObject)throw Error('ISOLATED_STORAGE_REQUIRED');
  return {async put(key,bytes){if(!keyOK(key))throw Error('INVALID_OBJECT_KEY');await client.putObject({bucket,key,body:bytes,contentType:'image/webp',public:false});},async get(key){if(!keyOK(key))throw Error('INVALID_OBJECT_KEY');const bytes=await client.getObject({bucket,key});if(bytes==null)return null;if((!Buffer.isBuffer(bytes)&&!(bytes instanceof Uint8Array))||bytes.length>MAX_PHOTO_BYTES)throw Error('INVALID_STORED_PHOTO');return Buffer.from(bytes);},async delete(key){if(!keyOK(key))throw Error('INVALID_OBJECT_KEY');await client.deleteObject({bucket,key});}};
 }

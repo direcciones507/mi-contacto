@@ -1,8 +1,9 @@
+import {allowedEmailSender} from './provider-reuse.js';
 import {authenticationEmail,confirmedEmailResponse} from './transactional-email.js';
 /** Exclusive sender and explicit acceptance recipients. No messages are sent on startup. */
 export function authEmailTransport(env,{fetch:network=fetch}={}){
  if(env.MC_AUTH_EMAIL_ENABLED!=='true')return null;
- if(env.MC_EMAIL_ISOLATED!=='true'||!env.MC_RESEND_API_KEY||! /^[a-zA-Z0-9._%+-]+@(?:mail\.)?micontacto\.online$/.test(env.MC_EMAIL_FROM??''))throw Error('AUTH_EMAIL_CONFIGURATION_REQUIRED');
+ if(env.MC_EMAIL_ISOLATED!=='true'||!env.MC_RESEND_API_KEY||!allowedEmailSender(env.MC_EMAIL_FROM,{reuseExistingSender:env.MC_REUSE_DIRECCIONES_EMAIL==='true'}))throw Error('AUTH_EMAIL_CONFIGURATION_REQUIRED');
  const recipients=(env.MC_AUTH_EMAIL_RECIPIENTS??'').split(',').map(x=>x.trim().toLowerCase()).filter(Boolean);
  if(env.MC_ACCEPTANCE_MODE==='true'&&!recipients.length)throw Error('AUTH_EMAIL_TEST_ALLOWLIST_REQUIRED');
  if(recipients.length>10||recipients.some(v=>! /^[^<>\s@]+@[^<>\s@]+\.[^<>\s@]+$/.test(v)))throw Error('AUTH_EMAIL_TEST_ALLOWLIST_REQUIRED');

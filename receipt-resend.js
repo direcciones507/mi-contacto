@@ -1,8 +1,9 @@
+import {allowedEmailSender} from './provider-reuse.js';
 import {emailDocument} from './transactional-email.js';
 /** Explicit test-only transport. Never sends during construction. */
-export function resendTestTransport({apiKey,from,allowedRecipients,isolated=false,enabled=false}={},http=fetch){
+export function resendTestTransport({apiKey,from,allowedRecipients,isolated=false,enabled=false,reuseExistingSender=false}={},http=fetch){
  const email=/^[^\s@<>\r\n]+@[^\s@<>\r\n]+\.[^\s@<>\r\n]+$/;
- if(!enabled||!isolated||typeof apiKey!=='string'||!apiKey.startsWith('re_')||typeof from!=='string'||!email.test(from)||!/@(?:mail\.)?micontacto\.online$/.test(from))throw Error('EXCLUSIVE_TEST_EMAIL_CONFIGURATION_REQUIRED');
+ if(!enabled||!isolated||typeof apiKey!=='string'||!apiKey.startsWith('re_')||typeof from!=='string'||!email.test(from)||!allowedEmailSender(from,{reuseExistingSender}))throw Error('EXCLUSIVE_TEST_EMAIL_CONFIGURATION_REQUIRED');
  if(!Array.isArray(allowedRecipients)||!allowedRecipients.length||allowedRecipients.length>10||allowedRecipients.some(v=>typeof v!=='string'||!email.test(v)))throw Error('EXPLICIT_TEST_RECIPIENTS_REQUIRED');
  const allow=new Set(allowedRecipients);
  return async function send({to,subject,text,idempotencyKey}){

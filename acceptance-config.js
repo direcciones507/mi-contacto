@@ -1,3 +1,4 @@
+import {allowedEmailSender,allowedPhotoBucket} from './provider-reuse.js';
 import {applicationOrigin} from './origin-policy.js';
 import {databaseConfig} from './database.js';
 import {authEmailTransport} from './auth-email-transport.js';
@@ -19,8 +20,9 @@ export function acceptanceConfiguration(env={}){
  if(result.postgres.configured)try{databaseConfig(env);}catch{invalid.push('MC_DATABASE_URL/MC_DATABASE_TLS/MC_DATABASE_ISOLATED');}
  if(env.MC_GOOGLE_CLIENT_ID&&!env.MC_GOOGLE_CLIENT_ID.endsWith('.apps.googleusercontent.com'))invalid.push('MC_GOOGLE_CLIENT_ID');
  if(env.MC_YAPPY_ENVIRONMENT&&env.MC_YAPPY_ENVIRONMENT!=='test')invalid.push('MC_YAPPY_ENVIRONMENT');
+ if(env.MC_R2_BUCKET&&!allowedPhotoBucket(env.MC_R2_BUCKET,{reuseExistingBucket:env.MC_R2_REUSE_DIRECCIONES_BUCKET==='true'}))invalid.push('MC_R2_BUCKET');
  if(env.MC_R2_ISOLATED&&env.MC_R2_ISOLATED!=='true')invalid.push('MC_R2_ISOLATED');
- if(env.MC_EMAIL_FROM&&!/@(?:mail\.)?micontacto\.online$/.test(env.MC_EMAIL_FROM))invalid.push('MC_EMAIL_FROM');
+ if(env.MC_EMAIL_FROM&&!allowedEmailSender(env.MC_EMAIL_FROM,{reuseExistingSender:env.MC_REUSE_DIRECCIONES_EMAIL==='true'}))invalid.push('MC_EMAIL_FROM');
  let emailAuthEnabled=false;try{emailAuthEnabled=!!authEmailTransport(env);}catch{invalid.push('MC_AUTH_EMAIL_CONFIGURATION');}
  return {emailAuthEnabled,groups:result,invalid,livePaymentsSupported:false,yappyUatEnabled:env.MC_YAPPY_SANDBOX_ENABLED==='true',testEmailEnabled:env.MC_EMAIL_TEST_ENABLED==='true',readyForDedicatedServer:result.runtime.configured&&result.postgres.configured&&(result.google.configured||emailAuthEnabled)&&(env.MC_STORAGE==='r2'?result.r2.configured:env.MC_STORAGE==='local'&&!!env.MC_PHOTO_ROOT)&&invalid.length===0};
 }
