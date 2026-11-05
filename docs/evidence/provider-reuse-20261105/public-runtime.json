@@ -1,0 +1,18 @@
+[
+  {
+    "path": "/health/ready",
+    "status": 200,
+    "data": {
+      "status": "ready"
+    }
+  },
+  {
+    "path": "/api/auth-options",
+    "status": 200,
+    "data": {
+      "emailEnabled": false,
+      "googleEnabled": false,
+      "acceptanceLoginEnabled": true
+    }
+  }
+]

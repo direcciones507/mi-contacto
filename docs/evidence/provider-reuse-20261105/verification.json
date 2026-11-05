@@ -1,0 +1,23 @@
+{
+  "runtimeCommit": "6f74acf9600ee5df780bcb92a8445941e6142384",
+  "deployment": "1a464ddb-9b07-48b6-8ac1-398e175ad26d",
+  "deploymentStatus": "SUCCESS",
+  "localTests": {
+    "passed": 176,
+    "failed": 0,
+    "skipped": 0
+  },
+  "sourceValuesRedacted": true,
+  "sourceProductionDeploymentUnchanged": "2a45bbef-4546-4ea5-911d-8009b72963ce",
+  "newAccounts": 0,
+  "newResources": 0,
+  "googleRealVerified": false,
+  "r2RealVerified": false,
+  "emailDeliveryRealVerified": false,
+  "ci": {
+    "run": 42132276508,
+    "conclusion": "success",
+    "nativePostgres": "success",
+    "browserJourneys": 6
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "checkedAt": "2026-11-05T23:51:01.874Z",
+  "liveRailway": true,
+  "physicalDevices": false,
+  "ownerConsentNotSubmitted": true,
+  "realProviderTests": false,
+  "proxyCertificateExceptionOnlyInTest": true,
+  "results": [
+    {
+      "device": "desktop",
+      "realPrivateLogin": true,
+      "authenticatedAdmin": true,
+      "externalOriginRejected": true,
+      "missingCsrfRejected": true,
+      "googleEnabled": false,
+      "emailEnabled": false,
+      "migrations": 15,
+      "verifiedTls": true,
+      "dataUnchanged": true,
+      "errors": [],
+      "logoutVerified": true
+    }
+  ]
+}

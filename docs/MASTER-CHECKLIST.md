@@ -1,3 +1,19 @@
+# Reutilización de proveedores existentes — 5 noviembre 2026
+
+Informe vigente: [REUSE-EXISTING-PROVIDERS-20261105.md](REUSE-EXISTING-PROVIDERS-20261105.md).
+
+- [x] Comparadas implementaciones Google/R2/correo de Direcciones507 con Mi Contacto, sin cambios productivos.
+- [x] Preparado uso de cuentas existentes, bucket con espacio mi-contacto/ y remitente específico bajo dominio verificado; sin cuentas o recursos nuevos.
+- [x] Usuarios, sesiones, base y archivos de Mi Contacto separados; rutas ajenas rechazadas antes de tocar R2.
+- [x] Transición desde volumen privado preserva originales y permite limpieza en ambos destinos.
+- [x] 176 pruebas locales aprobadas, cero fallidas/omitidas. CI 42132276508 SUCCESS: PostgreSQL nativo y seis recorridos de navegador aprobados; 6f74acf desplegado SUCCESS.
+- [ ] Añadir callback en Google existente y trasladar valores por canal privado: Railway devuelve secretos ocultos, no permite su lectura/traslado al agente.
+- [ ] Pruebas externas reales de OAuth, R2 y correo, una vez configurados los valores y destinatario autorizado.
+
+Este bloque sustituye la exigencia histórica de cuentas/bucket/dominio nuevos. Se permite reutilizar los existentes según las opciones explícitas aprobadas por el propietario. No convierte pruebas sintéticas en reales.
+
+---
+
 # Terminación técnica — estado verificable 5 noviembre 2026
 
 Informe vigente: [TECHNICAL-COMPLETION-20261105.md](TECHNICAL-COMPLETION-20261105.md). Conserva integración final, base, datos y recursos existentes.
