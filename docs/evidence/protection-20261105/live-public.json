@@ -1,0 +1,37 @@
+{
+  "liveRailway": true,
+  "authenticatedJourney": false,
+  "reason": "No private owner session in this browser; credentials unchanged",
+  "results": [
+    {
+      "path": "/health/ready",
+      "status": 200,
+      "contentType": "application/json"
+    },
+    {
+      "path": "/api/legal",
+      "status": 200,
+      "contentType": "application/json"
+    },
+    {
+      "path": "/aviso",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "path": "/comunidad",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "path": "/mi-perfil",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "path": "/acceso-pruebas",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8"
+    }
+  ]
+}

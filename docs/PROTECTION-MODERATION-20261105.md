@@ -25,3 +25,5 @@ La revisión visual detectó texto recortado por miniatura cuadrada; se redujo e
 ## Comprobación de aceptación
 
 URL existente: https://mi-contacto-acceptance-acceptance.up.railway.app/mi-perfil . El navegador de esta sesión llega al acceso privado; no dispone de sesión del propietario. No se extraen ni restablecen credenciales. Se verificará estado del despliegue, migración y páginas públicas; la comprobación autenticada de subida y ADMIN queda pendiente de acceso autorizado. No extrapolar las pruebas locales como prueba de la versión desplegada.
+
+Despliegue confirmado: commit `c8e8398851e82de260befff93b7131d3ec706ae9`, deployment `baa6033f-8a59-44c7-9f40-7e93a073c9f0`, estado `SUCCESS`. Log de arranque: migraciones 14, aplicada 014, TLS verificado, respaldo previo legible de 4.703.773 bytes, persistencia tras reinicio confirmada. No se cambió la base PostgreSQL ni el volumen ni los recursos. `/health/ready`, `/api/legal`, `/aviso`, `/comunidad`, `/mi-perfil` y `/acceso-pruebas` responden HTTP 200; tres casillas inicialmente sin marcar y versión 2026-11-05.1 verificadas. La prueba autenticada sigue pendiente de la sesión privada.

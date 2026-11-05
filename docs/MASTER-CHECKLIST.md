@@ -281,6 +281,6 @@ Esta sección sustituye estados históricos contradictorios para este alcance. B
 - [x] Retención sensible impide entrega incluso a ADMIN y detiene limpieza de esos archivos; escalamiento humano sin envío automático a autoridades.
 - [x] 155 pruebas automatizadas aprobadas, 0 fallidas; tres recorridos de regresión Chromium y tres nuevos recorridos de protección en 390/820/1440. PostgreSQL WASM local, no dispositivos físicos.
 - [x] Auditoría de dependencias de producción: cero vulnerabilidades conocidas.
-- [ ] Confirmar despliegue terminal SUCCESS y migración 014 en el servicio de aceptación existente.
+- [x] Despliegue `c8e8398`, Railway `SUCCESS`; migración 014 aplicada, respaldo previo y persistencia tras reinicio confirmados. Páginas públicas verificadas.
 - [ ] Completar recorrido autenticado en Railway con sesión/código privado del propietario; no restablecer credenciales ni crear accesos alternativos.
 - [ ] Antes de producción: aprobación jurídica, responsable, contacto, retención/plazos y escalamiento; Google/R2 reales y dispositivos físicos.
