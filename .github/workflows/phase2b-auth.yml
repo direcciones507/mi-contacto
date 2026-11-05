@@ -1,0 +1,40 @@
+name: Mi Contacto phase 2B authentication reuse
+on:
+  push:
+    branches: [work/phase2b-auth-reuse-20261105]
+    paths-ignore: ['docs/**']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mc-phase2-auth-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  native-auth-and-ui:
+    if: github.event.repository.private == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - name: Use existing native PostgreSQL and Chrome
+        run: |
+          test -x /usr/lib/postgresql/16/bin/postgres
+          browser_bin="$(command -v google-chrome || command -v chromium)"
+          echo "MC_CHROMIUM=$browser_bin" >> "$GITHUB_ENV"
+      - name: Complete regression
+        run: node --test --test-concurrency=2 tests/*.test.mjs
+      - name: Authentication migration concurrency backup and restart with native PostgreSQL
+        env:
+          MC_TEST_NATIVE_POSTGRES_BIN: /usr/lib/postgresql/16/bin
+        run: node --test tests/auth-reuse.test.mjs tests/email-auth.test.mjs tests/auth-hardening.test.mjs scripts/native-auth-validation.mjs
+      - name: Email authentication on phone tablet desktop
+        env:
+          MC_TEST_NATIVE_POSTGRES_BIN: /usr/lib/postgresql/16/bin
+        run: node scripts/email-auth-browser.mjs

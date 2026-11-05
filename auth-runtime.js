@@ -1,3 +1,4 @@
+import {readCookie as cookie} from './auth-cookies.js';
 import {verifyPassword} from './email-auth.js';
 import {applicationOrigin} from './origin-policy.js';
 import {randomUUID,randomBytes,createHash,timingSafeEqual} from 'node:crypto';
@@ -5,7 +6,7 @@ import {jwtVerify,createRemoteJWKSet} from 'jose';
 import {issueSession,verifySession,sessionCookie,clearSessionCookie} from './auth-session.js';
 import {createGoogleLogin,validateGoogleCallback,validateVerifiedGoogleClaims} from './google-oauth.js';
 const hash=s=>createHash('sha256').update(s).digest('hex');
-const cookie=(req,name)=>{const values=(req.headers.get('cookie')??'').split(';').map(s=>s.trim()).filter(s=>s.startsWith(name+'='));return values.length===1?values[0].slice(name.length+1):null;};
+
 const equal=(a,b)=>{if(typeof a!=='string'||typeof b!=='string')return false;const x=Buffer.from(a),y=Buffer.from(b);return x.length===y.length&&timingSafeEqual(x,y);};
 const keys=createRemoteJWKSet(new URL('https://www.googleapis.com/oauth2/v3/certs'));
 export function createAuth(pool,{secret,origin,google=null,fetch:network=fetch,verifyToken=null,acceptance=false,acceptanceOwner=null,now=()=>Date.now()}){
