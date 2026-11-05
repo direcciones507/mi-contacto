@@ -1,3 +1,4 @@
+import {acceptanceWindow} from '../acceptance-window.js';
 import {authEmailTransport} from '../auth-email-transport.js';
 import {legalConfig} from '../legal.js';
 import {bootstrapAcceptance} from './bootstrap-acceptance.mjs';
@@ -9,7 +10,7 @@ import {createApplication} from '../application.js';
 import {databasePool,assertDatabaseReady} from '../database.js';
 import {localPhotoStorage} from '../photo-storage-local.js';
 import {r2PhotoStorage} from '../photo-storage-r2.js';
-const env=process.env;if(!env.MC_ORIGIN)throw Error('EXPLICIT_ORIGIN_REQUIRED');
+const env=process.env;const window=acceptanceWindow(env);if(window)console.info('MC_ACCEPTANCE_WINDOW '+JSON.stringify(window));if(!env.MC_ORIGIN)throw Error('EXPLICIT_ORIGIN_REQUIRED');
 const legal=legalConfig(env,{requireApproval:env.MC_ACCEPTANCE_MODE!=='true'});
 const pool=databasePool();
 // Migrations are an explicit, separate operation. Never auto-upgrade a live database.
