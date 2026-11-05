@@ -2,6 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {testFixture} from '../scripts/test-fixture.mjs';
 import {hashPassword,verifyPassword} from '../email-auth.js';
+import {profileRuntime} from '../profile-runtime.js';
 import {authEmailTransport} from '../auth-email-transport.js';
 
 test('contraseñas con sal y límites; transporte desactivado y aislamiento obligatorio',async()=>{
@@ -47,6 +48,7 @@ test('correo: verificación obligatoria, enlaces de un uso, recuperación, cambi
 test('vincular correo conserva cuenta y perfil; requiere misma sesión y no fusiona identidades',async()=>{
  const sent=[],f=await testFixture({emailTransport:async message=>sent.push(message)}),pw='synthetic-password-link';
  try{
+  const profile=await profileRuntime(f.pool).create(f.owner,{country:'PA',linkName:'email-link-preserved',displayName:'Synthetic existing profile',profession:'Test'});
   const id=f.owner,request=(action,body,as='owner')=>f.request('/api/auth/email/'+action,{as,method:'POST',body});
   assert.equal((await request('link',{email:'linked@example.test',password:pw})).status,202);
   const token=new URLSearchParams(new URL(sent[0].url).hash.slice(1)).get('token');
@@ -56,13 +58,14 @@ test('vincular correo conserva cuenta y perfil; requiere misma sesión y no fusi
   const before=(await f.pool.query('SELECT count(*)::int AS n FROM micontacto.accounts')).rows[0].n;
   const login=await request('login',{email:'linked@example.test',password:pw},null);assert.equal(login.status,204);
   assert.equal((await f.pool.query('SELECT count(*)::int AS n FROM micontacto.accounts')).rows[0].n,before);
-  assert.equal((await request('link',{email:'linked@example.test',password:pw},'other')).status,202);assert.equal(sent.length,1);
+  assert.equal((await request('link',{email:'linked@example.test',password:pw},'other')).status,202);assert.equal(sent.length,1);assert.equal((await f.pool.query('SELECT id FROM micontacto.profiles WHERE account_id=$1',[id])).rows[0].id,profile.body.id);
  }finally{await f.pool.close();}
 });
 
 test('Google vinculado explícitamente conserva cuenta; sesión distinta y conflicto no fusionan',async()=>{
  let nonce='',subject='synthetic-google-linked';const f=await testFixture({google:{clientId:'synthetic-client',clientSecret:'synthetic-only'},emailTransport:async()=>{},verifyToken:async()=>({sub:subject,aud:'synthetic-client',iss:'https://accounts.google.com',exp:Math.floor(Date.now()/1000)+300,nonce}),fetch:async()=>Response.json({id_token:'synthetic-token'})});
  try{
+  const profile=await profileRuntime(f.pool).create(f.owner,{country:'PA',linkName:'google-link-preserved',displayName:'Synthetic existing profile',profession:'Test'});
   await f.pool.query('UPDATE micontacto.accounts SET google_subject=NULL WHERE id=$1',[f.owner]);await f.pool.query('INSERT INTO micontacto.email_identities(account_id,email,password_hash,verified_at) VALUES($1,$2,$3,now())',[f.owner,'owner@example.test',await hashPassword('synthetic-password-google')]);
   const start=()=>f.request('/auth/google/link',{method:'POST',body:{password:'synthetic-password-google'}});
   const before=(await f.pool.query('SELECT count(*)::int AS n FROM micontacto.accounts')).rows[0].n;
@@ -70,7 +73,7 @@ test('Google vinculado explícitamente conserva cuenta; sesión distinta y confl
   let result=await f.request('/auth/google/callback?state='+state+'&code=synthetic',{as:'other',headers:{cookie:'mc_oauth='+state+'; mc_session='+f.sessions.other.token}});assert.equal(result.status,400);
   r=await start();assert.equal(r.status,200);state=new URL((await r.json()).url).searchParams.get('state');nonce=(await f.pool.query('SELECT nonce FROM micontacto.oauth_transactions')).rows[0].nonce;
   result=await f.request('/auth/google/callback?state='+state+'&code=synthetic',{headers:{cookie:'mc_oauth='+state+'; mc_session='+f.sessions.owner.token}});assert.equal(result.status,302);
-  assert.equal((await f.pool.query('SELECT google_subject FROM micontacto.accounts WHERE id=$1',[f.owner])).rows[0].google_subject,subject);assert.equal((await f.pool.query('SELECT count(*)::int AS n FROM micontacto.accounts')).rows[0].n,before);assert.equal((await start()).status,409);
+  assert.equal((await f.pool.query('SELECT google_subject FROM micontacto.accounts WHERE id=$1',[f.owner])).rows[0].google_subject,subject);assert.equal((await f.pool.query('SELECT count(*)::int AS n FROM micontacto.accounts')).rows[0].n,before);assert.equal((await start()).status,409);assert.equal((await f.pool.query('SELECT id FROM micontacto.profiles WHERE account_id=$1',[f.owner])).rows[0].id,profile.body.id);
   // A separate existing Google account cannot be taken over by another email account.
   await f.pool.query('UPDATE micontacto.accounts SET google_subject=NULL WHERE id=$1',[f.other]);await f.pool.query('INSERT INTO micontacto.email_identities(account_id,email,password_hash,verified_at) VALUES($1,$2,$3,now())',[f.other,'other@example.test',await hashPassword('synthetic-password-google')]);
   r=await f.request('/auth/google/link',{as:'other',method:'POST',body:{password:'synthetic-password-google'}});state=new URL((await r.json()).url).searchParams.get('state');nonce=(await f.pool.query('SELECT nonce FROM micontacto.oauth_transactions')).rows[0].nonce;
@@ -78,6 +81,6 @@ test('Google vinculado explícitamente conserva cuenta; sesión distinta y confl
  }finally{await f.pool.close();}
 });
 
- test('correo: rechaza remitentes de otros proyectos aun con aislamiento declarado',()=>{
+test('correo: rechaza remitentes de otros proyectos aun con aislamiento declarado',()=>{
  for(const domain of ['mail.direcciones507.com','mail.empleospa.com','mail.micontacto.online.example.test'])assert.throws(()=>authEmailTransport({MC_AUTH_EMAIL_ENABLED:'true',MC_EMAIL_ISOLATED:'true',MC_RESEND_API_KEY:'synthetic',MC_EMAIL_FROM:'acceso@'+domain}),/AUTH_EMAIL_MI_CONTACTO_DOMAIN_REQUIRED/);
  });
