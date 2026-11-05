@@ -27,7 +27,8 @@ Rama `work/visual-forms-20261105`, base `2928339`, conserva la construcción de 
 - [x] Rejilla adaptable: 390 px una columna, 820 px dos y 1440 px tres; sin desbordamiento ni errores JS en Chromium.
 - [x] 24 pruebas funcionales pertinentes aprobadas, cero fallidas/omitidas. Tres recorridos visuales/funcionales con consentimiento obligatorio, borrador, vista previa, reemplazo, retirada y bloqueo de galería; también denuncia y moderación sin regresión.
 - [x] Evidencias y reproducción: `docs/evidence/visual-forms-20261105/` y `scripts/visual-forms-browser.mjs`.
-- [ ] Dispositivos físicos y nueva presentación en Railway: no comprobados. No se desplegó esta rama.
+- [x] **CIERRE VISUAL EN ACEPTACIÓN (5-nov-2026):** los ajustes de botones, enlaces legales, consentimientos y cinco tarjetas fotográficas del commit `0fb2277` están incluidos por ascendencia directa en `826bdee`, desplegado en Railway con estado SUCCESS. Los recursos `/runtime.css` y `/dashboard.js` coincidieron byte por byte con Git; tres recorridos públicos reales (390/820/1440 px) confirmaron enlaces separados, acción principal azul, consentimientos obligatorios, ausencia de desbordamiento y errores JS. Los flujos autenticados de fotografías conservaron validación automatizada en PostgreSQL nativo aislado.
+- [ ] **Aceptación física restante:** comprobar la presentación y acciones autenticadas de las fotografías con la sesión original del propietario en celular y tableta reales. No confundir esta validación con la mejora visual ya integrada y desplegada.
 
 Sin cambios de autenticación, PostgreSQL, permisos, políticas legales, reglas de Destacado ni recursos. No se activaron pagos, infraestructura ni despliegues.
 
