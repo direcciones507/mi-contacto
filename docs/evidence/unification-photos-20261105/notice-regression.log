@@ -1,0 +1,21 @@
+✔ acceso privado: solo aceptación, código fuerte, CSRF, cuenta fija y caducidad de sesiones (3937.591282ms)
+✔ acceso privado: limita intentos y no permite elegir cuenta o activar credenciales inexistentes (2295.680939ms)
+✔ acceptance origin: opt-in explícito y dominio propio o servicio Mi Contacto (2.55206ms)
+✔ enlace de aceptación y QR usan origen propio y se conservan al mudar país (3876.347376ms)
+✔ correcciones territoriales versionadas conservan origen/homónimos y reconocen cantones nuevos (4900.813218ms)
+✔ directorio funcional representativo de ocho países con IDs reales de catálogo; base WASM, no nativa (3316.394369ms)
+✔ corregir territorio referenciado exige reconciliar perfil y revierte sin cambiar datos existentes (1934.672243ms)
+✔ privacidad y términos: borrador explícito, configuración productiva bloqueada hasta aprobación (1108.973656ms)
+✔ aceptación legal por cuenta: explícita, versionada, CSRF, idempotente y previa a crear/publicar (1450.466735ms)
+✔ readiness HTTP comprueba base; privacidad, seguridad de transporte y consentimiento no exponen secretos (1170.660837ms)
+✔ arranque persistente verifica todas las migraciones y rechaza registro parcial o alterado sin modificarlo (1340.940795ms)
+✔ URL PostgreSQL inválida produce error redactado y no imprime el valor recibido (0.824908ms)
+✔ overlay selectivo en base existente crea cantones y preserva un perfil con territorio previo (1924.913166ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 17785.942335

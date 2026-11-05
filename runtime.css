@@ -2,3 +2,5 @@
 .nav .actions{flex-direction:row}.nav .actions a{white-space:nowrap}
 
 .photo-slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:16px}.photo-slot{border:1px solid #b5cee8;border-radius:14px;padding:16px;min-width:0}.photo-slot img{width:160px;height:160px;max-width:100%;object-fit:cover;border-radius:12px}.photo-slot button{margin:5px 4px 5px 0}.photo-slot h3{font-size:1.05rem}.photo-slot input:disabled{opacity:.6}
+
+.photo-notice{border:1px solid #bad4ef;background:#f3f8ff;border-radius:12px;padding:16px;margin:16px 0}.photo-notice h3{margin-top:0;color:#0a438f}.photo-notice summary{cursor:pointer;min-height:44px;padding:10px 0}.photo-notice li{margin:10px 0;line-height:1.5}

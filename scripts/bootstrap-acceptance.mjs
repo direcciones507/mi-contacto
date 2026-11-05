@@ -1,3 +1,5 @@
+import {protectUnificationMigration} from './pre-migration-backup.mjs';
+import {applyVerifiedTerritories} from './territory-corrections-db.mjs';
 import {migrateDatabase} from '../database.js';
 import {loadCatalog} from './load-catalog.mjs';
 import {mkdir,readFile,writeFile,rename} from 'node:fs/promises';
@@ -9,9 +11,11 @@ const exec=promisify(execFile);
 export async function bootstrapAcceptance(pool,env){
  if(env.MC_ACCEPTANCE_MODE!=='true'||env.MC_DATABASE_ISOLATED!=='true'||!/^https:\/\/mi-contacto-[a-z0-9-]+\.up\.railway\.app$/.test(env.MC_ORIGIN??''))throw Error('EXPLICIT_ACCEPTANCE_BOOTSTRAP_REQUIRED');
  const root='/var/lib/mi-contacto',reportPath=join(root,'acceptance-status.json');await mkdir(root,{recursive:true,mode:0o700});
+ const preMigrationBackup=await protectUnificationMigration(pool,env,root);
  const applied=await migrateDatabase(pool);
- const migrated=Number((await pool.query('SELECT count(*) AS n FROM micontacto.schema_migrations')).rows[0].n);if(migrated!==12)throw Error('MIGRATION_COUNT_MISMATCH');
+ const migrated=Number((await pool.query('SELECT count(*) AS n FROM micontacto.schema_migrations')).rows[0].n);if(migrated!==13)throw Error('MIGRATION_COUNT_MISMATCH');
  if(!(await pool.query('SELECT id FROM micontacto.catalog_sources LIMIT 1')).rows.length)await loadCatalog(pool);
+ const territoryCorrections=await applyVerifiedTerritories(pool);
  const id=env.MC_ACCEPTANCE_OWNER_ID;
  if(!/^[a-f0-9-]{36}$/.test(id??''))throw Error('ACCEPTANCE_OWNER_REQUIRED');
  await pool.query("INSERT INTO micontacto.accounts(id,google_subject,role) VALUES($1,$2,'ADMIN') ON CONFLICT DO NOTHING",[id,'acceptance-owner:'+id]);
@@ -37,6 +41,6 @@ export async function bootstrapAcceptance(pool,env){
    }finally{await check.end();}
   }finally{await run('dropdb',['--maintenance-db='+pgEnv.PGDATABASE,restored]);}
  }
- const report={bootedAt:new Date().toISOString(),processUid:process.getuid?.(),bootCount:(previous?.bootCount??0)+1,postgresVersion:(await pool.query('SHOW server_version')).rows[0].server_version,migrations:migrated,applied,verifiedTls:true,sslVersion:ssl.version,persistenceFingerprint:fingerprint,persistenceAfterRestart:!!previous,backup,googleConfigured:!!env.MC_GOOGLE_CLIENT_ID,r2Configured:env.MC_STORAGE==='r2',realPaymentsEnabled:false};
+ const report={bootedAt:new Date().toISOString(),processUid:process.getuid?.(),bootCount:(previous?.bootCount??0)+1,postgresVersion:(await pool.query('SHOW server_version')).rows[0].server_version,migrations:migrated,applied,preMigrationBackup,territoryCorrections,verifiedTls:true,sslVersion:ssl.version,persistenceFingerprint:fingerprint,persistenceAfterRestart:!!previous,backup,googleConfigured:!!env.MC_GOOGLE_CLIENT_ID,r2Configured:env.MC_STORAGE==='r2',realPaymentsEnabled:false};
  const pending=reportPath+'.pending';await writeFile(pending,JSON.stringify(report,null,2),{mode:0o600});await rename(pending,reportPath);console.log('MC_ACCEPTANCE_CHECKS '+JSON.stringify(report));return report;
 }

@@ -3,7 +3,7 @@ import {readdir,readFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 export function databaseConfig(env=process.env){
  if(env.MC_DATABASE_ISOLATED!=='true'||!env.MC_DATABASE_URL)throw Error('DEDICATED_DATABASE_CONFIRMATION_REQUIRED');
- const url=new URL(env.MC_DATABASE_URL);if(!['postgres:','postgresql:'].includes(url.protocol))throw Error('INVALID_DATABASE_URL');
+ let url;try{url=new URL(env.MC_DATABASE_URL);}catch{throw Error('INVALID_DATABASE_URL');}if(!['postgres:','postgresql:'].includes(url.protocol))throw Error('INVALID_DATABASE_URL');
  const loopback=['localhost','127.0.0.1','[::1]'].includes(url.hostname);
  if(!loopback&&env.MC_DATABASE_TLS!=='true')throw Error('DATABASE_TLS_REQUIRED');
  // Never permit connection-string options to disable certificate verification.
@@ -26,4 +26,11 @@ export async function migrateDatabase(pool){
    await tx.query('BEGIN');try{await tx.query(sql.replace(/^BEGIN;\s*|\s*COMMIT;\s*$/gmi,''));await tx.query('INSERT INTO micontacto.schema_migrations(name,sha256) VALUES($1,$2)',[name,sha]);await tx.query('COMMIT');applied.push(name);}catch(e){await tx.query('ROLLBACK');throw e;}
   }return applied;
  }finally{await tx.query('SELECT pg_advisory_unlock(5072026)').catch(()=>{});tx.release();}
+}
+
+/** Read-only startup gate: never start a newer/older runtime against an unverified schema. */
+export async function assertDatabaseReady(pool){
+ const expected=new Map();for(const name of (await readdir(new URL('./db/',import.meta.url))).filter(n=>/^\d{3}_.*\.sql$/.test(n)).sort()){const bytes=await readFile(new URL('./db/'+name,import.meta.url));expected.set(name,createHash('sha256').update(bytes).digest('hex'));}
+ let rows;try{rows=(await pool.query('SELECT name,sha256 FROM micontacto.schema_migrations')).rows;}catch{throw Error('DATABASE_MIGRATIONS_REQUIRED');}
+ if(rows.length!==expected.size)throw Error('DATABASE_MIGRATIONS_REQUIRED');for(const row of rows)if(expected.get(row.name)!==row.sha256)throw Error('MIGRATION_CHECKSUM_MISMATCH');return {migrations:expected.size};
 }

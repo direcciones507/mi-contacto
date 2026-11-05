@@ -1,3 +1,21 @@
+# Unificación vigente — fotografías y aceptación existente
+
+Rama `work/photos-unification-20261105`, derivada de `1febb25` en `work/infrastructure-acceptance-20261104` (contiene `161d178`). Integración selectiva de `1487ee1`. Informe: [UNIFICATION-PHOTOS-20261105.md](UNIFICATION-PHOTOS-20261105.md).
+
+- [x] Conservar acceso privado, corrección del 403, servidor, PostgreSQL, volúmenes, sandbox existente y límites de recursos.
+- [x] Cinco espacios visibles desde inicio; botón directo de borrador, foto principal gratuita, adicionales restringidas, vista previa/reemplazo/retirada.
+- [x] Aviso de edad/derechos de imágenes/contenido prohibido adaptado y textos legales en borrador. Sin exoneración total ni denuncia automática.
+- [x] Consentimiento versionado en migración 013; 012 de sandbox conservada.
+- [x] Respaldo privado previo preparado, sin crear otra base; actualización territorial con preservación de perfiles referenciados.
+- [x] 145 pruebas aprobadas / 0 fallidas y tres recorridos Chromium locales. Auditoría de producción sin vulnerabilidades conocidas.
+- [ ] Confirmar actualización únicamente en el Railway existente y reporte de persistencia/migración.
+- [ ] Recuperar sesión privada para subir una foto desde el enlace actualizado: el código introducido no fue aceptado; no se modificaron credenciales.
+- [ ] Revisión legal definitiva y dispositivos físicos siguen a cargo del propietario.
+
+No crear infraestructura, modificar main/DNS/otros proyectos ni activar cobros reales.
+
+---
+
 # Estado vigente — entorno Railway accesible y verificado
 
 - [x] Sección de fotografías visible desde el inicio: principal gratuita, cuatro espacios de Destacado bloqueados sin vigencia, vista previa, reemplazo y retirada. [Detalle](PHOTO-FORM-20261105.md).
