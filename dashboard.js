@@ -35,7 +35,7 @@ function renderPhotos(profile){
  for(const url of photoPreviews)URL.revokeObjectURL(url);photoPreviews.clear();
  const target=$('ownerPhotos');target.replaceChildren();
  const eligible=profile?.featureTerms.some(t=>['ACTIVE','PAUSED'].includes(t.state)&&t.remainingSeconds>0);
- $('photoInstructions').textContent=profile?'Selecciona una imagen, revisa la vista previa y pulsa Guardar fotografía. Reemplazar o retirar una foto requiere nueva revisión.':'Primero pulsa Crear mi perfil y guarda los datos como borrador. Después podrás subir la foto principal en esta sección.';
+ $('photoInstructions').textContent=profile?'Selecciona tu foto principal, comprueba la vista previa y guárdala. Si la reemplazas o retiras, volverá a revisión.':'Completa tus datos y pulsa Guardar y publicar para crear tu perfil; después agrega la foto principal.';
  $('startProfilePhotos').hidden=!!profile;$('startProfilePhotos').disabled=!legalAccepted;
  $('requestVerification').hidden=!profile?.photos.some(p=>p.role==='MAIN');
  const gallery=profile?.photos.filter(p=>p.role==='GALLERY')??[];
