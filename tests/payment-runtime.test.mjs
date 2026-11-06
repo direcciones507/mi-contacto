@@ -95,3 +95,13 @@ test('checkout aislado: firma, propiedad, saldo, comprobante y borrado integral'
  }finally{await f.pool.close();}
 });
 test('checkout desactivado por defecto, incluso sin credenciales',async()=>{const f=await testFixture();try{assert.equal((await(await f.request('/api/payments/config')).json()).enabled,false);await assert.rejects(f.app.payments.confirm(new URLSearchParams()),/PAYMENTS_DISABLED/);}finally{await f.pool.close();}});
+
+test('tarifas históricas: preparación nueva no reutiliza precio antiguo y orden anterior conserva su importe',async()=>{
+ const provider=yappySandbox(config,async(url,options)=>{const data=JSON.parse(options.body);return Response.json({body:url.endsWith('/merchant')?{token:'synthetic-token',epochTime:1}:{transactionId:'synthetic-'+data.orderId,token:'synthetic-token',documentName:'synthetic-doc'}});});const f=await testFixture({paymentProvider:provider});try{
+ const id=(await(await f.request('/api/profiles',{method:'POST',body:{country:'PA',linkName:'historical-price',displayName:'Histórico sintético'}})).json()).id;
+ const legacy=await f.app.features.prepare(f.owner,id,1);await f.pool.query('UPDATE micontacto.feature_terms SET amount_cents=169 WHERE id=$1',[legacy.id]);const current=await f.app.features.prepare(f.owner,id,1);assert.notEqual(current.id,legacy.id);assert.equal(current.amountCents,190);assert.equal((await f.pool.query('SELECT amount_cents FROM micontacto.feature_terms WHERE id=$1',[legacy.id])).rows[0].amount_cents,169);
+ const order=await f.app.payments.prepare(f.owner,id,{termId:current.id,key:randomUUID(),email:'synthetic@example.test'});
+ // Consistent pre-change order/term snapshot; initialize uses the stored historical amount.
+ await f.pool.query('UPDATE micontacto.feature_terms SET amount_cents=169 WHERE id=$1',[current.id]);await f.pool.query('UPDATE micontacto.payment_orders SET amount_cents=169 WHERE id=$1',[order.id]);await f.app.payments.initialize(f.owner,order.id,'60000000');const row=(await f.pool.query('SELECT provider_order_id FROM micontacto.payment_orders WHERE id=$1',[order.id])).rows[0];assert.equal((await f.app.payments.confirm(notification(row.provider_order_id))).status,'PAID');assert.equal((await f.app.payments.confirm(notification(row.provider_order_id))).replayed,true);assert.equal((await f.app.payments.read(f.owner,order.id)).amountCents,169);assert.equal((await f.pool.query('SELECT amount_cents FROM micontacto.feature_terms WHERE id=$1',[current.id])).rows[0].amount_cents,169);
+ }finally{await f.pool.close();}
+});

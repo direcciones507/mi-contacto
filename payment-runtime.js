@@ -43,7 +43,7 @@ export function paymentRuntime(pool,{provider=null}={}){
    const o=(await tx.query('SELECT * FROM micontacto.payment_orders WHERE provider_order_id=$1 FOR UPDATE',[proof.orderId])).rows[0];
    if(!o.provider_reference||o.provider_reference.startsWith('INITIALIZING:'))throw Error('PAYMENT_UNCONFIRMED');
    const t=(await tx.query('SELECT * FROM micontacto.feature_terms WHERE id=$1 FOR UPDATE',[o.term_id])).rows[0];
-   if(o.amount_cents!==featureQuote(t.days).amountCents||o.currency!=='USD')throw Error('INVALID_PAYMENT_AMOUNT');
+   if(o.amount_cents!==t.amount_cents||o.currency!=='USD')throw Error('INVALID_PAYMENT_AMOUNT');
    if(o.status==='PAID'||o.status===proof.status)return {id:o.id,status:o.status,replayed:true};
    if(o.status!=='PENDING'&&proof.status!=='PAID')return {id:o.id,status:o.status,replayed:true};
    if(proof.status==='PAID'){

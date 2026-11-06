@@ -15,7 +15,7 @@ Rama: `work/integral-close-20261106`, derivada de `33cbcdc`, conserva `e411484` 
 
 ## Migración y recuperación
 
-`016_commercial_codes.sql` agrega inventario, pedidos y eventos. Corrige el CHECK de tarifas que todavía rechazaba los importes nuevos; acepta históricos sin modificar sus filas. No cambia migraciones 001–015 ni sus hashes. Conserva datos y fotos. Al eliminar un perfil autorizado, se retiran sus referencias personales de códigos y correo de comprobantes sin convertir códigos usados en reutilizables.
+`016_commercial_codes.sql` agrega inventario, pedidos y eventos. Corrige el CHECK de tarifas que todavía rechazaba los importes nuevos; acepta históricos sin modificar sus filas. Las preparaciones nuevas seleccionan el precio vigente; las órdenes ya creadas conservan el importe contratado, incluso en callbacks repetidos. No cambia migraciones 001–015 ni sus hashes. Conserva datos y fotos. Al eliminar un perfil autorizado, se retiran sus referencias personales de códigos y correo de comprobantes sin convertir códigos usados en reutilizables.
 
 Antes de aplicar: ejecutar `scripts/commercial-preflight.mjs`, revisar paquetes PREPARED antiguos y obtener respaldo externo al repositorio mediante `scripts/backup-commercial.mjs --authorized-acceptance --output=/ruta/segura/mi-contacto.dump`. El script requiere variables exclusivas existentes, TLS verificado, archivo privado y valida el archivo con pg_restore --list y SHA256. No imprime credenciales. Aplicar después `node scripts/migrate.mjs --isolated-test` únicamente en la base exclusiva autorizada y desplegar el mismo commit probado. El arranque rechaza un esquema sin migración o con hashes distintos.
 
@@ -23,7 +23,7 @@ No se hizo respaldo/restauración del Railway activo ni se aplicó 016 allí. La
 
 ## Pruebas y evidencia
 
-184 pruebas locales aprobadas. Nueve recorridos Chromium: tres tamaños para fotografías/moderación/códigos, tres para correo y tres para el ciclo completo de pago de prueba, directorio, mudanza, Maps, compartir, QR, privacidad y eliminación ADMIN. CI repite contra PostgreSQL nativo, con concurrencia, migración, reinicio y restauración. Resultados y capturas en el artefacto `mi-contacto-integral-acceptance`; ver la ejecución correspondiente al commit final de esta rama. Los pagos y correos de estos recorridos usan proveedores sintéticos; no son pruebas de proveedores reales ni dispositivos físicos.
+185 pruebas locales aprobadas. Nueve recorridos Chromium: tres tamaños para fotografías/moderación/códigos, tres para correo y tres para el ciclo completo de pago de prueba, directorio, mudanza, Maps, compartir, QR, privacidad y eliminación ADMIN. CI repite contra PostgreSQL nativo, con concurrencia, migración, reinicio y restauración. Resultados y capturas en el artefacto `mi-contacto-integral-acceptance`; ver la ejecución correspondiente al commit final de esta rama. Los pagos y correos de estos recorridos usan proveedores sintéticos; no son pruebas de proveedores reales ni dispositivos físicos.
 
 La primera ejecución detectó una carrera de la prueba de logout: consultaba antes del HTTP 204. Se corrigió esperando esa respuesta, sin retirar la exigencia de sesión 401. La revisión posterior `f2fd7ba` aprobó todos los bloques; los resultados finales de esta entrega se registran en `evidence/integral-close-20261106/release.json`.
 

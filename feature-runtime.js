@@ -30,7 +30,7 @@ export function featureRuntime(pool,{simulation=false}={}){
   const p=await profile(tx,id,actor);if(['BLOCKED','DELETED'].includes(p.status))throw Error('PROFILE_LOCKED');
   const at=await clock(tx),terms=await settle(tx,id,actor,at);
   if(terms.some(t=>['ACTIVE','PAUSED'].includes(t.state)))throw Error('FEATURE_CONFLICT');
-  const existing=terms.find(t=>t.state==='PREPARED'&&t.days===days);if(existing)return {id:existing.id,...q,state:'PREPARED'};
+  const existing=terms.find(t=>t.state==='PREPARED'&&t.days===days&&t.amount_cents===q.amountCents);if(existing)return {id:existing.id,...q,state:'PREPARED'};
   const term={id:randomUUID(),profile_id:id,remaining_ms:days*86400000};
   await tx.query("INSERT INTO micontacto.feature_terms(id,profile_id,days,amount_cents,state,remaining_ms,observed_at) VALUES($1,$2,$3,$4,'PREPARED',$5,$6)",[term.id,id,days,q.amountCents,term.remaining_ms,at]);
   await event(tx,actor,term,'PREPARED',at);return {id:term.id,...q,state:'PREPARED'};

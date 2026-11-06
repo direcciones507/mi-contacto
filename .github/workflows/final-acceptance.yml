@@ -42,7 +42,7 @@ jobs:
       - name: Native 016 migration concurrency restart and backup restoration
         env:
           MC_TEST_NATIVE_POSTGRES_BIN: /usr/lib/postgresql/16/bin
-        run: node --test scripts/native-auth-validation.mjs tests/email-auth.test.mjs tests/auth-hardening.test.mjs tests/commercial-codes.test.mjs
+        run: node --test scripts/native-auth-validation.mjs tests/email-auth.test.mjs tests/auth-hardening.test.mjs tests/commercial-codes.test.mjs tests/payment-runtime.test.mjs
       - name: Visual and functional journeys against native PostgreSQL
         env:
           MC_TEST_NATIVE_POSTGRES_BIN: /usr/lib/postgresql/16/bin
