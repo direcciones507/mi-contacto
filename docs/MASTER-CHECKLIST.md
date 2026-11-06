@@ -1,3 +1,19 @@
+# Origen oficial — estado vigente
+
+Informe: [OFFICIAL-ORIGIN-CLOSE-20261106.md](OFFICIAL-ORIGIN-CLOSE-20261106.md).
+
+- [x] Dominio micontacto.online verificado, certificado válido y puerto 3000 configurado.
+- [x] MC_ORIGIN oficial y acceso privado de aceptación preservado con opción explícita; usuarios, sesiones y datos separados.
+- [x] Dominio temporal limitado a salud técnica y redirección de navegación; escrituras rechazadas.
+- [x] Dominio oficial real: tres tamaños de navegador, acceso privado/ADMIN/logout, origen/CSRF, HTTPS/HSTS y salud; cero errores JS, 15 migraciones y TLS remoto, sin cambios de datos.
+- [x] 178 pruebas locales aprobadas, cero fallidas/omitidas. CI 42141575097 SUCCESS, PostgreSQL nativo y seis recorridos aprobados. e38d1ce desplegado SUCCESS.
+- [ ] Configurar valores privados existentes Google/R2/Resend y callback oficial de Google; sin cuentas nuevas.
+- [ ] Certificar Google, R2, recepción de correo/notificaciones y recorridos físicos reales; pendientes por falta de configuración externa.
+
+Los bloques previos son históricos. No se declara producción aprobada por conectar el dominio.
+
+---
+
 # Reutilización de proveedores existentes — 5 noviembre 2026
 
 Informe vigente: [REUSE-EXISTING-PROVIDERS-20261105.md](REUSE-EXISTING-PROVIDERS-20261105.md).

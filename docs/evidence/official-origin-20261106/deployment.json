@@ -1,0 +1,16 @@
+{
+  "commit": "e38d1ce299eb45f140ab6f54e7dbb84aa92fe5ed",
+  "branch": "work/official-origin-20261106",
+  "deployment": "bb4e8331-41ad-4b3e-aced-7ab9a00bef71",
+  "status": "SUCCESS",
+  "origin": "https://micontacto.online",
+  "domainVerified": true,
+  "certificateValid": true,
+  "targetPort": 3000,
+  "newResources": 0,
+  "newMigrations": 0,
+  "postgresPreserved": true,
+  "livePayments": false,
+  "credentialsAvailable": false,
+  "railwaySecretValuesRedacted": true
+}

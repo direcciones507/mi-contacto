@@ -1,0 +1,12 @@
+{
+  "run": 42141575097,
+  "commit": "e38d1ce299eb45f140ab6f54e7dbb84aa92fe5ed",
+  "conclusion": "success",
+  "localTests": 178,
+  "failed": 0,
+  "skipped": 0,
+  "nativePostgresConcurrencyRestartRestore": "success",
+  "browserJourneys": 6,
+  "physicalDevices": false,
+  "realGoogleR2Email": false
+}
