@@ -119,3 +119,11 @@ body.owner-page .header .top-account-nav{display:none!important}
 
 body.auth-page .header .top-account-nav{display:none!important}
 body.auth-page .auth-card #emailAccess[hidden],body.auth-page .auth-card .auth-forgot[hidden]{display:none!important}
+
+/* Consentimientos: tarjetas compactas y legibles en teléfono */
+.runtime #editor label.check{display:grid!important;grid-template-columns:22px minmax(0,1fr);align-items:start;column-gap:12px!important;margin:7px 0!important;padding:11px 12px;border:1px solid #dce7f4;border-radius:11px;background:#f8fbff;font-size:.93rem;line-height:1.45;min-height:0}
+.runtime #editor label.check input[type=checkbox]{appearance:auto;width:20px;height:20px;min-height:20px;margin:2px 0 0;accent-color:#0a4ba5}
+.runtime #editor label.check:has(input:checked){border-color:#91b9eb;background:#edf6ff}
+.runtime #profileOptions[hidden]{display:none!important}
+.runtime .photo-slot--compact .main-photo-picker>button{flex:0 1 auto}
+@media(max-width:600px){.runtime #editor label.check{font-size:.9rem;padding:10px;gap:10px!important}.runtime .photo-slot--compact .main-photo-picker{display:flex;flex-wrap:wrap;gap:8px}.runtime .photo-slot--compact .main-photo-picker>input{flex:1 1 190px}.runtime .photo-slot--compact .main-photo-picker>button{flex:0 1 auto;font-size:.84rem}}
