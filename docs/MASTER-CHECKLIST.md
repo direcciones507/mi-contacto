@@ -1,5 +1,13 @@
 # Cierre integral preparado — rama work/integral-close-20261106
 
+## Acceso privado del propietario y simplificación de autenticación (captura 6 noviembre 2026)
+
+- [ ] Separar tres conceptos: acceso de clientes, puerta de pruebas privadas existente y acceso ADMIN del propietario. No mezclar enlaces «Continuar con Google», «Entrar a pruebas privadas», selector «Acción» y formulario correo en una tarjeta gigante.
+- [ ] El propietario solicita enlace ADMIN independiente, no mostrado en navegación pública, con su **credencial actual sin rotarla** durante pruebas. No generar ni revelar contraseña, ni desactivar controles; comprobar en código el mecanismo ADMIN real antes de tocar rutas. No asumir que la clave privada de aceptación equivale a autenticación ADMIN.
+- [ ] Tras acceso ADMIN autenticado, dirigir a panel ADMIN con generador de códigos, lotes, ventas manuales WhatsApp, auditoría, moderación. Cliente solo ve su panel de perfil y compras. Reforzar permisos en servidor y API, no solo ocultar el enlace.
+- [ ] El acceso cliente debe ser tarjeta compacta estilo Empleos.pa con Google/correo y contraseña, registro y recuperación, mostrando con claridad si el proveedor de correo todavía no está conectado. No exponer modos de prueba en producción pública.
+- [ ] Antes de apertura pública, revisar seguridad de credenciales y autorizar expresamente cualquier rotación. Probar accesos de propietario, cliente y anónimo, y que una URL ADMIN conocida no concede acceso.
+
 ## Cierre comercial y separación de paneles (instrucción del propietario, 6 noviembre 2026)
 
 **Criterio de terminado:** no basta un commit. Cada cambio debe superar pruebas, desplegarse en el Railway existente y verificarse en micontacto.online desde dispositivos reales. Mantener despliegue privado hasta autorización de apertura; migración 016 solo tras preflight y respaldo íntegro verificado. No alterar datos ni pagos reales sin autorización.
