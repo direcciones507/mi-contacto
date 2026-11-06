@@ -51,3 +51,13 @@
 @media(min-width:1100px){.photo-slots{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:600px){.legal-links{align-items:stretch;flex-direction:column;gap:4px}.consent-actions>*{flex:1 1 100%}.consent-actions .btn{width:100%}.runtime .check{font-size:.9375rem}.photo-slot{padding:16px}.photo-actions{gap:8px}.runtime #startProfilePhotos{width:auto}.runtime .consent-checks .check{padding:12px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+/* Commercial controls stay readable on small screens. */
+#commercial section { margin-block: 1.2rem; }
+.code-row { padding: 1rem; border-bottom: 1px solid #dbe4ef; min-width: 0; }
+.code-row code { overflow-wrap: anywhere; user-select: all; }
+#adminItems > section, #commercial { min-width: 0; }
+#profileCards { margin-top: 1rem; }
+#profileForm #photoTools { border: 0; padding: .5rem 0; margin: 0; box-shadow: none; }
+#profileForm #photoTools .photo-slots { grid-template-columns: repeat(auto-fit,minmax(min(100%,240px),1fr)); }
+#profileForm #photoTools .photo-slots { grid-template-columns: 1fr; max-width: 340px; }
+#profileForm #photoTools .photo-slots:has(.photo-slot:nth-child(2)) { max-width: none; grid-template-columns: repeat(auto-fit,minmax(min(100%,240px),1fr)); }

@@ -1,3 +1,22 @@
+# Cierre integral preparado — rama work/integral-close-20261106
+
+Este bloque distingue código probado de despliegue. La instrucción actual exige autorización expresa antes de publicar; no aplicar 016 ni desplegar esta rama todavía.
+
+- [x] Formulario en orden: datos, descripción, foto, consentimientos y Guardar y publicar. Borrador interno, foto seleccionable antes de guardar; revisión ADMIN conservada.
+- [x] Una foto gratuita, cuatro adicionales solo con saldo Destacado; archivos anteriores conservados.
+- [x] Seguridad de sesiones separada en /acceso. Encabezado compacto y opciones secundarias plegadas.
+- [x] Generador ADMIN de 1–100 códigos, lotes, copia individual/lote, inventario, reserva, venta manual con referencia de pago, anulación, historial paginado y exportación de registros visibles.
+- [x] Código de un día a USD 1.90, sin vencimiento mientras se guarda. Generar/vender no activa; canje único crea saldo y respeta revisión/consentimiento.
+- [x] Pedidos de 1/2/3 o cantidades mayores; precio validado en servidor, entrega tras confirmación Yappy TEST y reintentos idempotentes. Comprobante en outbox con reintento y clave estable.
+- [x] Migración 016 aditiva: inventario y pedidos; corrige incompatibilidad de tarifas nuevas con CHECK histórico sin reescribir compras anteriores.
+- [x] 182 pruebas locales aprobadas; recorridos de correo y fotos/moderación/códigos en Chromium local. Los proveedores de pago/correo son de prueba.
+- [ ] Aplicar 016 y desplegar después de autorización, preflight y respaldo verificado del PostgreSQL existente.
+- [ ] Google real: el titular debe completar la autorización y verificar retorno/perfil; no se reemplazan ni fusionan identidades automáticamente.
+- [ ] Correo real: falta MC_RESEND_API_KEY, configuración de habilitación y destinatarios de ensayo; reutilizar Resend existente, sin cuenta nueva.
+- [ ] R2 real: faltan MC_R2_ACCOUNT_ID, MC_R2_ACCESS_KEY_ID, MC_R2_SECRET_ACCESS_KEY y activación controlada de MC_STORAGE=r2. Preservar fallback local y prefijo mi-contacto/.
+- [ ] Yappy UAT real y posteriormente Live requieren credenciales/autorización exclusivas. Live sigue desactivado.
+- [ ] Aprobación legal final, pruebas en dispositivos físicos y verificación posdespliegue. No se declara producción lista.
+
 ## Orden definitivo de Mi perfil aprobado por el propietario (5 nov 2026)
 
 - [ ] Encabezado compacto: **Mi perfil**, estado **Sesión activa** y un solo botón **Cerrar sesión**. Quitar de esta pantalla **Cerrar todas las sesiones**, **Crear mi perfil** redundante y el enlace visible **Acceso y contraseña de mi cuenta**; conservar gestión de seguridad en su pantalla correspondiente.

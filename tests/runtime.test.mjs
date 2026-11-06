@@ -85,7 +85,7 @@ test('integración real en PostgreSQL WASM aislado, sin servicios ni pagos',asyn
    assert.equal((await f.request('/media/'+id+'/'+main,{as:null})).status,404);assert.equal((await f.request('/pa/persona-sintetica',{as:null})).status,404);
   });
   await t.test('destacados: precios, fotos adicionales y fin exacto sin borrar datos',async()=>{
-   assert.deepEqual(featureQuote(30),{days:30,amountCents:3499,currency:'USD',paymentEnabled:false,automaticRenewal:false});assert.throws(()=>featureQuote(2));
+   assert.deepEqual(featureQuote(30),{days:30,amountCents:3900,currency:'USD',paymentEnabled:false,automaticRenewal:false});assert.throws(()=>featureQuote(2));
    const start=new Date(Date.now()-1000),end=new Date(Date.now()+86400000);
    await f.request('/api/profiles/'+id+'/publish',{method:'POST'});await current();await f.request('/api/admin/profiles/'+id,{as:'admin',method:'POST',body:{action:'APPROVE',version,reason:'Revisión de foto nueva'}});
    const prepared=await f.app.features.prepare(f.owner,id,30);const term=prepared.id;await f.app.features.activateSimulation(f.owner,id,term,'synthetic-'+randomUUID());

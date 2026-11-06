@@ -61,7 +61,7 @@ test('checkout aislado: firma, propiedad, saldo, comprobante y borrado integral'
    const late=new URLSearchParams(signed);late.set('status','R');const row=(await f.pool.query('SELECT provider_order_id FROM micontacto.payment_orders WHERE id=$1',[order.id])).rows[0];await f.app.payments.confirm(notification(row.provider_order_id,'R'));assert.equal((await f.app.payments.read(f.owner,order.id)).status,'PAID');
   });
   await t.test('correo pendiente persiste, reintento estable y fallo no revierte pago',async()=>{
-   const keys=[];let error=true;const send=receiptWorker(f.pool,async msg=>{keys.push(msg.idempotencyKey);assert.match(msg.text,/COMPROBANTE DE PRUEBA/);assert.match(msg.text,/USD 7.99/);assert.match(msg.text,/YAPPY/);if(error)throw Error('timeout');return {id:'synthetic-email-id'};});
+   const keys=[];let error=true;const send=receiptWorker(f.pool,async msg=>{keys.push(msg.idempotencyKey);assert.match(msg.text,/COMPROBANTE DE PRUEBA/);assert.match(msg.text,/USD 8.90/);assert.match(msg.text,/YAPPY/);if(error)throw Error('timeout');return {id:'synthetic-email-id'};});
    assert.equal((await send()).sent,false);assert.equal((await f.app.payments.read(f.owner,order.id)).status,'PAID');
    await f.pool.query('UPDATE micontacto.payment_receipts SET next_attempt_at=now()');error=false;assert.equal((await send()).sent,true);assert.equal(keys[0],keys[1]);assert.equal((await send()).processed,false);
   });

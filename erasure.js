@@ -13,6 +13,9 @@ export function erasureRuntime(pool,storage){
    await tx.query('INSERT INTO micontacto.deleted_urls(url_hash) VALUES($1) ON CONFLICT DO NOTHING',[urlHash(p.url_country,p.slug)]);
    await tx.query('INSERT INTO micontacto.storage_deletions(object_key) SELECT object_key FROM micontacto.photos WHERE profile_id=$1 ON CONFLICT DO NOTHING',[p.id]);
    await tx.query('UPDATE micontacto.profiles SET photo_verified_id=NULL WHERE id=$1',[p.id]);
+   await tx.query("UPDATE micontacto.code_events SET reason='' WHERE code_id IN (SELECT id FROM micontacto.commercial_codes WHERE used_profile_id=$1)",[p.id]);
+   await tx.query("UPDATE micontacto.commercial_codes SET customer_reference='',payment_reference='',owner_id=NULL WHERE used_profile_id=$1",[p.id]);
+   await tx.query("UPDATE micontacto.code_orders SET receipt_email='',receipt_state='REVIEW' WHERE account_id=$1",[p.account_id]);
    await tx.query('DELETE FROM micontacto.photo_verifications WHERE profile_id=$1',[p.id]);
    await tx.query('DELETE FROM micontacto.payment_orders WHERE profile_id=$1',[p.id]);
    await tx.query('DELETE FROM micontacto.feature_events WHERE term_id IN (SELECT id FROM micontacto.feature_terms WHERE profile_id=$1)',[p.id]);

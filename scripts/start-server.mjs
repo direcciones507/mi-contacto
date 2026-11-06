@@ -1,3 +1,4 @@
+import {codeReceiptWorker} from '../codes-runtime.js';
 import {officialRequestPolicy} from '../official-origin.js';
 import {migratingPhotoStorage} from '../storage-migration.js';
 import {acceptanceWindow} from '../acceptance-window.js';
@@ -28,6 +29,8 @@ if(!google&&!emailTransport&&env.MC_ACCEPTANCE_MODE!=='true')throw Error('AUTH_C
 if(!!env.MC_GOOGLE_CLIENT_ID!==!!env.MC_GOOGLE_CLIENT_SECRET)throw Error('GOOGLE_CONFIGURATION_INCOMPLETE');
 const paymentProvider=env.MC_YAPPY_SANDBOX_ENABLED==='true'?yappySandbox({environment:'test',isolated:env.MC_YAPPY_ISOLATED==='true',merchantId:env.MC_YAPPY_MERCHANT_ID,domain:env.MC_ORIGIN,ipnUrl:env.MC_ORIGIN+'/api/payments/yappy/ipn',secret:env.MC_YAPPY_SECRET}):null;
 const app=createApplication({emailTransport,accessEvent:event=>console.info('MC_PRIVATE_ACCESS '+JSON.stringify(event)),pool,paymentProvider,acceptanceReport,legal,acceptanceOwner:env.MC_ACCEPTANCE_OWNER_CODE_HASH?{accountId:env.MC_ACCEPTANCE_OWNER_ID,codeHash:env.MC_ACCEPTANCE_OWNER_CODE_HASH,expiresAt:Date.parse(env.MC_ACCEPTANCE_EXPIRES_AT)}:null,acceptance:env.MC_ACCEPTANCE_MODE==='true',privateOfficialOrigin:env.MC_PRIVATE_OFFICIAL_ORIGIN==='true',secret:env.MC_SESSION_SECRET,origin:env.MC_ORIGIN,storage,google});
+const receiptTransport=env.MC_EMAIL_TEST_ENABLED==='true'?resendTestTransport({apiKey:env.MC_RESEND_API_KEY,from:env.MC_EMAIL_FROM,allowedRecipients:(env.MC_EMAIL_TEST_RECIPIENTS??'').split(',').map(x=>x.trim()).filter(Boolean),isolated:env.MC_EMAIL_ISOLATED==='true',enabled:true,reuseExistingSender:env.MC_REUSE_DIRECCIONES_EMAIL==='true'}):null;
+const deliverCodeReceipt=receiptTransport?codeReceiptWorker(pool,receiptTransport):null;
 const deliverReceipt=env.MC_EMAIL_TEST_ENABLED==='true'?receiptWorker(pool,resendTestTransport({apiKey:env.MC_RESEND_API_KEY,from:env.MC_EMAIL_FROM,allowedRecipients:(env.MC_EMAIL_TEST_RECIPIENTS??'').split(',').map(x=>x.trim()).filter(Boolean),isolated:env.MC_EMAIL_ISOLATED==='true',enabled:true,reuseExistingSender:env.MC_REUSE_DIRECCIONES_EMAIL==='true'})):null;
 const server=createServer(async(req,res)=>{try{
  const policy=officialRequestPolicy({host:req.headers.host,method:req.method,url:req.url},env.MC_ORIGIN);if(policy){res.statusCode=policy.status;for(const[k,v]of policy.headers)res.setHeader(k,v);res.end(Buffer.from(await policy.arrayBuffer()));return;}
@@ -41,7 +44,7 @@ server.requestTimeout=20000;server.headersTimeout=10000;
 server.listen(Number(env.PORT??3000),env.MC_BIND_HOST??'127.0.0.1',()=>console.log('Mi Contacto iniciado; persistencia PostgreSQL y almacenamiento configurados.'));
 // Only queued, committed deletion work. Storage errors remain queued for retry.
 let sending=false;
-const receipts=deliverReceipt?setInterval(async()=>{if(sending)return;sending=true;try{await deliverReceipt();}catch{console.error('MC_RECEIPT_WORKER_UNAVAILABLE');}finally{sending=false;}},30000):null;
+const receipts=deliverReceipt?setInterval(async()=>{if(sending)return;sending=true;try{await deliverReceipt();await deliverCodeReceipt();}catch{console.error('MC_RECEIPT_WORKER_UNAVAILABLE');}finally{sending=false;}},30000):null;
 receipts?.unref();
 const cleanup=setInterval(()=>app.erasure.cleanup().catch(()=>{}),60000);cleanup.unref();
 for(const signal of ['SIGINT','SIGTERM'])process.once(signal,()=>{clearInterval(cleanup);if(receipts)clearInterval(receipts);server.close(async()=>{await pool.end();process.exit(0);});setTimeout(()=>{server.closeAllConnections();},20000).unref();});
