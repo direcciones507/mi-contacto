@@ -1,0 +1,97 @@
+{
+  "branch": "work/visual-admin-close-20261106",
+  "testedCommit": "20cce3eaade0bbb01a71fc0cbca9bc45e9ee9e87",
+  "workflow": {
+    "runId": 42169206047,
+    "jobId": 127732987223,
+    "url": "https://github.com/direcciones507/mi-contacto/actions/runs/42169206047",
+    "conclusion": "success"
+  },
+  "tests": {
+    "regression": {
+      "passed": 192,
+      "failed": 0,
+      "skipped": 0,
+      "database": "PGlite WASM"
+    },
+    "native": {
+      "passed": 60,
+      "failed": 0,
+      "skipped": 0,
+      "database": "PostgreSQL 16 disposable cluster",
+      "backupRestored": true,
+      "historicalPendingOrderPreserved": true,
+      "backupFailureBlocksMigration": true
+    },
+    "browser": {
+      "journeys": 15,
+      "widths": [
+        390,
+        820,
+        1440
+      ],
+      "suites": [
+        "photos-consent-codes-moderation",
+        "email-auth-synthetic-transport",
+        "mobile-access",
+        "investigation-block-appeal",
+        "integral"
+      ],
+      "nativePostgres": true,
+      "physicalDevices": false,
+      "realGoogleLogin": false,
+      "realMail": false,
+      "realR2": false,
+      "realPayments": false,
+      "liveRailway": false
+    },
+    "image": {
+      "built": true,
+      "nodeMajor": 24,
+      "pgDumpVersion": "18.6",
+      "sharpAndBackupGateLoaded": true
+    }
+  },
+  "artifact": {
+    "id": 13480299017,
+    "name": "mi-contacto-integral-acceptance",
+    "size_in_bytes": 7628035,
+    "url": "https://api.github.com/repos/direcciones507/mi-contacto/actions/artifacts/13480299017",
+    "archive_download_url": "https://api.github.com/repos/direcciones507/mi-contacto/actions/artifacts/13480299017/zip",
+    "expired": false,
+    "created_at": "2026-11-06T05:39:30Z",
+    "expires_at": "2026-11-13T05:39:28Z",
+    "updated_at": "2026-11-06T05:39:30Z",
+    "digest": "sha256:bd703aa3e736d8c47369a41f1fe3df3c641500ef133aa888364d09cee3972f55",
+    "workflow_run": {
+      "id": 42169206047,
+      "repository_id": 1440452245,
+      "head_repository_id": 1440452245,
+      "head_branch": "work/visual-admin-close-20261106",
+      "head_sha": "20cce3eaade0bbb01a71fc0cbca9bc45e9ee9e87"
+    }
+  },
+  "live": {
+    "url": "https://micontacto.online/",
+    "commit": "33cbcdcb3bae3fa6c765b3c9ee1ad50288debbef",
+    "deploymentId": "d40d7596-9198-49a0-a8ad-03bba5e8e540",
+    "status": "SUCCESS",
+    "revisionDeployed": false,
+    "backupExistingDatabaseExecuted": false,
+    "migrations016017Applied": false,
+    "serviceChanges": false,
+    "newResources": false,
+    "privateAccessPreserved": true
+  },
+  "authorizationRequired": {
+    "commit": "20cce3eaade0bbb01a71fc0cbca9bc45e9ee9e87",
+    "migrations": [
+      "016_commercial_codes.sql",
+      "017_moderation_contact.sql"
+    ],
+    "fullVerifiedBackupFirst": true,
+    "privateOnly": true,
+    "noNewResources": true,
+    "noRealPayments": true
+  }
+}

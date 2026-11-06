@@ -1,3 +1,32 @@
+# Cierre visual y ADMIN — work/visual-admin-close-20261106
+
+## Estado verificable de esta revisión
+
+Código probado `20cce3e`: [Actions 42169206047 SUCCESS](https://github.com/direcciones507/mi-contacto/actions/runs/42169206047). 192 pruebas de regresión + 60 nativas + 15 recorridos de navegador aprobados; imagen existente construida. No desplegado. Evidencia durable: `docs/evidence/visual-admin-20261106/verified-results.json`.
+
+Consolida la rama móvil `864028c` (descendiente de la implementación comercial `0182f88`) sin sustituir sus componentes. Las casillas históricas inferiores siguen siendo criterios de aceptación del entorno real; no equivalen a pruebas aprobadas por existir código.
+
+| Área | Implementado y probado en entorno desechable | Pendiente en micontacto.online |
+|---|---|---|
+| Acceso | Tarjeta única, registro/recuperación, rutas cliente/ADMIN separadas y control de rol | Desplegar y completar inicio Google real; correo real requiere proveedor configurado |
+| Diseño | Menú móvil, tarjeta ampliada, acceso adaptable, cabecera sin enlace ADMIN público, pie y botones | Validación del propietario en sus dispositivos |
+| Perfil | Guardado, foto principal, vista previa privada completa y confirmación de solicitud; galería solo con Destacado | Prueba autenticada tras despliegue |
+| Comercio | Generador ADMIN, lotes, reservas/ventas manuales y canje único conservados | Migración 016 y pruebas del propietario; cobros reales desactivados |
+| Moderación | Búsqueda, contador, estados/contacto/notas, objetivo 48 h sin sanción automática, descarte, bloqueo, retirada de foto, apelación y auditoría | Migración 017 y recorrido autenticado en Railway |
+| Datos | Puerta de respaldo completo y verificación, migración transaccional y comprobación de todas las columnas históricas | Respaldo y preflight de la base existente aún NO ejecutados |
+
+- [x] Conservar credenciales actuales, datos y otras aplicaciones: esta revisión no cambia secretos ni servicios.
+- [x] Separar intención de acceso ADMIN y permisos: el retorno OAuth depende del rol comprobado en PostgreSQL.
+- [x] Evitar publicación implícita al guardar una fotografía: confirmar después de ver la ficha completa.
+- [ ] Autorizar el commit consolidado exacto; autorización anterior `0182f88` no se extiende a esta revisión.
+- [ ] Después de autorización: usar `ops/railway-acceptance.toml` sobre el Node existente, sin recursos nuevos, y activar únicamente la puerta explícita de actualización privada.
+- [ ] Ejecutar preflight, revisar órdenes pendientes, crear y verificar respaldo completo ANTES de migrar 016/017. Si falla, detener sin restauraciones destructivas.
+- [ ] Verificar el resultado desplegado, Google real, correo real, R2 y recorridos del propietario. No declarar lanzamiento aprobado todavía.
+
+Detalle, archivos y evidencias: `docs/VISUAL-ADMIN-CLOSE-20261106.md`.
+
+---
+
 # Cierre integral preparado — rama work/integral-close-20261106
 
 ## Verificación manual de fotografías por WhatsApp y potestades ADMIN (6 noviembre 2026)
