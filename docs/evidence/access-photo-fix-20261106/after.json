@@ -1,0 +1,74 @@
+[
+  {
+    "device": "desktop",
+    "status": 200,
+    "referrerPolicy": "same-origin",
+    "postOrigin": "https://micontacto.online",
+    "options": {
+      "emailEnabled": false,
+      "googleEnabled": true,
+      "acceptanceLoginEnabled": true
+    },
+    "oauth": {
+      "noticeStatus": 303,
+      "startStatus": 302,
+      "provider": "accounts.google.com",
+      "callback": "https://micontacto.online/auth/google/callback",
+      "pkce": "S256",
+      "scope": "openid",
+      "realLogin": false,
+      "providerPageTitle": "Sign in - Google Accounts",
+      "providerPageError": [],
+      "singleAccessCard": true,
+      "emailFormVisible": true
+    }
+  },
+  {
+    "device": "phone",
+    "status": 200,
+    "referrerPolicy": "same-origin",
+    "postOrigin": "https://micontacto.online",
+    "options": {
+      "emailEnabled": false,
+      "googleEnabled": true,
+      "acceptanceLoginEnabled": true
+    },
+    "oauth": {
+      "noticeStatus": 303,
+      "startStatus": 302,
+      "provider": "accounts.google.com",
+      "callback": "https://micontacto.online/auth/google/callback",
+      "pkce": "S256",
+      "scope": "openid",
+      "realLogin": false,
+      "providerPageTitle": "Sign in - Google Accounts",
+      "providerPageError": [],
+      "singleAccessCard": true,
+      "emailFormVisible": true
+    }
+  },
+  {
+    "device": "tablet",
+    "status": 200,
+    "referrerPolicy": "same-origin",
+    "postOrigin": "https://micontacto.online",
+    "options": {
+      "emailEnabled": false,
+      "googleEnabled": true,
+      "acceptanceLoginEnabled": true
+    },
+    "oauth": {
+      "noticeStatus": 303,
+      "startStatus": 302,
+      "provider": "accounts.google.com",
+      "callback": "https://micontacto.online/auth/google/callback",
+      "pkce": "S256",
+      "scope": "openid",
+      "realLogin": false,
+      "providerPageTitle": "Sign in - Google Accounts",
+      "providerPageError": [],
+      "singleAccessCard": true,
+      "emailFormVisible": true
+    }
+  }
+]

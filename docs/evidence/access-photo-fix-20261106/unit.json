@@ -1,0 +1,7 @@
+{
+  "tests": 178,
+  "passed": 178,
+  "failed": 0,
+  "engine": "local PostgreSQL WASM",
+  "realGoogleLogin": false
+}
