@@ -202,7 +202,7 @@ export function createApplication({pool,secret,origin='https://micontacto.online
     if(req.method==='PATCH'&&!action)return json(200,await profiles.update(user.id,id,await body(req)));
     if(req.method==='POST'&&action==='privacy')return json(200,await privacy.visibility(user.id,id,await body(req)));
     if(req.method==='POST'&&action==='removal')return json(202,await privacy.requestRemoval(user.id,id,await body(req)));
-    if(req.method==='DELETE'&&!action){const input=await body(req);if(input?.confirm!==true||input?.reason!=='ELIMINAR MI PERFIL')throw Error('INVALID_ERASURE_CONFIRMATION');await privacy.requestRemoval(user.id,id,{confirm:true});return json(200,await erasure.eraseOwner(user.id,id,input));}
+    if(req.method==='DELETE'&&!action){const input=await body(req);if(input?.confirm!==true||input?.reason!=='ELIMINAR MI PERFIL')throw Error('INVALID_ERASURE_CONFIRMATION');const owned=await profiles.detail(user.id,id);if(owned.sensitiveHold||owned.moderationRestricted)throw Error('PROFILE_LOCKED');await privacy.requestRemoval(user.id,id,{confirm:true});return json(200,await erasure.eraseOwner(user.id,id,input));}
     if(req.method==='POST'&&action==='feature'){const data=await body(req);if(Object.keys(data).some(k=>k!=='days'))throw Error('INVALID_FEATURE_FIELDS');return json(201,await features.prepare(user.id,id,data.days));}
     if(req.method==='POST'&&action==='publish')return json(202,await profiles.requestPublication(user.id,id));
     if(req.method==='POST'&&['pause','resume'].includes(action))return json(200,await profiles.pause(user.id,id,action==='resume'));
