@@ -61,3 +61,5 @@
 #profileForm #photoTools .photo-slots { grid-template-columns: repeat(auto-fit,minmax(min(100%,240px),1fr)); }
 #profileForm #photoTools .photo-slots { grid-template-columns: 1fr; max-width: 340px; }
 #profileForm #photoTools .photo-slots:has(.photo-slot:nth-child(2)) { max-width: none; grid-template-columns: repeat(auto-fit,minmax(min(100%,240px),1fr)); }
+
+.account-session{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}.account-session p{margin:0}.account-session button{margin-left:auto}#accountPanel>.actions{display:none}.photo-slot-status:empty{display:none}.photo-slot .photo-actions{margin-top:8px}

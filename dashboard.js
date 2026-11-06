@@ -88,11 +88,14 @@ async function initOwner(){
   editing=await api('/api/profiles/'+editing.id);await api('/api/profiles/'+editing.id+'/publish',{method:'POST'});await loadProfiles();await edit({id:editing.id});await renderCommercial($('commercial'),{csrf,profile:editing,paymentSandbox});message('Perfil guardado y enviado a revisión para publicación.');
  }catch(error){if(editing)editing=await api('/api/profiles/'+editing.id).catch(()=>editing);message(error.message);}finally{if(submit)submit.disabled=false;}};
  $('requestVerification').onclick=async()=>{try{const r=await api('/api/profiles/'+editing.id+'/verification',{method:'POST'});message('Solicitud de verificación: '+r.code+'. Canal exclusivo de revisión pendiente de configurar; no envíes material aquí.');}catch(e){message(e.message);}};
- form.inert=false;document.documentElement.dataset.ownerReady='true';
+ form.inert=false;$('logout').hidden=false;document.documentElement.dataset.ownerReady='true';
  $('logout').onclick=async()=>{try{await api('/auth/logout',{method:'POST'});location.reload();}catch(e){message(e.message);}};
 }
 async function loadAdmin(kind='PENDING'){
  const target=$('adminItems');target.replaceChildren();if(kind==='CODES'){await renderCodesAdmin(target,{csrf});return;}
+ if(kind==='USERS'||kind==='ORDERS'){
+  let offset=0;async function page(){target.replaceChildren();const r=await api(kind==='USERS'?'/api/admin/users?offset='+offset:'/api/admin/purchases?offset='+offset);for(const row of r.items){const card=element('article',null,'panel');card.append(element('h2',kind==='USERS'?(row.display_name||'Cuenta sin perfil'):(row.product==='CODES'?row.quantity+' códigos':row.quantity+' días consecutivos')),element('p','ID: '+row.id),element('p',row.status+(row.role?' · '+row.role:'')),element('p',new Date(row.created_at).toLocaleString('es')));if(row.amount_cents!=null)card.append(element('p','USD '+(row.amount_cents/100).toFixed(2)+' · Yappy de pruebas'));target.append(card);}if(!r.items.length)target.append(element('p','No hay registros en esta página.'));if(offset)target.append(button('Anterior',async()=>{offset-=100;await page();}));if(r.items.length===100)target.append(button('Siguiente',async()=>{offset+=100;await page();}));}await page();return;
+ }
  if(kind==='CATALOG'){
   const card=element('article',null,'panel'),input=element('input');input.setAttribute('aria-label','Nombre de categoría');card.append(element('h2','Categorías'),input,button('Crear categoría',async()=>{await api('/api/admin/categories',{method:'POST',body:{name:input.value}});await loadAdmin(kind);}));
   for(const c of (await api('/api/admin/categories')).items)card.append(button(c.name+(c.enabled?' · Habilitada':' · Deshabilitada'),async()=>{await api('/api/admin/catalog',{method:'POST',body:{type:'categories',id:c.id,enabled:!c.enabled,reason:'Actualización del catálogo'}});await loadAdmin(kind);}));

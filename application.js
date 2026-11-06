@@ -155,6 +155,11 @@ export function createApplication({pool,secret,origin='https://micontacto.online
    if(path==='/api/admin/codes'&&req.method==='POST')return json(201,await codes.generate(user.id,await body(req)));
    if(path==='/api/admin/code-events'&&req.method==='GET')return json(200,{items:await codes.history(user.id,Number(url.searchParams.get('offset')??0))});
    const changeCode=path.match(/^\/api\/admin\/codes\/([a-f0-9-]{36})$/);if(changeCode&&req.method==='POST')return json(200,await codes.change(user.id,changeCode[1],await body(req)));
+   if(['/api/admin/users','/api/admin/purchases'].includes(path)&&req.method==='GET'){
+    const offset=Number(url.searchParams.get('offset')??0);if(!Number.isSafeInteger(offset)||offset<0||offset>10000000)throw Error('INVALID_PAGE');
+    if(path.endsWith('/users'))return json(200,{items:(await pool.query('SELECT a.id,a.role,a.status,a.created_at,p.id AS profile_id,p.display_name FROM micontacto.accounts a LEFT JOIN micontacto.profiles p ON p.account_id=a.id ORDER BY a.created_at DESC,a.id LIMIT 100 OFFSET $1',[offset])).rows});
+    return json(200,{items:(await pool.query("SELECT id,account_id,'CODES' AS product,quantity,amount_cents,status,created_at FROM micontacto.code_orders UNION ALL SELECT o.id,o.account_id,'CONSECUTIVE' AS product,t.days AS quantity,o.amount_cents,o.status,o.created_at FROM micontacto.payment_orders o JOIN micontacto.feature_terms t ON t.id=o.term_id ORDER BY created_at DESC,id LIMIT 100 OFFSET $1",[offset])).rows});
+   }
    if(path==='/api/admin/acceptance/status'&&req.method==='GET'&&acceptance&&acceptanceReport)return json(200,acceptanceReport);
    if(path==='/api/payments/config'&&req.method==='GET')return json(200,{enabled:payments.enabled,environment:'test',liveCharges:false});
    const payment=path.match(/^\/api\/payments\/([a-f0-9-]{36})(?:\/(initialize))?$/);
