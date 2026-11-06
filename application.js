@@ -101,6 +101,7 @@ export function createApplication({pool,secret,origin='https://micontacto.online
    if(publicMatch&&req.method==='GET'){
     const p=await publicRow(publicMatch[1].toUpperCase(),publicMatch[2]);if(!p)return json(404,{error:'NOT_FOUND'});
     const view=await profiles.decorate(p);
+    if(publicMatch[3]&&!view.featured)return json(404,{error:'NOT_FOUND'});
     return publicMatch[3]?new Response(await QRCode.toString(view.url,{type:'svg',errorCorrectionLevel:'M',margin:4}),{headers:{...headers,'content-type':'image/svg+xml'}}):html(publicProfile(view));
    }
    const reportPageMatch=path.match(/^\/reportar\/([a-f0-9-]{36})$/);
