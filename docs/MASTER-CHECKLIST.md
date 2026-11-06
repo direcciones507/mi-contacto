@@ -1,5 +1,12 @@
 # Cierre integral preparado — rama work/integral-close-20261106
 
+## Captura escritorio: acceso desde Mi perfil (6 noviembre 2026)
+
+- [ ] Sustituir la pantalla ancha y vacía «Mi perfil personal / Accede a tu cuenta / Entrar con Google o correo electrónico» por una tarjeta de autenticación centrada inspirada en Empleos.pa, con marca exclusiva Mi Contacto.
+- [ ] Incluir Google, correo y contraseña, mostrar contraseña, registro y recuperación dentro del flujo real existente `/acceso`; no crear cuentas ni autenticación paralela. Reutilizar las rutas y componentes existentes, comprobar que el retorno lleva a Mi perfil.
+- [ ] Mejorar pie de página y espaciado, sin enlaces cortados ni enormes vacíos; móvil ancho casi completo, tableta/escritorio tarjeta de ancho moderado.
+- [ ] Probar estados sin sesión, con sesión, error Google, correo deshabilitado por falta de proveedor, móvil/tableta/escritorio. No declarar acceso real completado sin credenciales y pruebas.
+
 ## Pendientes visuales reportados con capturas reales de celular (5 noviembre, 23:37 Panamá)
 
 **Origen:** cuatro capturas del propietario en micontacto.online. **Estado: PENDIENTE de implementación y pruebas**. Estas imágenes corresponden a la versión anterior desplegada 33cbcdc; no atribuirlas a la revisión 0182f88 sin verificarla. La migración 016 sigue bloqueada por preflight y respaldo no verificados. No desplegar esta rama sin autorización específica.
