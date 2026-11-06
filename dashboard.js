@@ -92,7 +92,7 @@ async function initOwner(){
  $('returnToEditor').onclick=()=>$('publicationPreview').close();$('confirmPublication').onclick=async()=>{const b=$('confirmPublication');b.disabled=true;try{await api('/api/profiles/'+editing.id+'/publish',{method:'POST'});$('publicationPreview').close();await loadProfiles();await edit({id:editing.id});$('commercial').hidden=!editing||accountStatus!=='ACTIVE';await renderCommercial($('commercial'),{csrf,profile:editing,paymentSandbox});message('Perfil guardado y enviado a revisión para publicación.');}catch(e){$('previewStatus').textContent=e.message;}finally{b.disabled=false;}};
  $('requestVerification').onclick=async()=>{try{const r=await api('/api/profiles/'+editing.id+'/verification',{method:'POST'});message('Solicitud de verificación: '+r.code+'. Canal exclusivo de revisión pendiente de configurar; no envíes material aquí.');}catch(e){message(e.message);}};
  form.inert=accountStatus!=='ACTIVE';$('logout').hidden=false;document.documentElement.dataset.ownerReady='true';
- $('logout').onclick=async()=>{try{await api('/auth/logout',{method:'POST'});location.reload();}catch(e){message(e.message);}};
+ $('logout').onclick=async()=>{try{const response=await fetch('/auth/logout',{method:'POST',headers:{'x-mc-csrf':csrf}});if(!response.ok)throw Error('No se pudo cerrar sesión. Inténtalo nuevamente.');location.replace('/acceso');}catch(e){message(e.message);}};
 }
 async function loadAdmin(kind='PENDING'){
  const counts=await api('/api/admin/report-summary');$('reportSummary').textContent=counts.pending+' denuncias pendientes · '+counts.contact_goal_overdue+' con objetivo de contacto de 48 horas superado. Sin sanción automática.';
