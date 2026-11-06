@@ -151,3 +151,6 @@ body.auth-page .auth-card #emailAccess[hidden],body.auth-page .auth-card .auth-f
 
 /* Teléfonos opcionales con prefijo internacional automático y resumen publicado */
 .runtime .phone-entry{display:flex;align-items:stretch;gap:0;width:100%;border:1px solid #b5cee8;border-radius:9px;overflow:hidden;background:#fff}.runtime .phone-entry .dial-prefix{display:flex;align-items:center;justify-content:center;min-width:70px;padding:10px 12px;background:#edf5ff;color:#0a438f;font-weight:750;border-right:1px solid #b5cee8}.runtime .phone-entry input{border:0;border-radius:0;flex:1;min-width:0}.runtime .published-overview{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start;margin-top:20px}.runtime .published-overview #profileOptions{min-width:0}.runtime .published-overview #profileOptions[open]{border:1px solid #d5e3f2;border-radius:18px;padding:16px;background:#fff}.runtime .published-overview #profileOptions>summary{font-weight:750;cursor:pointer}.runtime .published-overview #commercial{margin:0;min-width:0}@media(max-width:760px){.runtime .published-overview{grid-template-columns:1fr}}
+
+/* Hidden must win over panel/grid display rules, including on mobile. */
+.runtime [hidden],.runtime #editor[hidden],.runtime #photoTools[hidden]{display:none!important}
