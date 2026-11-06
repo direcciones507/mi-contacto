@@ -27,7 +27,7 @@ import {featureQuote} from './feature-policy.js';
 import {COUNTRIES} from './countries.js';
 import {dashboard,publicProfile,layout} from './views.js';
 const uuid=/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
-export function createApplication({pool,secret,origin='https://micontacto.online',google=null,emailTransport=null,fetch:network,verifyToken,storage=memoryPhotoStorage(),simulation=false,legal=legalConfig({}),paymentProvider=null,acceptance=false,privateOfficialOrigin=false,acceptanceOwner=null,acceptanceReport=null,accessEvent=()=>{},now=()=>Date.now()}){
+export function createApplication({pool,secret,origin='https://micontacto.online',google=null,emailTransport=null,fetch:network,verifyToken,storage=memoryPhotoStorage(),simulation=false,legal=legalConfig({}),paymentProvider=null,acceptance=false,commercialTrial=false,privateOfficialOrigin=false,acceptanceOwner=null,acceptanceReport=null,accessEvent=()=>{},now=()=>Date.now()}){
  const features=featureRuntime(pool,{simulation});
  if(paymentProvider&&paymentProvider.domain!==origin)throw Error('INVALID_PAYMENT_CONFIGURATION');
  const codes=codesRuntime(pool,{secret,provider:paymentProvider});
@@ -174,6 +174,14 @@ export function createApplication({pool,secret,origin='https://micontacto.online
    if(payment&&req.method==='POST'&&payment[2]){const data=await body(req);if(Object.keys(data).some(k=>k!=='alias'))throw Error('INVALID_PAYMENT_REQUEST');return json(200,await payments.initialize(user.id,payment[1],data.alias));}
    const orderList=path.match(/^\/api\/profiles\/([a-f0-9-]{36})\/orders$/);
    if(orderList&&req.method==='GET')return json(200,{items:await payments.list(user.id,orderList[1])});
+   const trial=path.match(/^\/api\/profiles\/([a-f0-9-]{36})\/featured-trial$/);
+   if(trial&&req.method==='POST'){
+    if(!acceptance||!commercialTrial||paymentProvider)return json(403,{error:'TRIAL_DISABLED'});
+    if(!await consent.accepted(user.id))throw Error('LEGAL_ACCEPTANCE_REQUIRED');
+    const data=await body(req);if(Object.keys(data).some(k=>k!=='days'))throw Error('INVALID_FEATURE_FIELDS');
+    const term=await features.prepare(user.id,trial[1],data.days);
+    return json(201,await features.activateSimulation(user.id,trial[1],term.id,'synthetic-'+crypto.randomUUID()));
+   }
    const checkout=path.match(/^\/api\/profiles\/([a-f0-9-]{36})\/checkout$/);
    if(checkout&&req.method==='POST')return json(201,await payments.prepare(user.id,checkout[1],await body(req)));
    if(path==='/api/profiles'&&req.method==='GET'){const items=(await pool.query('SELECT id FROM micontacto.profiles WHERE account_id=$1 ORDER BY country_code',[user.id])).rows;return json(200,{items:await Promise.all(items.map(x=>profiles.detail(user.id,x.id)))});}
