@@ -1,3 +1,4 @@
+import {officialRequestPolicy} from '../official-origin.js';
 import {migratingPhotoStorage} from '../storage-migration.js';
 import {acceptanceWindow} from '../acceptance-window.js';
 import {authEmailTransport} from '../auth-email-transport.js';
@@ -26,9 +27,11 @@ const emailTransport=authEmailTransport(env);
 if(!google&&!emailTransport&&env.MC_ACCEPTANCE_MODE!=='true')throw Error('AUTH_CONFIGURATION_REQUIRED');
 if(!!env.MC_GOOGLE_CLIENT_ID!==!!env.MC_GOOGLE_CLIENT_SECRET)throw Error('GOOGLE_CONFIGURATION_INCOMPLETE');
 const paymentProvider=env.MC_YAPPY_SANDBOX_ENABLED==='true'?yappySandbox({environment:'test',isolated:env.MC_YAPPY_ISOLATED==='true',merchantId:env.MC_YAPPY_MERCHANT_ID,domain:env.MC_ORIGIN,ipnUrl:env.MC_ORIGIN+'/api/payments/yappy/ipn',secret:env.MC_YAPPY_SECRET}):null;
-const app=createApplication({emailTransport,accessEvent:event=>console.info('MC_PRIVATE_ACCESS '+JSON.stringify(event)),pool,paymentProvider,acceptanceReport,legal,acceptanceOwner:env.MC_ACCEPTANCE_OWNER_CODE_HASH?{accountId:env.MC_ACCEPTANCE_OWNER_ID,codeHash:env.MC_ACCEPTANCE_OWNER_CODE_HASH,expiresAt:Date.parse(env.MC_ACCEPTANCE_EXPIRES_AT)}:null,acceptance:env.MC_ACCEPTANCE_MODE==='true',secret:env.MC_SESSION_SECRET,origin:env.MC_ORIGIN,storage,google});
+const app=createApplication({emailTransport,accessEvent:event=>console.info('MC_PRIVATE_ACCESS '+JSON.stringify(event)),pool,paymentProvider,acceptanceReport,legal,acceptanceOwner:env.MC_ACCEPTANCE_OWNER_CODE_HASH?{accountId:env.MC_ACCEPTANCE_OWNER_ID,codeHash:env.MC_ACCEPTANCE_OWNER_CODE_HASH,expiresAt:Date.parse(env.MC_ACCEPTANCE_EXPIRES_AT)}:null,acceptance:env.MC_ACCEPTANCE_MODE==='true',privateOfficialOrigin:env.MC_PRIVATE_OFFICIAL_ORIGIN==='true',secret:env.MC_SESSION_SECRET,origin:env.MC_ORIGIN,storage,google});
 const deliverReceipt=env.MC_EMAIL_TEST_ENABLED==='true'?receiptWorker(pool,resendTestTransport({apiKey:env.MC_RESEND_API_KEY,from:env.MC_EMAIL_FROM,allowedRecipients:(env.MC_EMAIL_TEST_RECIPIENTS??'').split(',').map(x=>x.trim()).filter(Boolean),isolated:env.MC_EMAIL_ISOLATED==='true',enabled:true,reuseExistingSender:env.MC_REUSE_DIRECCIONES_EMAIL==='true'})):null;
 const server=createServer(async(req,res)=>{try{
+ const policy=officialRequestPolicy({host:req.headers.host,method:req.method,url:req.url},env.MC_ORIGIN);if(policy){res.statusCode=policy.status;for(const[k,v]of policy.headers)res.setHeader(k,v);res.end(Buffer.from(await policy.arrayBuffer()));return;}
+ if(env.MC_ORIGIN==='https://micontacto.online')res.setHeader('strict-transport-security','max-age=86400');
  const chunks=[];let size=0;for await(const part of req){size+=part.length;if(size>6*1024*1024){res.writeHead(413);res.end();return;}chunks.push(part);}
  const response=await app.handle(new Request(env.MC_ORIGIN+req.url,{method:req.method,headers:req.headers,...(!['GET','HEAD'].includes(req.method)?{body:Buffer.concat(chunks)}:{})}));
  res.statusCode=response.status;for(const[k,v]of response.headers)if(k!=='set-cookie')res.setHeader(k,v);const cookies=response.headers.getSetCookie();if(cookies.length)res.setHeader('set-cookie',cookies);res.end(Buffer.from(await response.arrayBuffer()));

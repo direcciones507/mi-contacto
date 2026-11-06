@@ -1,9 +1,10 @@
+import {privateOfficialOriginAllowed} from './official-origin.js';
 import {randomBytes,createHash,createHmac,timingSafeEqual} from 'node:crypto';
 import {layout} from './views.js';
 import {applicationOrigin} from './origin-policy.js';
 const hash=s=>createHash('sha256').update(s).digest('hex');
-export function acceptanceAccess(pool,auth,{secret,origin,acceptance=false,config=null,onEvent=()=>{},now=()=>Date.now()}){
- if(config&&(!acceptance||new URL(origin).hostname==='micontacto.online'))throw Error('PRIVATE_ACCEPTANCE_ONLY');
+export function acceptanceAccess(pool,auth,{secret,origin,acceptance=false,privateOfficialOrigin=false,config=null,onEvent=()=>{},now=()=>Date.now()}){
+ if(config&&(!acceptance||new URL(origin).hostname==='micontacto.online'&&!privateOfficialOriginAllowed({origin,acceptance,privateOfficialOrigin})))throw Error('PRIVATE_ACCEPTANCE_ONLY');
  if(config&&(!/^[a-f0-9-]{36}$/.test(config.accountId??'')||!/^[a-f0-9]{64}$/.test(config.codeHash??'')||!Number.isFinite(config.expiresAt)))throw Error('INVALID_ACCEPTANCE_ACCESS');
  // Compare with the configured public origin, never the proxy Host/X-Forwarded-* headers.
  const publicOrigin=applicationOrigin(origin,{acceptance}).origin;

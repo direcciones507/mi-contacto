@@ -1,3 +1,4 @@
+import {privateOfficialOriginAllowed} from '../official-origin.js';
 import {protectUnificationMigration} from './pre-migration-backup.mjs';
 import {applyVerifiedTerritories} from './territory-corrections-db.mjs';
 import {migrateDatabase} from '../database.js';
@@ -9,7 +10,7 @@ import {promisify} from 'node:util';
 import {join} from 'node:path';
 const exec=promisify(execFile);
 export async function bootstrapAcceptance(pool,env){
- if(env.MC_ACCEPTANCE_MODE!=='true'||env.MC_DATABASE_ISOLATED!=='true'||!/^https:\/\/mi-contacto-[a-z0-9-]+\.up\.railway\.app$/.test(env.MC_ORIGIN??''))throw Error('EXPLICIT_ACCEPTANCE_BOOTSTRAP_REQUIRED');
+ if(env.MC_ACCEPTANCE_MODE!=='true'||env.MC_DATABASE_ISOLATED!=='true'||!(/^https:\/\/mi-contacto-[a-z0-9-]+\.up\.railway\.app$/.test(env.MC_ORIGIN??'')||privateOfficialOriginAllowed({origin:env.MC_ORIGIN,acceptance:env.MC_ACCEPTANCE_MODE==='true',privateOfficialOrigin:env.MC_PRIVATE_OFFICIAL_ORIGIN==='true'})))throw Error('EXPLICIT_ACCEPTANCE_BOOTSTRAP_REQUIRED');
  const root='/var/lib/mi-contacto',reportPath=join(root,'acceptance-status.json');await mkdir(root,{recursive:true,mode:0o700});
  const preMigrationBackup=await protectUnificationMigration(pool,env,root);
  const applied=await migrateDatabase(pool);
