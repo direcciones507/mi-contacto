@@ -402,3 +402,9 @@ Esta sección sustituye estados históricos contradictorios para este alcance. B
 - [x] 159 pruebas aprobadas; cero fallidas. Tres recorridos autenticados Chromium locales por formulario: Android, iPad y escritorio; fotos, marca, denuncias y ADMIN.
 - [ ] Registrar despliegue SUCCESS y persistencia del servicio existente.
 - [ ] Completar recorrido autenticado Railway con el acceso original del propietario, sin generar ni recuperar credenciales alternativas.
+
+## Corrección de acceso y fotografías — 6 noviembre 2026
+- [x] Formulario previo a Google usa Referrer-Policy same-origin; conserva validación estricta de Origin y token firmado.
+- [x] Un solo acceso a /acceso con Google, correo, registro y recuperación; correo sin proveedor se muestra deshabilitado.
+- [x] Una casilla gratuita; cuatro adicionales solamente con Destacado vigente, sin borrar fotografías almacenadas.
+- [ ] Google: completar inicio de sesión real con autorización del titular; no confundir el acceso privado con Google.
