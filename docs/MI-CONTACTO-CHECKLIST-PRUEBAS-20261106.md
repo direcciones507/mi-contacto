@@ -43,3 +43,12 @@
 - [ ] Ejecutar regresión y pruebas de PostgreSQL, verificar despliegue Railway SUCCESS y dominio.
 - [ ] Registrar commits, evidencias, fallos, correcciones y fecha de cierre de cada casilla.
 - [ ] No abrir acceso público general sin autorización del propietario.
+
+## Consentimientos unificados y Yappy (solicitud del propietario, 2026-11-06)
+- [ ] Concentrar lectura de Términos y Condiciones, Privacidad y Normas de la Comunidad al final de «Crear perfil», antes de «Guardar y revisar».
+- [ ] Registrar aceptación explícita y versionada (fecha, documento, versión, usuario), sin repetir avisos al publicar ni en cada sesión. Volver a solicitarla únicamente ante cambios materiales o consentimiento nuevo.
+- [ ] Mantener independientes y opcionales las autorizaciones para mostrar teléfono/WhatsApp, ubicación y para figurar en el directorio; ninguna debe marcarse por defecto. La visibilidad gratuita ampliada exige consentimiento nuevo.
+- [ ] Conservar aviso general de entrada previamente aprobado sin duplicar las casillas de publicación; verificar acceso y registro con Google y correo.
+- [ ] Preparar y probar Yappy exclusivamente en Sandbox: pedido, callback/webhook verificado, rechazo, cancelación, duplicado, conciliación, activación de días Destacado y emisión de códigos solamente tras confirmación simulada auténtica del proveedor.
+- [ ] Mantener cobros reales desactivados y solicitar autorización expresa antes de cambiar credenciales o modo de producción de Yappy.
+- [ ] Completar pruebas autenticadas de punta a punta, revisar textos legales definitivos y evidencias antes de lanzamiento público.
