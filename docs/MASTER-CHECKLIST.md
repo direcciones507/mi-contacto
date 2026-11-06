@@ -1,3 +1,50 @@
+# DECISIONES VIGENTES DEL PROPIETARIO — 5 NOV 2026 (PRIORIDAD SOBRE TARIFAS Y UX HISTÓRICAS)
+
+> **Estado:** requisitos aprobados para implementar y verificar, NO equivalen a funcionalidades ya desplegadas. Las tarifas históricas y referencias a espacios fotográficos bloqueados más abajo quedan sustituidas por este bloque. No activar Yappy Live ni cobros reales sin autorización expresa. No crear otra infraestructura, borrar fotos ni modificar Direcciones507/LATAM. Trabajar en el Railway y rama existentes; preservar PostgreSQL, perfiles y sesiones.
+
+## A. Acceso y tarjeta «Mi perfil»
+
+- [ ] Una sola tarjeta de acceso centrada, limpia, adaptable a móvil/tableta/escritorio, basada visualmente en el login de Empleos.pa pero con logo, azul y nombre **Mi Contacto**. Google, correo/contraseña, mostrar contraseña, registro y recuperación operativos; sin enlaces de pruebas privadas ni elementos técnicos para clientes. Verificar inicio Google real, persistencia y vinculación sin perfiles duplicados.
+- [ ] Corregir botones y acciones que actualmente no funcionan en la edición de «Mi perfil». Un solo botón principal **Guardar y publicar**, sin botón duplicado «Guardar tu perfil» ni opción visible «Guardar como borrador»; conservar guardado seguro interno si fuera necesario.
+- [ ] Orden definitivo del formulario: **nombre completo → nombre del enlace → profesión u oficio → categoría → país → provincia/departamento/estado → distrito/municipio/cantón → ciudad/localidad → teléfono con prefijo internacional → WhatsApp → enlace del pin de Google Maps → coordenadas opcionales en UN campo (latitud, longitud) → descripción breve → fotografía principal gratuita → Guardar y publicar**. Adaptar dinámicamente etiquetas y jerarquías territoriales por país. «Buscar por localidad» es del directorio, no un control confuso en edición.
+- [ ] Foto principal con una sola casilla compacta, pulsable, similar a Direcciones507, selector de archivo, vista previa, reemplazo y eliminación. Las **cuatro fotos adicionales** aparecen solo con Destacado vigente; no mostrar casillas bloqueadas al perfil gratuito. Preservar fotos existentes.
+- [ ] Quitar avisos redundantes de «leer antes de subir foto», mayoría de edad, términos y políticas en el editor cuando ya se aceptaron en registro; **mantener y verificar** consentimientos legales obligatorios, mayoría de edad y validaciones del backend.
+
+## B. Destacado: dos modalidades diferentes, tarifas aprobadas
+
+**Compra de vigencia consecutiva (días corridos desde activación confirmada):**
+
+| Días | Precio USD |
+| ---: | ---: |
+| 1 | 1.90 |
+| 5 | 8.90 |
+| 10 | 16.90 |
+| 15 | 24.50 |
+| 20 | 31.50 |
+| 25 | 35.90 |
+| 30 | 39.00 |
+
+**Compra de códigos independientes (cada código activa UN día, USD 1.90 por unidad):**
+
+| Códigos | Precio USD |
+| ---: | ---: |
+| 5 | 9.50 |
+| 10 | 19.00 |
+| 20 | 38.00 |
+
+- [ ] **Los códigos comprados/generados se guardan sin vencimiento por almacenamiento**; no inician vigencia hasta su canje. Cada código único se canjea **una sola vez**, en la fecha que el titular elija; permite días no consecutivos. Registrar emisión, estado, canje y vigencia. No confundir un paquete de 5 códigos con 5 días corridos.
+- [ ] Cliente: sección Destacado separada del perfil gratuito, con **Comprar días consecutivos**, **Comprar códigos** y **Ya tengo un código**. Mostrar estado y vigencia, códigos disponibles y usados, sin inventar pagos aprobados.
+- [ ] ADMIN: **localizar y reutilizar el generador de códigos ya desarrollado** antes de crear otro. El propietario introduce una cantidad libre (p. ej. 1, 5, 10, 20), genera ese número de códigos únicos de un día, copia uno o todo el lote y los comparte/vende por **WhatsApp**, sin depender de Yappy. Llevar registro de lotes, inventario disponible, entregado, canjeado, usuario/perfil y fechas; permisos ADMIN, prevención de duplicados y reutilización. Códigos sin vender siguen disponibles.
+- [ ] Actualizar la fuente única de tarifas, interfaz, cálculo de pedidos, comprobantes, pruebas, documentación y checkout de ensayo; **$1.69 y la tabla anterior quedan reemplazados**. Mantener el perfil gratuito y la verificación de foto sin cobro.
+
+## C. Condición de producción y pagos
+
+- [ ] Dejar todo lo demás **operativo y comprobado en micontacto.online**: Google, correo y recuperación reales (Resend), R2 aislado, perfil, fotos, directorio territorial, Maps/QR, códigos, ADMIN, denuncias/moderación, seguridad, PostgreSQL, sesiones y pruebas en celular/tableta/escritorio. No dar por cerrado un proveedor sin prueba real ni aprobación necesaria.
+- [ ] Preparar **Yappy como ÚLTIMA integración**, con órdenes, selección de modalidad, códigos, callbacks verificados, idempotencia, pagos fallidos/reintentos, activación, vencimientos y comprobantes; pruebas sin cobros reales. **Yappy Live desactivado hasta autorización expresa del propietario**. La venta y canje manual de códigos ADMIN sí deben funcionar antes.
+- [ ] Cierre verificable: cambios en commit, CI, pruebas reales, despliegue Railway existente, checklist actualizado y reporte claro de cualquier paso que solo pueda autorizar el propietario.
+
+---
+
 # Origen oficial — estado vigente
 
 Informe: [OFFICIAL-ORIGIN-CLOSE-20261106.md](OFFICIAL-ORIGIN-CLOSE-20261106.md).
