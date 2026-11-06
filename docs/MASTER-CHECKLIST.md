@@ -4,12 +4,14 @@ Este bloque distingue código probado de despliegue. La instrucción actual exig
 
 - [x] Formulario en orden: datos, descripción, foto, consentimientos y Guardar y publicar. Borrador interno, foto seleccionable antes de guardar; revisión ADMIN conservada.
 - [x] Una foto gratuita, cuatro adicionales solo con saldo Destacado; archivos anteriores conservados.
+- [x] Cuenta privada puede vincular Google conservando perfil y ADMIN, solo tras correo verificado, contraseña correcta, sesión y OAuth comprobados; enlace auditado y sin fusión automática.
+- [x] Usuarios y compras consultables por ADMIN; ayuda y mostrar contraseña disponibles.
 - [x] Seguridad de sesiones separada en /acceso. Encabezado compacto y opciones secundarias plegadas.
 - [x] Generador ADMIN de 1–100 códigos, lotes, copia individual/lote, inventario, reserva, venta manual con referencia de pago, anulación, historial paginado y exportación de registros visibles.
 - [x] Código de un día a USD 1.90, sin vencimiento mientras se guarda. Generar/vender no activa; canje único crea saldo y respeta revisión/consentimiento.
 - [x] Pedidos de 1/2/3 o cantidades mayores; precio validado en servidor, entrega tras confirmación Yappy TEST y reintentos idempotentes. Comprobante en outbox con reintento y clave estable.
 - [x] Migración 016 aditiva: inventario y pedidos; corrige incompatibilidad de tarifas nuevas con CHECK histórico sin reescribir compras anteriores.
-- [x] 182 pruebas locales aprobadas; recorridos de correo y fotos/moderación/códigos en Chromium local. Los proveedores de pago/correo son de prueba.
+- [x] 183 pruebas locales aprobadas; recorridos de correo y fotos/moderación/códigos en Chromium local. Los proveedores de pago/correo son de prueba.
 - [ ] Aplicar 016 y desplegar después de autorización, preflight y respaldo verificado del PostgreSQL existente.
 - [ ] Google real: el titular debe completar la autorización y verificar retorno/perfil; no se reemplazan ni fusionan identidades automáticamente.
 - [ ] Correo real: falta MC_RESEND_API_KEY, configuración de habilitación y destinatarios de ensayo; reutilizar Resend existente, sin cuenta nueva.

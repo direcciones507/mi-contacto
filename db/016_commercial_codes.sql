@@ -29,6 +29,7 @@ CREATE TABLE micontacto.code_events (
  id uuid PRIMARY KEY,code_id uuid REFERENCES micontacto.commercial_codes(id),batch_id uuid NOT NULL REFERENCES micontacto.code_batches(id),actor_id uuid REFERENCES micontacto.accounts(id),
  action text NOT NULL,reason text NOT NULL DEFAULT '',created_at timestamptz NOT NULL DEFAULT now()
 );
+CREATE INDEX code_order_owner_idx ON micontacto.code_orders(account_id,created_at DESC,id);
 CREATE INDEX code_batch_idx ON micontacto.commercial_codes(batch_id);
 CREATE INDEX code_owner_idx ON micontacto.commercial_codes(owner_id);
 CREATE INDEX code_event_idx ON micontacto.code_events(batch_id,created_at);

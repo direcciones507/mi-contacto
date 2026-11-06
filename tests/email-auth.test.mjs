@@ -77,3 +77,16 @@ test('Google vinculado explícitamente conserva cuenta; sesión distinta y confl
   result=await f.request('/auth/google/callback?state='+state+'&code=synthetic',{headers:{cookie:'mc_oauth='+state+'; mc_session='+f.sessions.other.token}});assert.equal(result.status,400);assert.equal((await result.json()).error,'IDENTITY_ALREADY_LINKED');assert.equal((await f.pool.query('SELECT google_subject FROM micontacto.accounts WHERE id=$1',[f.other])).rows[0].google_subject,null);
  }finally{await f.pool.close();}
 });
+
+test('titular privado vincula Google después de verificar correo y contraseña, sin perder perfil ni ADMIN',async()=>{
+ const {createAuth}=await import('../auth-runtime.js');const f=await testFixture();let nonce='';try{
+  const id=(await(await f.request('/api/profiles',{as:'admin',method:'POST',body:{country:'PA',linkName:'bootstrap-link',displayName:'Titular sintético'}})).json()).id;
+  const pw='synthetic-bootstrap-owner-password';await f.pool.query('UPDATE micontacto.accounts SET google_subject=$2 WHERE id=$1',[f.admin,'acceptance-owner:'+f.admin]);await f.pool.query('INSERT INTO micontacto.email_identities(account_id,email,password_hash,verified_at) VALUES($1,$2,$3,now())',[f.admin,'bootstrap@example.test',await hashPassword(pw)]);
+  const options={secret:'synthetic-bootstrap-secret'.repeat(3),origin:f.origin,acceptance:true,acceptanceOwner:{accountId:f.admin,expiresAt:Date.now()+3600000},google:{clientId:'synthetic-client',clientSecret:'synthetic-only'},verifyToken:async()=>({sub:'synthetic-real-google-subject',aud:'synthetic-client',iss:'https://accounts.google.com',exp:Math.floor(Date.now()/1000)+300,nonce}),fetch:async()=>Response.json({id_token:'synthetic-token'})};const auth=createAuth(f.pool,options),session=await auth.issue(f.admin);
+  const request=(password,instance=auth)=>instance.handle(new Request(f.origin+'/auth/google/link',{method:'POST',headers:{cookie:'mc_session='+session.token,origin:f.origin,'x-mc-csrf':session.csrf,'content-type':'application/json'},body:JSON.stringify({password})}));
+  assert.equal((await request('wrong-password')).status,401);const ordinary=createAuth(f.pool,{...options,acceptanceOwner:null});assert.equal((await request(pw,ordinary)).status,409);
+  const start=await request(pw);assert.equal(start.status,200);const state=new URL((await start.json()).url).searchParams.get('state');nonce=(await f.pool.query('SELECT nonce FROM micontacto.oauth_transactions')).rows[0].nonce;
+  const response=await auth.handle(new Request(f.origin+'/auth/google/callback?code=synthetic&state='+state,{headers:{cookie:'mc_session='+session.token+'; mc_oauth='+state}}));assert.equal(response.status,302);
+  assert.equal((await f.pool.query('SELECT account_id FROM micontacto.profiles WHERE id=$1',[id])).rows[0].account_id,f.admin);const a=(await f.pool.query('SELECT role,google_subject FROM micontacto.accounts WHERE id=$1',[f.admin])).rows[0];assert.equal(a.role,'ADMIN');assert.equal(a.google_subject,'synthetic-real-google-subject');assert.equal((await f.pool.query("SELECT count(*)::int AS n FROM micontacto.audit WHERE actor_id=$1 AND action='GOOGLE_IDENTITY_LINKED'",[f.admin])).rows[0].n,1);assert.equal((await request(pw)).status,409);
+ }finally{await f.pool.close();}
+});

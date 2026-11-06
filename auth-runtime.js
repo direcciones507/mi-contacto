@@ -12,6 +12,7 @@ export function createAuth(pool,{secret,origin,google=null,fetch:network=fetch,v
  if(typeof secret!=='string'||Buffer.byteLength(secret)<32)throw Error('SESSION_SECRET_REQUIRED');
  const base=applicationOrigin(origin,{acceptance});
  const secure=base.protocol==='https:';
+ const bootstrapSubject=id=>acceptance&&acceptanceOwner?.accountId===id&&now()<acceptanceOwner.expiresAt?'acceptance-owner:'+id:null;
  const json=(status,body)=>Response.json(body,{status,headers:{'cache-control':'no-store'}});
  async function issue(accountId,executor=pool){
   const token=issueSession({accountId,secret,now:now()}),csrf=randomBytes(32).toString('base64url');
@@ -50,7 +51,7 @@ export function createAuth(pool,{secret,origin,google=null,fetch:network=fetch,v
     const rate=await pool.query('INSERT INTO micontacto.auth_rate_limits(bucket,attempts,expires_at) VALUES($1,1,$2) ON CONFLICT(bucket) DO UPDATE SET attempts=CASE WHEN micontacto.auth_rate_limits.expires_at<=$3 THEN 1 ELSE micontacto.auth_rate_limits.attempts+1 END,expires_at=CASE WHEN micontacto.auth_rate_limits.expires_at<=$3 THEN EXCLUDED.expires_at ELSE micontacto.auth_rate_limits.expires_at END RETURNING attempts',[bucket,expires,new Date(now()).toISOString()]);if(rate.rows[0].attempts>8)return json(429,{error:'RATE_LIMITED'});
     const identity=(await pool.query('SELECT e.password_hash,a.google_subject FROM micontacto.email_identities e JOIN micontacto.accounts a ON a.id=e.account_id WHERE e.account_id=$1',[linkUser.id])).rows[0];
     if(!await verifyPassword(data?.password,identity?.password_hash))return json(401,{error:'INVALID_CREDENTIALS'});
-    if(identity.google_subject)return json(409,{error:'IDENTITY_ALREADY_LINKED'});
+    if(identity.google_subject&&identity.google_subject!==bootstrapSubject(linkUser.id))return json(409,{error:'IDENTITY_ALREADY_LINKED'});
    }
    const login=createGoogleLogin({clientId:google.clientId,redirectUri:base.origin+'/auth/google/callback',now:now()});
    await pool.query('DELETE FROM micontacto.oauth_transactions WHERE expires_at<=$1',[new Date(now()).toISOString()]);
@@ -76,7 +77,7 @@ export function createAuth(pool,{secret,origin,google=null,fetch:network=fetch,v
   let r;
   if(saved.rows[0].link_account_id){
    const user=await current(req);if(!user||user.status!=='ACTIVE'||user.id!==saved.rows[0].link_account_id||!equal(hash(cookie(req,'mc_session')??''),saved.rows[0].link_session_hash))throw Error('INVALID_OAUTH_STATE');
-   try{r=await pool.query("UPDATE micontacto.accounts SET google_subject=$1 WHERE id=$2 AND google_subject IS NULL AND status='ACTIVE' RETURNING id,status",[identity.googleSubject,user.id]);}catch(e){if(e.code==='23505')throw Error('IDENTITY_ALREADY_LINKED');throw e;}if(!r.rows.length)throw Error('IDENTITY_ALREADY_LINKED');
+   try{r=await pool.query("WITH linked AS (UPDATE micontacto.accounts SET google_subject=$1 WHERE id=$2 AND (google_subject IS NULL OR google_subject=$3::text) AND status='ACTIVE' RETURNING id,status), logged AS (INSERT INTO micontacto.audit(id,actor_id,action,reason) SELECT $4,id,'GOOGLE_IDENTITY_LINKED','Titularidad confirmada mediante correo, contraseña y OAuth' FROM linked) SELECT id,status FROM linked",[identity.googleSubject,user.id,bootstrapSubject(user.id),randomUUID()]);}catch(e){if(e.code==='23505')throw Error('IDENTITY_ALREADY_LINKED');throw e;}if(!r.rows.length)throw Error('IDENTITY_ALREADY_LINKED');
   }else r=await pool.query('INSERT INTO micontacto.accounts(id,google_subject) VALUES($1,$2) ON CONFLICT(google_subject) DO UPDATE SET google_subject=EXCLUDED.google_subject RETURNING id,status',[randomUUID(),identity.googleSubject]);
   // Suspended accounts receive a limited session for private appeals only.
   const session=await issue(r.rows[0].id);const headers=new Headers({location:'/mi-perfil','cache-control':'no-store'});headers.append('set-cookie',session.cookie);headers.append('set-cookie',`mc_oauth=; Path=/auth/google/callback; HttpOnly; SameSite=Lax; Max-Age=0${secure?'; Secure':''}`);
