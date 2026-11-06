@@ -1,3 +1,15 @@
+## Perfil completo guardado, beneficios visibles solo con Destacado vigente (6 noviembre 2026)
+
+**Decisión confirmada:** el cliente puede rellenar y guardar desde el primer día TODOS los campos del perfil (WhatsApp, teléfono, enlaces, pin de Maps, descripción, ubicación y fotografías según las restricciones de carga). Guardar datos no significa hacerlos públicos. La ficha gratis solo muestra nombre, foto principal, descripción y localidad territorial, sin botones, enlaces ni QR. Mostrar en el panel del titular, discretamente bajo su perfil: «Tu perfil gratuito muestra solamente la información básica. Activa Destacado para mostrar tus fotografías adicionales, botones de contacto, ubicación, QR y enlaces».
+
+**Activación/desactivación automática:** tras pago verificado o canje válido, mostrar inmediatamente beneficios autorizados sin que el cliente vuelva a escribir ni ADMIN apruebe el pago; mantener restricciones por denuncias y seguridad. Al vencer el período, ocultar automáticamente botones, QR, enlaces y fotos extra en web pública y endpoints; no borrar datos. Al reactivar, restaurar la visualización desde los datos ya guardados. Mostrar al titular fecha/hora de vencimiento y tiempo restante; comprobar cambio de estado en servidor por reloj real, sin depender de que el usuario tenga abierta la página.
+
+- [ ] Permitir guardar todos los campos incluso con plan gratuito; no convertirlos en enlaces públicos antes de pagar.
+- [ ] Aviso discreto en panel cliente explicando diferencia Gratis/Destacado y CTA «Activar Destacado».
+- [ ] Reloj/fecha de vencimiento en panel, con estado calculado en servidor y actualización del cliente.
+- [ ] Pruebas en fronteras temporales: antes del pago, pago confirmado, último segundo de vigencia, vencido, renovación, suspensiones y acceso directo a QR/fotos extra.
+- [ ] Evitar que una página cacheada muestre información privada tras vencer; aplicar permisos también a rutas de medios/QR.
+
 ## REGLA COMERCIAL PRIORITARIA: perfil gratuito frente a Destacado (6 noviembre 2026)
 
 **Nueva decisión explícita del propietario; sustituye reglas anteriores incompatibles:** el perfil gratuito es una ficha informativa simple con UNA fotografía principal, nombre, descripción y ubicación territorial para el buscador. NO ofrece QR, descarga de QR, compartir por botón, enlace público como prestación promocionada, botones de teléfono, WhatsApp, mapas, cómo llegar, redes ni otros enlaces de contacto. Si el usuario escribe una referencia o teléfono en la descripción, se muestra como TEXTO plano, sin autoenlazar. No mostrar botones deshabilitados ni espacios vacíos.
