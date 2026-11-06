@@ -1,3 +1,9 @@
+## Regla operativa obligatoria — guardar, probar y publicar (5 nov 2026)
+
+- [ ] **Cada corrección:** implementar → guardar commit en GitHub → ejecutar pruebas → desplegar en el Railway EXISTENTE → verificar el cambio en `https://micontacto.online` → registrar evidencia y estado en este checklist. Repetir por cada cambio; un commit sin despliegue verificado **NO está terminado**.
+- [ ] Preservar usuarios, perfiles, fotografías, PostgreSQL, sesiones, dominio y seguridad; no crear infraestructura nueva ni modificar Direcciones507/LATAM. Si falla una prueba o despliegue, detener el cierre de esa corrección y reportar el bloqueo, sin declarar éxito.
+- [ ] **Yappy Live:** preparar y probar sin cobros reales, pero NO activar hasta autorización explícita del propietario.
+
 # DECISIONES VIGENTES DEL PROPIETARIO — 5 NOV 2026 (PRIORIDAD SOBRE TARIFAS Y UX HISTÓRICAS)
 
 > **Estado:** requisitos aprobados para implementar y verificar, NO equivalen a funcionalidades ya desplegadas. Las tarifas históricas y referencias a espacios fotográficos bloqueados más abajo quedan sustituidas por este bloque. No activar Yappy Live ni cobros reales sin autorización expresa. No crear otra infraestructura, borrar fotos ni modificar Direcciones507/LATAM. Trabajar en el Railway y rama existentes; preservar PostgreSQL, perfiles y sesiones.
