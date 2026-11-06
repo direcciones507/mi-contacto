@@ -1,3 +1,18 @@
+## REGLA COMERCIAL PRIORITARIA: perfil gratuito frente a Destacado (6 noviembre 2026)
+
+**Nueva decisión explícita del propietario; sustituye reglas anteriores incompatibles:** el perfil gratuito es una ficha informativa simple con UNA fotografía principal, nombre, descripción y ubicación territorial para el buscador. NO ofrece QR, descarga de QR, compartir por botón, enlace público como prestación promocionada, botones de teléfono, WhatsApp, mapas, cómo llegar, redes ni otros enlaces de contacto. Si el usuario escribe una referencia o teléfono en la descripción, se muestra como TEXTO plano, sin autoenlazar. No mostrar botones deshabilitados ni espacios vacíos.
+
+**Destacado pagado:** hasta CINCO fotos (una principal y cuatro adicionales), QR y descarga, botones de contacto, mapa/ubicación, compartir y enlaces habilitados durante la vigencia del Destacado. Al terminar, degradar presentación a gratuita sin destruir datos ni fotos; mantener fotos extra privadas/no visibles hasta nuevo Destacado. Asegurar que la API pública y el renderizador apliquen la misma política, sin filtrar URLs de fotos extra ni enlaces en respuestas públicas gratuitas.
+
+**Pago y publicación:** al confirmar de manera verificable el pago mediante Yappy o el proveedor habilitado, el perfil Destacado se publica automáticamente sin aprobación manual ADMIN, sujeto a requisitos legales, consentimientos, seguridad y medidas de moderación vigentes. No activar con captura, orden pendiente ni webhook sin validar. Gratis conserva flujo de revisión ADMIN si así está configurado; no exigir aprobación ADMIN al pago confirmado. Canje de códigos válidos vendidos debe aplicar el beneficio sin aprobación manual adicional, con las mismas restricciones de seguridad.
+
+**Brechas confirmadas en views.js:** publicProfile() actualmente dibuja botones de WhatsApp, teléfono y Maps según datos sin comprobar p.featured; también expone QR y compartir. Corregir antes de despliegue. El formulario aún dice «La tarjeta gratuita se comparte solo por enlace o QR», texto obsoleto. Revisar rutas de QR, directorio, API y tests para impedir el acceso a beneficios premium gratuitos.
+
+- [ ] Implementar y probar separación de presentación y acceso en cliente, servidor, API, QR y galería.
+- [ ] Implementar y probar publicación automática tras pago confirmado y tras canje válido, sin saltar bloqueos de moderación.
+- [ ] Comprobar perfiles gratis, Destacado vigente, Destacado vencido, pago pendiente, pago rechazado y denuncia/suspensión.
+- [ ] Mostrar al comprador sus códigos en una ventana de confirmación al completarse el pago y conservarlos en «Mis códigos»; ADMIN conserva inventario, ventas y botón copiar para envío manual por WhatsApp.
+
 # Cierre integral preparado — rama work/integral-close-20261106
 
 ## Verificación manual de fotografías por WhatsApp y potestades ADMIN (6 noviembre 2026)
