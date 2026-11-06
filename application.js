@@ -61,7 +61,7 @@ export function createApplication({pool,secret,origin='https://micontacto.online
    if(path==='/api/payments/yappy/ipn'&&req.method==='GET'){const proof=paymentProvider?.verify(url.searchParams);if(proof&&(await pool.query('SELECT id FROM micontacto.code_orders WHERE provider_order_id=$1',[proof.orderId])).rows.length)return json(200,await codes.confirm(proof));return json(200,await payments.confirm(url.searchParams));}
    const gateReply=await gate.handle(req);if(gateReply)return secure(gateReply,true);
    if(req.method==='GET'&&path==='/entrada-no-aceptada')return html('<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mi Contacto</title><main style="max-width:34rem;margin:12vh auto;padding:2rem;font:18px system-ui"><h1>No aceptaste las condiciones</h1><p>No puedes utilizar Mi Contacto sin aceptar las condiciones generales de acceso.</p><a href="/">Volver al inicio</a></main></html>');
-   if(legal.enforce&&req.method==='GET'&&['/acceso','/acceso-admin','/mi-perfil','/admin','/ayuda'].includes(path)&&!gate.accepted(req))return secure(new Response(null,{status:303,headers:{location:'/'}}));
+   if(legal.enforce&&req.method==='GET'&&!gate.accepted(req)&&(['/acceso','/acceso-admin','/mi-perfil','/admin','/ayuda'].includes(path)||/^\/(pa|cr|ni|sv|hn|gt|mx|co)\/[a-z0-9-]{3,60}$/.test(path)||/^\/reportar\/[a-f0-9-]{36}$/.test(path)))return secure(new Response(null,{status:303,headers:{location:'/'}}));
    if(legal.enforce&&path.startsWith('/auth/google')&&!gate.accepted(req)){
     const existing=await auth.current(req);if(!existing||!await consent.accepted(existing.id))return secure(new Response(null,{status:303,headers:{location:'/aviso'}}));
    }
