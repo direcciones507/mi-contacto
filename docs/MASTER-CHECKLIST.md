@@ -1,5 +1,19 @@
 # Cierre integral preparado — rama work/integral-close-20261106
 
+## Moderación ADMIN: denuncias, investigación y decisiones (6 noviembre 2026)
+
+**Regla del propietario:** una denuncia por sí sola NO elimina ni suspende un perfil. ADMIN revisa motivo, referencias y evidencia, comprueba hechos y decide. Si la denuncia no se sustenta, desestimarla y mantener el perfil. Medidas proporcionales con motivación, auditoría y apelación; conservar salvaguardas urgentes para material ilegal o peligro grave.
+
+**Inspección del código:** views.js ya declara pestañas ADMIN «Denuncias», «Apelaciones», «Auditoría», «Solicitudes de eliminación», «Usuarios»; dashboard.js consulta /api/admin/reports, muestra motivo/evidencia, permite revisar perfil/fotos y tiene acciones DISMISS/HIDE/SUSPEND/CORRECTION/SENSITIVE_HOLD/DELETE. No decir que no existe: verificar implementación real, controles de rol, persistencia y pruebas; mejorar UX y notificaciones pendientes.
+
+- [ ] ADMIN: búsqueda y filtros de personas/perfiles por nombre, código, país, localidad, estado y denuncias asociadas.
+- [ ] Bandeja de denuncias con contador/avisos al ADMIN, fecha, categoría, motivo, evidencia/referencia, estado y vínculo al perfil; avisos no deben exponer datos sensibles.
+- [ ] Investigación: revisar perfil, fotos y antecedentes necesarios, sin divulgar datos del denunciante; registrar decisión motivada y fecha.
+- [ ] Desestimar denuncia infundada manteniendo el perfil; cuando se confirme infracción, aplicar medida proporcional (solicitud de corrección, ocultación, suspensión o retirada según política). Proteger contenido grave conforme al procedimiento legal.
+- [ ] Historial de moderación, apelaciones, acceso exclusivo ADMIN verificado en servidor, prevención de borrados accidentales y pruebas de roles.
+- [ ] Diferenciar retirar perfil por incumplimiento de eliminación definitiva a petición del titular, con autorizaciones y retención legal apropiadas.
+- [ ] Pruebas autenticadas en Railway después de despliegue seguro: denuncia de prueba, revisión ADMIN, desestimación sin pérdida de perfil; denuncia justificada, medida y apelación. No marcar completado por mera existencia del botón.
+
 ## Acceso privado del propietario y simplificación de autenticación (captura 6 noviembre 2026)
 
 - [ ] Separar tres conceptos: acceso de clientes, puerta de pruebas privadas existente y acceso ADMIN del propietario. No mezclar enlaces «Continuar con Google», «Entrar a pruebas privadas», selector «Acción» y formulario correo en una tarjeta gigante.
