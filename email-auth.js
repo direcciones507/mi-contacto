@@ -37,7 +37,7 @@ export function emailAuth(pool,auth,{origin,secret,transport=null,now=()=>Date.n
    await pool.query('DELETE FROM micontacto.auth_email_tokens WHERE token_hash=$1',[tokenHash]);throw Error('EMAIL_UNAVAILABLE');
   }
  }
- async function sendSafe(...args){try{await send(...args);}catch(e){if(e.message!=='EMAIL_UNAVAILABLE')throw e;}}
+ async function sendSafe(...args){await send(...args);}
  async function credential(user,password){const row=(await pool.query('SELECT password_hash FROM micontacto.email_identities WHERE account_id=$1',[user.id])).rows[0];return verifyPassword(password,row?.password_hash);}
  async function handle(req){
   const path=new URL(req.url).pathname;if(!path.startsWith('/api/auth/email/'))return null;
