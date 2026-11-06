@@ -18,3 +18,13 @@
 /* Fotografía de demostración: formato cuadrado como el logo de Direcciones */
 .preview .avatar{width:108px;height:108px;border-radius:16px;overflow:hidden;background:#d9e8ff}
 .preview .avatar img{display:block;width:100%;height:100%;object-fit:cover;border-radius:16px}
+
+/* Tipografía editorial de la homepage: Plus Jakarta Sans, sin cambiar el panel privado */
+:root{font-family:'Plus Jakarta Sans',Inter,system-ui,-apple-system,'Segoe UI',sans-serif;color:#1a2b4c}
+.hero h1{font-weight:800;letter-spacing:-.035em}
+.section h2,.cta h2{font-weight:800;letter-spacing:-.025em;color:#1a2b4c}
+.section .eyebrow{font-weight:700;letter-spacing:.1em}
+.steps h3,.step h3{font-weight:700;color:#1a2b4c}
+.steps p,.step p{color:#64748b;line-height:1.6}
+.preview{transform:none;box-shadow:0 10px 30px #001c4e30}
+@media(max-width:768px){.hero h1{letter-spacing:-.025em}.section h2{line-height:1.18}}
