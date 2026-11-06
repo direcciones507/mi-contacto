@@ -9,7 +9,7 @@ try{for(const width of [390,820,1440]){
  let f,sent=[];const server=await serveLocal(async origin=>{f=await testFixture({origin,emailTransport:async value=>sent.push(value)});return f.app;});
  const context=await browser.newContext({...(width===390?devices['Pixel 7']:width===820?devices['iPad (gen 7)']:{}),viewport:{width,height:1000}}),page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));context.setDefaultTimeout(60000);
  const pw='synthetic-browser-password-one',next='synthetic-browser-password-two';
- const access=async action=>{await page.goto(server.origin+'/acceso');await page.locator('#emailAccess').waitFor({state:'visible'});await page.locator('[name=action]').selectOption(action);};
+ const access=async action=>{await page.goto(server.origin+'/acceso');await page.locator('#emailAccess').waitFor({state:'visible'});if(await page.locator('#authActionLabel').isVisible())await page.locator('[name=action]').selectOption(action);else await page.locator('[data-auth-action='+action+']').click();};
  const enter=async(action,password=pw)=>{await access(action);await page.locator('#emailAccess [name=email]').fill('synthetic@example.test');if(action!=='recover')await page.locator('#emailAccess [name=password]').fill(password);await page.locator('#emailAccess button').click();};
  try{
   await enter('register');await page.getByText(/Si la solicitud es válida/).waitFor();assert.equal(sent.length,1);

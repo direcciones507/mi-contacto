@@ -18,7 +18,7 @@ test('native 015: existing data, concurrent confirmation, rollback, reset races 
    const p=await profileRuntime(pool).create(db.existing,{country:'PA',linkName:'native-existing',displayName:'Existing synthetic profile',profession:'Test'});assert.equal(p.status,201);db.profile=p.body.id;
    const oldApp=createApplication({pool,secret:'synthetic-native-secret'.repeat(3)});db.session=await oldApp.auth.issue(db.existing);
    const before=(await pool.query('SELECT to_jsonb(p) AS row FROM micontacto.profiles p WHERE id=$1',[db.profile])).rows;
-   const applied=await db.migrate();assert.deepEqual(applied,['015_email_auth.sql','016_commercial_codes.sql']);assert.deepEqual((await pool.query('SELECT to_jsonb(p) AS row FROM micontacto.profiles p WHERE id=$1',[db.profile])).rows,before);
+   const applied=await db.migrate();assert.deepEqual(applied,['015_email_auth.sql','016_commercial_codes.sql','017_moderation_contact.sql']);assert.deepEqual((await pool.query('SELECT to_jsonb(p) AS row FROM micontacto.profiles p WHERE id=$1',[db.profile])).rows,before);
    assert.equal((await oldApp.auth.current(new Request('https://micontacto.online/api/session',{headers:{cookie:'mc_session='+db.session.token}}))).id,db.existing);
    assert.equal((await pool.query('SELECT google_subject FROM micontacto.accounts WHERE id=$1',[db.existing])).rows[0].google_subject,'synthetic-existing-google');
   });
@@ -41,7 +41,7 @@ test('native 015: existing data, concurrent confirmation, rollback, reset races 
   await t.test('server restart and actual pg_dump/pg_restore preserve 015 data and old profile',async()=>{
    const admin=randomUUID();await pool.query("INSERT INTO micontacto.accounts(id,google_subject,role) VALUES($1,$2,'ADMIN')",[admin,'synthetic-code-admin-'+admin]);await app.codes.generate(admin,{quantity:3,key:randomUUID()});const inventoryBefore=await app.codes.list(admin,{isAdmin:true});
    const snapshot=async p=>(await p.query('SELECT a.id,a.google_subject,e.email,e.password_hash FROM micontacto.accounts a LEFT JOIN micontacto.email_identities e ON e.account_id=a.id ORDER BY a.id')).rows;
-   const before=await snapshot(pool);await db.restart();assert.deepEqual(await snapshot(pool),before);const restored=await db.restoredSnapshot();assert.deepEqual(await snapshot(restored),before);const restoredApp=createApplication({pool:restored,secret:'synthetic-native-secret'.repeat(3)});assert.deepEqual(await restoredApp.codes.list(admin,{isAdmin:true}),inventoryBefore);assert.equal((await restored.query('SELECT count(*)::int AS n FROM micontacto.profiles WHERE id=$1',[db.profile])).rows[0].n,1);assert.equal((await restored.query('SELECT count(*)::int AS n FROM micontacto.schema_migrations')).rows[0].n,16);
+   const before=await snapshot(pool);await db.restart();assert.deepEqual(await snapshot(pool),before);const restored=await db.restoredSnapshot();assert.deepEqual(await snapshot(restored),before);const restoredApp=createApplication({pool:restored,secret:'synthetic-native-secret'.repeat(3)});assert.deepEqual(await restoredApp.codes.list(admin,{isAdmin:true}),inventoryBefore);assert.equal((await restored.query('SELECT count(*)::int AS n FROM micontacto.profiles WHERE id=$1',[db.profile])).rows[0].n,1);assert.equal((await restored.query('SELECT count(*)::int AS n FROM micontacto.schema_migrations')).rows[0].n,17);
   });
  }finally{await pool.close();}
 });

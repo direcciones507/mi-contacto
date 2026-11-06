@@ -61,7 +61,7 @@ test('public report, spam controls, ADMIN moderation, restricted originals, appe
    assert.equal((await f.request('/api/profiles/'+id+'/appeal',{as:'other',method:'POST',body:{reason:'Unauthorized appeal'}})).status,404);
    const a=await f.app.moderation.appeal(f.owner,id,{reason:'Synthetic owner appeal'});await f.app.moderation.reviewAppeal(f.admin,a.id,{accepted:true,reason:'Synthetic resolved restriction'});
    const p=(await f.pool.query('SELECT status,moderation_restricted FROM micontacto.profiles WHERE id=$1',[id])).rows[0];assert.equal(p.status,'DRAFT');assert.equal(p.moderation_restricted,false);
-   const events=(await(await f.request('/api/admin/moderation-events',{as:'admin'})).json()).items;assert.equal(events.length,2);assert.ok(events.every(e=>e.created_at&&e.actor_id&&e.reason));
+   const events=(await(await f.request('/api/admin/moderation-events',{as:'admin'})).json()).items;const decisions=events.filter(e=>['HIDE','APPEAL_ACCEPTED'].includes(e.action));assert.equal(decisions.length,2);assert.ok(decisions.every(e=>e.created_at&&e.actor_id&&e.reason));
   });
   await t.test('account suspension revokes sessions; reauthentication permits only reads and appeals',async()=>{
    await f.pool.query("UPDATE micontacto.profiles SET status='ACTIVE',review_decision='APPROVED' WHERE id=$1",[id]);

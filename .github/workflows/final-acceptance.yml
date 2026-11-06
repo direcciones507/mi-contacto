@@ -1,12 +1,13 @@
 name: Mi Contacto final native acceptance
 on:
   push:
-    branches: [work/integral-close-20261106,work/final-integration-acceptance-20261105, work/technical-completion-20261105, work/provider-reuse-20261105, work/official-origin-20261106]
+    branches: [work/visual-admin-close-20261106,work/integral-close-20261106,work/final-integration-acceptance-20261105, work/technical-completion-20261105, work/provider-reuse-20261105, work/official-origin-20261106]
     paths:
       - '.github/workflows/final-acceptance.yml'
       - '*.js'
       - '*.css'
       - 'db/**'
+      - 'ops/**'
       - 'scripts/**'
       - 'tests/**'
       - 'package*.json'
@@ -42,18 +43,28 @@ jobs:
       - name: Native 016 migration concurrency restart and backup restoration
         env:
           MC_TEST_NATIVE_POSTGRES_BIN: /usr/lib/postgresql/16/bin
-        run: node --test scripts/native-auth-validation.mjs tests/email-auth.test.mjs tests/auth-hardening.test.mjs tests/commercial-codes.test.mjs tests/payment-runtime.test.mjs
+        run: node --test scripts/native-auth-validation.mjs tests/email-auth.test.mjs tests/auth-hardening.test.mjs tests/commercial-codes.test.mjs tests/payment-runtime.test.mjs tests/moderation-investigation.test.mjs scripts/native-private-upgrade.mjs
       - name: Visual and functional journeys against native PostgreSQL
         env:
           MC_TEST_NATIVE_POSTGRES_BIN: /usr/lib/postgresql/16/bin
         run: |
           node scripts/visual-forms-browser.mjs
           node scripts/email-auth-browser.mjs
+          node scripts/mobile-access-browser.mjs
+          node scripts/moderation-admin-browser.mjs
           MC_BROWSER_DATABASE=native MC_PG_BIN=/usr/lib/postgresql/16/bin MC_BROWSER_EVIDENCE="$PWD/docs/evidence/integral-close-20261106/full" node scripts/browser-validation.mjs > docs/evidence/integral-close-20261106/full-browser-results.json
+      - name: Build the optional existing-service backup image
+        run: |
+          docker build -f ops/acceptance.Dockerfile -t mi-contacto-private-upgrade:test .
+          docker run --rm mi-contacto-private-upgrade:test node --version
+          docker run --rm mi-contacto-private-upgrade:test pg_dump --version
+          docker run --rm mi-contacto-private-upgrade:test node --input-type=module -e "import sharp from 'sharp'; import './ops/private-start.mjs'; console.log('Node dependencies and backup gate available')"
       - name: Preserve acceptance evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: mi-contacto-integral-acceptance
-          path: docs/evidence/integral-close-20261106/
+          path: |
+            docs/evidence/integral-close-20261106/
+            docs/evidence/visual-admin-20261106/
           retention-days: 7

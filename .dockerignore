@@ -1,9 +1,9 @@
 .git
 node_modules
-.env
-.env.*
-!.env.example
-artifacts
 docs/evidence
-*.dump
 *.log
+coverage
+.env*
+artifacts
+*.dump
+*.sha256

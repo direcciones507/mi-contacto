@@ -22,9 +22,9 @@ export function photoRuntime(pool,profiles,storage,{now=()=>Date.now()}={}){
     return {ok:true,id:photo};
    }); // Retain a private orphan on uncertain commit; never delete a possibly committed photo.
   },
-  async remove(account,id,photo){return transaction(pool,async tx=>{const p=await profiles.owned(tx,account,id);profiles.writable(p);
+  async remove(account,id,photo,{admin=false,reason='',preserveEvidence=false}={}){return transaction(pool,async tx=>{let p;if(admin){if(!(await tx.query("SELECT id FROM micontacto.accounts WHERE id=$1 AND role='ADMIN' AND status='ACTIVE'",[account])).rows.length)throw Error('FORBIDDEN');if(typeof reason!=='string'||reason.trim().length<3||reason.length>500)throw Error('REASON_REQUIRED');p=(await tx.query('SELECT * FROM micontacto.profiles WHERE id=$1 FOR UPDATE',[id])).rows[0];if(!p)throw Error('NOT_FOUND');if(p.sensitive_hold||p.status==='DELETED')throw Error('PROFILE_LOCKED');}else{p=await profiles.owned(tx,account,id);profiles.writable(p);}
    const row=(await tx.query("SELECT * FROM micontacto.photos WHERE id=$1 AND profile_id=$2 AND state='ACTIVE' FOR UPDATE",[photo,id])).rows[0];if(!row)throw Error('NOT_FOUND');
-   await tx.query("UPDATE micontacto.photos SET state='DELETED' WHERE id=$1",[photo]);await tx.query('INSERT INTO micontacto.storage_deletions(object_key) VALUES($1) ON CONFLICT DO NOTHING',[row.object_key]);await invalidate(tx,id,row.role==='MAIN',account);await profiles.audit(tx,account,id,'PHOTO_REMOVED');return {ok:true};
+   await tx.query("UPDATE micontacto.photos SET state='DELETED' WHERE id=$1",[photo]);if(!preserveEvidence)await tx.query('INSERT INTO micontacto.storage_deletions(object_key) VALUES($1) ON CONFLICT DO NOTHING',[row.object_key]);await invalidate(tx,id,row.role==='MAIN',account);await profiles.audit(tx,account,id,admin?'PHOTO_REMOVED_ADMIN':'PHOTO_REMOVED',reason);return {ok:true};
   });},
   async requestVerification(account,id){return transaction(pool,async tx=>{
    const p=await profiles.owned(tx,account,id);profiles.writable(p);
