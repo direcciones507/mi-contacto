@@ -1,3 +1,12 @@
+## Orden definitivo de Mi perfil aprobado por el propietario (5 nov 2026)
+
+- [ ] Encabezado compacto: **Mi perfil**, estado **Sesión activa** y un solo botón **Cerrar sesión**. Quitar de esta pantalla **Cerrar todas las sesiones**, **Crear mi perfil** redundante y el enlace visible **Acceso y contraseña de mi cuenta**; conservar gestión de seguridad en su pantalla correspondiente.
+- [ ] Formulario único: nombre completo, enlace personal, profesión/oficio, categoría, país, provincia/departamento/estado, distrito/municipio, localidad, teléfono/WhatsApp, pin Google Maps y coordenadas opcionales, **descripción**, inmediatamente **subir fotografía principal** (casilla única con vista previa/reemplazo/eliminación), luego los tres consentimientos **Autorizo**, y al final **Guardar y publicar**.
+- [ ] Eliminar la sección independiente inferior **Fotografías de tu perfil**, su encabezado, textos y botones redundantes. No eliminar las fotografías almacenadas ni las validaciones y consentimiento legales del servidor.
+- [ ] Debajo del formulario, sección **Destacar mi perfil**: **Ya tengo un código** (canje de un día), compra de días consecutivos (1/5/10/15/20/25/30) y compra de códigos independientes (5/10/20); distinguir claramente ambos productos, con precios aprobados y Yappy Live apagado.
+- [ ] Corregir el flujo para que el usuario pueda seleccionar la foto antes de pulsar **Guardar y publicar**. Si es perfil nuevo, crear primero el registro internamente, subir la foto y solicitar revisión sin pasos visibles redundantes; no marcar publicado hasta aprobación ADMIN.
+- [ ] Comprobar vista y controles en celular, tableta y computadora, guardar en GitHub, desplegar al Railway existente y verificar el dominio real por cada corrección. No crear servicios nuevos ni tocar Direcciones507 o pagos Live.
+
 ## Corrección Home — tarifas comerciales (5 nov 2026)
 
 - [x] **Código guardado:** `index.html` muestra $1.90 como precio inicial, siete precios actualizados para días consecutivos y paquetes de 5/10/20 códigos independientes a $1.90 por código. Commit `2b11dd1`.
