@@ -57,7 +57,7 @@ export function createApplication({pool,secret,origin='https://micontacto.online
    if(req.method==='GET'&&['/api/countries','/api/categories','/api/regions','/api/localities','/api/directory'].includes(path)&&!allowRead('directory',2000))return json(429,{error:'RATE_LIMITED'});
    if(path==='/api/payments/yappy/ipn'&&!allowRead('payment-ipn',600))return json(429,{error:'RATE_LIMITED'});
    if(path==='/api/payments/yappy/ipn'&&req.method==='GET')return json(200,await payments.confirm(url.searchParams));
-   const gateReply=await gate.handle(req);if(gateReply)return secure(gateReply);
+   const gateReply=await gate.handle(req);if(gateReply)return secure(gateReply,true);
    if(legal.enforce&&path.startsWith('/auth/google')&&!gate.accepted(req)){
     const existing=await auth.current(req);if(!existing||!await consent.accepted(existing.id))return secure(new Response(null,{status:303,headers:{location:'/aviso'}}));
    }

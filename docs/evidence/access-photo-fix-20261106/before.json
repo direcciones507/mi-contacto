@@ -1,0 +1,35 @@
+[
+  {
+    "device": "desktop",
+    "status": 200,
+    "referrerPolicy": "no-referrer",
+    "postOrigin": "null",
+    "options": {
+      "emailEnabled": false,
+      "googleEnabled": true,
+      "acceptanceLoginEnabled": true
+    }
+  },
+  {
+    "device": "phone",
+    "status": 200,
+    "referrerPolicy": "no-referrer",
+    "postOrigin": "null",
+    "options": {
+      "emailEnabled": false,
+      "googleEnabled": true,
+      "acceptanceLoginEnabled": true
+    }
+  },
+  {
+    "device": "tablet",
+    "status": 200,
+    "referrerPolicy": "no-referrer",
+    "postOrigin": "null",
+    "options": {
+      "emailEnabled": false,
+      "googleEnabled": true,
+      "acceptanceLoginEnabled": true
+    }
+  }
+]
