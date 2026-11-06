@@ -127,3 +127,10 @@ body.auth-page .auth-card #emailAccess[hidden],body.auth-page .auth-card .auth-f
 .runtime #profileOptions[hidden]{display:none!important}
 .runtime .photo-slot--compact .main-photo-picker>button{flex:0 1 auto}
 @media(max-width:600px){.runtime #editor label.check{font-size:.9rem;padding:10px;gap:10px!important}.runtime .photo-slot--compact .main-photo-picker{display:flex;flex-wrap:wrap;gap:8px}.runtime .photo-slot--compact .main-photo-picker>input{flex:1 1 190px}.runtime .photo-slot--compact .main-photo-picker>button{flex:0 1 auto;font-size:.84rem}}
+
+/* Etiquetas de archivo independientes del idioma del navegador */
+.runtime .localized-file-label{display:flex!important;flex-wrap:wrap;align-items:center;gap:8px!important;position:relative;width:fit-content;max-width:100%;padding:6px;border:1px solid #b5cee8;border-radius:11px;cursor:pointer}
+.runtime .localized-file-label .localized-file-input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:2}
+.runtime .localized-file-label .file-pick-label{background:#edf5ff;border:1px solid #b5cee8;color:#0a438f;border-radius:8px;padding:9px 11px;font-weight:650}
+.runtime .localized-file-label .file-selection-name{font-size:.86rem;max-width:230px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.runtime .localized-file-label:focus-within{outline:3px solid #19a9df;outline-offset:2px}
