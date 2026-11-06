@@ -55,7 +55,7 @@ jobs:
           MC_BROWSER_DATABASE=native MC_PG_BIN=/usr/lib/postgresql/16/bin MC_BROWSER_EVIDENCE="$PWD/docs/evidence/integral-close-20261106/full" node scripts/browser-validation.mjs > docs/evidence/integral-close-20261106/full-browser-results.json
       - name: Build the optional existing-service backup image
         run: |
-          docker build -f ops/acceptance.Dockerfile -t mi-contacto-private-upgrade:test .
+          docker build -f Dockerfile -t mi-contacto-private-upgrade:test .
           docker run --rm mi-contacto-private-upgrade:test node --version
           docker run --rm mi-contacto-private-upgrade:test pg_dump --version
           docker run --rm mi-contacto-private-upgrade:test node --input-type=module -e "import sharp from 'sharp'; import './ops/private-start.mjs'; console.log('Node dependencies and backup gate available')"

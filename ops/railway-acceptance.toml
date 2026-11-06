@@ -1,0 +1,10 @@
+# Optional private upgrade. Select this config only after approval of the exact commit.
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+[deploy]
+startCommand = "sh /app/docker/entrypoint.sh node /app/ops/private-start.mjs"
+healthcheckPath = "/health/ready"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
