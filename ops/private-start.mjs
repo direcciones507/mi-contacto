@@ -1,3 +1,4 @@
+import {acceptanceWindow} from '../acceptance-window.js';
 import {databasePool} from '../database.js';
 import {readdir,readFile,mkdir,writeFile,lstat,chmod,statfs,mkdtemp,rm,rename} from 'node:fs/promises';
 import {createReadStream} from 'node:fs';
@@ -30,8 +31,8 @@ export async function backupAndUpgrade({pool,connection,ssl=false,backupRoot,bin
 export async function startPrivate(env=process.env){
  if(env.MC_PRIVATE_UPGRADE_APPROVED!=='016-017')throw Error('EXPLICIT_PRIVATE_UPGRADE_APPROVAL_REQUIRED');
  if(env.MC_ACCEPTANCE_MODE!=='true'||env.MC_PRIVATE_OFFICIAL_ORIGIN!=='true'||env.MC_ORIGIN!=='https://micontacto.online'||env.MC_YAPPY_SANDBOX_ENABLED==='true'||env.MC_YAPPY_ENVIRONMENT!=='test')throw Error('PRIVATE_ACCEPTANCE_REQUIRED');
- const stop=Date.parse(env.MC_ACCEPTANCE_STOP_AT);if(!Number.isFinite(stop)||Date.now()>=stop)throw Error('ACCEPTANCE_WINDOW_EXPIRED');
+ acceptanceWindow(env);
  const pool=databasePool(env);try{const u=new URL(env.MC_DATABASE_URL),proof=await backupAndUpgrade({pool,connection:{host:u.hostname,port:u.port,database:decodeURIComponent(u.pathname.slice(1)),user:decodeURIComponent(u.username),password:decodeURIComponent(u.password)},ssl:pool.options.ssl,backupRoot:env.MC_ACCEPTANCE_BACKUP_ROOT||'/var/lib/mi-contacto/acceptance-backups',expected:await sourceMigrations()});console.log('MC_PRIVATE_UPGRADE '+JSON.stringify({applied:proof.applied,preserved:proof.preserved,backupSha256:proof.sha256,replayed:!!proof.replayed,historicalOrders:proof.historicalOrders}));}finally{await pool.end();}
- const child=spawn(process.execPath,['scripts/start-server.mjs'],{stdio:'inherit',env});for(const signal of ['SIGINT','SIGTERM'])process.once(signal,()=>child.kill(signal));child.once('exit',code=>{process.exitCode=code??1;});
+ const child=spawn(process.execPath,['scripts/start-server.mjs'],{stdio:'inherit',env:{...env,MC_ACCEPTANCE_BOOTSTRAP:'false'}});for(const signal of ['SIGINT','SIGTERM'])process.once(signal,()=>child.kill(signal));child.once('exit',code=>{process.exitCode=code??1;});
 }
 if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))startPrivate().catch(()=>{console.error('MC_PRIVATE_UPGRADE_BLOCKED: preflight, backup or preservation validation failed; application not started; no destructive restore attempted.');process.exitCode=1;});
