@@ -3,3 +3,6 @@
 @media (max-width:800px){.hero-grid>.preview{width:100%;max-width:680px;min-width:0;justify-self:stretch}.hero-grid{gap:28px}.preview{padding:clamp(18px,4vw,32px)}}
 @media (max-width:600px){.hero-grid>.preview{max-width:none;width:100%;margin:0}.hero .wrap{width:calc(100% - 30px)}.preview-buttons span{overflow-wrap:anywhere}.nav-links{max-height:calc(100dvh - 66px);overflow-y:auto}}
 @media(max-width:1000px){.hero-grid{grid-template-columns:1fr;gap:28px}.hero-grid>.preview{width:100%;max-width:680px;min-width:0;margin-inline:auto;transform:none}}
+
+/* Igualar el borde inferior y la posición de los CTA de planes */
+.plans>.plan{display:flex;flex-direction:column}.plans>.plan>.btn{margin-top:auto}.plans>.plan>ul{flex:1}
