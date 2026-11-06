@@ -13,4 +13,5 @@ USER root
 ENTRYPOINT ["sh", "/app/docker/entrypoint.sh"]
 EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 CMD node scripts/healthcheck.mjs
-# Start the application directly; do not invoke the one-time private migration gate.\nCMD ["node", "scripts/start-server.mjs"]
+# Start the application directly without a one-time upgrade gate.
+CMD ["node", "scripts/start-server.mjs"]
