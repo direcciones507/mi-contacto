@@ -23,7 +23,7 @@ No se hizo respaldo/restauración del Railway activo ni se aplicó 016 allí. La
 
 ## Pruebas y evidencia
 
-183 pruebas locales aprobadas. Nueve recorridos Chromium: tres tamaños para fotografías/moderación/códigos, tres para correo y tres para el ciclo completo de pago de prueba, directorio, mudanza, Maps, compartir, QR, privacidad y eliminación ADMIN. CI repite contra PostgreSQL nativo, con concurrencia, migración, reinicio y restauración. Resultados y capturas en el artefacto `mi-contacto-integral-acceptance`; ver la ejecución correspondiente al commit final de esta rama. Los pagos y correos de estos recorridos usan proveedores sintéticos; no son pruebas de proveedores reales ni dispositivos físicos.
+184 pruebas locales aprobadas. Nueve recorridos Chromium: tres tamaños para fotografías/moderación/códigos, tres para correo y tres para el ciclo completo de pago de prueba, directorio, mudanza, Maps, compartir, QR, privacidad y eliminación ADMIN. CI repite contra PostgreSQL nativo, con concurrencia, migración, reinicio y restauración. Resultados y capturas en el artefacto `mi-contacto-integral-acceptance`; ver la ejecución correspondiente al commit final de esta rama. Los pagos y correos de estos recorridos usan proveedores sintéticos; no son pruebas de proveedores reales ni dispositivos físicos.
 
 La primera ejecución detectó una carrera de la prueba de logout: consultaba antes del HTTP 204. Se corrigió esperando esa respuesta, sin retirar la exigencia de sesión 401. La revisión posterior `f2fd7ba` aprobó todos los bloques; los resultados finales de esta entrega se registran en `evidence/integral-close-20261106/release.json`.
 

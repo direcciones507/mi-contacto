@@ -143,7 +143,7 @@ export function createApplication({pool,secret,origin='https://micontacto.online
    }
    if(path==='/api/legal-consent'&&req.method==='GET')return json(200,{accepted:await consent.accepted(user.id),...consent.publicInfo});
    if(path==='/api/legal-consent'&&req.method==='POST')return json(200,await consent.accept(user.id,await body(req)));
-   if((path==='/api/profiles'&&req.method==='POST'||/\/(publish|photos)$/.test(path)&&req.method==='POST')&&!await consent.accepted(user.id))throw Error('LEGAL_ACCEPTANCE_REQUIRED');
+   if((path==='/api/profiles'&&req.method==='POST'||/\/(publish|photos|redeem-code)$/.test(path)&&req.method==='POST')&&!await consent.accepted(user.id))throw Error('LEGAL_ACCEPTANCE_REQUIRED');
    const appealMatch=path.match(/^\/api\/profiles\/([a-f0-9-]{36})\/appeal$/);if(appealMatch&&req.method==='POST')return json(201,await moderation.appeal(user.id,appealMatch[1],await body(req)));
    if(path.startsWith('/api/admin/')&&user.role!=='ADMIN')return json(403,{error:'FORBIDDEN'});
    if(path==='/api/codes/quote'&&req.method==='GET')return json(200,codeQuote(Number(url.searchParams.get('quantity'))));

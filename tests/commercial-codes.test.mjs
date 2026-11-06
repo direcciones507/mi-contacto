@@ -1,4 +1,4 @@
-import {test} from 'node:test';import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';import {testFixture} from '../scripts/test-fixture.mjs';import {codeQuote} from '../codes-runtime.js';
+import {test} from 'node:test';import assert from 'node:assert/strict';import {randomUUID} from 'node:crypto';import {testFixture} from '../scripts/test-fixture.mjs';import {codeQuote} from '../codes-runtime.js';import {legalConfig} from '../legal.js';
 const provider={environment:'test',domain:'https://micontacto.online',async createOrder(){return {transactionId:'test-transaction',token:'synthetic',documentName:'test'};},verify(q){return {orderId:q.get('order'),status:q.get('status')};}};
 async function create(f,as='owner'){return (await(await f.request('/api/profiles',{as,method:'POST',body:{country:'PA',linkName:'codes-'+as,displayName:'Cuenta sintética'}})).json()).id;}
 const post=(f,path,body,as='admin')=>f.request(path,{as,method:'POST',body});
@@ -36,3 +36,5 @@ test('venta y canje concurrentes: un único pago manual y un único saldo; compr
  const {codeReceiptWorker}=await import('../codes-runtime.js');const keys=[];let fail=true;const worker=codeReceiptWorker(f.pool,async m=>{keys.push(m.idempotencyKey);assert.match(m.text,/USD 3.80/);if(fail)throw Error('synthetic timeout');return {id:'synthetic-receipt'};});assert.equal((await worker()).sent,false);fail=false;await f.pool.query('UPDATE micontacto.code_orders SET receipt_next_at=now()');assert.equal((await worker()).sent,true);assert.equal(keys[0],keys[1]);assert.equal((await worker()).processed,false);
  }finally{await f.pool.close();}
 });
+
+test('el canje exige el consentimiento legal vigente antes de consumir un código',async()=>{const f=await testFixture({legal:legalConfig({MC_ACCEPTANCE_MODE:'true'})});try{const r=await f.request('/api/profiles/'+f.owner+'/redeem-code',{method:'POST',body:{code:'MC-'+ 'a'.repeat(32)}});assert.equal(r.status,428);assert.equal((await r.json()).error,'LEGAL_ACCEPTANCE_REQUIRED');assert.equal((await f.pool.query('SELECT count(*)::int AS n FROM micontacto.feature_terms')).rows[0].n,0);}finally{await f.pool.close();}});
