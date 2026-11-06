@@ -97,7 +97,7 @@ export function createApplication({pool,secret,origin='https://micontacto.online
     return json(200,{items:(await pool.query("WITH RECURSIVE scope AS (SELECT id FROM micontacto.geo_regions WHERE id=$1 AND country_code=$2 AND enabled UNION ALL SELECT r.id FROM micontacto.geo_regions r JOIN scope s ON r.parent_id=s.id WHERE r.country_code=$2 AND r.enabled) SELECT l.id,l.name,l.region_id,r.name AS region_name FROM micontacto.geo_localities l JOIN micontacto.geo_regions r ON r.id=l.region_id WHERE l.region_id IN (SELECT id FROM scope) AND l.country_code=$2 AND l.enabled AND strpos(lower(l.name),lower($3))>0 ORDER BY l.name,l.id LIMIT 200",[region,country,q])).rows.map(l=>({...l,region_name:territoryDisplayName(l.region_name)})),limit:200,reviewRequired:true});
    }
    if(req.method==='GET'&&path==='/api/directory'){
-    const f=Object.fromEntries(url.searchParams);const query=directoryQuery(f);return json(200,{items:(await pool.query(query.sql,query.params)).rows,pageLimit:Math.min(50,Number(f.limit)||20),attribution:'GeoNames · CC BY 4.0 · revisión territorial pendiente'});
+    const f=Object.fromEntries(url.searchParams);const query=directoryQuery(f);const [rows,total]=await Promise.all([pool.query(query.sql,query.params),pool.query(query.countSql,query.countParams)]);return json(200,{items:rows.rows,total:total.rows[0].total,pageLimit:Math.min(50,Number(f.limit)||20),attribution:'GeoNames · CC BY 4.0 · revisión territorial pendiente'});
    }
    if(req.method==='GET'&&path==='/api/featured/quote')return json(200,featureQuote(Number(url.searchParams.get('days'))));
    const publicMatch=path.match(/^\/(pa|cr|ni|sv|hn|gt|mx|co)\/([a-z0-9-]{3,60})(\/qr.svg)?$/);
