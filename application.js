@@ -75,6 +75,7 @@ export function createApplication({pool,secret,origin='https://micontacto.online
      const content='<p role="alert">'+(messages[error]??'No se pudo verificar el acceso con Google. Vuelve a intentarlo en unos minutos.')+'</p><a class="btn btn-primary" href="/mi-perfil">Volver a Mi perfil</a>';const h=new Headers(authReply.headers);h.set('content-type','text/html; charset=utf-8');h.set('vary','Accept');return secure(new Response(layout('Acceso no completado',content,{script:null}),{status:authReply.status,headers:h}));
     }return secure(authReply);
    }
+   if(req.method==='GET'&&path==='/assets/demo-profile.jpg')return new Response(readFileSync(new URL('./assets/demo-profile.jpg',import.meta.url)),{headers:{...headers,'content-type':'image/jpeg','cache-control':'public, max-age=3600'}});
    if(req.method==='GET'&&Object.hasOwn(allowedAssets,path))return new Response(readFileSync(new URL('.'+path,import.meta.url)),{headers:{...headers,'content-type':allowedAssets[path]}});
    if(req.method==='GET'&&path==='/')return secure(html(gate.accepted(req)?readFileSync(new URL('./index.html',import.meta.url),'utf8'):gate.decorateHome(readFileSync(new URL('./index.html',import.meta.url),'utf8'))),true);
    if(req.method==='GET'&&path==='/api/legal')return json(200,consent.publicInfo);
