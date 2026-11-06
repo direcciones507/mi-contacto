@@ -1,0 +1,2 @@
+// Synthetic browser journeys only. Entry notice remains distinct from account publication consent.
+export async function acceptTestEntry(page,origin){await page.goto(origin+'/');const accept=page.getByRole('button',{name:'Acepto y continuar',exact:true});if(await accept.count()){await Promise.all([page.waitForNavigation({waitUntil:'domcontentloaded'}),accept.click()]);await page.locator('.mc-notice-dialog').waitFor({state:'detached'});}}
