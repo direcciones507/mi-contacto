@@ -134,3 +134,14 @@ body.auth-page .auth-card #emailAccess[hidden],body.auth-page .auth-card .auth-f
 .runtime .localized-file-label .file-pick-label{background:#edf5ff;border:1px solid #b5cee8;color:#0a438f;border-radius:8px;padding:9px 11px;font-weight:650}
 .runtime .localized-file-label .file-selection-name{font-size:.86rem;max-width:230px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .runtime .localized-file-label:focus-within{outline:3px solid #19a9df;outline-offset:2px}
+
+/* Foto principal: un solo control limpio, sin caja ni botones apilados */
+.runtime .photo-slot--compact{display:block;padding:0;border:0;background:transparent;max-width:100%}
+.runtime .photo-slot--compact .main-photo-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;width:100%;margin:8px 0}
+.runtime .photo-slot--compact .main-photo-picker.localized-file-label{display:flex!important;align-items:center;flex-wrap:nowrap;gap:10px!important;width:auto;max-width:100%;min-height:46px;margin:0;padding:4px 10px 4px 4px;border:1px solid #b5cee8;border-radius:10px;background:#fff}
+.runtime .photo-slot--compact .main-photo-picker .file-pick-label{white-space:nowrap;padding:9px 12px}
+.runtime .photo-slot--compact .main-photo-picker .file-selection-name{color:#64748b;min-width:0;max-width:220px}
+.runtime .photo-slot--compact .photo-discard{min-height:46px;margin:0!important;padding:10px 14px;font-size:.87rem;border-radius:10px}
+.runtime .photo-slot--compact .photo-discard[hidden]{display:none!important}
+.runtime .photo-slot--compact .photo-actions:empty{display:none!important}
+@media(max-width:600px){.runtime .photo-slot--compact .main-photo-controls{gap:8px}.runtime .photo-slot--compact .main-photo-picker.localized-file-label{flex:1 1 190px;min-width:0}.runtime .photo-slot--compact .main-photo-picker .file-pick-label{padding:9px 8px;font-size:.85rem}.runtime .photo-slot--compact .main-photo-picker .file-selection-name{font-size:.78rem}.runtime .photo-slot--compact .photo-discard{flex:0 0 auto;font-size:.82rem;padding:9px 10px}}
