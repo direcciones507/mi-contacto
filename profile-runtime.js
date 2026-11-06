@@ -53,7 +53,7 @@ export function profileRuntime(pool,{origin='https://micontacto.online',now=()=>
   if(!p.profession?.trim())throw Error('PUBLICATION_REQUIREMENTS');
   await geo(tx,p.country_code,p.region_id,p.locality_id);
   if(!(await tx.query("SELECT id FROM micontacto.photos WHERE profile_id=$1 AND role='MAIN' AND state='ACTIVE'",[id])).rows.length)throw Error('PHOTO_REQUIRED');
-  await tx.query("UPDATE micontacto.profiles SET status='PENDING_REVIEW',version=version+1,updated_at=now() WHERE id=$1",[id]);await audit(tx,account,id,'PUBLICATION_REQUESTED');return {ok:true,status:'PENDING_REVIEW'};
+  if(p.moderation_restricted||p.privacy_hidden)throw Error('PROFILE_LOCKED');await tx.query("UPDATE micontacto.profiles SET status='ACTIVE',review_decision='APPROVED',review_reason=NULL,version=version+1,updated_at=now() WHERE id=$1",[id]);await audit(tx,account,id,'PUBLICATION_SELF_PUBLISHED');return {ok:true,status:'ACTIVE'};
  });}
  async function pause(account,id,resume=false){return features.toggle(account,id,resume);}
  async function moderate(actor,id,{action,reason,version}){return transaction(pool,async tx=>{
