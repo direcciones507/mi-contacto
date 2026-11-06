@@ -1,3 +1,9 @@
+## Corrección Home — tarifas comerciales (5 nov 2026)
+
+- [x] **Código guardado:** `index.html` muestra $1.90 como precio inicial, siete precios actualizados para días consecutivos y paquetes de 5/10/20 códigos independientes a $1.90 por código. Commit `2b11dd1`.
+- [x] Fuente de tarifas del backend `feature-policy.js` actualizada y expectativas del checkout de prueba ajustadas en `tests/payment-runtime.test.mjs` (commits `3e43992` y `0f50c71`).
+- [ ] **PENDIENTE:** ejecutar pruebas CI de estos commits, desplegar la nueva revisión en el Railway existente y comprobar visualmente la Home y el checkout en `micontacto.online`. No declarar publicada por estar en GitHub. Yappy Live sigue desactivado.
+
 ## Regla operativa obligatoria — guardar, probar y publicar (5 nov 2026)
 
 - [ ] **Cada corrección:** implementar → guardar commit en GitHub → ejecutar pruebas → desplegar en el Railway EXISTENTE → verificar el cambio en `https://micontacto.online` → registrar evidencia y estado en este checklist. Repetir por cada cambio; un commit sin despliegue verificado **NO está terminado**.
