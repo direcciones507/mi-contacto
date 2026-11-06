@@ -1,1 +1,1 @@
-import './directory-client.js';
+import './directory-client.js?v=20261106d';
