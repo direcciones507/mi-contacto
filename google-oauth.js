@@ -12,7 +12,7 @@ export function createGoogleLogin({clientId,redirectUri,now=Date.now()}){
  const url=new URL("https://accounts.google.com/o/oauth2/v2/auth");
  for(const [k,v] of Object.entries({
   client_id:clientId,redirect_uri:uri.href,response_type:"code",
-  scope:"openid",state,nonce,code_challenge:challenge,
+  scope:"openid email profile",state,nonce,code_challenge:challenge,
   code_challenge_method:"S256",prompt:"select_account"
  }))url.searchParams.set(k,v);
  return {url:url.href,state,nonce,verifier,createdAt:now};
