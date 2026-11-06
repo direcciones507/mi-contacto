@@ -1,5 +1,18 @@
 # Cierre integral preparado — rama work/integral-close-20261106
 
+## Cierre comercial y separación de paneles (instrucción del propietario, 6 noviembre 2026)
+
+**Criterio de terminado:** no basta un commit. Cada cambio debe superar pruebas, desplegarse en el Railway existente y verificarse en micontacto.online desde dispositivos reales. Mantener despliegue privado hasta autorización de apertura; migración 016 solo tras preflight y respaldo íntegro verificado. No alterar datos ni pagos reales sin autorización.
+
+- [ ] **Panel cliente**: Mi perfil, edición, foto principal, vista previa completa, solicitar publicación, Destacar mi perfil con «Ya tengo un código», «Comprar días consecutivos» y «Comprar códigos» a USD 1.90 por unidad. Mostrar únicamente funciones de cliente.
+- [ ] **Panel ADMIN independiente**: usuarios, moderación, aprobaciones, generador seguro de códigos individuales y por lotes, reservas, venta manual por WhatsApp, registro de pagos manuales, historial y auditoría. Prohibir por servidor acceso a rutas y API ADMIN para usuarios comunes. No confundir el panel con la página del cliente.
+- [ ] **Navegación por rol**: no mostrar ADMIN a usuarios comunes; conservar acceso ADMIN para el propietario y redirecciones correctas. Probar cuenta cliente, ADMIN y usuario sin sesión.
+- [ ] **Tarjeta de acceso**: reemplazar el botón aislado por tarjeta centrada con Google, correo/contraseña, registro y recuperación, tomando referencia visual de Empleos.pa; reutilizar la autenticación existente, sin duplicar usuarios.
+- [ ] **Fotografía y publicación**: comparar el flujo funcional de Direcciones507, seleccionar foto, vista previa encuadrada de tarjeta completa, guardar y solicitar publicación con moderación; sección comercial visible debajo después del guardado/publicación según estado.
+- [ ] **Ciclo obligatorio**: verificar → corregir → probar → guardar en GitHub → desplegar autorizado → verificar en micontacto.online → corregir según pruebas del propietario. Reportar por separado código terminado, desplegado y comprobado en producción.
+
+---
+
 ## Captura escritorio: acceso desde Mi perfil (6 noviembre 2026)
 
 - [ ] Sustituir la pantalla ancha y vacía «Mi perfil personal / Accede a tu cuenta / Entrar con Google o correo electrónico» por una tarjeta de autenticación centrada inspirada en Empleos.pa, con marca exclusiva Mi Contacto.
