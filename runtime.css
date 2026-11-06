@@ -116,3 +116,6 @@ body.owner-page .header .top-account-nav{display:none!important}
 .runtime .photo-slot--compact .photo-actions:empty{display:none}
 .runtime #editor label.check{min-height:36px;line-height:1.35;gap:9px!important;margin:6px 0}
 .runtime #editor label.check input{margin-top:1px}
+
+body.auth-page .header .top-account-nav{display:none!important}
+body.auth-page .auth-card #emailAccess[hidden],body.auth-page .auth-card .auth-forgot[hidden]{display:none!important}
