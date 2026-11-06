@@ -108,3 +108,11 @@
 .runtime .auth-card .auth-google .google-mark{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:22px;height:22px;flex:none}
 .runtime .auth-card .auth-google span{display:block;text-align:center;line-height:1.3}
 @media(max-width:420px){.runtime .auth-card{padding:20px 16px}.runtime .auth-card .auth-google{font-size:.88rem;padding-inline:38px}.runtime .auth-card .auth-google .google-mark{left:12px}}
+
+body.owner-page .header .top-account-nav{display:none!important}
+.runtime .photo-slot--compact .main-photo-picker{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.runtime .photo-slot--compact .main-photo-picker>input{flex:0 1 330px;min-width:180px}
+.runtime .photo-slot--compact .main-photo-picker>button{flex:0 0 auto;margin:0;min-height:42px}
+.runtime .photo-slot--compact .photo-actions:empty{display:none}
+.runtime #editor label.check{min-height:36px;line-height:1.35;gap:9px!important;margin:6px 0}
+.runtime #editor label.check input{margin-top:1px}
