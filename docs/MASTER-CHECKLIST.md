@@ -1,5 +1,20 @@
 # Cierre integral preparado — rama work/integral-close-20261106
 
+## Pendientes visuales reportados con capturas reales de celular (5 noviembre, 23:37 Panamá)
+
+**Origen:** cuatro capturas del propietario en micontacto.online. **Estado: PENDIENTE de implementación y pruebas**. Estas imágenes corresponden a la versión anterior desplegada 33cbcdc; no atribuirlas a la revisión 0182f88 sin verificarla. La migración 016 sigue bloqueada por preflight y respaldo no verificados. No desplegar esta rama sin autorización específica.
+
+- [ ] **Menú móvil:** cerrar al seleccionar cualquier enlace (Crear mi perfil, Mi perfil, Directorio, Planes), al pulsar fuera del menú, al navegar/volver y con Escape. No debe quedar superpuesto al contenido ni exigir tocar de nuevo el icono. Mantener accesibilidad (aria-expanded, foco, teclado), sin bloquear desplazamiento.
+- [ ] **Cabecera de Mi perfil:** reducir espacios y controles redundantes. Mostrar Sesión activa y un solo Cerrar sesión; trasladar Acceso y contraseña y Cerrar todas las sesiones a Seguridad y acceso. Mostrar Crear mi perfil solo cuando todavía no exista, sin duplicarlo al editar.
+- [ ] **Home / tarjeta de ejemplo:** ampliar el ancho útil de «Tu nombre aquí» en móvil y tableta, conservar márgenes laterales y legibilidad; equilibrar escritorio sin desbordamiento. Verificar anchos 390, 820 y 1440 px.
+- [ ] **Foto principal:** comparar en modo lectura el componente de Direcciones507 y reutilizar solo patrón compatible, sin tocar su repositorio. Reemplazar panel excesivo, selector nativo en inglés, «Guarda primero tu borrador» y botón separado «Guardar fotografía» por selector compacto con previsualización real, encuadre lleno (object-fit: cover), reemplazar y retirar. Crear borrador internamente al guardar si se necesita; no eliminar fotos anteriores ni saltar aprobación ADMIN.
+- [ ] **Flujo de perfil:** completar datos + descripción + foto + consentimientos → Guardar → Ver vista previa de la tarjeta completa → Confirmar solicitud de publicación (revisión ADMIN). Evitar publicar sin confirmación; conservar validaciones y privacidad.
+- [ ] **Destacar después de publicación:** debajo del perfil guardado/solicitado mostrar claramente «Ya tengo un código», «Comprar días consecutivos» (1/5/10/15/20/25/30 con descuento) y «Comprar códigos» (1, 2, 3 o más a USD 1.90 cada uno). No confundir códigos guardables de un día con paquetes de días corridos. Mantener pagos reales apagados.
+- [ ] **Validación:** ejecutar pruebas y capturas de móvil, tableta y escritorio, registrar commit, CI, diferencias respecto a 0182f88 y estado real del despliegue. No marcar completado por estar solo en GitHub.
+
+---
+
+
 Este bloque distingue código probado de despliegue. La instrucción actual exige autorización expresa antes de publicar; no aplicar 016 ni desplegar esta rama todavía.
 
 - [x] Formulario en orden: datos, descripción, foto, consentimientos y Guardar y publicar. Borrador interno, foto seleccionable antes de guardar; revisión ADMIN conservada.
