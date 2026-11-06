@@ -1,0 +1,78 @@
+{
+  "codeCommit": "0182f880dd4a054843445f09cc3d6bd9df99b120",
+  "branch": "work/integral-close-20261106",
+  "baseCommit": "33cbcdcb3bae3fa6c765b3c9ee1ad50288debbef",
+  "githubActions": 42161414730,
+  "conclusion": "success",
+  "regression": {
+    "tests": 185,
+    "passed": 185,
+    "failed": 0
+  },
+  "nativePostgres": {
+    "tests": 51,
+    "passed": 51,
+    "failed": 0,
+    "migrations": 16,
+    "concurrency": true,
+    "restart": true,
+    "pgDumpPgRestore": true,
+    "encryptedCodeInventoryRestored": true
+  },
+  "browserJourneys": {
+    "total": 9,
+    "widths": [
+      390,
+      820,
+      1440
+    ],
+    "nativePostgres": true,
+    "physicalDevices": false,
+    "codeCheckoutSynthetic": true,
+    "emailTransportSynthetic": true
+  },
+  "externalProductionVerified": {
+    "GoogleLogin": false,
+    "R2": false,
+    "emailDelivery": false,
+    "payments": false
+  },
+  "liveRailwayCommit": "33cbcdcb3bae3fa6c765b3c9ee1ad50288debbef",
+  "deployedThisTask": false,
+  "liveDatabaseMigrationApplied": false,
+  "newResourcesCreated": 0,
+  "billingInvoiceAccessed": false,
+  "artifactId": 13476817733,
+  "artifactSha256": "bdc496db98b920e98a1cc0b29c5cbf1140032f0e4d195cb749707f1381cf06e5",
+  "changedFiles": [
+    ".github/workflows/final-acceptance.yml",
+    "application.js",
+    "auth-runtime.js",
+    "code-payment-client.js",
+    "codes-client.js",
+    "codes-runtime.js",
+    "dashboard.js",
+    "db/016_commercial_codes.sql",
+    "docs/INTEGRAL-CLOSE-20261106.md",
+    "docs/MASTER-CHECKLIST.md",
+    "email-auth-client.js",
+    "email-auth-view.js",
+    "erasure.js",
+    "feature-runtime.js",
+    "payment-runtime.js",
+    "runtime.css",
+    "scripts/backup-commercial.mjs",
+    "scripts/browser-validation.mjs",
+    "scripts/commercial-preflight.mjs",
+    "scripts/email-auth-browser.mjs",
+    "scripts/native-auth-validation.mjs",
+    "scripts/start-server.mjs",
+    "scripts/visual-forms-browser.mjs",
+    "tests/commercial-codes.test.mjs",
+    "tests/email-auth.test.mjs",
+    "tests/payment-runtime.test.mjs",
+    "tests/runtime.test.mjs",
+    "tests/unification-consent-territory.test.mjs",
+    "views.js"
+  ]
+}
