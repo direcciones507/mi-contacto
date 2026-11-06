@@ -14,7 +14,7 @@ test('Yappy sandbox: producción rechazada, firma, duplicados y proveedor incier
  const q=notification('abc123');q.append('status','E');assert.throws(()=>y.verify(q),/INVALID_PAYMENT_NOTIFICATION/);
  const tampered=notification('abc123');tampered.set('status','R');assert.throws(()=>y.verify(tampered),/INVALID_PAYMENT_SIGNATURE/);
  const foreign=notification('abc123');foreign.set('domain','https://direcciones507.com');assert.throws(()=>y.verify(foreign),/INVALID_PAYMENT_NOTIFICATION/);
- await assert.rejects(y.createOrder({provider_order_id:'abc123',amount_cents:169},'60000000'),/^Error: PAYMENT_PROVIDER_UNCONFIRMED$/);
+ await assert.rejects(y.createOrder({provider_order_id:'abc123',amount_cents:190},'60000000'),/^Error: PAYMENT_PROVIDER_UNCONFIRMED$/);
 });
 test('checkout aislado: firma, propiedad, saldo, comprobante y borrado integral',async t=>{
  let fail=false,calls=0;
@@ -39,7 +39,7 @@ test('checkout aislado: firma, propiedad, saldo, comprobante y borrado integral'
    assert.equal((await f.request(checkout,{as:'other',method:'POST',body:payload})).status,404);
    assert.equal((await f.request(checkout,{method:'POST',body:payload,csrf:false})).status,403);
    assert.equal((await f.request(checkout,{method:'POST',body:{...payload,amountCents:1}})).status,400);
-   const r=await f.request(checkout,{method:'POST',body:payload});assert.equal(r.status,201);order=await r.json();assert.equal(order.amountCents,799);assert.equal(order.environment,'test');
+   const r=await f.request(checkout,{method:'POST',body:payload});assert.equal(r.status,201);order=await r.json();assert.equal(order.amountCents,890);assert.equal(order.environment,'test');
    const again=await f.request(checkout,{method:'POST',body:payload});assert.equal((await again.json()).id,order.id);
    assert.equal((await f.request('/api/payments/'+order.id,{as:'other'})).status,404);assert.equal(calls,0);
   });
