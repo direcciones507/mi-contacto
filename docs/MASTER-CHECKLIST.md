@@ -1,3 +1,17 @@
+## Avance directo sin Work: restricciones de ficha pública (6 noviembre 2026)
+
+Rama: `work/production-benefits-20261106`, basada en el código probado `20cce3e`. Se implementaron controles de presentación para contactos, navegación, QR, compartir y fotos extra, y una restricción de servidor para el QR público sin Destacado. **Cambios guardados en GitHub, no desplegados ni certificados por CI.**
+
+- [x] Ocultar botones, QR y compartir en HTML de perfil gratuito.
+- [x] Bloquear URL pública QR si no hay Destacado vigente.
+- [x] Ocultar fotos adicionales en HTML gratuito.
+- [x] Aviso explicativo para el titular/visitante en ficha gratuita.
+- [ ] Revisar protección de URLs directas de fotos extra, datos expuestos por API, cachés y enlaces sociales.
+- [ ] Verificar que todos los datos puedan guardarse sin Destacado y que reaparezcan tras pago verificado/canje; probar vencimiento por reloj del servidor.
+- [ ] Añadir pruebas de regresión específicas y ejecutar CI sobre esta nueva rama.
+- [ ] Integrar reglas comerciales recientes del checklist móvil y criterios de producción.
+- [ ] Preflight, respaldo Railway, migraciones 016/017, despliegue privado y pruebas reales: PENDIENTES; no tocar infraestructura hasta autorización segura de revisión consolidada.
+
 # Cierre integral preparado — rama work/integral-close-20261106
 
 ## Verificación manual de fotografías por WhatsApp y potestades ADMIN (6 noviembre 2026)
