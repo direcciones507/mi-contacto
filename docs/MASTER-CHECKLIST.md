@@ -1,3 +1,28 @@
+# Cierre funcional privado desplegado — 6 noviembre 2026
+
+Código desplegado: `1c2922276dc2466eb2f9c2e52971bf6b03128774`, rama `work/functional-close-20261106`, descendiente de `bd0bfa4`.
+
+- [x] Publicación automática del perfil normal, sin aprobación ADMIN previa; consentimiento obligatorio antes de publicar.
+- [x] Vista previa de primera fotografía y ficha completa; selección, reemplazo y retirada conservados.
+- [x] Paquetes privados de 1/5/10 días, precios oficiales y auditoría PRUEBA SIN COBRO; duplicados concurrentes rechazados, cero órdenes de pago.
+- [x] Códigos ADMIN, inventario, venta manual, canje único, vigencias, pausa/reanudación y vencimiento comprobados en PostgreSQL nativo desechable y navegador.
+- [x] Galería de cuatro fotos adicionales condicionada a saldo válido; directorio y controles de acceso conservados.
+- [x] Aviso de entrada independiente: modal, aceptación firmada, rechazo y política de origen corregida sin relajar CSRF.
+- [x] Acceso unificado, registro/recuperación y controles de seguridad/vinculación para sesiones autenticadas restaurados.
+- [x] Moderación posterior, denuncias, motivos, restricciones, apelación, auditoría y eliminación autorizada probadas en fixtures desechables.
+- [x] Actions 42255523664 SUCCESS: 194 regresiones, 62 pruebas nativas y 18 recorridos Chromium; 0 fallidas/omitidas en los grupos automatizados finales.
+- [x] Railway SUCCESS: `c6902eb5-1baa-4b19-9e19-32aa1b46b00e`. No se repitieron 016/017 ni se crearon servicios/bases/volúmenes. Respaldo anterior verificado por SHA y ledger.
+- [x] HTTP real: salud, aviso, acceso, rechazos externos, protección de roles y arranque OAuth; correo real entregado mediante Resend existente con credencial restringida específica.
+- [ ] Completar inicio Google personal y recorridos autenticados del propietario en el sitio real, conservando su perfil. No certificados todavía.
+- [ ] Verificación/recuperación por correo desde el buzón del propietario y pruebas en dispositivos físicos. Transporte real entregado no equivale a completar esos recorridos.
+- [ ] Apertura pública, aprobación legal y pagos reales: fuera de este cierre privado. No extender la ventana de consumo sin autorización.
+
+**Alcance de las casillas:** los recorridos completos automatizados usan datos sintéticos y PostgreSQL desechable. La comprobación del sitio real se documenta por separado. Las secciones históricas inferiores no sustituyen este estado.
+
+Detalle y guía: `docs/FUNCTIONAL-CLOSE-20261106.md`. Evidencia: `docs/evidence/functional-close-20261106/verified-release.json`.
+
+---
+
 ## Avance directo sin Work: restricciones de ficha pública (6 noviembre 2026)
 
 Rama: `work/production-benefits-20261106`, basada en el código probado `20cce3e`. Se implementaron controles de presentación para contactos, navegación, QR, compartir y fotos extra, y una restricción de servidor para el QR público sin Destacado. **Cambios guardados en GitHub, no desplegados ni certificados por CI.**

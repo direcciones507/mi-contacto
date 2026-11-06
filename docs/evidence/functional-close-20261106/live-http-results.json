@@ -1,0 +1,22 @@
+{
+  "origin": "https://micontacto.online",
+  "at": "2026-11-06T17:08:47.135Z",
+  "realHttp": true,
+  "authenticatedOwner": false,
+  "readiness": true,
+  "entryNoticeAccepted": true,
+  "externalOriginRejected": true,
+  "clientAdminProtected": true,
+  "authOptions": {
+    "email": true,
+    "google": true
+  },
+  "unifiedAccessCard": true,
+  "googleStart": {
+    "redirect": true,
+    "callback": "https://micontacto.online/auth/google/callback",
+    "realLoginCompleted": false
+  },
+  "anonymousTrialRejected": true,
+  "paymentConfigProtected": true
+}
