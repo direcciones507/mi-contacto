@@ -43,7 +43,7 @@ export function featureRuntime(pool,{simulation=false}={}){
    if(t.confirmation_key===key)return {ok:true,id:t.id,replayed:true};
    if(t.state!=='PREPARED'||(await tx.query("SELECT id FROM micontacto.feature_terms WHERE profile_id=$1 AND state IN ('ACTIVE','PAUSED')",[id])).rows.length)throw Error('FEATURE_CONFLICT');
    await tx.query("UPDATE micontacto.feature_terms SET state='ACTIVE',starts_at=$2,anchor_at=$2,observed_at=$2,expires_at=$2::timestamptz+remaining_ms*interval '1 millisecond',confirmation_key=$3 WHERE id=$1",[t.id,at,key]);
-   await event(tx,actor,t,'ACTIVATED_SIMULATION',at);return {ok:true,id:t.id};
+   await event(tx,actor,t,'ACTIVATED_SIMULATION',at,'PRUEBA SIN COBRO · No es un pago confirmado');return {ok:true,id:t.id};
   });
  }
  async function toggle(actor,id,resume=false){return transaction(pool,async tx=>{

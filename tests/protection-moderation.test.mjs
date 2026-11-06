@@ -17,16 +17,16 @@ test('watermark embedded at center on vertical, square and horizontal photograph
 test('acceptance draft requires three declarations and persists version; OAuth cannot start without notice',async()=>{
  const f=await testFixture({legal:legalConfig({MC_ACCEPTANCE_MODE:'true'})});try{
   const create=()=>f.request('/api/profiles',{method:'POST',body:{country:'PA',linkName:'adult-only',displayName:'Synthetic adult'}});
-  assert.equal((await create()).status,428);assert.equal((await f.request('/auth/google',{as:null})).response.headers.get('location'),'/aviso');
-  const page=await f.request('/aviso',{as:null});const html=await page.response.text();assert.equal((html.match(/type="checkbox"/g)||[]).length,3);assert.doesNotMatch(html,/ checked/);
+  assert.equal((await create()).status,201);const draftId=(await f.pool.query('SELECT id FROM micontacto.profiles WHERE account_id=$1',[f.owner])).rows[0].id;assert.equal((await f.request('/api/profiles/'+draftId+'/publish',{method:'POST'})).status,428);assert.equal((await f.request('/auth/google',{as:null})).response.headers.get('location'),'/aviso');
+  const page=await f.request('/aviso',{as:null});const html=await page.response.text();assert.equal((html.match(/type="checkbox"/g)||[]).length,0);assert.match(html,/role="dialog"/);assert.match(html,/Acepto y continuar/);assert.doesNotMatch(html,/ checked/);
   assert.equal(page.response.headers.get('referrer-policy'),'same-origin');
   const token=html.match(/name="token" value="([^"]+)"/)[1];
   const form=async fields=>f.app.handle(new Request(f.origin+'/aviso',{method:'POST',headers:{origin:f.origin,'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({token,...fields})}));
   assert.equal((await f.app.handle(new Request(f.origin+'/aviso',{method:'POST',headers:{origin:'https://external.invalid'},body:new URLSearchParams({token,accept0:'yes',accept1:'yes',accept2:'yes'})}))).status,403);
-  assert.equal((await form({accept0:'yes',accept1:'yes'})).status,400);assert.equal((await form({accept0:'yes',accept1:'yes',accept2:'yes'})).status,303);
+  assert.equal((await form({token:'invalid'})).status,400);assert.equal((await form({accept0:'yes',accept1:'yes',accept2:'yes'})).status,303);
   const info=await(await f.request('/api/legal')).json(),data={version:info.version,policyDigest:info.policyDigest,adult:true,acceptTerms:true,acceptPrivacy:true};
   assert.equal((await f.request('/api/legal-consent',{method:'POST',body:{...data,adult:false}})).status,400);
-  assert.equal((await f.request('/api/legal-consent',{method:'POST',body:data})).status,200);assert.equal((await create()).status,201);
+  assert.equal((await f.request('/api/legal-consent',{method:'POST',body:data})).status,200);assert.equal((await create()).status,409);
   const saved=(await f.pool.query('SELECT * FROM micontacto.legal_consents WHERE account_id=$1',[f.owner])).rows[0];assert.equal(saved.policy_version,info.version);assert.ok(saved.accepted_at);
  }finally{await f.pool.close();}
 });

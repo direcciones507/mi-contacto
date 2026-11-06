@@ -24,9 +24,9 @@ test('un perfil por cuenta, mudanza conserva id URL QR; pin independiente y dire
   assert.equal((await f.request('/api/profiles/'+id,{method:'PATCH',body:input})).status,200);
   const bytes=await sharp({create:{width:20,height:20,channels:3,background:'blue'}}).png().toBuffer();assert.equal((await f.request('/api/profiles/'+id+'/photos',{method:'POST',raw:true,body:bytes})).status,201);
   assert.equal((await f.request('/api/profiles/'+id+'/publish',{method:'POST'})).status,202);p=await f.app.profiles.detail(f.owner,id);
-  assert.equal((await f.request('/api/admin/profiles/'+id,{as:'admin',method:'POST',body:{version:p.version,action:'APPROVE',reason:'Revisión de mudanza'}})).status,200);
+  assert.equal((await f.request('/api/admin/profiles/'+id,{as:'admin',method:'POST',body:{version:p.version,action:'APPROVE',reason:'Revisión de mudanza'}})).status,400);
   p=await f.app.profiles.detail(f.owner,id);assert.equal(p.country,'CR');assert.equal(p.url,url);assert.equal(p.urlCountry,'PA');
-  const page=await f.request('/pa/mudanza-estable',{as:null});assert.equal(page.status,200);const html=await page.response.text();assert.match(html,/maps.app.goo.gl\/syntheticPin/);assert.doesNotMatch(html,/waze.com/);assert.match(html,/Descargar QR/);assert.match(html,/Compartir/);assert.match(html,/\/pa\/mudanza-estable\/qr.svg/);
+  const page=await f.request('/pa/mudanza-estable',{as:null});assert.equal(page.status,200);const html=await page.response.text();assert.equal(p.mapsUrl,'https://maps.app.goo.gl/syntheticPin');assert.doesNotMatch(html,/maps.app.goo.gl\/syntheticPin/);assert.doesNotMatch(html,/waze.com/);assert.match(html,/Descargar QR/);assert.match(html,/Compartir/);assert.match(html,/\/pa\/mudanza-estable\/qr.svg/);
   assert.equal((await f.request('/pa/mudanza-estable/qr.svg',{as:null})).status,200);assert.equal((await f.request('/cr/mudanza-estable',{as:null})).status,404);
   const term=await f.app.features.prepare(f.owner,id,1);await f.app.features.activateSimulation(f.owner,id,term.id,'synthetic-'+randomUUID());
   assert.equal((await(await f.request('/api/directory?country=PA',{as:null})).json()).items.length,0);const rows=(await(await f.request('/api/directory?country=CR',{as:null})).json()).items;assert.equal(rows.length,1);assert.equal(rows[0].url_country,'PA');

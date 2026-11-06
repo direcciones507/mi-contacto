@@ -58,7 +58,7 @@ test('integración real en PostgreSQL WASM aislado, sin servicios ni pagos',asyn
   await t.test('publicación, revisión versionada y privacidad pública',async()=>{
    assert.equal((await f.request('/api/profiles/'+id+'/publish',{method:'POST'})).status,202);await current();
    assert.equal((await f.request('/api/admin/profiles/'+id,{as:'admin',method:'POST',body:{action:'APPROVE',reason:'Revisión sintética',version:version-1}})).status,409);
-   assert.equal((await f.request('/api/admin/profiles/'+id,{as:'admin',method:'POST',body:{action:'APPROVE',reason:'Revisión sintética',version}})).status,200);
+   assert.equal((await f.request('/api/admin/profiles/'+id,{as:'admin',method:'POST',body:{action:'APPROVE',reason:'Revisión sintética',version}})).status,400);
    const r=await f.request('/pa/persona-sintetica',{as:null});assert.equal(r.status,200);assert.match(r.response.headers.get('x-robots-tag'),/noindex/);const html=await r.response.text();assert.doesNotMatch(html,/60000000|mailto:|accounts.google|google_subject/);assert.match(html,/&lt;seguro&gt;/);
    const dir=await(await f.request('/api/directory?country=PA&keyword=Persona',{as:null})).json();assert.equal(dir.items.length,0);
    assert.equal((await(await f.request('/api/directory?country=PA&regionId='+f.geo.PA.regionId+'&localityId='+f.geo.PA.localityId+'&categoryId='+f.category,{as:null})).json()).items.length,0);

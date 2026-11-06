@@ -1,7 +1,7 @@
 name: Mi Contacto final native acceptance
 on:
   push:
-    branches: [work/visual-admin-close-20261106,work/integral-close-20261106,work/final-integration-acceptance-20261105, work/technical-completion-20261105, work/provider-reuse-20261105, work/official-origin-20261106]
+    branches: [work/functional-close-20261106,work/visual-admin-close-20261106,work/integral-close-20261106,work/final-integration-acceptance-20261105, work/technical-completion-20261105, work/provider-reuse-20261105, work/official-origin-20261106]
     paths:
       - '.github/workflows/final-acceptance.yml'
       - '*.js'
