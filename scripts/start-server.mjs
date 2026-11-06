@@ -49,8 +49,3 @@ receipts?.unref();
 const cleanup=setInterval(()=>app.erasure.cleanup().catch(()=>{}),60000);cleanup.unref();
 for(const signal of ['SIGINT','SIGTERM'])process.once(signal,()=>{clearInterval(cleanup);if(receipts)clearInterval(receipts);server.close(async()=>{await pool.end();process.exit(0);});setTimeout(()=>{server.closeAllConnections();},20000).unref();});
 
-// Explicit bounded acceptance window; do not extend paid compute automatically.
-if(env.MC_ACCEPTANCE_MODE==='true'&&env.MC_ACCEPTANCE_STOP_AT){
- const stopAt=Date.parse(env.MC_ACCEPTANCE_STOP_AT);if(!Number.isFinite(stopAt))throw Error('INVALID_ACCEPTANCE_STOP_AT');
- const timer=setTimeout(()=>{console.log('MC_ACCEPTANCE_WINDOW_ENDED');process.emit('SIGTERM');},Math.max(1,stopAt-Date.now()));timer.unref();
-}
