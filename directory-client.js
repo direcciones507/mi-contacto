@@ -13,9 +13,9 @@ for(const c of COUNTRIES)country.append(new Option(c.name,c.code));country.value
 async function api(path){const r=await fetch(path);if(!r.ok)throw Error('No se pudo consultar el directorio. Intenta nuevamente.');return r.json();}
 function options(select,rows,first){select.replaceChildren(new Option(first,''));for(const row of rows)select.append(new Option(row.name,row.id));select.disabled=!rows.length;}
 async function localities(){const id=district.value||region.value;if(!id){options(locality,[],'Selecciona región');return;}const r=await api('/api/localities?country='+country.value+'&regionId='+id+'&q='+encodeURIComponent($('localitySearch').value));options(locality,r.items.map(l=>({...l,name:l.name+(l.region_name?' · '+l.region_name:'')})),'Todas las localidades · busca para precisar');}
-country.onchange=async()=>{try{options(region,(await api('/api/regions?country='+country.value)).items,'Todas las regiones');options(district,[],'Todos los distritos');options(locality,[],'Selecciona región');}catch(e){$('searchStatus').textContent=e.message;}};
-region.onchange=async()=>{try{options(district,region.value?(await api('/api/regions?country='+country.value+'&parentId='+region.value)).items:[],'Todos los distritos');await localities();}catch(e){$('searchStatus').textContent=e.message;}};
-district.onchange=()=>localities().catch(e=>$('searchStatus').textContent=e.message);let timer;$('localitySearch').oninput=()=>{clearTimeout(timer);timer=setTimeout(()=>localities().catch(e=>$('searchStatus').textContent=e.message),250);};
+country.onchange=async()=>{try{options(region,(await api('/api/regions?country='+country.value)).items,'Todas las regiones');options(district,[],'Todos los distritos');options(locality,[],'Selecciona región');if(country.value)await search();}catch(e){$('searchStatus').textContent=e.message;}};
+region.onchange=async()=>{try{options(district,region.value?(await api('/api/regions?country='+country.value+'&parentId='+region.value)).items:[],'Todos los distritos');await localities();await search();}catch(e){$('searchStatus').textContent=e.message;}};
+district.onchange=async()=>{try{await localities();await search();}catch(e){$('searchStatus').textContent=e.message;}};let timer;$('localitySearch').oninput=()=>{clearTimeout(timer);timer=setTimeout(()=>localities().catch(e=>$('searchStatus').textContent=e.message),250);};
 function text(tag,value){const node=document.createElement(tag);node.textContent=value;return node;}
 async function search(more=false){
  if(!more){offset=0;lastFilters=new URLSearchParams({country:country.value,keyword:$('searchText').value,regionId:district.value||region.value,localityId:locality.value,categoryId:category.value,limit:'20'});$('results').replaceChildren();}
@@ -24,5 +24,5 @@ async function search(more=false){
   offset+=data.items.length;$('loadMore').hidden=data.items.length<20;$('searchStatus').textContent=data.items.length?offset+' resultados cargados.':'No hay perfiles publicados para estos filtros.';
  }catch(e){$('searchStatus').textContent=e.message;$('loadMore').hidden=true;}
 }
-$('searchForm').onsubmit=e=>{e.preventDefault();search();};$('loadMore').onclick=()=>search(true);
+$('searchForm').onsubmit=e=>{e.preventDefault();search();};$('locality').onchange=()=>search();$('category').onchange=()=>search();const rates=$('tarifas');$('openRates')?.addEventListener('click',()=>{rates.open=true;});$('loadMore').onclick=()=>search(true);
 try{const enabled=(await api('/api/countries')).items;country.replaceChildren(...enabled.map(c=>new Option(c.name,c.code)));country.value=enabled.some(c=>c.code==='PA')?'PA':enabled[0]?.code??'';options(category,(await api('/api/categories')).items,'Todas las categorías');await country.onchange();}catch(e){$('searchStatus').textContent=e.message;}
