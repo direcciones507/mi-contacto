@@ -1,0 +1,10 @@
+{
+  "commit": "7325a63914ab037ad8c3fe119a4eeee55e27a227",
+  "deployment": "3bd15f64-ed41-4ab3-a7f7-365b24f3918b",
+  "status": "SUCCESS",
+  "githubActions": 42149258191,
+  "conclusion": "success",
+  "liveAssetsMatch": true,
+  "liveGoogleLoginCompleted": false,
+  "physicalDevices": false
+}
