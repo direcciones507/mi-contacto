@@ -1,9 +1,11 @@
-// The owner's existing 48-hour authorization. A later window requires new approval.
-export const AUTHORIZED_ACCEPTANCE_END='2026-11-06T19:02:48.000Z';
+// Owner-authorized continuous private testing. Never opens the public access gate.
 export function acceptanceWindow(env,{now=Date.now()}={}){
  if(env.MC_ACCEPTANCE_MODE!=='true')return null;
- const stopAt=Date.parse(env.MC_ACCEPTANCE_STOP_AT??''),authorizedEnd=Date.parse(AUTHORIZED_ACCEPTANCE_END);
- if(!Number.isFinite(stopAt)||stopAt>authorizedEnd)throw Error('ACCEPTANCE_WINDOW_NOT_AUTHORIZED');
+ if(env.MC_PRIVATE_OFFICIAL_ORIGIN!=='true'||env.MC_ORIGIN!=='https://micontacto.online')throw Error('PRIVATE_ACCEPTANCE_REQUIRED');
+ const configured=env.MC_ACCEPTANCE_STOP_AT?.trim();
+ if(!configured)return {continuousPrivate:true};
+ const stopAt=Date.parse(configured);
+ if(!Number.isFinite(stopAt))throw Error('INVALID_ACCEPTANCE_STOP_AT');
  if(stopAt<=now)throw Error('ACCEPTANCE_WINDOW_ENDED');
- return {stopAt:new Date(stopAt).toISOString(),authorizedEnd:AUTHORIZED_ACCEPTANCE_END};
+ return {stopAt:new Date(stopAt).toISOString()};
 }
