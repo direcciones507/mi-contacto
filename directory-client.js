@@ -1,7 +1,13 @@
 import {COUNTRIES} from './countries.js';
 const $=id=>document.getElementById(id),toggle=$('menuToggle'),nav=$('navLinks');
+const closeMenu=()=>{nav?.classList.remove('open');toggle?.setAttribute('aria-expanded','false');};
 toggle?.addEventListener('click',()=>{const open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));});
-nav?.querySelectorAll('a').forEach(a=>a.onclick=()=>{nav.classList.remove('open');toggle?.setAttribute('aria-expanded','false');});$('year').textContent=new Date().getFullYear();
+nav?.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));
+document.addEventListener('pointerdown',event=>{if(nav?.classList.contains('open')&&!nav.contains(event.target)&&!toggle?.contains(event.target))closeMenu();});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&nav?.classList.contains('open')){closeMenu();toggle?.focus();}});
+window.addEventListener('hashchange',closeMenu);
+window.addEventListener('popstate',closeMenu);
+window.addEventListener('resize',()=>{if(window.innerWidth>600)closeMenu();});$('year').textContent=new Date().getFullYear();
 const country=$('country'),region=$('region'),district=$('district'),locality=$('locality'),category=$('category');let offset=0,lastFilters=null;
 for(const c of COUNTRIES)country.append(new Option(c.name,c.code));country.value='PA';
 async function api(path){const r=await fetch(path);if(!r.ok)throw Error('No se pudo consultar el directorio. Intenta nuevamente.');return r.json();}
