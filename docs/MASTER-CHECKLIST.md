@@ -1,5 +1,16 @@
 # Cierre integral preparado — rama work/integral-close-20261106
 
+## Verificación manual de fotografías por WhatsApp y potestades ADMIN (6 noviembre 2026)
+
+**Decisión comercial del propietario:** ante denuncias de fotos falsas, ADMIN contacta a la persona por WhatsApp y solicita un video u otra evidencia proporcional. La plataforma NO necesita carga ni almacenamiento de videos de verificación. Registrar únicamente estado, fecha de contacto, plazo comunicado, resultado y notas mínimas; no guardar videos ni documentos sensibles.
+
+- [ ] Desde denuncia/perfil, ADMIN puede abrir WhatsApp del titular si este proporcionó número válido; no exponer ese número al denunciante.
+- [ ] Estados: pendiente de contacto, esperando verificación, verificado, no verificado, resuelto. Registrar plazo razonable informado al titular y recordatorio/revisión; no asumir automáticamente culpabilidad por una denuncia.
+- [ ] ADMIN puede mantener perfil, pedir corrección, retirar fotografías cuestionadas, ocultar perfil, suspender o bloquear cuenta, y retirar perfil por incumplimiento, con motivo obligatorio y auditoría. Separar bloqueo reversible de borrado definitivo irreversible.
+- [ ] Borrado definitivo: autorización ADMIN explícita, confirmación reforzada, respeto de solicitudes del titular, políticas de privacidad y obligaciones de conservación legal. No borrar datos probatorios necesarios para investigar de forma automática.
+- [ ] Permitir apelación y revisión de sanciones; comprobar permisos ADMIN en API, nunca solo en interfaz.
+- [ ] Pruebas: denuncia infundada mantiene perfil; falta de respuesta tras plazo permite medida proporcional; verificación satisfactoria cierra denuncia; bloqueo impide acceso apropiado; borrado definitivo solo con confirmación y reglas legales.
+
 ## Moderación ADMIN: denuncias, investigación y decisiones (6 noviembre 2026)
 
 **Regla del propietario:** una denuncia por sí sola NO elimina ni suspende un perfil. ADMIN revisa motivo, referencias y evidencia, comprueba hechos y decide. Si la denuncia no se sustenta, desestimarla y mantener el perfil. Medidas proporcionales con motivación, auditoría y apelación; conservar salvaguardas urgentes para material ilegal o peligro grave.
