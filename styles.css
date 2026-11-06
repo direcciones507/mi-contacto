@@ -6,3 +6,11 @@
 
 /* Igualar el borde inferior y la posición de los CTA de planes */
 .plans>.plan{display:flex;flex-direction:column}.plans>.plan>.btn{margin-top:auto}.plans>.plan>ul{flex:1}
+
+/* Navegación comercial y CTA del directorio */
+.header .nav-links .home-create{background:#0b326b;color:#fff;border-color:#0b326b;font-weight:750}
+.header .nav-links .home-login{background:#fff;color:#0b326b;border:1px solid #b5cee8;font-weight:750}
+.hero .btn-directory{background:#fff;color:#0b326b;border:2px solid #fff;font-weight:800;box-shadow:0 5px 16px #001d4433}
+.hero .btn-directory:hover,.hero .btn-directory:focus-visible{background:#e8f3ff;border-color:#e8f3ff;color:#0b326b}
+#tarifas:target{scroll-margin-top:110px}
+#directorio{scroll-margin-top:90px}
