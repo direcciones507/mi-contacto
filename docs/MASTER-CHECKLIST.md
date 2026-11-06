@@ -1,3 +1,17 @@
+## CRITERIO DE CIERRE: LISTO PARA PRODUCCIÓN (6 noviembre 2026)
+
+**Instrucción del propietario:** todos los requisitos comerciales, visuales, autenticación, permisos, códigos, pagos, denuncias, moderación, fotos y visibilidad por vigencia de este checklist son requisitos de lanzamiento. No marcar «hecho» solo por tener código en GitHub, tests simulados o documentación. Conservar estado pendiente hasta verificar la funcionalidad de extremo a extremo en entorno real autorizado.
+
+- [ ] Consolidar rama comercial probada y correcciones recientes sin regresiones; pruebas automatizadas, de roles, responsive y flujos completos.
+- [ ] Confirmar respaldo PostgreSQL íntegro y restaurable, ejecutar preflight y migraciones compatibles en Railway existente. No migrar sin respaldo comprobado.
+- [ ] Confirmar autenticación real cliente y ADMIN, acceso privado, correo/Google según integración habilitada, sesiones y CSRF; no publicar secretos.
+- [ ] Confirmar proveedor de pago habilitado con validación del pago real antes de activación, idempotencia, reintentos, rechazo y caducidad; NO activar cobros reales sin autorización expresa.
+- [ ] Confirmar gratis sin QR/botones/enlaces, datos completos privados, Destacado automático al pagar, vencimiento y restauración automática, incluyendo acceso directo a rutas de medios y QR.
+- [ ] Confirmar compra y entrega de códigos en panel cliente, inventario y ventas ADMIN, y copia para WhatsApp.
+- [ ] Confirmar denuncias, objetivo de contacto en 48 horas, verificación manual por WhatsApp, desestimación, bloqueo, eliminación autorizada y auditoría.
+- [ ] Validar funcionamiento en móvil, tableta y escritorio con cuentas de prueba y evidencia verificable; revisión de contenido/legal y seguridad.
+- [ ] Desplegar únicamente en infraestructura existente tras cumplir salvaguardas y autorización de la revisión exacta; verificar dominio HTTPS, acceso privado y datos persistentes. Si bloqueado, documentar el bloqueo y no afirmar «producción lista».
+
 ## Perfil completo guardado, beneficios visibles solo con Destacado vigente (6 noviembre 2026)
 
 **Decisión confirmada:** el cliente puede rellenar y guardar desde el primer día TODOS los campos del perfil (WhatsApp, teléfono, enlaces, pin de Maps, descripción, ubicación y fotografías según las restricciones de carga). Guardar datos no significa hacerlos públicos. La ficha gratis solo muestra nombre, foto principal, descripción y localidad territorial, sin botones, enlaces ni QR. Mostrar en el panel del titular, discretamente bajo su perfil: «Tu perfil gratuito muestra solamente la información básica. Activa Destacado para mostrar tus fotografías adicionales, botones de contacto, ubicación, QR y enlaces».
