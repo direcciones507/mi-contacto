@@ -49,6 +49,7 @@ jobs:
           MC_TEST_NATIVE_POSTGRES_BIN: /usr/lib/postgresql/16/bin
         run: |
           node scripts/visual-forms-browser.mjs
+          node scripts/private-trial-browser.mjs
           node scripts/email-auth-browser.mjs
           node scripts/mobile-access-browser.mjs
           node scripts/moderation-admin-browser.mjs
@@ -67,4 +68,5 @@ jobs:
           path: |
             docs/evidence/integral-close-20261106/
             docs/evidence/visual-admin-20261106/
+            docs/evidence/functional-close-20261106/
           retention-days: 7
