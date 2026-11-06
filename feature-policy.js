@@ -1,4 +1,4 @@
-export const FEATURE_PRICES=Object.freeze({1:169,5:799,10:1499,15:2199,20:2799,25:3199,30:3499});
+export const FEATURE_PRICES=Object.freeze({1:190,5:890,10:1690,15:2450,20:3150,25:3590,30:3900});
 export function featureQuote(days){
  if(!Number.isInteger(days)||!Object.hasOwn(FEATURE_PRICES,days))throw Error('INVALID_FEATURE_DAYS');
  return {days,amountCents:FEATURE_PRICES[days],currency:'USD',paymentEnabled:false,automaticRenewal:false};
