@@ -11,7 +11,7 @@ test('acceso privado: solo aceptación, código fuerte, CSRF, cuenta fija y cadu
   assert.throws(()=>createApplication({pool:f.pool,origin:'https://micontacto.online',secret,acceptance:true,acceptanceOwner:owner}),/PRIVATE_ACCEPTANCE_ONLY/);
   await f.pool.query('UPDATE micontacto.accounts SET google_subject=$2 WHERE id=$1',[f.admin,'acceptance-owner:'+f.admin]);
   const app=createApplication({pool:f.pool,origin,secret,acceptance:true,acceptanceOwner:owner,now:()=>time});
-  const page=await app.handle(new Request(origin+'/acceso-pruebas'));assert.equal(page.status,200);assert.equal(page.headers.get('referrer-policy'),'same-origin');const html=await page.text();assert.match(html,/Google todavía no está conectado/);assert.doesNotMatch(html,new RegExp(code));
+  const page=await app.handle(new Request(origin+'/acceso-pruebas'));assert.equal(page.status,200);assert.equal(page.headers.get('referrer-policy'),'same-origin');const html=await page.text();assert.match(html,/Este acceso temporal no sustituye el inicio normal con Google o correo/);assert.doesNotMatch(html,new RegExp(code));
   const challenge=html.match(/name="challenge" value="([^"]+)"/)[1],cookie=page.headers.getSetCookie()[0].split(';')[0];assert.match(page.headers.getSetCookie()[0],/Secure; SameSite=Strict/);
   const login=(data={},headers={})=>app.handle(new Request(origin+'/acceso-pruebas',{method:'POST',headers:{origin,cookie,'content-type':'application/x-www-form-urlencoded',...headers},body:new URLSearchParams({challenge,code,...data})}));
   assert.equal((await login({},{origin:'https://evil.test'})).status,403);
