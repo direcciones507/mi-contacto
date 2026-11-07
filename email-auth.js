@@ -41,7 +41,7 @@ export function emailAuth(pool,auth,{origin,secret,transport=null,now=()=>Date.n
  async function credential(user,password){const row=(await pool.query('SELECT password_hash FROM micontacto.email_identities WHERE account_id=$1',[user.id])).rows[0];return verifyPassword(password,row?.password_hash);}
  async function handle(req){
   const path=new URL(req.url).pathname;if(!path.startsWith('/api/auth/email/'))return null;
-  if(!enabled)return json(503,{error:'EMAIL_NOT_CONFIGURED'});
+  if(!enabled&&!['register','login'].includes(path.slice('/api/auth/email/'.length)))return json(503,{error:'EMAIL_NOT_CONFIGURED'});
   if(req.method!=='POST')return json(405,{error:'METHOD_NOT_ALLOWED'});
   try{
    if(req.headers.get('origin')!==origin||req.headers.get('sec-fetch-site')==='cross-site')return json(403,{error:'CSRF_DENIED'});
@@ -56,7 +56,7 @@ export function emailAuth(pool,auth,{origin,secret,transport=null,now=()=>Date.n
     if(!user||user.status!=='ACTIVE')return json(403,{error:'FORBIDDEN'});auth.requireWrite(req,user);
    }
    if(['register','recover','login','link'].includes(action)){
-    const address=email(data.email);await limit(action+':'+address,action==='login'?8:5,900000);if(action!=='login')await limit('mail:'+address,3,3600000);
+    const address=email(data.email);await limit(action+':'+address,action==='login'?8:5,900000);if(['recover','link'].includes(action))await limit('mail:'+address,3,3600000);
     const row=(await pool.query('SELECT e.*,a.status FROM micontacto.email_identities e JOIN micontacto.accounts a ON a.id=e.account_id WHERE e.email=$1',[address])).rows[0];
     if(action==='login'){
      const session=await transaction(pool,async tx=>{
@@ -71,7 +71,14 @@ export function emailAuth(pool,auth,{origin,secret,transport=null,now=()=>Date.n
     const passwordHash=await hashPassword(data.password);
     if(action==='register'){
      // Existing identities never change password or ownership through registration.
-     if(!row)await sendSafe('REGISTER',address,null,passwordHash);return json(202,safe);
+     if(row)return json(409,{error:'ACCOUNT_EXISTS'});
+     const session=await transaction(pool,async tx=>{
+      const id=randomUUID();
+      await tx.query('INSERT INTO micontacto.accounts(id) VALUES($1)',[id]);
+      await tx.query('INSERT INTO micontacto.email_identities(account_id,email,password_hash,verified_at) VALUES($1,$2,$3,$4)',[id,address,passwordHash,stamp()]);
+      return auth.issue(id,tx);
+     });
+     return new Response(null,{status:204,headers:{'set-cookie':session.cookie,'cache-control':'no-store'}});
     }
     const existing=(await pool.query('SELECT account_id FROM micontacto.email_identities WHERE account_id=$1',[user.id])).rows[0];
     if(!row&&!existing)await sendSafe('LINK',address,user.id,passwordHash,digest(cookie(req)));return json(202,safe);
@@ -114,7 +121,7 @@ export function emailAuth(pool,auth,{origin,secret,transport=null,now=()=>Date.n
     });return json(200,{message:'Contraseña actualizada. Inicia sesión nuevamente en tus dispositivos.'});
    }
    return json(404,{error:'NOT_FOUND'});
-  }catch(e){if(e.message==='RATE_LIMITED')return new Response(JSON.stringify({error:'RATE_LIMITED'}),{status:429,headers:{'content-type':'application/json','cache-control':'no-store','retry-after':String(e.retryAfter??60)}});const code=e.code==='23505'?'IDENTITY_ALREADY_LINKED':e.message;return json(code==='RATE_LIMITED'?429:code==='CSRF_DENIED'?403:code==='EMAIL_UNAVAILABLE'?503:code==='INVALID_CREDENTIALS'?401:/^(INVALID_|IDENTITY_)/.test(code)?400:503,{error:/^(INVALID_|IDENTITY_|RATE_LIMITED|CSRF_DENIED|EMAIL_UNAVAILABLE)/.test(code)?code:'OPERATION_UNAVAILABLE'});}
+  }catch(e){if(e.message==='RATE_LIMITED')return new Response(JSON.stringify({error:'RATE_LIMITED'}),{status:429,headers:{'content-type':'application/json','cache-control':'no-store','retry-after':String(e.retryAfter??60)}});const code=e.code==='23505'?'IDENTITY_ALREADY_LINKED':e.message;return json(code==='ACCOUNT_EXISTS'?409:code==='RATE_LIMITED'?429:code==='CSRF_DENIED'?403:code==='EMAIL_UNAVAILABLE'?503:code==='INVALID_CREDENTIALS'?401:/^(INVALID_|IDENTITY_)/.test(code)?400:503,{error:/^(INVALID_|IDENTITY_|RATE_LIMITED|CSRF_DENIED|EMAIL_UNAVAILABLE|ACCOUNT_EXISTS)/.test(code)?code:'OPERATION_UNAVAILABLE'});}
  }
  return {enabled,handle,credential};
 }
