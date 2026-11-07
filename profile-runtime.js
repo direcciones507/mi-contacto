@@ -22,8 +22,13 @@ export function profileRuntime(pool,{origin='https://micontacto.online',now=()=>
   return {id:p.id,displayName:p.display_name,country:p.country_code,slug:p.slug,urlCountry:p.url_country,profession:p.profession??'',description:p.description??'',categoryId:p.category_id,regionId:owner||p.location_consent?p.region_id:null,localityId:owner||p.location_consent?p.locality_id:null,region:owner||p.location_consent?territoryDisplayName(location.region)||null:null,locality:owner||p.location_consent?location.locality:null,featured,photoVerified:!!p.photo_verified_id&&photos.some(x=>x.id===p.photo_verified_id&&x.role==='MAIN'),moderationRestricted:p.moderation_restricted,sensitiveHold:p.sensitive_hold,photos:visible.map(x=>({id:x.id,role:x.role,url:'/media/'+p.id+'/'+x.id})),url:profileUrl(p.url_country??p.country_code,p.slug,origin),...(p.contact_consent?{phone:p.phone,whatsapp:p.whatsapp}:{}),...(p.location_consent?{latitude:p.latitude,longitude:p.longitude,mapsUrl:p.maps_url}:{}),...(owner?{ownerId:p.account_id,privacyHidden:p.privacy_hidden,removalRequest:removal,status:p.status,version:p.version,featureEvents:events,featureTerms:terms.map(t=>({id:t.id,days:t.days,amountCents:t.amount_cents,state:t.state,startsAt:t.starts_at,expiresAt:t.expires_at,usedSeconds:(t.days*86400000-Number(t.remaining_ms))/1000,remainingSeconds:Number(t.remaining_ms)/1000})),phone:p.phone??'',whatsapp:p.whatsapp??'',latitude:p.latitude,longitude:p.longitude,mapsUrl:p.maps_url,directoryConsent:p.directory_consent,contactConsent:p.contact_consent,locationConsent:p.location_consent,reviewReason:p.review_reason}: {})};
  }
  async function geo(tx,country,region,locality){
-  const r=await tx.query('WITH RECURSIVE trail AS (SELECT id,parent_id,enabled FROM micontacto.geo_regions WHERE id=$2 AND country_code=$3 UNION ALL SELECT r.id,r.parent_id,r.enabled FROM micontacto.geo_regions r JOIN trail t ON t.parent_id=r.id WHERE r.country_code=$3) SELECT l.id FROM micontacto.geo_localities l WHERE l.id=$1 AND l.region_id=$2 AND l.country_code=$3 AND l.enabled AND EXISTS(SELECT 1 FROM trail) AND NOT EXISTS(SELECT 1 FROM trail WHERE NOT enabled)',[locality,region,country]);
-  if(!r.rows.length)throw Error('INVALID_GEO_SELECTION');
+  if(!Number.isSafeInteger(Number(region))||Number(region)<1)throw Error('INVALID_GEO_SELECTION');
+  const valid=(await tx.query('WITH RECURSIVE trail AS (SELECT id,parent_id,enabled FROM micontacto.geo_regions WHERE id=$1 AND country_code=$2 UNION ALL SELECT r.id,r.parent_id,r.enabled FROM micontacto.geo_regions r JOIN trail t ON t.parent_id=r.id WHERE r.country_code=$2) SELECT id FROM trail HAVING count(*)>0 AND bool_and(enabled)',[region,country])).rows.length>0;
+  if(!valid)throw Error('INVALID_GEO_SELECTION');
+  if(locality!=null){
+   const match=(await tx.query('SELECT id FROM micontacto.geo_localities WHERE id=$1 AND region_id=$2 AND country_code=$3 AND enabled',[locality,region,country])).rows.length;
+   if(!match)throw Error('INVALID_GEO_SELECTION');
+  }
  }
  async function update(account,id,input){
   const allowed=['country','mapsUrl','displayName','profession','description','phone','whatsapp','categoryId','regionId','localityId','latitude','longitude','directoryConsent','contactConsent','locationConsent','version'];
@@ -34,13 +39,13 @@ export function profileRuntime(pool,{origin='https://micontacto.online',now=()=>
    if(!draft.profession||String(input.profession).length>120||String(input.description??'').length>1000)throw Error('INVALID_PROFILE');
    const phone=value=>{const v=String(value??'').replace(/[ ().-]/g,'');if(v&&!/^\+[1-9][0-9]{6,14}$/.test(v))throw Error('INVALID_PHONE');return v||null;};
    const region=input.regionId==null||input.regionId===''?null:Number(input.regionId),locality=input.localityId==null||input.localityId===''?null:Number(input.localityId);
-   if(region||locality){if(!Number.isSafeInteger(region)||!Number.isSafeInteger(locality))throw Error('INVALID_GEO_SELECTION');await geo(tx,draft.country,region,locality);}
+   if(region||locality){if(!Number.isSafeInteger(region)||locality!==null&&!Number.isSafeInteger(locality))throw Error('INVALID_GEO_SELECTION');await geo(tx,draft.country,region,locality);}
    const latitude=input.latitude==null||input.latitude===''?null:Number(input.latitude),longitude=input.longitude==null||input.longitude===''?null:Number(input.longitude);
    if((latitude===null)!==(longitude===null)||latitude!==null&&(!Number.isFinite(latitude)||!Number.isFinite(longitude)||Math.abs(latitude)>90||Math.abs(longitude)>180||input.locationConsent!==true))throw Error('INVALID_COORDINATES');
    for(const k of ['directoryConsent','contactConsent','locationConsent'])if(typeof input[k]!=='boolean')throw Error('CONSENT_REQUIRED');
    const mapsUrl=validateMapsUrl(input.mapsUrl);if(mapsUrl&&input.locationConsent!==true)throw Error('CONSENT_REQUIRED');
    if(!(await tx.query('SELECT code FROM micontacto.country_settings WHERE code=$1 AND enabled',[draft.country])).rows.length)throw Error('INVALID_COUNTRY');
-   if(draft.country!==p.country_code&&(!region||!locality))throw Error('INVALID_GEO_SELECTION');
+   if(draft.country!==p.country_code&&!region)throw Error('INVALID_GEO_SELECTION');
    const category=input.categoryId||null;
    if(category){if(!uuid.test(category)||(await tx.query('SELECT id FROM micontacto.categories WHERE id=$1 AND enabled',[category])).rows.length!==1)throw Error('INVALID_CATEGORY');}
    await features.suspend(tx,id,account,'Edición pendiente de nueva aprobación');
