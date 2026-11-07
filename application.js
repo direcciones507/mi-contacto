@@ -273,6 +273,7 @@ export function createApplication({pool,secret,origin='https://micontacto.online
   }catch(e){
    const message=e.message;
    const status=message==='REPORT_RATE_LIMITED'?429:message==='NOT_FOUND'?404:['FORBIDDEN','CSRF_DENIED'].includes(message)?403:/^(INVALID_|PHOTO_REQUIRED|CONSENT_REQUIRED|JSON_REQUIRED|REASON_REQUIRED|VERIFICATION_REVIEW_REQUIRED|PUBLICATION_REQUIREMENTS)/.test(message)?400:message==='LEGAL_ACCEPTANCE_REQUIRED'?428:message==='PAYLOAD_TOO_LARGE'?413:/^(PROFILE_LOCKED|EDIT_CONFLICT|GALLERY_NOT_AVAILABLE|VERIFICATION_STALE|FEATURE_CONFLICT|CODE_CONFLICT|PAYMENT_CONFLICT|REMOVAL_PENDING)/.test(message)||e.code==='23505'?409:e.code==='23503'||e.code==='23514'||e.code==='22P02'?400:503;
+   if(status===503)console.error('MC_REQUEST_FAILURE',{path,code:e.code??null,message:String(e.message).slice(0,250)});
    return json(status,{error:status===503?'OPERATION_UNAVAILABLE':e.code==='23505'?'DUPLICATE_RECORD':['23503','23514','22P02'].includes(e.code)?'INVALID_DATA':message});
   }
  }
