@@ -62,3 +62,12 @@
 #results .contact-card.contact-card--featured .featured-directory-badge{position:static;margin:0 0 0 auto;align-self:flex-end}
 #results .contact-card.contact-card--featured .directory-card-region{background:#f7e3a0}
 @media(max-width:600px){#results .contact-card{padding:16px;gap:12px}#results .contact-card.contact-card--featured{padding:16px}#results .contact-card .directory-card-title{font-size:1.14rem}#results .contact-card .directory-card-body{gap:12px}#results .contact-card .directory-card-photo{width:92px;height:92px;min-width:92px;flex-basis:92px}#results .contact-card .directory-card-description{-webkit-line-clamp:4;line-clamp:4}}
+
+/* Ajuste final del directorio: menos márgenes y provincia bajo la fotografía. */
+#results .contact-card,#results .contact-card.contact-card--featured{padding:14px;gap:10px}
+#results .contact-card .directory-card-body{gap:12px;align-items:flex-start}
+#results .contact-card .directory-card-photo-column{display:flex;flex-direction:column;align-items:flex-start;gap:8px;flex:0 0 132px;width:132px;min-width:0}
+#results .contact-card .directory-card-photo{width:132px;height:132px;min-width:0;flex:none}
+#results .contact-card .directory-card-photo-column .directory-card-region{max-width:100%;margin:0;white-space:normal;overflow-wrap:anywhere;text-align:left;font-size:.82rem}
+#results .contact-card .directory-card-details{flex:1;min-width:0}
+@media(max-width:600px){#results{margin-left:-8px;margin-right:-8px}#results .contact-card,#results .contact-card.contact-card--featured{padding:10px;gap:9px}#results .contact-card .directory-card-body{gap:10px}#results .contact-card .directory-card-photo-column{flex-basis:104px;width:104px}#results .contact-card .directory-card-photo{width:104px;height:104px}#results .contact-card .directory-card-photo-column .directory-card-region{font-size:.76rem;padding:3px 6px}}
