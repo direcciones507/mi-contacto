@@ -23,7 +23,7 @@ export function directoryQuery(filters = {}) {
  const countParams=[...params];
  const countSql=`SELECT count(*)::int AS total FROM micontacto.profiles p JOIN micontacto.accounts a ON a.id=p.account_id WHERE ${where.join(' AND ')}`;
  params.push(limit,offset);
- return {sql:`SELECT p.id,p.slug,p.url_country,p.display_name,p.profession,p.country_code,CASE WHEN p.location_consent THEN r.name END AS region,CASE WHEN p.location_consent THEN l.name END AS locality,
+ return {sql:`SELECT p.id,p.slug,p.url_country,p.display_name,p.profession,p.description,p.country_code,CASE WHEN p.location_consent THEN r.name END AS region,CASE WHEN p.location_consent THEN l.name END AS locality,
  ${featureExistsSQL} AS featured,
  (SELECT ph.id FROM micontacto.photos ph WHERE ph.profile_id=p.id AND ph.role='MAIN' AND ph.state='ACTIVE') AS photo_id
 FROM micontacto.profiles p
