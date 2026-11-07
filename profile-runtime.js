@@ -48,13 +48,13 @@ export function profileRuntime(pool,{origin='https://micontacto.online',now=()=>
    if(draft.country!==p.country_code&&!region)throw Error('INVALID_GEO_SELECTION');
    const category=input.categoryId||null;
    if(category){if(!uuid.test(category)||(await tx.query('SELECT id FROM micontacto.categories WHERE id=$1 AND enabled',[category])).rows.length!==1)throw Error('INVALID_CATEGORY');}
-   await features.suspend(tx,id,account,'Edición pendiente de nueva aprobación');
-   await tx.query("UPDATE micontacto.profiles SET country_code=$15,maps_url=$16,display_name=$2,profession=$3,description=$4,phone=$5,whatsapp=$6,category_id=$7,region_id=$8,locality_id=$9,latitude=$10,longitude=$11,directory_consent=$12,contact_consent=$13,location_consent=$14,version=version+1,review_decision=NULL,review_reason=NULL,status='DRAFT',updated_at=now() WHERE id=$1",[id,draft.displayName,draft.profession,draft.description,phone(input.phone),phone(input.whatsapp),category,region,locality,latitude,longitude,input.directoryConsent,input.contactConsent,input.locationConsent,draft.country,mapsUrl]);
-   await audit(tx,account,id,'PROFILE_EDITED');return {ok:true,status:'DRAFT'};
+   // Ordinary owner edits preserve the active publication and consecutive Featured term.
+   await tx.query("UPDATE micontacto.profiles SET country_code=$15,maps_url=$16,display_name=$2,profession=$3,description=$4,phone=$5,whatsapp=$6,category_id=$7,region_id=$8,locality_id=$9,latitude=$10,longitude=$11,directory_consent=$12,contact_consent=$13,location_consent=$14,version=version+1,review_decision=CASE WHEN status='ACTIVE' THEN review_decision ELSE NULL END,review_reason=CASE WHEN status='ACTIVE' THEN review_reason ELSE NULL END,status=CASE WHEN status='ACTIVE' THEN 'ACTIVE' ELSE 'DRAFT' END,updated_at=now() WHERE id=$1",[id,draft.displayName,draft.profession,draft.description,phone(input.phone),phone(input.whatsapp),category,region,locality,latitude,longitude,input.directoryConsent,input.contactConsent,input.locationConsent,draft.country,mapsUrl]);
+   await audit(tx,account,id,'PROFILE_EDITED');return {ok:true,status:p.status==='ACTIVE'?'ACTIVE':'DRAFT'};
   });
  }
  async function requestPublication(account,id){return transaction(pool,async tx=>{
-  const p=await owned(tx,account,id);writable(p);if(p.status!=='DRAFT')throw Error('INVALID_PROFILE_STATE');
+  const p=await owned(tx,account,id);writable(p);if(!['DRAFT','ACTIVE'].includes(p.status))throw Error('INVALID_PROFILE_STATE');
   if(!p.profession?.trim())throw Error('PUBLICATION_REQUIREMENTS');
   await geo(tx,p.country_code,p.region_id,p.locality_id);
   if(!(await tx.query("SELECT id FROM micontacto.photos WHERE profile_id=$1 AND role='MAIN' AND state='ACTIVE'",[id])).rows.length)throw Error('PHOTO_REQUIRED');
