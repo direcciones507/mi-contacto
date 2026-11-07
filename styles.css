@@ -71,3 +71,8 @@
 #results .contact-card .directory-card-photo-column .directory-card-region{max-width:100%;margin:0;white-space:normal;overflow-wrap:anywhere;text-align:left;font-size:.82rem}
 #results .contact-card .directory-card-details{flex:1;min-width:0}
 @media(max-width:600px){#results{margin-left:-8px;margin-right:-8px}#results .contact-card,#results .contact-card.contact-card--featured{padding:10px;gap:9px}#results .contact-card .directory-card-body{gap:10px}#results .contact-card .directory-card-photo-column{flex-basis:104px;width:104px}#results .contact-card .directory-card-photo{width:104px;height:104px}#results .contact-card .directory-card-photo-column .directory-card-region{font-size:.76rem;padding:3px 6px}}
+
+/* Verificación aprobada por ADMIN, debajo de la provincia. */
+#results .contact-card .directory-card-photo-verified{display:inline-flex;align-items:center;gap:4px;max-width:100%;padding:4px 7px;border:1px solid #b8d8c5;border-radius:8px;background:#e8f6ed;color:#125b39;font-size:.75rem;font-weight:750;line-height:1.2;white-space:normal}
+#results .contact-card .directory-card-photo-column{align-items:flex-start}
+@media(max-width:600px){#results .contact-card .directory-card-photo-verified{font-size:.7rem;padding:4px 5px}}
