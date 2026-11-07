@@ -28,3 +28,16 @@
 .steps p,.step p{color:#64748b;line-height:1.6}
 .preview{transform:none;box-shadow:0 10px 30px #001c4e30}
 @media(max-width:768px){.hero h1{letter-spacing:-.025em}.section h2{line-height:1.18}}
+
+/* Directorio de la página principal: tarjetas horizontales con fotografía cuadrada. */
+#results .contact-card{display:flex;align-items:flex-start;gap:22px;position:relative;min-width:0;padding:24px;text-align:left;background:#fff;border:1px solid #d5e3f2;border-radius:18px}
+#results .contact-card .directory-card-photo{display:block;width:132px;height:132px;min-width:132px;flex:0 0 132px;object-fit:cover;border-radius:12px}
+#results .contact-card .directory-card-details{display:flex;flex:1;min-width:0;flex-direction:column;align-items:flex-start;gap:8px}
+#results .contact-card .directory-card-details h3,#results .contact-card .directory-card-details p{margin:0;color:#111}
+#results .contact-card .directory-card-details h3{font-size:1.3rem;line-height:1.3}
+#results .contact-card .directory-card-description{white-space:pre-line;line-height:1.5;overflow-wrap:anywhere}
+#results .contact-card .directory-card-details .btn{margin-top:8px}
+#results .contact-card.contact-card--featured{background:#fff2b8!important;border:1.5px solid #e5b93f!important;color:#111;padding-top:48px}
+#results .contact-card.contact-card--featured .featured-directory-badge{position:absolute;top:12px;right:14px;margin:0;background:#f5c542;color:#111;border:1px solid #d8a52a;border-radius:24px;padding:6px 12px;font-weight:800}
+#results .contact-card.contact-card--featured h3,#results .contact-card.contact-card--featured p{color:#111}
+@media(max-width:600px){#results .contact-card{gap:12px;padding:16px}#results .contact-card .directory-card-photo{width:92px;height:92px;min-width:92px;flex-basis:92px;border-radius:10px}#results .contact-card.contact-card--featured{padding-top:48px}#results .contact-card .directory-card-details h3{font-size:1.1rem}}
