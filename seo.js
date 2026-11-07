@@ -45,7 +45,7 @@ export function publicSEO(pool,{origin}){
    if(!Number.isInteger(page))return response('Página no encontrada','text/plain',404);
    const q=directoryQuery({country:country.code,...(regionId?{regionId}:{}),...(localityId?{localityId}:{}),limit:20,offset:(page-1)*20});
    const rows=(await pool.query(q.sql,q.params)).rows;
-   body+='<section data-nosnippet><h2>Perfiles publicados</h2>'+rows.map(p=>'<article class="panel"><h3><a href="/'+escapeHTML(p.url_country)+'/'+escapeHTML(p.slug)+'">'+escapeHTML(p.display_name)+'</a></h3><p>'+escapeHTML(p.profession)+'</p></article>').join('')+(rows.length?'':'<p>No hay perfiles publicados para esta ubicación.</p>')+'</section>';
+   body+='<section data-nosnippet><h2>Perfiles publicados</h2>'+rows.map(p=>'<article class="panel"><h3><a href="/'+escapeHTML(String(p.url_country).toLowerCase())+'/'+escapeHTML(p.slug)+'">'+escapeHTML(p.display_name)+'</a></h3><p>'+escapeHTML(p.profession)+'</p></article>').join('')+(rows.length?'':'<p>No hay perfiles publicados para esta ubicación.</p>')+'</section>';
    if(rows.length===20)body+='<a href="'+path+'?pagina='+(page+1)+'">Siguiente página</a>';
   }
   const description='Explora el '+(place?'directorio de '+place.name+', '+country.name:country?'directorio de '+country.name:'directorio público por país y región')+' en Mi Contacto. Encuentra personas, profesionales y servicios.';
