@@ -265,3 +265,21 @@ body.auth-page .auth-card #emailAccess[hidden],body.auth-page .auth-card .auth-f
 .runtime .public-profile .profile-map-links .map-icon-waze{color:#24b8e7;font-size:28px;text-shadow:1px 1px #0d6985}
 .runtime .public-profile .profile-map-links .map-icon-uber{width:27px;height:27px;background:#101010;color:#fff;border-radius:8px;font-size:17px}
 @media(max-width:580px){.runtime .public-profile-heading{gap:8px 10px}.runtime .featured-heading-badge{padding:7px 11px}.runtime .public-profile .profile-map-links a{min-height:64px;padding:8px 3px}}
+
+
+/* Identidad responsive: un solo nombre visible, distintivo dentro de la tarjeta */
+.runtime .public-profile{position:relative}
+.runtime .public-profile .featured-card-badge{position:absolute;top:18px;right:18px;z-index:2;display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:8px 13px;background:linear-gradient(135deg,#1455b4,#168bd9);box-shadow:0 4px 14px #1252a72b;color:white;font-weight:800;font-size:.85rem;white-space:nowrap}
+.runtime .public-profile .featured-card-badge span{color:#ffe27b}
+.runtime .public-profile .mobile-profile-name{display:none}
+.runtime .public-profile .profile-identity{padding-top:24px}
+@media(max-width:700px){
+ .runtime:has(.public-profile){padding-top:14px}
+ .runtime .public-profile{padding-top:18px}
+ .runtime .public-profile .featured-card-badge{display:none}
+ .runtime .public-profile .mobile-profile-name{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:9px 11px;grid-column:1/-1;text-align:center;color:#0c3e81;font-size:clamp(1.55rem,5.5vw,2.1rem);font-weight:800;line-height:1.2;margin:3px 0 8px}
+ .runtime .public-profile .mobile-profile-name .featured-heading-badge{font-size:.7rem;padding:7px 10px}
+ .runtime .public-profile .profile-identity h2{display:none}
+ .runtime .public-profile .profile-identity{padding-top:0}
+ .runtime .public-profile .profile-hero{gap:12px}
+}
