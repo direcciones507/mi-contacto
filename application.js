@@ -107,7 +107,7 @@ export function createApplication({pool,secret,origin='https://micontacto.online
     if(publicMatch[3])return new Response(await QRCode.toString(view.url,{type:'svg',errorCorrectionLevel:'M',margin:4}),{headers:{...headers,'content-type':'image/svg+xml'}});
     const currentViewer=await auth.current(req);
     const isOwner=currentViewer?.id===p.account_id;
-    const match=req.headers.get('cookie')?.match(/(?:^|;\\s*)mc_visitor=([a-f0-9]{48})(?:;|$)/);
+    const match=req.headers.get('cookie')?.match(/(?:^|;[ ]*)mc_visitor=([a-f0-9]{48})(?:;|$)/);
     const visitor=match?.[1]??randomBytes(24).toString('hex');
     const fingerprint=createHmac('sha256',secret).update('public-profile:'+visitor).digest('hex');
     if(!isOwner)await pool.query('INSERT INTO micontacto.profile_unique_views(profile_id,visitor_hash) VALUES($1,$2) ON CONFLICT DO NOTHING',[p.id,fingerprint]);
