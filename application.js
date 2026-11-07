@@ -104,7 +104,19 @@ export function createApplication({pool,secret,origin='https://micontacto.online
    if(publicMatch&&req.method==='GET'){
     const p=await publicRow(publicMatch[1].toUpperCase(),publicMatch[2]);if(!p)return json(404,{error:'NOT_FOUND'});
     const view=await profiles.decorate(p);
-    return publicMatch[3]?new Response(await QRCode.toString(view.url,{type:'svg',errorCorrectionLevel:'M',margin:4}),{headers:{...headers,'content-type':'image/svg+xml'}}):html(publicProfile(view));
+    if(publicMatch[3])return new Response(await QRCode.toString(view.url,{type:'svg',errorCorrectionLevel:'M',margin:4}),{headers:{...headers,'content-type':'image/svg+xml'}});
+    const currentViewer=await auth.current(req);
+    const isOwner=currentViewer?.id===p.account_id;
+    const match=req.headers.get('cookie')?.match(/(?:^|;\\s*)mc_visitor=([a-f0-9]{48})(?:;|$)/);
+    const visitor=match?.[1]??randomBytes(24).toString('hex');
+    const fingerprint=createHmac('sha256',secret).update('public-profile:'+visitor).digest('hex');
+    if(!isOwner)await pool.query('INSERT INTO micontacto.profile_unique_views(profile_id,visitor_hash) VALUES($1,$2) ON CONFLICT DO NOTHING',[p.id,fingerprint]);
+    const count=await pool.query('SELECT count(*)::integer AS views FROM micontacto.profile_unique_views WHERE profile_id=$1',[p.id]);
+    view.viewCount=count.rows[0]?.views??0;
+    const response=html(publicProfile(view));
+    if(!match)response.headers.append('set-cookie','mc_visitor='+visitor+'; Path=/; Max-Age=31536000; SameSite=Lax; HttpOnly'+(origin.startsWith('https:')?'; Secure':''));
+    response.headers.set('cache-control','private, no-store');
+    return response;
    }
    const reportPageMatch=path.match(/^\/reportar\/([a-f0-9-]{36})$/);
    if(reportPageMatch&&req.method==='GET'){
