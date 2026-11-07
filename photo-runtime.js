@@ -2,7 +2,16 @@ import {randomUUID,randomBytes} from 'node:crypto';
 import {transaction} from './profile-runtime.js';
 import {preparePhoto} from './photo-storage.js';
 export function photoRuntime(pool,profiles,storage,{now=()=>Date.now()}={}){
- async function invalidate(tx,id,main,actor){await profiles.features.suspend(tx,id,actor,'Fotografía pendiente de nueva aprobación');await tx.query('UPDATE micontacto.profiles SET photo_verified_id=CASE WHEN $2 THEN NULL ELSE photo_verified_id END,review_decision=NULL,status=CASE WHEN status=\'PAUSED\' THEN \'PAUSED\' ELSE \'DRAFT\' END,version=version+1 WHERE id=$1',[id,main]);if(main)await tx.query("UPDATE micontacto.photo_verifications SET state='REVOKED' WHERE profile_id=$1 AND state IN ('PENDING','APPROVED')",[id]);}
+ async function invalidate(tx,id,main,actor,missingMain=false){
+  // Photo updates by the owner do not require new ADMIN approval.
+  if(missingMain){
+   await profiles.features.suspend(tx,id,actor,'Fotografía principal retirada');
+   await tx.query("UPDATE micontacto.profiles SET photo_verified_id=NULL,review_decision=NULL,status=CASE WHEN status='PAUSED' THEN 'PAUSED' ELSE 'DRAFT' END,version=version+1 WHERE id=$1",[id]);
+  }else{
+   await tx.query('UPDATE micontacto.profiles SET photo_verified_id=CASE WHEN $2 THEN NULL ELSE photo_verified_id END,version=version+1 WHERE id=$1',[id,main]);
+  }
+  if(main)await tx.query("UPDATE micontacto.photo_verifications SET state='REVOKED' WHERE profile_id=$1 AND state IN ('PENDING','APPROVED')",[id]);
+ }
  return {
   async upload(account,id,role,bytes,mime,replace=null){
    if(!['MAIN','GALLERY'].includes(role))throw Error('INVALID_PHOTO_ROLE');
@@ -24,7 +33,7 @@ export function photoRuntime(pool,profiles,storage,{now=()=>Date.now()}={}){
   },
   async remove(account,id,photo,{admin=false,reason='',preserveEvidence=false}={}){return transaction(pool,async tx=>{let p;if(admin){if(!(await tx.query("SELECT id FROM micontacto.accounts WHERE id=$1 AND role='ADMIN' AND status='ACTIVE'",[account])).rows.length)throw Error('FORBIDDEN');if(typeof reason!=='string'||reason.trim().length<3||reason.length>500)throw Error('REASON_REQUIRED');p=(await tx.query('SELECT * FROM micontacto.profiles WHERE id=$1 FOR UPDATE',[id])).rows[0];if(!p)throw Error('NOT_FOUND');if(p.sensitive_hold||p.status==='DELETED')throw Error('PROFILE_LOCKED');}else{p=await profiles.owned(tx,account,id);profiles.writable(p);}
    const row=(await tx.query("SELECT * FROM micontacto.photos WHERE id=$1 AND profile_id=$2 AND state='ACTIVE' FOR UPDATE",[photo,id])).rows[0];if(!row)throw Error('NOT_FOUND');
-   await tx.query("UPDATE micontacto.photos SET state='DELETED' WHERE id=$1",[photo]);if(!preserveEvidence)await tx.query('INSERT INTO micontacto.storage_deletions(object_key) VALUES($1) ON CONFLICT DO NOTHING',[row.object_key]);await invalidate(tx,id,row.role==='MAIN',account);await profiles.audit(tx,account,id,admin?'PHOTO_REMOVED_ADMIN':'PHOTO_REMOVED',reason);return {ok:true};
+   await tx.query("UPDATE micontacto.photos SET state='DELETED' WHERE id=$1",[photo]);if(!preserveEvidence)await tx.query('INSERT INTO micontacto.storage_deletions(object_key) VALUES($1) ON CONFLICT DO NOTHING',[row.object_key]);await invalidate(tx,id,row.role==='MAIN',account,row.role==='MAIN');await profiles.audit(tx,account,id,admin?'PHOTO_REMOVED_ADMIN':'PHOTO_REMOVED',reason);return {ok:true};
   });},
   async requestVerification(account,id){return transaction(pool,async tx=>{
    const p=await profiles.owned(tx,account,id);profiles.writable(p);
