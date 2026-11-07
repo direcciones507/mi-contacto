@@ -290,3 +290,10 @@ body.auth-page .auth-card #emailAccess[hidden],body.auth-page .auth-card .auth-f
 .runtime .public-profile .profile-view-count{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;color:#526983;font-size:.92rem;font-weight:650;font-variant-numeric:tabular-nums}
 .runtime .public-profile .profile-view-count svg{flex:none;stroke:#54718e}
 @media(max-width:400px){.runtime .public-profile .profile-footer-row{gap:8px}.runtime .public-profile .profile-view-count{font-size:.83rem}}
+
+
+/* Destacado en el directorio: tarjeta dorada suave, sin afectar perfiles gratuitos */
+.runtime #results .contact-card--featured{background:linear-gradient(145deg,#fff4c2 0%,#fff9df 100%);border:1.5px solid #e6bc45;box-shadow:0 8px 24px rgba(151,105,18,.13)}
+.runtime #results .contact-card--featured .featured-directory-badge{background:#f6c84e;color:#573c00;border:1px solid #dca82d;font-weight:750}
+.runtime #results .contact-card--featured h3{color:#493600}
+@media(max-width:600px){.runtime #results .contact-card--featured{background:#fff4ce}}
