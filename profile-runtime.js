@@ -23,7 +23,7 @@ export function profileRuntime(pool,{origin='https://micontacto.online',now=()=>
  }
  async function geo(tx,country,region,locality){
   if(!Number.isSafeInteger(Number(region))||Number(region)<1)throw Error('INVALID_GEO_SELECTION');
-  const valid=(await tx.query('WITH RECURSIVE trail AS (SELECT id,parent_id,enabled FROM micontacto.geo_regions WHERE id=$1 AND country_code=$2 UNION ALL SELECT r.id,r.parent_id,r.enabled FROM micontacto.geo_regions r JOIN trail t ON t.parent_id=r.id WHERE r.country_code=$2) SELECT id FROM trail HAVING count(*)>0 AND bool_and(enabled)',[region,country])).rows.length>0;
+  const valid=(await tx.query('WITH RECURSIVE trail AS (SELECT id,parent_id,enabled FROM micontacto.geo_regions WHERE id=$1 AND country_code=$2 UNION ALL SELECT r.id,r.parent_id,r.enabled FROM micontacto.geo_regions r JOIN trail t ON t.parent_id=r.id WHERE r.country_code=$2) SELECT count(*) AS n FROM trail HAVING count(*)>0 AND bool_and(enabled)',[region,country])).rows.length>0;
   if(!valid)throw Error('INVALID_GEO_SELECTION');
   if(locality!=null){
    const match=(await tx.query('SELECT id FROM micontacto.geo_localities WHERE id=$1 AND region_id=$2 AND country_code=$3 AND enabled',[locality,region,country])).rows.length;
