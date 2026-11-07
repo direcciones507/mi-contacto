@@ -60,7 +60,7 @@ export function createApplication({pool,secret,origin='https://micontacto.online
    if(path==='/api/payments/yappy/ipn'&&!allowRead('payment-ipn',600))return json(429,{error:'RATE_LIMITED'});
    if(path==='/api/payments/yappy/ipn'&&req.method==='GET'){const proof=paymentProvider?.verify(url.searchParams);if(proof&&(await pool.query('SELECT id FROM micontacto.code_orders WHERE provider_order_id=$1',[proof.orderId])).rows.length)return json(200,await codes.confirm(proof));return json(200,await payments.confirm(url.searchParams));}
    // Public link-preview metadata only: no account data, photos, sessions or private profile content.
-   const isPublicSharePath=path==='/'||/^\\/(pa|cr|ni|sv|hn|gt|mx|co)\\/[a-z0-9-]{3,60}$/.test(path);
+   const isPublicSharePath=path==='/'||/^\/(pa|cr|ni|sv|hn|gt|mx|co)\/[a-z0-9-]{3,60}$/.test(path);
    const socialCrawler=/WhatsApp|facebookexternalhit|Facebot|Twitterbot|LinkedInBot|TelegramBot|Slackbot|Discordbot|Pinterest|Googlebot/i.test(req.headers.get('user-agent')||'');
    if(req.method==='GET'&&isPublicSharePath&&socialCrawler){
     const title='Mi Contacto | Conecta, comparte y da a conocer tus servicios';
