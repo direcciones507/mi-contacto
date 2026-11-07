@@ -2,9 +2,9 @@ import {COMMUNITY,DECLARATIONS} from './protection-policy.js';
 import {PHOTO_NOTICE_ITEMS} from './content-policy.js';
 import {createHash} from 'node:crypto';
 import {layout} from './views.js';
-export const POLICY_VERSION='2026-11-07.1';
+export const POLICY_VERSION='2026-11-07.2';
 export const PRIVACY_TEXT=[
- ['Qué datos tratamos','Usamos la identidad verificada por Google o tu correo registrado y una contraseña protegida mediante hash para administrar tu cuenta y sesiones. Los enlaces de recuperación de contraseña son temporales y de un solo uso. El registro por correo permite iniciar sesión sin verificación previa de la dirección. El perfil contiene tu nombre, fotografía, descripción y los contactos y ubicación que decidas proporcionar. No pedimos una dirección física.'],
+ ['Qué datos tratamos','Usamos la identidad verificada por Google o tu correo registrado y una contraseña protegida mediante hash para administrar tu cuenta y sesiones. Los enlaces de recuperación de contraseña son temporales y de un solo uso. El registro por correo requiere confirmar la dirección mediante un enlace temporal antes de habilitar una cuenta nueva. El perfil contiene tu nombre, fotografía, descripción y los contactos y ubicación que decidas proporcionar. No pedimos una dirección física.'],
  ['Para qué los usamos','Administramos tu perfil, revisamos solicitudes, mostramos los datos que autorices, prevenimos abusos y atendemos solicitudes de privacidad. No activamos cobros ni suscripciones en esta versión.'],
  ['Qué se hace público','Una ficha publicada se abre por enlace y puede reenviarse. El enlace no es una contraseña. Las fichas solicitan no indexación, pero no se garantiza que terceros no guarden copias. Teléfono, WhatsApp y ubicación dependen de tu autorización. El perfil gratuito puede aparecer en el directorio si autorizas su inclusión y cumples los requisitos de publicación. Destacado añade prioridad de presentación, distintivo y hasta cuatro fotografías adicionales durante su vigencia.'],
  ['Fotografías y ubicación','Las fotos se validan y se almacenan en el destino privado configurado. El servidor comprueba permisos antes de entregarlas. La galería adicional depende de la vigencia del Destacado. Google Maps recibe el enlace del pin cuando abres la navegación; Waze se ofrece solo con coordenadas válidas.'],
