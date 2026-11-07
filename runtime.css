@@ -251,3 +251,17 @@ body.auth-page .auth-card #emailAccess[hidden],body.auth-page .auth-card .auth-f
 .runtime .public-profile .profile-map-links .map-icon-google{font-size:1.25rem}
 .runtime .public-profile .profile-map-links .map-icon-waze{font-size:1.15rem}
 .runtime .public-profile .profile-map-links .map-icon-uber{width:24px;height:24px;flex-shrink:0}
+
+
+/* Encabezado de la tarjeta pública */
+.runtime .public-profile-heading{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:22px;font-size:clamp(1.8rem,6vw,2.7rem);line-height:1.2}
+.runtime .featured-heading-badge{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border-radius:999px;background:linear-gradient(135deg,#1157b7,#1883d9);color:#fff;font-size:clamp(.76rem,2.8vw,.94rem);font-weight:800;letter-spacing:.01em;box-shadow:0 4px 12px #1657a92b;white-space:nowrap}
+.runtime .featured-heading-badge span{color:#ffe37b;font-size:1.1em}
+.runtime .public-profile .profile-map-links{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.runtime .public-profile .profile-map-links a{display:flex;flex-direction:column;gap:5px;min-height:67px;border-radius:14px;background:#fff;color:#173a65;border:1px solid #d7e5f2;box-shadow:0 3px 10px #1c497013;font-weight:800;font-size:clamp(.7rem,2.5vw,.85rem);transition:transform .15s ease,box-shadow .15s ease}
+.runtime .public-profile .profile-map-links a:hover,.runtime .public-profile .profile-map-links a:focus-visible{transform:translateY(-2px);box-shadow:0 5px 14px #1c497028}
+.runtime .public-profile .profile-map-links .map-icon{width:27px;height:27px;font-size:24px}
+.runtime .public-profile .profile-map-links .map-icon-google{color:#e84335;text-shadow:1px 1px #4285f4,-1px -1px #34a853}
+.runtime .public-profile .profile-map-links .map-icon-waze{color:#24b8e7;font-size:28px;text-shadow:1px 1px #0d6985}
+.runtime .public-profile .profile-map-links .map-icon-uber{width:27px;height:27px;background:#101010;color:#fff;border-radius:8px;font-size:17px}
+@media(max-width:580px){.runtime .public-profile-heading{gap:8px 10px}.runtime .featured-heading-badge{padding:7px 11px}.runtime .public-profile .profile-map-links a{min-height:64px;padding:8px 3px}}
