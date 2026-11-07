@@ -41,7 +41,7 @@ export function emailAuth(pool,auth,{origin,secret,transport=null,now=()=>Date.n
  async function credential(user,password){const row=(await pool.query('SELECT password_hash FROM micontacto.email_identities WHERE account_id=$1',[user.id])).rows[0];return verifyPassword(password,row?.password_hash);}
  async function handle(req){
   const path=new URL(req.url).pathname;if(!path.startsWith('/api/auth/email/'))return null;
-  if(!enabled&&!['register','login'].includes(path.slice('/api/auth/email/'.length)))return json(503,{error:'EMAIL_NOT_CONFIGURED'});
+  if(!enabled&&!['login','change'].includes(path.slice('/api/auth/email/'.length)))return json(503,{error:'EMAIL_NOT_CONFIGURED'});
   if(req.method!=='POST')return json(405,{error:'METHOD_NOT_ALLOWED'});
   try{
    if(req.headers.get('origin')!==origin||req.headers.get('sec-fetch-site')==='cross-site')return json(403,{error:'CSRF_DENIED'});
@@ -62,7 +62,7 @@ export function emailAuth(pool,auth,{origin,secret,transport=null,now=()=>Date.n
      const session=await transaction(pool,async tx=>{
       const locked=(await tx.query('SELECT e.*,a.status FROM micontacto.email_identities e JOIN micontacto.accounts a ON a.id=e.account_id WHERE e.email=$1 FOR UPDATE OF e,a',[address])).rows[0];
       const correct=await verifyPassword(data.password,locked?.password_hash);
-      if(!correct||!locked||!['ACTIVE','SUSPENDED','BLOCKED'].includes(locked.status))return null;
+      if(!correct||!locked||!locked.verified_at||locked.status!=='ACTIVE')return null;
       return auth.issue(locked.account_id,tx);
      });if(!session)return json(401,{error:'INVALID_CREDENTIALS'});
      return new Response(null,{status:204,headers:{'set-cookie':session.cookie,'cache-control':'no-store'}});
@@ -70,15 +70,12 @@ export function emailAuth(pool,auth,{origin,secret,transport=null,now=()=>Date.n
     if(action==='recover'){if(row?.status==='ACTIVE')await sendSafe('RESET',address,row.account_id);return json(202,safe);}
     const passwordHash=await hashPassword(data.password);
     if(action==='register'){
-     // Existing identities never change password or ownership through registration.
-     if(row)return json(409,{error:'ACCOUNT_EXISTS'});
-     const session=await transaction(pool,async tx=>{
-      const id=randomUUID();
-      await tx.query('INSERT INTO micontacto.accounts(id) VALUES($1)',[id]);
-      await tx.query('INSERT INTO micontacto.email_identities(account_id,email,password_hash,verified_at) VALUES($1,$2,$3,$4)',[id,address,passwordHash,stamp()]);
-      return auth.issue(id,tx);
-     });
-     return new Response(null,{status:204,headers:{'set-cookie':session.cookie,'cache-control':'no-store'}});
+     // No identity or session is created until the address is verified.
+     // An unavailable mail transport fails closed instead of creating an unverified account.
+     if(row)return json(202,safe);
+     await limit('mail:'+address,3,3600000);
+     await sendSafe('VERIFY',address,null,passwordHash);
+     return json(202,safe);
     }
     const existing=(await pool.query('SELECT account_id FROM micontacto.email_identities WHERE account_id=$1',[user.id])).rows[0];
     if(!row&&!existing)await sendSafe('LINK',address,user.id,passwordHash,digest(cookie(req)));return json(202,safe);
