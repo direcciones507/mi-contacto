@@ -7,6 +7,9 @@ export function directoryQuery(filters = {}) {
  const locality=filters.localityId===undefined||filters.localityId===""?null:Number(filters.localityId);
  for(const id of [region,locality]) if(id!==null&&(!Number.isSafeInteger(id)||id<1))throw Error("INVALID_LOCATION_ID");
  if(locality!==null&&region===null)throw Error("REGION_REQUIRED");
+ const countryNames={PA:['panamá','panama','pa'],CR:['costa rica','cr'],NI:['nicaragua','ni'],SV:['el salvador','salvador','sv'],HN:['honduras','hn'],GT:['guatemala','gt'],MX:['méxico','mexico','mx'],CO:['colombia','co']};
+ const normalized=String(filters.keyword||'').trim().toLocaleLowerCase('es');
+ const countryKeyword=(countryNames[country]??[]).includes(normalized);
  const keyword=String(filters.keyword||"").trim().slice(0,100);
  const limit=Math.min(50,Math.max(1,Number(filters.limit)||20));
  const offset=Math.max(0,Number(filters.offset)||0);
@@ -15,7 +18,7 @@ export function directoryQuery(filters = {}) {
  const params=[country];
  if(region!==null){params.push(region);where.push("p.region_id IN (WITH RECURSIVE scope AS (SELECT id FROM micontacto.geo_regions WHERE id=$"+params.length+" AND country_code=$1 AND enabled UNION ALL SELECT r.id FROM micontacto.geo_regions r JOIN scope s ON r.parent_id=s.id WHERE r.country_code=$1 AND r.enabled) SELECT id FROM scope)");}
  if(locality!==null){params.push(locality);where.push("p.locality_id = $"+params.length);}
- if(keyword){params.push("%"+keyword.replace(/[\\%_]/g,"\\$&")+"%");const k="$"+params.length;where.push("(p.display_name ILIKE "+k+" OR p.profession ILIKE "+k+" OR EXISTS(SELECT 1 FROM micontacto.geo_regions gr WHERE gr.id=p.region_id AND gr.country_code=p.country_code AND gr.name ILIKE "+k+") OR EXISTS(SELECT 1 FROM micontacto.geo_localities gl WHERE gl.id=p.locality_id AND gl.country_code=p.country_code AND gl.name ILIKE "+k+"))");}
+ if(keyword&&!countryKeyword){params.push("%"+keyword.replace(/[\\%_]/g,"\\if(keyword){params.push("%"+keyword.replace(/[\\%_]/g,"\\$&")+"%");")+"%");const k="$"+params.length;where.push("(p.display_name ILIKE "+k+" OR p.profession ILIKE "+k+" OR EXISTS(WITH RECURSIVE ancestry AS (SELECT id,parent_id,name,country_code FROM micontacto.geo_regions WHERE id=p.region_id AND country_code=p.country_code UNION ALL SELECT parent.id,parent.parent_id,parent.name,parent.country_code FROM micontacto.geo_regions parent JOIN ancestry child ON parent.id=child.parent_id AND parent.country_code=child.country_code) SELECT 1 FROM ancestry WHERE name ILIKE "+k+") OR EXISTS(SELECT 1 FROM micontacto.geo_localities gl WHERE gl.id=p.locality_id AND gl.country_code=p.country_code AND gl.name ILIKE "+k+"))");}
  if(filters.categoryId){if(!/^[a-f0-9-]{36}$/.test(filters.categoryId))throw Error('INVALID_CATEGORY');params.push(filters.categoryId);where.push('p.category_id=$'+params.length);}
  const countParams=[...params];
  const countSql=`SELECT count(*)::int AS total FROM micontacto.profiles p JOIN micontacto.accounts a ON a.id=p.account_id WHERE ${where.join(' AND ')}`;
