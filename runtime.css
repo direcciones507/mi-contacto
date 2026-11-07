@@ -154,3 +154,29 @@ body.auth-page .auth-card #emailAccess[hidden],body.auth-page .auth-card .auth-f
 
 /* Hidden must win over panel/grid display rules, including on mobile. */
 .runtime [hidden],.runtime #editor[hidden],.runtime #photoTools[hidden]{display:none!important}
+
+
+/* Tarjeta pública: diseño compacto y acciones claras en móvil y escritorio */
+.runtime .public-profile{max-width:860px;padding:clamp(18px,4vw,36px);border-radius:24px;box-shadow:0 16px 45px rgba(17,57,106,.10)}
+.runtime .public-profile .profile-hero{display:grid;grid-template-columns:minmax(140px,220px) minmax(0,1fr);gap:clamp(18px,4vw,32px);align-items:center;padding-bottom:24px;border-bottom:1px solid #e4edf7}
+.runtime .public-profile .profile-hero .photo-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;align-content:start}
+.runtime .public-profile .profile-hero .photo-grid img{width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:16px}
+.runtime .public-profile .profile-hero .photo-grid img:first-child{grid-column:1/-1;max-height:240px;aspect-ratio:1.2}
+.runtime .public-profile .profile-identity h2{font-size:clamp(1.7rem,4vw,2.35rem);line-height:1.16;margin:0 0 10px;color:#102e56}
+.runtime .public-profile .profile-identity>p{margin:9px 0;line-height:1.5}
+.runtime .public-profile .profile-identity .description{color:#425672}
+.runtime .public-profile .profile-contact-actions{display:flex;flex-wrap:wrap;align-items:stretch;gap:10px;margin:22px 0 14px}
+.runtime .public-profile .profile-action,.runtime .public-profile .profile-share-actions>a,.runtime .public-profile .profile-share-actions>button{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:12px 18px;border-radius:12px;font-weight:750;text-decoration:none;line-height:1.2}
+.runtime .public-profile .profile-action-whatsapp{background:#0d7d58;border-color:#0d7d58;color:#fff}
+.runtime .public-profile .profile-directions{flex:1 1 180px;border:1px solid #d2e1f1;border-radius:12px;padding:11px 14px;background:#f5f9ff}
+.runtime .public-profile .profile-directions summary{cursor:pointer;font-weight:700;color:#13467e}
+.runtime .public-profile .profile-directions a{display:inline-block;margin:9px 5px 0 0}
+.runtime .public-profile .location{font-size:.92rem;color:#536783;margin:8px 0 22px}
+.runtime .public-profile .profile-share-panel{background:#f4f8fd;border:1px solid #e0eaf6;border-radius:18px;padding:clamp(16px,3vw,24px);margin:22px 0}
+.runtime .public-profile .profile-share-panel h3{margin:0 0 10px;font-size:1.12rem;color:#123f75}
+.runtime .public-profile .profile-link{font-size:.9rem;overflow-wrap:anywhere;margin:0 0 16px}
+.runtime .public-profile .profile-share-panel .qr{display:block;width:158px;height:158px;background:#fff;padding:9px;border-radius:12px;border:1px solid #d9e5f2;margin:0 0 16px}
+.runtime .public-profile .profile-share-actions{display:flex;flex-wrap:wrap;gap:10px}
+.runtime .public-profile .profile-share-actions>button{background:#114f9e;color:#fff;border-color:#114f9e}
+.runtime .public-profile .profile-share-actions>a{background:#fff;color:#114f9e;border:1px solid #bad1ed}
+@media(max-width:580px){.runtime .public-profile .profile-hero{grid-template-columns:1fr;gap:16px}.runtime .public-profile .profile-hero .photo-grid{max-width:220px}.runtime .public-profile .profile-contact-actions .profile-action{flex:1 1 120px}.runtime .public-profile .profile-directions{flex:1 1 100%}.runtime .public-profile .profile-share-actions>*{flex:1 1 130px}}
