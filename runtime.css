@@ -180,3 +180,16 @@ body.auth-page .auth-card #emailAccess[hidden],body.auth-page .auth-card .auth-f
 .runtime .public-profile .profile-share-actions>button{background:#114f9e;color:#fff;border-color:#114f9e}
 .runtime .public-profile .profile-share-actions>a{background:#fff;color:#114f9e;border:1px solid #bad1ed}
 @media(max-width:580px){.runtime .public-profile .profile-hero{grid-template-columns:1fr;gap:16px}.runtime .public-profile .profile-hero .photo-grid{max-width:220px}.runtime .public-profile .profile-contact-actions .profile-action{flex:1 1 120px}.runtime .public-profile .profile-directions{flex:1 1 100%}.runtime .public-profile .profile-share-actions>*{flex:1 1 130px}}
+
+
+.runtime .public-profile .profile-photo-open{display:block;width:100%;padding:0;margin:0;border:0;border-radius:16px;background:transparent;cursor:zoom-in;overflow:hidden;min-height:0}
+.runtime .public-profile .profile-photo-open:first-child{grid-column:1/-1}
+.runtime .public-profile .profile-photo-open img{width:100%;height:auto;aspect-ratio:1;object-fit:cover;display:block;transition:transform .18s ease}
+.runtime .public-profile .profile-photo-open:first-child img{aspect-ratio:1.2}
+.runtime .public-profile .profile-photo-open:hover img{transform:scale(1.035)}
+.runtime .public-profile .profile-photo-dialog{max-width:min(94vw,1000px);max-height:94dvh;padding:12px;border:0;border-radius:18px;background:#fff;box-shadow:0 22px 70px #0006}
+.runtime .public-profile .profile-photo-dialog::backdrop{background:#07182bcc}
+.runtime .public-profile .profile-photo-dialog img{display:block;max-width:88vw;max-height:80dvh;width:auto;height:auto;object-fit:contain;margin:auto}
+.runtime .public-profile .profile-photo-dialog button{display:block;margin:0 0 10px auto}
+.runtime .public-profile .profile-map-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.runtime .public-profile .profile-map-links a{margin:0;padding:9px 12px;border:1px solid #c8daed;background:white;border-radius:10px;text-decoration:none;font-weight:650}
