@@ -76,3 +76,9 @@
 #results .contact-card .directory-card-photo-verified{display:inline-flex;align-items:center;gap:4px;max-width:100%;padding:4px 7px;border:1px solid #b8d8c5;border-radius:8px;background:#e8f6ed;color:#125b39;font-size:.75rem;font-weight:750;line-height:1.2;white-space:normal}
 #results .contact-card .directory-card-photo-column{align-items:flex-start}
 @media(max-width:600px){#results .contact-card .directory-card-photo-verified{font-size:.7rem;padding:4px 5px}}
+
+/* Navegación compacta y visible de la ficha pública en todos los dispositivos. */
+.profile-back-directory{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;max-width:100%;width:auto;min-height:40px;padding:9px 15px;border:1px solid #0e5aa5;border-radius:12px;background:#e8f2ff;color:#0c4b88;font-size:.92rem;font-weight:750;line-height:1.2;text-align:center;text-decoration:none;white-space:nowrap;box-shadow:0 2px 7px rgba(17,73,128,.08)}
+.profile-back-directory:hover,.profile-back-directory:focus-visible{background:#d3e7ff;color:#083f79;border-color:#0b4e91}
+@media(max-width:700px){.header .nav:has(.profile-back-directory){display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:8px;flex-wrap:nowrap}.header .nav:has(.profile-back-directory) .brand{flex:0 1 auto;min-width:0;font-size:clamp(1rem,4.7vw,1.35rem);white-space:nowrap}.header .nav .profile-back-directory{flex:0 0 auto;width:auto;max-width:none;min-height:34px;padding:7px 10px;font-size:.76rem;line-height:1.1;border-radius:9px;white-space:nowrap}}
+@media(max-width:370px){.header .nav .profile-back-directory{font-size:.7rem;padding:7px 8px}}
