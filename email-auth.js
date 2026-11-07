@@ -74,7 +74,7 @@ export function emailAuth(pool,auth,{origin,secret,transport=null,now=()=>Date.n
      // An unavailable mail transport fails closed instead of creating an unverified account.
      if(row)return json(202,safe);
      await limit('mail:'+address,3,3600000);
-     await sendSafe('VERIFY',address,null,passwordHash);
+     await sendSafe('REGISTER',address,null,passwordHash);
      return json(202,safe);
     }
     const existing=(await pool.query('SELECT account_id FROM micontacto.email_identities WHERE account_id=$1',[user.id])).rows[0];
