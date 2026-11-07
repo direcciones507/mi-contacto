@@ -297,3 +297,15 @@ body.auth-page .auth-card #emailAccess[hidden],body.auth-page .auth-card .auth-f
 .runtime #results .contact-card--featured .featured-directory-badge{background:#f6c84e;color:#573c00;border:1px solid #dca82d;font-weight:750}
 .runtime #results .contact-card--featured h3{color:#493600}
 @media(max-width:600px){.runtime #results .contact-card--featured{background:#fff4ce}}
+
+/* Tarjetas horizontales: foto cuadrada y descripción visible en Gratis y Destacado. */
+.runtime #results .contact-card{display:flex;position:relative;align-items:flex-start;gap:16px;min-width:0;padding:20px;text-align:left}
+.runtime #results .contact-card .directory-card-photo{width:96px;height:96px;min-width:96px;flex:0 0 96px;object-fit:cover;border-radius:12px}
+.runtime #results .contact-card .directory-card-details{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
+.runtime #results .contact-card .directory-card-details h3,.runtime #results .contact-card .directory-card-details p{margin:0;color:#111}
+.runtime #results .contact-card .directory-card-description{white-space:pre-line;overflow-wrap:anywhere;line-height:1.45}
+.runtime #results .contact-card .directory-card-details .btn{margin-top:6px}
+.runtime #results .contact-card--featured{background:#fff2b8;border:1.5px solid #e5b93f;color:#111;box-shadow:0 8px 24px rgba(151,105,18,.13);padding-top:42px}
+.runtime #results .contact-card--featured .featured-directory-badge{position:absolute;top:9px;right:10px;margin:0;background:#f5c542;border:1px solid #d8a52a;color:#111;font-weight:800;border-radius:18px;padding:5px 10px;font-size:.75rem}
+.runtime #results .contact-card--featured h3{color:#111}
+@media(max-width:600px){.runtime #results .contact-card{gap:12px;padding:14px}.runtime #results .contact-card .directory-card-photo{width:78px;height:78px;min-width:78px;flex-basis:78px;border-radius:10px}.runtime #results .contact-card--featured{background:#fff2b8;padding-top:40px}}
