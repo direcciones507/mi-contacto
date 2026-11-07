@@ -225,3 +225,29 @@ body.auth-page .auth-card #emailAccess[hidden],body.auth-page .auth-card .auth-f
  .runtime .public-profile .profile-hero .profile-photo-open:first-child{aspect-ratio:1.25}
  .runtime .public-profile .profile-directions{flex:1 1 100%}
 }
+
+
+/* Menú móvil desplegable, sin ocultar la navegación de escritorio */
+.mobile-menu{display:none}
+@media(max-width:700px){
+ .header .nav{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:12px;flex-wrap:nowrap;position:relative;padding-block:12px}
+ .header .nav .brand{flex:0 1 auto;min-width:0;font-size:clamp(1.25rem,5vw,1.75rem)}
+ .header .nav .top-account-nav{display:none!important}
+ .header .mobile-menu{display:block;flex:0 0 auto;position:relative;z-index:50}
+ .header .mobile-menu summary{list-style:none;display:flex;align-items:center;gap:7px;border:1px solid #bdd0e7;border-radius:12px;background:#f4f8ff;color:#113d76;font-weight:750;padding:9px 12px;min-height:44px;cursor:pointer}
+ .header .mobile-menu summary::-webkit-details-marker{display:none}
+ .header .mobile-menu summary span:first-child{font-size:1.4rem;line-height:1}
+ .header .mobile-menu nav{position:absolute;right:0;top:calc(100% + 7px);display:flex;flex-direction:column;gap:5px;min-width:205px;background:#fff;border:1px solid #d1e0f0;border-radius:14px;padding:9px;box-shadow:0 14px 35px #173a6228}
+ .header .mobile-menu nav a{display:block;padding:12px 13px;border-radius:9px;color:#103d76;text-decoration:none;font-weight:700;white-space:nowrap}
+ .header .mobile-menu nav a:hover,.header .mobile-menu nav a:focus-visible{background:#eaf3ff}
+}
+.runtime .public-profile .profile-share-panel .qr{display:block;margin:18px auto 20px;width:190px;height:190px;max-width:100%;object-fit:contain}
+.runtime .public-profile .profile-share-panel h3{text-align:center}
+.runtime .public-profile .profile-share-panel .profile-link{text-align:center}
+.runtime .public-profile .profile-share-panel .profile-share-actions{justify-content:center}
+.runtime .public-profile .profile-share-panel .profile-share-actions>*{flex:1 1 160px;max-width:300px}
+.runtime .public-profile .profile-map-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.runtime .public-profile .profile-map-links a{display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;min-height:44px;padding:9px 6px;font-weight:750;font-size:clamp(.72rem,2.6vw,.87rem);text-align:center;border:1px solid #c7daef;border-radius:12px;background:#fff;box-shadow:0 2px 7px #123f7412}
+.runtime .public-profile .profile-map-links .map-icon-google{font-size:1.25rem}
+.runtime .public-profile .profile-map-links .map-icon-waze{font-size:1.15rem}
+.runtime .public-profile .profile-map-links .map-icon-uber{width:24px;height:24px;flex-shrink:0}
