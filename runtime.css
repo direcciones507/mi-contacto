@@ -309,3 +309,29 @@ body.auth-page .auth-card #emailAccess[hidden],body.auth-page .auth-card .auth-f
 .runtime #results .contact-card--featured .featured-directory-badge{position:absolute;top:9px;right:10px;margin:0;background:#f5c542;border:1px solid #d8a52a;color:#111;font-weight:800;border-radius:18px;padding:5px 10px;font-size:.75rem}
 .runtime #results .contact-card--featured h3{color:#111}
 @media(max-width:600px){.runtime #results .contact-card{gap:12px;padding:14px}.runtime #results .contact-card .directory-card-photo{width:78px;height:78px;min-width:78px;flex-basis:78px;border-radius:10px}.runtime #results .contact-card--featured{background:#fff2b8;padding-top:40px}}
+
+/* Corrección: la vista del propietario nunca comparte columnas con Destacado. */
+.runtime.owner-runtime-placeholder{}
+.owner-page .runtime .published-overview{display:block!important;width:100%;max-width:1060px;margin:22px auto 45px}
+.owner-page .runtime .published-overview #profileOptions{display:block;width:100%;min-width:0}
+.owner-page .runtime .published-overview #profileOptions[hidden]{display:none!important}
+.owner-page .runtime #profileOptions .cards{display:flex;width:100%;justify-content:center;align-items:stretch;margin:0}
+.owner-page .runtime #profileOptions .contact-card{width:100%;max-width:1060px;min-width:0;box-sizing:border-box}
+.owner-page .runtime #profileOptions .contact-card>.owner-card-featured{grid-column:1/-1!important;grid-row:auto!important;justify-self:stretch!important;align-self:stretch!important;width:100%!important;min-width:0!important;max-width:100%!important;display:block;overflow-wrap:normal;word-break:normal}
+.owner-page .runtime #profileOptions .contact-card>.owner-card-featured[hidden]{display:none!important}
+.owner-page .runtime #profileOptions .contact-card>.owner-card-featured>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;min-width:0;white-space:normal;overflow-wrap:normal;word-break:normal}
+.owner-page .runtime #profileOptions .contact-card>.owner-card-featured #commercial{width:100%;min-width:0;max-width:100%;box-sizing:border-box}
+.owner-page .runtime #editor{width:100%;max-width:1060px;margin:22px auto;box-sizing:border-box}
+.owner-page .runtime #editor .form-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 24px}
+@media(min-width:900px){
+.owner-page .runtime .published-overview{max-width:1060px}
+.owner-page .runtime #profileOptions .contact-card{max-width:1060px;grid-template-columns:230px minmax(0,1fr);padding:32px 38px}
+.owner-page .runtime #profileOptions .contact-card>img{width:230px;height:230px}
+.owner-page .runtime #profileOptions .contact-card>.actions{grid-column:1/-1;display:flex;flex-wrap:wrap;justify-content:center;gap:10px;max-width:100%}
+.owner-page .runtime #profileOptions .contact-card>.actions>*{width:auto!important;flex:0 0 auto!important;max-width:100%!important}
+}
+@media(max-width:760px){
+.owner-page .runtime .published-overview{max-width:100%}
+.owner-page .runtime #editor .form-grid{grid-template-columns:1fr}
+.owner-page .runtime #profileOptions .contact-card>.owner-card-featured>summary{display:block}
+}
