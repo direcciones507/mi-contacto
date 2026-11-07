@@ -193,3 +193,16 @@ body.auth-page .auth-card #emailAccess[hidden],body.auth-page .auth-card .auth-f
 .runtime .public-profile .profile-photo-dialog button{display:block;margin:0 0 10px auto}
 .runtime .public-profile .profile-map-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
 .runtime .public-profile .profile-map-links a{margin:0;padding:9px 12px;border:1px solid #c8daed;background:white;border-radius:10px;text-decoration:none;font-weight:650}
+
+
+/* Acciones de contacto con colores sólidos y navegación compacta */
+.runtime .public-profile .profile-action-call{background:#1558b0!important;color:#fff!important;border:1px solid #1558b0!important;box-shadow:0 3px 10px #1558b026}
+.runtime .public-profile .profile-action-whatsapp{background:#128c60!important;color:#fff!important;border:1px solid #128c60!important;box-shadow:0 3px 10px #128c6026}
+.runtime .public-profile .profile-contact-actions .profile-action{min-height:48px;flex:0 1 auto;border-radius:12px}
+.runtime .public-profile .profile-directions{flex:1 1 230px;min-width:0;padding:9px 12px}
+.runtime .public-profile .profile-directions summary{font-size:.92rem}
+.runtime .public-profile .profile-map-links{gap:7px;margin-top:9px}
+.runtime .public-profile .profile-map-links a{display:inline-flex;align-items:center;gap:5px;min-height:36px;padding:7px 9px;font-size:.83rem;white-space:nowrap;color:#173c69}
+.runtime .public-profile .map-icon{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;font-size:15px;line-height:1}
+.runtime .public-profile .map-icon-uber{background:#111;color:#fff;border-radius:5px;font-size:13px;font-weight:800}
+@media(max-width:580px){.runtime .public-profile .profile-contact-actions .profile-action{flex:1 1 110px}.runtime .public-profile .profile-map-links a{flex:1 1 auto;justify-content:center}}
