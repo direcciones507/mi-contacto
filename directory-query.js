@@ -23,7 +23,7 @@ export function directoryQuery(filters = {}) {
  const countParams=[...params];
  const countSql=`SELECT count(*)::int AS total FROM micontacto.profiles p JOIN micontacto.accounts a ON a.id=p.account_id WHERE ${where.join(' AND ')}`;
  params.push(limit,offset);
- return {sql:`SELECT p.id,p.slug,p.url_country,p.display_name,p.profession,p.description,p.country_code,CASE WHEN p.location_consent THEN r.name END AS region,CASE WHEN p.location_consent THEN l.name END AS locality,
+ return {sql:`SELECT p.id,p.slug,p.url_country,p.display_name,p.profession,p.description,p.country_code,CASE WHEN p.location_consent THEN (WITH RECURSIVE province AS (SELECT id,parent_id,name,country_code FROM micontacto.geo_regions WHERE id=p.region_id AND country_code=p.country_code AND enabled=true UNION ALL SELECT parent.id,parent.parent_id,parent.name,parent.country_code FROM micontacto.geo_regions parent JOIN province child ON parent.id=child.parent_id AND parent.country_code=child.country_code WHERE parent.enabled=true) SELECT name FROM province WHERE parent_id IS NULL LIMIT 1) END AS region,CASE WHEN p.location_consent THEN l.name END AS locality,
  ${featureExistsSQL} AS featured,
  (SELECT ph.id FROM micontacto.photos ph WHERE ph.profile_id=p.id AND ph.role='MAIN' AND ph.state='ACTIVE') AS photo_id
 FROM micontacto.profiles p
