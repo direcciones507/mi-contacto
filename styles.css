@@ -105,3 +105,19 @@
 .owner-page .featured-summary-hint{font-size:.76rem;font-weight:500;color:#52708c}
 .owner-page .featured-disclosure #commercial{margin:0;border:0;border-top:1px solid #dce7f4;border-radius:0;background:#fff}
 @media(max-width:600px){.owner-page .owner-header-logout{font-size:.75rem;padding:7px 9px;min-height:34px}.owner-page .header .brand{font-size:clamp(1.05rem,5vw,1.45rem);white-space:nowrap}.owner-page #publishedOverview{margin:12px auto 24px}.owner-page .featured-disclosure>summary{padding:13px}.owner-page .featured-summary-hint{flex-basis:100%}}
+
+/* Mi perfil en computadora: tarjeta de propietario horizontal y acciones ordenadas. */
+@media(min-width:900px){
+.owner-page .runtime{max-width:1160px}
+.owner-page #publishedOverview{max-width:1060px;margin:20px auto 42px}
+.owner-page #profileOptions .cards{width:100%;align-items:stretch}
+.owner-page #profileOptions .contact-card{display:grid;grid-template-columns:200px minmax(0,1fr);column-gap:26px;row-gap:12px;width:100%;max-width:none;padding:28px 32px;border:1px solid #d6e4f2;border-radius:22px;background:#fff;box-shadow:0 12px 38px rgba(24,60,100,.07);align-items:start}
+.owner-page #profileOptions .contact-card>img{grid-column:1;grid-row:1 / span 5;width:200px;height:200px;max-width:100%;object-fit:cover;border-radius:16px;margin:0}
+.owner-page #profileOptions .contact-card>h2{grid-column:2;margin:0;font-size:1.75rem;color:#123b69}
+.owner-page #profileOptions .contact-card>p{grid-column:2;margin:0;line-height:1.5}
+.owner-page #profileOptions .contact-card>.actions{grid-column:2;display:flex;flex-wrap:wrap;gap:9px;margin-top:10px}
+.owner-page #profileOptions .contact-card>.actions button,.owner-page #profileOptions .contact-card>.actions a{flex:0 0 auto;width:auto;padding:9px 13px;font-size:.88rem}
+.owner-page #profileOptions .contact-card>.owner-danger-zone{grid-column:1/-1}
+.owner-page #profileOptions .contact-card> :not(img):not(h2):not(p):not(.actions):not(.owner-danger-zone){grid-column:2}
+.owner-page .featured-disclosure{max-width:1060px}
+}
