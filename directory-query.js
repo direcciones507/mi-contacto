@@ -31,5 +31,5 @@ JOIN micontacto.accounts a ON a.id=p.account_id
 LEFT JOIN micontacto.geo_regions r ON r.country_code=p.country_code AND r.id=p.region_id AND r.enabled=true
 LEFT JOIN micontacto.geo_localities l ON l.country_code=p.country_code AND l.id=p.locality_id AND l.region_id=r.id AND l.enabled=true
 WHERE ${where.join(" AND ")}
-ORDER BY featured DESC,p.display_name,p.id LIMIT ${params.length-1} OFFSET ${params.length}`,params,countSql,countParams};
+ORDER BY featured DESC,p.display_name,p.id LIMIT $${params.length-1} OFFSET $${params.length}`,params,countSql,countParams};
 }
