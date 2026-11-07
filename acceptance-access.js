@@ -21,7 +21,7 @@ export function acceptanceAccess(pool,auth,{secret,origin,acceptance=false,priva
   if(new URL(req.url).pathname!=='/acceso-pruebas')return null;
   if(!enabled()){event('UNAVAILABLE');return new Response('Acceso de pruebas no disponible.',{status:404});}
   if(req.method==='GET'){
-   const signedIn=await auth.current(req);if(signedIn?.id===config.accountId&&signedIn.role==='ADMIN'&&signedIn.status==='ACTIVE')return new Response(null,{status:303,headers:{location:'/mi-perfil','cache-control':'no-store'}});
+   const signedIn=await auth.current(req);if(signedIn?.id===config.accountId&&signedIn.role==='ADMIN'&&signedIn.status==='ACTIVE')return new Response(null,{status:303,headers:{location:'/admin','cache-control':'no-store'}});
    const existing=(req.headers.get('cookie')??'').split(';').map(s=>s.trim()).filter(s=>s.startsWith('mc_acceptance_challenge='));
    // Keep unexpired browser/form binding stable across refreshes and concurrent tabs.
    const candidate=existing.length===1?existing[0].slice('mc_acceptance_challenge='.length):null;
@@ -49,7 +49,7 @@ export function acceptanceAccess(pool,auth,{secret,origin,acceptance=false,priva
    return html(401,'<p role="alert">'+explanation+'</p><a href="/acceso-pruebas">Volver a intentarlo</a>',rejection==='CODE_REJECTED'?{}:{'set-cookie':cookie('')});
   }
   const account=(await pool.query("SELECT id FROM micontacto.accounts WHERE id=$1 AND google_subject=$2 AND role='ADMIN' AND status='ACTIVE'",[config.accountId,'acceptance-owner:'+config.accountId])).rows[0];if(!account){event('ACCOUNT_UNAVAILABLE');return new Response('Acceso no disponible.',{status:403});}
-  const session=await auth.issue(account.id);event('ACCEPTED');const headers=new Headers({location:'/mi-perfil','cache-control':'no-store'});headers.append('set-cookie',session.cookie);headers.append('set-cookie',cookie(''));return new Response(null,{status:303,headers});
+  const session=await auth.issue(account.id);event('ACCEPTED');const headers=new Headers({location:'/admin','cache-control':'no-store'});headers.append('set-cookie',session.cookie);headers.append('set-cookie',cookie(''));return new Response(null,{status:303,headers});
  }
  return {handle,enabled};
 }
