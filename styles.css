@@ -82,3 +82,26 @@
 .profile-back-directory:hover,.profile-back-directory:focus-visible{background:#d3e7ff;color:#083f79;border-color:#0b4e91}
 @media(max-width:700px){.header .nav:has(.profile-back-directory){display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:8px;flex-wrap:nowrap}.header .nav:has(.profile-back-directory) .brand{flex:0 1 auto;min-width:0;font-size:clamp(1rem,4.7vw,1.35rem);white-space:nowrap}.header .nav .profile-back-directory{flex:0 0 auto;width:auto;max-width:none;min-height:34px;padding:7px 10px;font-size:.76rem;line-height:1.1;border-radius:9px;white-space:nowrap}}
 @media(max-width:370px){.header .nav .profile-back-directory{font-size:.7rem;padding:7px 8px}}
+
+/* Mi perfil: vista simplificada, tarjeta central y comercio desplegable. */
+.owner-page .top-account-nav,.owner-page .mobile-menu{display:none!important}
+.owner-page .header .nav{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:nowrap}
+.owner-page .owner-header-logout{display:inline-flex;align-items:center;justify-content:center;width:auto;min-width:0;max-width:46%;min-height:38px;margin-left:auto;padding:8px 13px;border:1px solid #bad0e7;border-radius:10px;background:#e9f3ff;color:#123f70;font-size:.88rem;font-weight:700;white-space:nowrap;cursor:pointer}
+.owner-page .owner-header-logout:hover{background:#d7eaff}
+.owner-page .account-session{display:flex;justify-content:center;text-align:center;margin:0 auto 12px}
+.owner-page #sessionStatus{margin:0;color:#24764b;font-size:.9rem}
+.owner-page #publishedOverview{max-width:800px;margin:16px auto 32px}
+.owner-page #profileOptions .cards{display:flex;flex-direction:column;align-items:center;gap:16px}
+.owner-page #profileOptions .contact-card{width:100%;max-width:740px;box-sizing:border-box}
+.owner-page #profileOptions .contact-card>.actions{display:flex;flex-wrap:wrap;gap:8px}
+.owner-page .owner-danger-zone{display:flex;justify-content:flex-end;margin-top:20px;padding-top:14px;border-top:1px solid #e8d9d9}
+.owner-page .owner-delete-profile{background:transparent;color:#a52b31;border:1px solid #dca7aa;border-radius:9px;padding:8px 10px;font-size:.83rem}
+.owner-page .owner-delete-profile:hover{background:#fff1f1}
+.owner-page .featured-disclosure{max-width:740px;margin:18px auto 0;border:1px solid #cfdff0;border-radius:14px;background:#f5f9ff;overflow:hidden}
+.owner-page .featured-disclosure>summary{cursor:pointer;list-style:none;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px;padding:17px 18px;color:#123e72;font-weight:800}
+.owner-page .featured-disclosure>summary::-webkit-details-marker{display:none}
+.owner-page .featured-disclosure>summary::after{content:'▾';margin-left:auto}
+.owner-page .featured-disclosure[open]>summary::after{content:'▴'}
+.owner-page .featured-summary-hint{font-size:.76rem;font-weight:500;color:#52708c}
+.owner-page .featured-disclosure #commercial{margin:0;border:0;border-top:1px solid #dce7f4;border-radius:0;background:#fff}
+@media(max-width:600px){.owner-page .owner-header-logout{font-size:.75rem;padding:7px 9px;min-height:34px}.owner-page .header .brand{font-size:clamp(1.05rem,5vw,1.45rem);white-space:nowrap}.owner-page #publishedOverview{margin:12px auto 24px}.owner-page .featured-disclosure>summary{padding:13px}.owner-page .featured-summary-hint{flex-basis:100%}}
