@@ -1,3 +1,4 @@
+import {publicSEO,metadata} from './seo.js';
 import {codesRuntime,codeQuote} from './codes-runtime.js';
 import {emailAuth} from './email-auth.js';
 import {authPage} from './email-auth-view.js';
@@ -28,6 +29,7 @@ import {COUNTRIES} from './countries.js';
 import {dashboard,publicProfile,layout} from './views.js';
 const uuid=/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/;
 export function createApplication({pool,secret,origin='https://micontacto.online',google=null,emailTransport=null,fetch:network,verifyToken,storage=memoryPhotoStorage(),simulation=false,legal=legalConfig({}),paymentProvider=null,acceptance=false,commercialTrial=false,privateOfficialOrigin=false,acceptanceOwner=null,acceptanceReport=null,accessEvent=()=>{},now=()=>Date.now()}){
+ const seo=publicSEO(pool,{origin});
  const features=featureRuntime(pool,{simulation});
  if(paymentProvider&&paymentProvider.domain!==origin)throw Error('INVALID_PAYMENT_CONFIGURATION');
  const codes=codesRuntime(pool,{secret,provider:paymentProvider});
@@ -59,8 +61,9 @@ export function createApplication({pool,secret,origin='https://micontacto.online
    if(req.method==='GET'&&['/api/countries','/api/categories','/api/regions','/api/localities','/api/directory'].includes(path)&&!allowRead('directory',2000))return json(429,{error:'RATE_LIMITED'});
    if(path==='/api/payments/yappy/ipn'&&!allowRead('payment-ipn',600))return json(429,{error:'RATE_LIMITED'});
    if(path==='/api/payments/yappy/ipn'&&req.method==='GET'){const proof=paymentProvider?.verify(url.searchParams);if(proof&&(await pool.query('SELECT id FROM micontacto.code_orders WHERE provider_order_id=$1',[proof.orderId])).rows.length)return json(200,await codes.confirm(proof));return json(200,await payments.confirm(url.searchParams));}
+   const seoReply=await seo.handle(req);if(seoReply)return seoReply;
    // Public link-preview metadata only: no account data, photos, sessions or private profile content.
-   const isPublicSharePath=path==='/'||/^\/(pa|cr|ni|sv|hn|gt|mx|co)\/[a-z0-9-]{3,60}$/.test(path);
+   const isPublicSharePath=/^\/(pa|cr|ni|sv|hn|gt|mx|co)\/[a-z0-9-]{3,60}$/.test(path);
    const socialCrawler=/WhatsApp|facebookexternalhit|Facebot|Twitterbot|LinkedInBot|TelegramBot|Slackbot|Discordbot|Pinterest|Googlebot/i.test(req.headers.get('user-agent')||'');
    if(req.method==='GET'&&isPublicSharePath&&socialCrawler){
     const title='Mi Contacto | Conecta, comparte y da a conocer tus servicios';
@@ -89,14 +92,12 @@ export function createApplication({pool,secret,origin='https://micontacto.online
    }
    if(req.method==='GET'&&path==='/assets/demo-profile.jpg')return new Response(readFileSync(new URL('./assets/demo-profile.jpg',import.meta.url)),{headers:{...headers,'content-type':'image/jpeg','cache-control':'public, max-age=3600'}});
    if(req.method==='GET'&&Object.hasOwn(allowedAssets,path))return new Response(readFileSync(new URL('.'+path,import.meta.url)),{headers:{...headers,'content-type':allowedAssets[path]}});
-   if(req.method==='GET'&&path==='/')return secure(html(gate.accepted(req)?readFileSync(new URL('./index.html',import.meta.url),'utf8'):gate.decorateHome(readFileSync(new URL('./index.html',import.meta.url),'utf8'))),true);
+   if(req.method==='GET'&&path==='/'){const home=readFileSync(new URL('./index.html',import.meta.url),'utf8').replace('</footer>','<nav class="wrap"><a href="/directorio">Explorar directorio por país y región</a></nav></footer>');const content=metadata(gate.accepted(req)?home:gate.decorateHome(home),{origin,path:'/',title:'Mi Contacto | Tu perfil, tu conexión',description:'Crea y comparte tu tarjeta personal con enlace y QR. Encuentra personas, profesionales y servicios en el directorio por país y región.'});const reply=secure(html(content),true);reply.headers.set('x-robots-tag','index, follow');return reply;}
    if(req.method==='GET'&&path==='/api/legal')return json(200,consent.publicInfo);
    if(req.method==='GET'&&['/privacidad','/terminos','/comunidad'].includes(path))return html(legalPage(path==='/privacidad'?'privacy':path==='/comunidad'?'community':'terms',legal));
    if(req.method==='GET'&&path==='/ayuda')return html(layout('Ayuda', '<section class="panel"><h2>Tu perfil gratuito</h2><p>Completa tus datos, selecciona tu foto y pulsa Guardar y publicar. La publicación es automática; ADMIN interviene después si hay una denuncia o infracción. Puedes cambiar tu país sin cambiar el enlace ni el QR.</p><h2>Destacado y códigos</h2><p>Los días consecutivos y los códigos independientes son productos diferentes. Cada código activa un día al canjearlo y no vence mientras esté guardado. Si tienes saldo activo o pausado, utilízalo antes de canjear otro código.</p><p>Si compraste al propietario por WhatsApp, utiliza Ya tengo un código. No necesitas tarjeta ni pasar por Yappy para canjearlo. Los pagos en línea todavía requieren habilitación.</p><h2>Acceso y seguridad</h2><p>Google y correo pueden vincularse desde Seguridad y acceso después de verificar la titularidad. Vincula desde tu cuenta actual para conservar su perfil. Si aparece un perfil vacío, no crees otro.</p><p>Puedes recuperar tu contraseña y cerrar todas las sesiones desde Seguridad y acceso. Los enlaces de verificación son temporales y de un solo uso.</p><h2>Privacidad</h2><p>Solo se muestran los contactos y la ubicación que autorices. Los perfiles individuales no se indexan. Para eliminar tu perfil, solicita la eliminación desde sus opciones; ADMIN debe autorizarla.</p></section>',{script:null}));
    if(req.method==='GET'&&path==='/mi-perfil'){if(!await auth.current(req))return secure(new Response(null,{status:303,headers:{location:'/acceso'}}));return html(dashboard(false));}
    if(req.method==='GET'&&path==='/admin'){const account=await auth.current(req);if(!account)return secure(new Response(null,{status:303,headers:{location:'/acceso-admin'}}));if(account.role!=='ADMIN'||account.status!=='ACTIVE')return new Response('Acceso restringido a administración.',{status:403,headers});return html(dashboard(true));}
-   if(req.method==='GET'&&path==='/robots.txt')return new Response('User-agent: *\nDisallow: /api/\nAllow: /media/\nDisallow: /admin\nDisallow: /mi-perfil\nSitemap: https://micontacto.online/sitemap.xml\n',{headers:{...headers,'content-type':'text/plain'}});
-   if(req.method==='GET'&&path==='/sitemap.xml')return new Response('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://micontacto.online/</loc></url></urlset>',{headers:{...headers,'content-type':'application/xml'}});
    if(req.method==='GET'&&path==='/api/countries'){const enabled=(await pool.query('SELECT code FROM micontacto.country_settings WHERE enabled')).rows.map(x=>x.code);return json(200,{items:COUNTRIES.filter(x=>enabled.includes(x.code))});}
    if(req.method==='GET'&&path==='/api/categories')return json(200,{items:(await pool.query('SELECT id,name FROM micontacto.categories WHERE enabled ORDER BY name')).rows});
    if(req.method==='GET'&&path==='/api/regions'){

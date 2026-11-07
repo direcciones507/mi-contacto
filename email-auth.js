@@ -25,8 +25,8 @@ export function emailAuth(pool,auth,{origin,secret,transport=null,now=()=>Date.n
  const json=(s,v)=>Response.json(v,{status:s,headers:{'cache-control':'no-store'}});
  async function limit(key,max,windowMs){
   const bucket=createHmac('sha256',secret).update('email-auth:'+key).digest('hex');
-  const r=await pool.query('INSERT INTO micontacto.auth_rate_limits(bucket,attempts,expires_at) VALUES($1,1,$2) ON CONFLICT(bucket) DO UPDATE SET attempts=CASE WHEN micontacto.auth_rate_limits.expires_at<=$3 THEN 1 ELSE micontacto.auth_rate_limits.attempts+1 END,expires_at=CASE WHEN micontacto.auth_rate_limits.expires_at<=$3 THEN EXCLUDED.expires_at ELSE micontacto.auth_rate_limits.expires_at END RETURNING attempts',[bucket,new Date(now()+windowMs).toISOString(),stamp()]);
-  if(r.rows[0].attempts>max)throw Error('RATE_LIMITED');
+  const r=await pool.query('INSERT INTO micontacto.auth_rate_limits(bucket,attempts,expires_at) VALUES($1,1,$2) ON CONFLICT(bucket) DO UPDATE SET attempts=CASE WHEN micontacto.auth_rate_limits.expires_at<=$3 THEN 1 ELSE micontacto.auth_rate_limits.attempts+1 END,expires_at=CASE WHEN micontacto.auth_rate_limits.expires_at<=$3 THEN EXCLUDED.expires_at ELSE micontacto.auth_rate_limits.expires_at END RETURNING attempts,expires_at',[bucket,new Date(now()+windowMs).toISOString(),stamp()]);
+  if(r.rows[0].attempts>max){const error=Error('RATE_LIMITED');error.retryAfter=Math.max(1,Math.ceil((Date.parse(r.rows[0].expires_at)-now())/1000));throw error;}
  }
  async function send(purpose,address,accountId=null,passwordHash=null,sessionHash=null){
   const token=randomBytes(32).toString('base64url'),tokenHash=digest(token),expires=new Date(now()+1800000).toISOString();
@@ -114,7 +114,7 @@ export function emailAuth(pool,auth,{origin,secret,transport=null,now=()=>Date.n
     });return json(200,{message:'Contraseña actualizada. Inicia sesión nuevamente en tus dispositivos.'});
    }
    return json(404,{error:'NOT_FOUND'});
-  }catch(e){const code=e.code==='23505'?'IDENTITY_ALREADY_LINKED':e.message;return json(code==='RATE_LIMITED'?429:code==='CSRF_DENIED'?403:code==='EMAIL_UNAVAILABLE'?503:code==='INVALID_CREDENTIALS'?401:/^(INVALID_|IDENTITY_)/.test(code)?400:503,{error:/^(INVALID_|IDENTITY_|RATE_LIMITED|CSRF_DENIED|EMAIL_UNAVAILABLE)/.test(code)?code:'OPERATION_UNAVAILABLE'});}
+  }catch(e){if(e.message==='RATE_LIMITED')return new Response(JSON.stringify({error:'RATE_LIMITED'}),{status:429,headers:{'content-type':'application/json','cache-control':'no-store','retry-after':String(e.retryAfter??60)}});const code=e.code==='23505'?'IDENTITY_ALREADY_LINKED':e.message;return json(code==='RATE_LIMITED'?429:code==='CSRF_DENIED'?403:code==='EMAIL_UNAVAILABLE'?503:code==='INVALID_CREDENTIALS'?401:/^(INVALID_|IDENTITY_)/.test(code)?400:503,{error:/^(INVALID_|IDENTITY_|RATE_LIMITED|CSRF_DENIED|EMAIL_UNAVAILABLE)/.test(code)?code:'OPERATION_UNAVAILABLE'});}
  }
  return {enabled,handle,credential};
 }
