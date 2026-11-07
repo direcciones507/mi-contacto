@@ -41,3 +41,12 @@
 #results .contact-card.contact-card--featured .featured-directory-badge{position:absolute;top:12px;right:14px;margin:0;background:#f5c542;color:#111;border:1px solid #d8a52a;border-radius:24px;padding:6px 12px;font-weight:800}
 #results .contact-card.contact-card--featured h3,#results .contact-card.contact-card--featured p{color:#111}
 @media(max-width:600px){#results .contact-card{gap:12px;padding:16px}#results .contact-card .directory-card-photo{width:92px;height:92px;min-width:92px;flex-basis:92px;border-radius:10px}#results .contact-card.contact-card--featured{padding-top:48px}#results .contact-card .directory-card-details h3{font-size:1.1rem}}
+
+/* Toda la tarjeta abre el perfil: enlace superpuesto accesible con teclado. */
+#results .contact-card{cursor:pointer;transition:transform .16s ease,box-shadow .16s ease}
+#results .contact-card:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(20,55,80,.14)}
+#results .contact-card .directory-card-link{position:absolute;inset:0;z-index:2;display:block;border-radius:inherit;font-size:0;color:transparent;overflow:hidden}
+#results .contact-card .directory-card-link:focus-visible{outline:3px solid #1167b1;outline-offset:3px}
+#results .contact-card.contact-card--featured .featured-directory-badge{display:inline-flex;align-items:center;gap:6px;background:#166b45!important;color:#fff!important;border:1px solid #0d5435!important;box-shadow:0 3px 10px rgba(17,86,56,.2);font-size:.86rem;line-height:1.2;pointer-events:none}
+#results .contact-card.contact-card--featured .featured-directory-star{color:#ffd54a;font-size:1.15em;line-height:1}
+@media(prefers-reduced-motion:reduce){#results .contact-card{transition:none}#results .contact-card:hover{transform:none}}
