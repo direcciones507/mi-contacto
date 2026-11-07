@@ -283,3 +283,10 @@ body.auth-page .auth-card #emailAccess[hidden],body.auth-page .auth-card .auth-f
  .runtime .public-profile .profile-identity{padding-top:0}
  .runtime .public-profile .profile-hero{gap:12px}
 }
+
+
+/* Contador acumulativo de visitantes, discreto y adaptable */
+.runtime .public-profile .profile-footer-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:20px}
+.runtime .public-profile .profile-view-count{display:inline-flex;align-items:center;gap:7px;white-space:nowrap;color:#526983;font-size:.92rem;font-weight:650;font-variant-numeric:tabular-nums}
+.runtime .public-profile .profile-view-count svg{flex:none;stroke:#54718e}
+@media(max-width:400px){.runtime .public-profile .profile-footer-row{gap:8px}.runtime .public-profile .profile-view-count{font-size:.83rem}}
