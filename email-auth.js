@@ -62,7 +62,7 @@ export function emailAuth(pool,auth,{origin,secret,transport=null,now=()=>Date.n
      const session=await transaction(pool,async tx=>{
       const locked=(await tx.query('SELECT e.*,a.status FROM micontacto.email_identities e JOIN micontacto.accounts a ON a.id=e.account_id WHERE e.email=$1 FOR UPDATE OF e,a',[address])).rows[0];
       const correct=await verifyPassword(data.password,locked?.password_hash);
-      if(!correct||!locked||!locked.verified_at||locked.status!=='ACTIVE')return null;
+      if(!correct||!locked||!locked.verified_at||!['ACTIVE','BLOCKED'].includes(locked.status))return null;
       return auth.issue(locked.account_id,tx);
      });if(!session)return json(401,{error:'INVALID_CREDENTIALS'});
      return new Response(null,{status:204,headers:{'set-cookie':session.cookie,'cache-control':'no-store'}});
