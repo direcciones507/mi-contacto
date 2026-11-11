@@ -188,3 +188,51 @@ h1,h2,h3{font-family:'Space Grotesk',system-ui,sans-serif;letter-spacing:-.02em}
     transition: none;
   }
 }
+
+
+/* Ajustes de interacción: enlaces legales, acceso Google y desplegables. */
+footer a, .footer a, a[href="/terminos"], a[href="/privacidad"],
+a[href="/comunidad"], a[href^="/auth/google"],
+a[href*="google"][class*="btn"], button[class*="google"],
+button[id*="google"], [role="button"][class*="google"] {
+  transition: color .18s ease, background-color .18s ease,
+    border-color .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  footer a:hover, .footer a:hover,
+  a[href="/terminos"]:hover, a[href="/privacidad"]:hover,
+  a[href="/comunidad"]:hover {
+    color: #68caff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  a[href^="/auth/google"]:hover, a[href*="google"][class*="btn"]:hover,
+  button[class*="google"]:hover, button[id*="google"]:hover,
+  [role="button"][class*="google"]:hover {
+    filter: brightness(.92) saturate(1.14);
+    box-shadow: 0 4px 12px rgba(13,58,105,.17);
+  }
+}
+a[href^="/auth/google"], a[href*="google"][class*="btn"],
+button[class*="google"], button[id*="google"],
+[role="button"][class*="google"] { cursor: pointer; }
+select:not(:disabled), input[type="date"]:not(:disabled),
+input[type="time"]:not(:disabled), input[type="datetime-local"]:not(:disabled),
+input[type="number"]:not(:disabled) { cursor: pointer; }
+select:disabled { cursor: not-allowed; }
+select:not(:disabled):hover, input[type="date"]:not(:disabled):hover,
+input[type="time"]:not(:disabled):hover,
+input[type="datetime-local"]:not(:disabled):hover,
+input[type="number"]:not(:disabled):hover {
+  border-color: #2789d8;
+}
+select:focus, input[type="date"]:focus, input[type="time"]:focus,
+input[type="datetime-local"]:focus, input[type="number"]:focus {
+  border-color: #2789d8;
+}
+:where(footer a, .footer a, a[href^="/auth/google"],
+a[href*="google"][class*="btn"], button[class*="google"],
+button[id*="google"], [role="button"][class*="google"]):focus-visible {
+  outline: 3px solid #2789d8;
+  outline-offset: 3px;
+}
