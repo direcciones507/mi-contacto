@@ -236,3 +236,53 @@ button[id*="google"], [role="button"][class*="google"]):focus-visible {
   outline: 3px solid #2789d8;
   outline-offset: 3px;
 }
+
+
+/* Último ajuste visual: controles de fotografía del perfil.
+   La selección, descarte y subida conservan sus eventos originales. */
+.photo-slot .localized-file-label,
+.photo-slot .main-photo-picker,
+.photo-slot .file-pick-label,
+.photo-slot .photo-actions button,
+.photo-slot .photo-discard {
+  transition: background-color .18s ease, color .18s ease,
+    border-color .18s ease, box-shadow .18s ease, filter .18s ease,
+    transform .18s ease;
+}
+.photo-slot .localized-file-label:has(input[type="file"]:not(:disabled)),
+.photo-slot .main-photo-picker:has(input[type="file"]:not(:disabled)),
+.photo-slot .file-pick-label,
+.photo-slot .photo-actions button:not(:disabled),
+.photo-slot .photo-discard:not(:disabled) {
+  cursor: pointer;
+}
+.photo-slot .localized-file-label:has(input[type="file"]:disabled) {
+  cursor: not-allowed;
+}
+@media (hover: hover) and (pointer: fine) {
+  .photo-slot .localized-file-label:has(input[type="file"]:not(:disabled)):hover,
+  .photo-slot .main-photo-picker:has(input[type="file"]:not(:disabled)):hover,
+  .photo-slot .photo-actions button:not(:disabled):hover,
+  .photo-slot .photo-discard:not(:disabled):hover {
+    filter: brightness(.9) saturate(1.15);
+    box-shadow: 0 4px 12px rgba(13,58,105,.17);
+    transform: translateY(-1px);
+  }
+}
+.photo-slot .localized-file-label:has(input[type="file"]:not(:disabled)):active,
+.photo-slot .photo-actions button:not(:disabled):active,
+.photo-slot .photo-discard:not(:disabled):active {
+  filter: brightness(.82);
+  transform: translateY(1px);
+}
+.photo-slot .localized-file-label:focus-within {
+  outline: 3px solid #2789d8;
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .photo-slot .localized-file-label,
+  .photo-slot .main-photo-picker,
+  .photo-slot .file-pick-label,
+  .photo-slot .photo-actions button,
+  .photo-slot .photo-discard { transition: none; }
+}
