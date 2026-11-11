@@ -327,3 +327,83 @@ button[id*="google"], [role="button"][class*="google"]):focus-visible {
     transition: none;
   }
 }
+
+
+/* Portada: cinco llamadas principales de alto contraste y respuesta inmediata.
+   Incluye el enlace Crear perfil del encabezado para mantener consistencia. */
+.home-create,
+.hero .actions > a.btn[href="/mi-perfil"],
+.plan > a.btn[href="/mi-perfil"],
+.plan > a.btn#openRates,
+#tarifas > summary,
+#registro a.btn[href="/acceso?action=register"] {
+  cursor: pointer;
+  font-weight: 800;
+  border-radius: 12px;
+  transition: transform .14s ease-out, box-shadow .14s ease-out,
+    background-color .14s ease-out, filter .14s ease-out, color .14s ease-out;
+  animation: mc-home-cta-pulse 1.65s ease-in-out infinite !important;
+  box-shadow: 0 5px 15px rgba(0, 39, 96, .26);
+  will-change: transform;
+}
+#tarifas > summary {
+  display: list-item;
+  background: #0a4ba5;
+  color: #fff;
+  border: 2px solid #82cfff;
+  padding: 15px 20px;
+  border-radius: 12px;
+  font-size: 1rem;
+  box-shadow: 0 5px 15px rgba(0, 39, 96, .26);
+}
+#registro a.btn[href="/acceso?action=register"] {
+  background: #ffd24d;
+  color: #102b54;
+  border: 2px solid #fff3b2;
+  padding: 15px 27px;
+  font-size: 1.05rem;
+}
+@keyframes mc-home-cta-pulse {
+  0%, 100% { transform: translateY(0) scale(1); filter: brightness(1); }
+  50% { transform: translateY(-3px) scale(1.025); filter: brightness(1.07); }
+}
+@media (hover: hover) and (pointer: fine) {
+  .home-create:hover,
+  .hero .actions > a.btn[href="/mi-perfil"]:hover,
+  .plan > a.btn[href="/mi-perfil"]:hover,
+  .plan > a.btn#openRates:hover,
+  #tarifas > summary:hover,
+  #registro a.btn[href="/acceso?action=register"]:hover {
+    animation-play-state: paused !important;
+    transform: translateY(-5px) scale(1.055);
+    box-shadow: 0 12px 27px rgba(0, 39, 96, .36);
+    filter: brightness(1.12);
+  }
+}
+.home-create:active,
+.hero .actions > a.btn[href="/mi-perfil"]:active,
+.plan > a.btn[href="/mi-perfil"]:active,
+.plan > a.btn#openRates:active,
+#tarifas > summary:active,
+#registro a.btn[href="/acceso?action=register"]:active {
+  animation-play-state: paused !important;
+  transform: scale(.96);
+  filter: brightness(.95);
+}
+#tarifas > summary:focus-visible,
+#registro a.btn[href="/acceso?action=register"]:focus-visible {
+  outline: 3px solid #ffcf40;
+  outline-offset: 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-create,
+  .hero .actions > a.btn[href="/mi-perfil"],
+  .plan > a.btn[href="/mi-perfil"],
+  .plan > a.btn#openRates,
+  #tarifas > summary,
+  #registro a.btn[href="/acceso?action=register"] {
+    animation: none !important;
+    transition: none;
+    will-change: auto;
+  }
+}
