@@ -286,3 +286,44 @@ button[id*="google"], [role="button"][class*="google"]):focus-visible {
   .photo-slot .photo-actions button,
   .photo-slot .photo-discard { transition: none; }
 }
+
+
+/* Llamadas a la acción en las tarjetas de planes de la portada.
+   Movimiento discreto y continuo, con respuesta al pasar el cursor. */
+.plan > a.btn[href="/mi-perfil"],
+.plan > a.btn#openRates {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  animation: plan-cta-attention 3.4s ease-in-out infinite;
+  box-shadow: 0 4px 12px rgba(13, 58, 105, .22);
+  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+}
+@keyframes plan-cta-attention {
+  0%, 72%, 100% { transform: translateY(0); box-shadow: 0 4px 12px rgba(13, 58, 105, .22); }
+  82% { transform: translateY(-4px); box-shadow: 0 9px 20px rgba(13, 58, 105, .32); }
+  91% { transform: translateY(0); box-shadow: 0 4px 12px rgba(13, 58, 105, .22); }
+}
+@media (hover: hover) and (pointer: fine) {
+  .plan > a.btn[href="/mi-perfil"]:hover,
+  .plan > a.btn#openRates:hover {
+    animation-play-state: paused;
+    transform: translateY(-3px) scale(1.035);
+    box-shadow: 0 10px 24px rgba(13, 58, 105, .34);
+    filter: brightness(1.07);
+  }
+}
+.plan > a.btn[href="/mi-perfil"]:focus-visible,
+.plan > a.btn#openRates:focus-visible {
+  animation-play-state: paused;
+  outline: 3px solid #2789d8;
+  outline-offset: 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .plan > a.btn[href="/mi-perfil"],
+  .plan > a.btn#openRates {
+    animation: none;
+    transition: none;
+  }
+}
