@@ -151,3 +151,40 @@
 /* Mi Contacto: actualización exclusivamente tipográfica. */
 :root{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif}
 h1,h2,h3{font-family:'Space Grotesk',system-ui,sans-serif;letter-spacing:-.02em}
+
+
+/* Interacciones visuales unificadas: portada, formularios, directorio,
+   perfiles, comercio y ADMIN. No modifica lógica ni eventos. */
+:where(button, input[type="button"], input[type="submit"], input[type="reset"], a.btn, a[role="button"], [role="button"], .profile-back-directory, .featured-disclosure > summary) {
+  transition: background-color .18s ease, color .18s ease, border-color .18s ease,
+    box-shadow .18s ease, filter .18s ease, transform .18s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+:where(button, input[type="button"], input[type="submit"], input[type="reset"], a.btn, a[role="button"], [role="button"], .profile-back-directory, .featured-disclosure > summary):not(:disabled):not([disabled]):not([aria-disabled="true"]):not([inert]) {
+  cursor: pointer;
+}
+@media (hover: hover) and (pointer: fine) {
+  :where(button, input[type="button"], input[type="submit"], input[type="reset"], a.btn, a[role="button"], [role="button"], .profile-back-directory, .featured-disclosure > summary):not(:disabled):not([disabled]):not([aria-disabled="true"]):not([inert]):hover {
+    filter: brightness(.91) saturate(1.12);
+    box-shadow: 0 4px 12px rgba(13, 58, 105, .17);
+    transform: translateY(-1px);
+  }
+}
+:where(button, input[type="button"], input[type="submit"], input[type="reset"], a.btn, a[role="button"], [role="button"], .profile-back-directory, .featured-disclosure > summary):not(:disabled):not([disabled]):not([aria-disabled="true"]):not([inert]):active {
+  filter: brightness(.83) saturate(1.08);
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 5px rgba(13, 58, 105, .14);
+}
+:where(button, input[type="button"], input[type="submit"], input[type="reset"], a.btn, a[role="button"], [role="button"], .profile-back-directory, .featured-disclosure > summary):focus-visible {
+  outline: 3px solid #2789d8;
+  outline-offset: 3px;
+}
+:where(button, input[type="button"], input[type="submit"], input[type="reset"], a.btn, a[role="button"], [role="button"]):is(:disabled, [disabled], [aria-disabled="true"], [inert]) {
+  cursor: not-allowed;
+  filter: grayscale(.15);
+}
+@media (prefers-reduced-motion: reduce) {
+  :where(button, input[type="button"], input[type="submit"], input[type="reset"], a.btn, a[role="button"], [role="button"], .profile-back-directory, .featured-disclosure > summary) {
+    transition: none;
+  }
+}
