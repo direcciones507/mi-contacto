@@ -1,6 +1,6 @@
 import {randomUUID,randomBytes,randomInt,createHmac,createHash,createCipheriv,createDecipheriv} from 'node:crypto';
 import {transaction} from './profile-runtime.js';
-export const CODE_UNIT_CENTS=190;
+export const CODE_UNIT_CENTS=199;
 export function codeQuote(quantity){if(!Number.isInteger(quantity)||quantity<1||quantity>100)throw Error('INVALID_CODE_QUANTITY');return {quantity,daysPerCode:1,unitCents:CODE_UNIT_CENTS,amountCents:quantity*CODE_UNIT_CENTS,currency:'USD',storageExpires:false};}
 export function codesRuntime(pool,{secret,provider=null}={}){
  const key=createHash('sha256').update('mc-code-encryption:'+secret).digest();
