@@ -405,3 +405,55 @@ body:has(.auth-card) .runtime::before{content:"";position:absolute;inset:0;point
 .runtime .auth-card>*{position:relative;z-index:1}
 @media(max-width:520px){.runtime .auth-card::after{border-radius:18px}}
 @media(prefers-reduced-motion:reduce){.runtime .auth-card::after{animation:none!important;opacity:.7}}
+
+/* Mi Perfil: reference-inspired motion in the existing live editor and profile cards.
+   Scoped to the owner dashboard. No form fields, validation, or business rules change. */
+@keyframes mcOwnerGlowTravel{
+  0%,100%{background-position:0% 15%,100% 90%}
+  50%{background-position:100% 80%,0% 20%}
+}
+@keyframes mcOwnerRingTurn{to{--mc-owner-angle:360deg}}
+@property --mc-owner-angle{syntax:"<angle>";inherits:false;initial-value:0deg}
+@keyframes mcOwnerReveal{from{opacity:0;transform:translateY(17px)}to{opacity:1;transform:translateY(0)}}
+body.owner-page{background:#fcfaf7;color:#1b2d50}
+body.owner-page .runtime{position:relative;isolation:isolate}
+body.owner-page .runtime::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 8% 10%,#dfe5ed8a,transparent 52%),radial-gradient(ellipse at 92% 72%,#efd9cd9e,transparent 55%)}
+body.owner-page .runtime>h1{color:#1b2d50;letter-spacing:-.035em;animation:mcOwnerReveal .6s ease-out both}
+body.owner-page .account-session,body.owner-page #accountPanel{animation:mcOwnerReveal .65s ease-out both}
+body.owner-page #editor,body.owner-page #photoTools,body.owner-page #profileCards>.card,body.owner-page #profileCards>.panel,body.owner-page #profileCards>.public-profile,body.owner-page .featured-disclosure{
+  position:relative;isolation:isolate;border-radius:22px;border:1px solid #e6d8d0;
+  background:#fffdfa;box-shadow:0 14px 36px #1b2d5010;
+}
+body.owner-page #editor::before,body.owner-page #photoTools::before,body.owner-page .featured-disclosure::before,
+body.owner-page #profileCards>.card::before,body.owner-page #profileCards>.panel::before,body.owner-page #profileCards>.public-profile::before{
+  content:"";position:absolute;inset:-1px;z-index:2;pointer-events:none;border-radius:inherit;padding:2px;
+  background:conic-gradient(from var(--mc-owner-angle),transparent 0deg,#c97556 55deg,transparent 125deg,#8794a9 205deg,transparent 280deg,#c97556 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;animation:mcOwnerRingTurn 9s linear infinite;
+}
+body.owner-page #editor::after,body.owner-page #photoTools::after,body.owner-page .featured-disclosure::after{
+  content:"";position:absolute;inset:2px;border-radius:20px;z-index:-1;pointer-events:none;
+  background-image:radial-gradient(ellipse 55% 45% at 18% 24%,#c9755619,transparent 80%),radial-gradient(ellipse 60% 55% at 85% 78%,#53678316,transparent 80%);
+  background-size:170% 170%,170% 170%;background-repeat:no-repeat;
+  animation:mcOwnerGlowTravel 15s ease-in-out infinite;
+}
+body.owner-page #editor input:not([type="checkbox"]),body.owner-page #editor select,body.owner-page #editor textarea{
+  border-radius:12px;transition:border-color .2s,box-shadow .2s,background .2s;
+}
+body.owner-page #editor input:not([type="checkbox"]):hover,body.owner-page #editor select:hover,body.owner-page #editor textarea:hover{border-color:#c97556}
+body.owner-page #editor input:focus-visible,body.owner-page #editor select:focus-visible,body.owner-page #editor textarea:focus-visible{
+  outline:0;border-color:#c97556;box-shadow:0 0 0 3px #c9755629;background:#fff;
+}
+body.owner-page #profileCards>.card,body.owner-page #profileCards>.panel,body.owner-page #profileCards>.public-profile{transition:transform .28s ease,box-shadow .28s ease}
+body.owner-page #profileCards>.card:hover,body.owner-page #profileCards>.panel:hover,body.owner-page #profileCards>.public-profile:hover{
+  transform:translateY(-4px);box-shadow:0 20px 45px #1b2d501e
+}
+body.owner-page #editor .btn-primary,body.owner-page #profileCards .btn-primary{background:#c97556;color:#fff}
+body.owner-page #editor .btn-primary:hover,body.owner-page #profileCards .btn-primary:hover{background:#b96346}
+@media(prefers-reduced-motion:reduce){
+  body.owner-page .runtime>h1,body.owner-page .account-session,body.owner-page #accountPanel,
+  body.owner-page #editor::before,body.owner-page #photoTools::before,body.owner-page .featured-disclosure::before,
+  body.owner-page #editor::after,body.owner-page #photoTools::after,body.owner-page .featured-disclosure::after,
+  body.owner-page #profileCards>.card::before,body.owner-page #profileCards>.panel::before,body.owner-page #profileCards>.public-profile::before{animation:none!important}
+  body.owner-page #profileCards>.card:hover,body.owner-page #profileCards>.panel:hover,body.owner-page #profileCards>.public-profile:hover{transform:none}
+}
