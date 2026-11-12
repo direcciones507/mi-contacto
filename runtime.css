@@ -831,3 +831,58 @@ body.owner-page .runtime #profileOptions .owner-delete-profile{
  .runtime .public-profile .profile-share-panel::before{animation:none!important}
  .runtime .public-profile .mc-inline-story-bar.on i{width:100%}
 }
+
+/* Reference fidelity: tapping the image must open the full-screen photo viewer. */
+.runtime .public-profile .mc-inline-story-prev,
+.runtime .public-profile .mc-inline-story-next{
+ pointer-events:none!important;
+}
+.runtime .public-profile .mc-inline-story-track .profile-photo-open{
+ cursor:zoom-in!important;
+}
+.runtime .public-profile .profile-photo-dialog{
+ width:min(95vw,780px)!important;max-width:780px!important;
+ max-height:94dvh!important;padding:12px!important;border-radius:24px!important;
+ background:#fdfbf7!important;
+}
+.runtime .public-profile .profile-photo-dialog .mc-story-progress{
+ position:relative;z-index:2;display:flex!important;gap:5px!important;
+ margin:4px 44px 12px 2px!important;
+}
+.runtime .public-profile .profile-photo-dialog #expandedProfilePhoto{
+ display:block!important;width:auto!important;height:auto!important;
+ max-width:100%!important;max-height:calc(94dvh - 110px)!important;
+ object-fit:contain!important;margin:0 auto!important;
+ border-radius:16px!important;
+}
+.runtime .public-profile .profile-photo-dialog #closeProfilePhoto{
+ top:9px!important;right:11px!important;
+ width:36px!important;height:36px!important;z-index:5!important;
+ background:#a8543a!important;color:#fff!important;
+}
+.runtime .public-profile .profile-photo-dialog .mc-photo-controls{
+ margin:4px 0 0!important;min-height:30px!important;
+}
+.runtime #logout,
+.runtime .account-session #logout,
+body.owner-page .runtime #logout{
+ position:relative!important;display:inline-flex;align-items:center;justify-content:center;
+ isolation:isolate;overflow:hidden;border-radius:14px!important;
+ padding:10px 18px!important;background:linear-gradient(120deg,#fdfbf7,#f1e6de)!important;
+ border:1px solid #d4b6a7!important;color:#1a2b4c!important;
+ font-weight:750!important;box-shadow:0 5px 16px #1a2b4c16!important;
+ transition:transform .22s ease,box-shadow .22s ease!important;
+}
+.runtime #logout[hidden]{display:none!important}
+.runtime #logout::after{
+ content:"";position:absolute;inset:0;pointer-events:none;
+ background:linear-gradient(105deg,transparent 25%,#ffffffb8 49%,transparent 70%);
+ transform:translateX(-125%);
+}
+.runtime #logout:hover{transform:translateY(-2px);box-shadow:0 10px 23px #1a2b4c25!important}
+.runtime #logout:hover::after{transform:translateX(125%);transition:transform .7s ease}
+.runtime #logout:focus-visible{outline:3px solid #c86d51;outline-offset:3px}
+@media(max-width:600px){
+ .runtime .public-profile .profile-photo-dialog{width:96vw!important;padding:9px!important}
+ .runtime .public-profile .profile-photo-dialog #expandedProfilePhoto{max-height:calc(94dvh - 95px)!important}
+}
