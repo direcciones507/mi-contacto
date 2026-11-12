@@ -353,3 +353,743 @@ body.auth-page .auth-card #emailAccess[hidden],body.auth-page .auth-card .auth-f
 .owner-page .runtime #profileOptions .contact-card>.owner-danger-zone{grid-column:1/-1}
 }
 @media(max-width:380px){.owner-page .runtime #profileOptions .contact-card{grid-template-columns:92px minmax(0,1fr);column-gap:11px}.owner-page .runtime #profileOptions .contact-card>img{width:92px;height:92px}.owner-page .runtime #profileOptions .contact-card>h2{font-size:1.12rem}}
+
+/* ADMIN inventory: one compact table and one shared action editor. */
+.codes-admin{min-width:0;max-width:100%}.codes-admin form,.codes-toolbar,.codes-actions{display:flex;flex-wrap:wrap;align-items:end;gap:.65rem;margin:1rem 0}.codes-admin form label{max-width:22rem}.codes-admin form small{flex-basis:100%}.codes-toolbar label{flex:1 1 160px;min-width:0}.codes-admin input,.codes-admin select{max-width:100%}.codes-table-scroll{overflow-x:auto;max-width:100%;border:1px solid #dbe2eb;border-radius:12px}.codes-table{border-collapse:collapse;width:100%;font-size:.85rem;min-width:900px}.codes-table caption{text-align:left;padding:.75rem;font-weight:600}.codes-table th,.codes-table td{padding:.55rem .65rem;text-align:left;border-bottom:1px solid #e2e8f0;vertical-align:middle}.codes-table th{background:#f1f5f9;color:#0f172a;white-space:nowrap}.codes-table tbody tr:nth-child(even){background:#f8fafc}.codes-table code{white-space:nowrap;color:#0f172a}.codes-table button{padding:.4rem .6rem;font-size:.8rem;min-height:36px;margin:.15rem}.codes-table input[type=checkbox]{width:20px;height:20px}.codes-editor{padding:1rem;border:1px solid #94a3b8;border-radius:12px;margin:1rem 0}.codes-editor[hidden]{display:none}.codes-editor label{display:block;max-width:32rem}.codes-actions button{font-size:.85rem}.codes-admin td{overflow-wrap:anywhere}@media(max-width:600px){.codes-actions button{flex:1 1 140px}.codes-admin form button{width:100%}.codes-toolbar label{flex-basis:100%}}
+#adminItems.codes-admin{display:block}
+
+/* MiContacto access experience: reference motion adapted to the live authentication forms. */
+@property --mc-auth-angle{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes mcAuthBorder{to{--mc-auth-angle:360deg}}
+@keyframes mcAuthEnter{from{opacity:0;transform:translateY(24px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes mcAuthRise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes mcAuthGrid{to{background-position:40px 40px}}
+body:has(.auth-card){background:radial-gradient(circle at 12% 15%,#e3e4e8 0,transparent 35%),radial-gradient(circle at 90% 85%,#f4dcd0 0,transparent 40%),#fbf9f6}
+body:has(.auth-card) .runtime{position:relative;isolation:isolate;min-height:calc(100vh - 155px);display:grid;place-items:center;padding:34px 20px 55px}
+body:has(.auth-card) .runtime::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;background-image:linear-gradient(#c7745510 1px,transparent 1px),linear-gradient(90deg,#c7745510 1px,transparent 1px);background-size:40px 40px;animation:mcAuthGrid 24s linear infinite}
+.runtime .auth-card{position:relative;isolation:isolate;max-width:430px;width:100%;margin:0 auto;padding:36px 34px;border-radius:24px;background:#fffdfb;border:1px solid #e9dcd5;box-shadow:0 22px 55px #1b2d501a;animation:mcAuthEnter .8s cubic-bezier(.22,1,.36,1) both;overflow:visible}
+.runtime .auth-card::before{content:"";position:absolute;inset:-2px;border-radius:26px;padding:2px;pointer-events:none;z-index:2;background:conic-gradient(from var(--mc-auth-angle),transparent 0deg,#cf7859 45deg,transparent 115deg,#7d879a 190deg,transparent 285deg,#cf7859 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:mcAuthBorder 7s linear infinite}
+.runtime .auth-card h2{font-size:clamp(1.7rem,3vw,2rem);font-weight:800;letter-spacing:-.035em;color:#1b2d50;margin:0 0 8px;animation:mcAuthRise .7s .1s both}
+.runtime .auth-card .auth-intro{color:#667085;line-height:1.5;margin:0 0 22px;animation:mcAuthRise .7s .18s both}
+.runtime .auth-card .auth-google{border:1px solid #ddd5d0;border-radius:12px;background:#fff;color:#1b2d50;transition:transform .2s,box-shadow .2s,border-color .2s;animation:mcAuthRise .7s .26s both}
+.runtime .auth-card .auth-google:hover{transform:translateY(-2px);border-color:#ce785b;box-shadow:0 8px 20px #1b2d5015}
+.runtime .auth-card #emailAccess>label:not([hidden]){animation:mcAuthRise .7s .35s both}
+.runtime .auth-card #emailAccess>label:nth-of-type(3):not([hidden]){animation-delay:.45s}
+.runtime .auth-card #emailAccess input,.runtime .auth-card #emailAccess select,.runtime .auth-card #confirmEmail input{background:#f7f7f8;border:1px solid #e4e3e4;border-radius:12px;min-height:48px;color:#1b2d50;transition:border-color .25s,box-shadow .25s,transform .25s}
+.runtime .auth-card #emailAccess input:hover,.runtime .auth-card #emailAccess select:hover{border-color:#cb7759}
+.runtime .auth-card #emailAccess input:focus-visible,.runtime .auth-card #emailAccess select:focus-visible,.runtime .auth-card #confirmEmail input:focus-visible{border-color:#c97556;box-shadow:0 0 0 4px #c9755624;outline:0;transform:translateY(-1px)}
+.runtime .auth-card #toggleAuthPassword,.runtime .auth-card #toggleConfirmPassword{background:#f2e8e3;color:#1b2d50;border-color:#e7d7ce;border-radius:9px;transition:transform .2s,background .2s}
+.runtime .auth-card #toggleAuthPassword:hover,.runtime .auth-card #toggleConfirmPassword:hover{background:#ebd3c8;transform:scale(1.04)}
+.runtime .auth-card .auth-submit{position:relative;overflow:hidden;isolation:isolate;background:#c97556;color:white;border:0;border-radius:12px;min-height:50px;font-weight:800;transition:transform .2s,box-shadow .2s,background .2s;animation:mcAuthRise .7s .58s both}
+.runtime .auth-card .auth-submit::before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 25%,#ffffff55 50%,transparent 75%);transform:translateX(-120%);transition:transform .7s;pointer-events:none;z-index:-1}
+.runtime .auth-card .auth-submit:hover{background:#b95e43;transform:translateY(-2px);box-shadow:0 10px 24px #c9755650}
+.runtime .auth-card .auth-submit:hover::before{transform:translateX(120%)}
+.runtime .auth-card .auth-forgot,.runtime .auth-card .auth-footer a{color:#b45d42}
+.runtime .auth-card .auth-legal-links{color:#7b7e88}
+@media(max-width:520px){body:has(.auth-card) .runtime{padding:22px 14px 36px}.runtime .auth-card{padding:28px 21px;border-radius:20px}.runtime .auth-card::before{border-radius:22px}}
+@media(prefers-reduced-motion:reduce){body:has(.auth-card) .runtime::before,.runtime .auth-card,.runtime .auth-card::before,.runtime .auth-card h2,.runtime .auth-card .auth-intro,.runtime .auth-card .auth-google,.runtime .auth-card #emailAccess>label,.runtime .auth-card .auth-submit{animation:none!important;opacity:1!important;transform:none!important}.runtime .auth-card .auth-submit::before{transition:none}}
+
+/* Soft, continuous motion INSIDE the authentication card, behind live form controls. */
+@keyframes mcAuthInnerDrift{
+  0%{background-position:0% 10%,100% 90%;opacity:.72}
+  50%{background-position:100% 85%,0% 15%;opacity:1}
+  100%{background-position:0% 10%,100% 90%;opacity:.72}
+}
+.runtime .auth-card::after{
+  content:"";position:absolute;inset:2px;border-radius:22px;
+  pointer-events:none;z-index:0;
+  background-image:radial-gradient(ellipse 72% 58% at 15% 20%,rgba(210,117,84,.19),transparent 76%),radial-gradient(ellipse 70% 60% at 85% 80%,rgba(69,82,123,.14),transparent 78%);
+  background-repeat:no-repeat;background-size:170% 170%,170% 170%;
+  animation:mcAuthInnerDrift 13s ease-in-out infinite;
+}
+.runtime .auth-card>*{position:relative;z-index:1}
+@media(max-width:520px){.runtime .auth-card::after{border-radius:18px}}
+@media(prefers-reduced-motion:reduce){.runtime .auth-card::after{animation:none!important;opacity:.7}}
+
+/* Mi Perfil: reference-inspired motion in the existing live editor and profile cards.
+   Scoped to the owner dashboard. No form fields, validation, or business rules change. */
+@keyframes mcOwnerGlowTravel{
+  0%,100%{background-position:0% 15%,100% 90%}
+  50%{background-position:100% 80%,0% 20%}
+}
+@keyframes mcOwnerRingTurn{to{--mc-owner-angle:360deg}}
+@property --mc-owner-angle{syntax:"<angle>";inherits:false;initial-value:0deg}
+@keyframes mcOwnerReveal{from{opacity:0;transform:translateY(17px)}to{opacity:1;transform:translateY(0)}}
+body.owner-page{background:#fcfaf7;color:#1b2d50}
+body.owner-page .runtime{position:relative;isolation:isolate}
+body.owner-page .runtime::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 8% 10%,#dfe5ed8a,transparent 52%),radial-gradient(ellipse at 92% 72%,#efd9cd9e,transparent 55%)}
+body.owner-page .runtime>h1{color:#1b2d50;letter-spacing:-.035em;animation:mcOwnerReveal .6s ease-out both}
+body.owner-page .account-session,body.owner-page #accountPanel{animation:mcOwnerReveal .65s ease-out both}
+body.owner-page #editor,body.owner-page #photoTools,body.owner-page #profileCards>.card,body.owner-page #profileCards>.panel,body.owner-page #profileCards>.public-profile,body.owner-page .featured-disclosure{
+  position:relative;isolation:isolate;border-radius:22px;border:1px solid #e6d8d0;
+  background:#fffdfa;box-shadow:0 14px 36px #1b2d5010;
+}
+body.owner-page #editor::before,body.owner-page #photoTools::before,body.owner-page .featured-disclosure::before,
+body.owner-page #profileCards>.card::before,body.owner-page #profileCards>.panel::before,body.owner-page #profileCards>.public-profile::before{
+  content:"";position:absolute;inset:-1px;z-index:2;pointer-events:none;border-radius:inherit;padding:2px;
+  background:conic-gradient(from var(--mc-owner-angle),transparent 0deg,#c97556 55deg,transparent 125deg,#8794a9 205deg,transparent 280deg,#c97556 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;animation:mcOwnerRingTurn 9s linear infinite;
+}
+body.owner-page #editor::after,body.owner-page #photoTools::after,body.owner-page .featured-disclosure::after{
+  content:"";position:absolute;inset:2px;border-radius:20px;z-index:-1;pointer-events:none;
+  background-image:radial-gradient(ellipse 55% 45% at 18% 24%,#c9755619,transparent 80%),radial-gradient(ellipse 60% 55% at 85% 78%,#53678316,transparent 80%);
+  background-size:170% 170%,170% 170%;background-repeat:no-repeat;
+  animation:mcOwnerGlowTravel 15s ease-in-out infinite;
+}
+body.owner-page #editor input:not([type="checkbox"]),body.owner-page #editor select,body.owner-page #editor textarea{
+  border-radius:12px;transition:border-color .2s,box-shadow .2s,background .2s;
+}
+body.owner-page #editor input:not([type="checkbox"]):hover,body.owner-page #editor select:hover,body.owner-page #editor textarea:hover{border-color:#c97556}
+body.owner-page #editor input:focus-visible,body.owner-page #editor select:focus-visible,body.owner-page #editor textarea:focus-visible{
+  outline:0;border-color:#c97556;box-shadow:0 0 0 3px #c9755629;background:#fff;
+}
+body.owner-page #profileCards>.card,body.owner-page #profileCards>.panel,body.owner-page #profileCards>.public-profile{transition:transform .28s ease,box-shadow .28s ease}
+body.owner-page #profileCards>.card:hover,body.owner-page #profileCards>.panel:hover,body.owner-page #profileCards>.public-profile:hover{
+  transform:translateY(-4px);box-shadow:0 20px 45px #1b2d501e
+}
+body.owner-page #editor .btn-primary,body.owner-page #profileCards .btn-primary{background:#c97556;color:#fff}
+body.owner-page #editor .btn-primary:hover,body.owner-page #profileCards .btn-primary:hover{background:#b96346}
+@media(prefers-reduced-motion:reduce){
+  body.owner-page .runtime>h1,body.owner-page .account-session,body.owner-page #accountPanel,
+  body.owner-page #editor::before,body.owner-page #photoTools::before,body.owner-page .featured-disclosure::before,
+  body.owner-page #editor::after,body.owner-page #photoTools::after,body.owner-page .featured-disclosure::after,
+  body.owner-page #profileCards>.card::before,body.owner-page #profileCards>.panel::before,body.owner-page #profileCards>.public-profile::before{animation:none!important}
+  body.owner-page #profileCards>.card:hover,body.owner-page #profileCards>.panel:hover,body.owner-page #profileCards>.public-profile:hover{transform:none}
+}
+
+/* Owner's REAL published profile card: moving geometric backdrop inspired by preview reference. */
+@keyframes mcOwnerPrismDrift{
+  0%,100%{background-position:0% 0%,100% 100%,50% 50%;opacity:.78}
+  50%{background-position:100% 75%,0% 25%,55% 45%;opacity:1}
+}
+body.owner-page .runtime #profileOptions .contact-card{
+  position:relative;isolation:isolate;overflow:hidden;
+  background:#fffdfa;border:1px solid #e4d9d4;border-radius:26px;
+  box-shadow:0 18px 45px #1b2d5014;
+}
+body.owner-page .runtime #profileOptions .contact-card::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background-image:
+    linear-gradient(138deg,transparent 0 24%,#c9755630 24% 39%,transparent 39% 100%),
+    linear-gradient(322deg,transparent 0 23%,#7189a82c 23% 43%,transparent 43% 100%),
+    radial-gradient(ellipse at 50% 45%,#fffdfa 27%,#fffdfa90 64%,transparent 90%);
+  background-size:150% 150%,150% 150%,100% 100%;
+  background-repeat:no-repeat;
+  animation:mcOwnerPrismDrift 17s ease-in-out infinite;
+}
+body.owner-page .runtime #profileOptions .contact-card::after{
+  content:"";position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:inherit;padding:2px;
+  background:conic-gradient(from var(--mc-owner-angle),transparent 0deg,#c97556 55deg,transparent 125deg,#8293a9 205deg,transparent 280deg,#c97556 360deg);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  animation:mcOwnerRingTurn 10s linear infinite;
+}
+body.owner-page .runtime #profileOptions .contact-card>img{
+  position:relative;z-index:1;box-shadow:0 10px 26px #1b2d501a;
+  border:3px solid #fffdfa;border-radius:17px;
+}
+body.owner-page .runtime #profileOptions .contact-card>h2{color:#1b2d50;letter-spacing:-.025em}
+body.owner-page .runtime #profileOptions .contact-card .owner-feature-cta{
+  background:linear-gradient(120deg,#b65f45,#d48766)!important;
+  color:#fff!important;border-color:transparent!important;
+  box-shadow:0 6px 17px #b65f4530;
+}
+body.owner-page .runtime #profileOptions .contact-card .owner-feature-cta:hover{filter:brightness(.95)}
+/* Highlight purchase/code panel, while leaving its actual controls and error messages intact. */
+body.owner-page .runtime .featured-disclosure{overflow:hidden;background:#fffdfa;border-radius:24px}
+body.owner-page .runtime .featured-disclosure>summary{
+  position:relative;z-index:1;
+  background:linear-gradient(110deg,#fbf7f3,#f2e8e1 58%,#e9edf1);
+  color:#1b2d50;border-bottom:1px solid #e5d9d3;
+}
+body.owner-page .runtime .featured-disclosure>summary .featured-summary-hint{color:#6b7180}
+body.owner-page .runtime .featured-disclosure #commercial{
+  position:relative;z-index:1;background:transparent;
+}
+body.owner-page .runtime .featured-disclosure::after{
+  background-image:radial-gradient(ellipse 65% 60% at 15% 15%,#c9755614,transparent 80%),radial-gradient(ellipse 65% 60% at 85% 80%,#5d779918,transparent 80%);
+  background-size:170% 170%,170% 170%;
+}
+@media(prefers-reduced-motion:reduce){
+  body.owner-page .runtime #profileOptions .contact-card::before,
+  body.owner-page .runtime #profileOptions .contact-card::after{animation:none!important}
+}
+
+/* Silver-light sweep on actionable controls, including profile-owner actions. */
+@keyframes mcSilverPass{from{transform:translateX(-160%) skewX(-20deg)}to{transform:translateX(250%) skewX(-20deg)}}
+body.owner-page #profileOptions .contact-card>.actions button,
+body.owner-page #profileOptions .contact-card>.actions a,
+.runtime .public-profile .profile-contact-actions a,
+.runtime .public-profile .profile-share-actions button,
+.runtime .public-profile .profile-share-actions a{
+  position:relative;isolation:isolate;overflow:hidden;
+  transition:transform .22s ease,box-shadow .22s ease,background-color .22s ease;
+}
+body.owner-page #profileOptions .contact-card>.actions button::after,
+body.owner-page #profileOptions .contact-card>.actions a::after,
+.runtime .public-profile .profile-contact-actions a::after,
+.runtime .public-profile .profile-share-actions button::after,
+.runtime .public-profile .profile-share-actions a::after{
+  content:"";position:absolute;inset:0;width:48%;height:100%;left:0;
+  pointer-events:none;z-index:0;opacity:0;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.75),rgba(220,226,234,.42),transparent);
+  transform:translateX(-160%) skewX(-20deg);
+}
+body.owner-page #profileOptions .contact-card>.actions button:hover,
+body.owner-page #profileOptions .contact-card>.actions a:hover,
+.runtime .public-profile .profile-contact-actions a:hover,
+.runtime .public-profile .profile-share-actions button:hover,
+.runtime .public-profile .profile-share-actions a:hover{
+  transform:translateY(-2px);box-shadow:0 8px 20px #1b2d5023;
+}
+body.owner-page #profileOptions .contact-card>.actions button:hover::after,
+body.owner-page #profileOptions .contact-card>.actions a:hover::after,
+.runtime .public-profile .profile-contact-actions a:hover::after,
+.runtime .public-profile .profile-share-actions button:hover::after,
+.runtime .public-profile .profile-share-actions a:hover::after{
+  opacity:1;animation:mcSilverPass .75s ease-out both;
+}
+/* Public profile: consistent cream, navy, terracotta and softly animated photography. */
+.runtime .public-profile{position:relative;isolation:isolate;border-color:#e6d7d0;border-radius:25px;box-shadow:0 18px 46px #1b2d5014;background:#fffdfa;overflow:hidden}
+.runtime .public-profile::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse at 7% 7%,#c9755614,transparent 48%),radial-gradient(ellipse at 95% 90%,#7087a71a,transparent 48%);
+}
+.runtime .public-profile .photo-grid img{transition:transform .45s cubic-bezier(.22,1,.36,1),filter .3s}
+.runtime .public-profile .profile-photo-open:hover img{transform:scale(1.065);filter:saturate(1.07)}
+.runtime .public-profile .profile-photo-open:focus-visible{outline:3px solid #c97556;outline-offset:3px}
+.runtime .public-profile .featured-card-badge,.runtime .public-profile .featured-heading-badge{
+  background:linear-gradient(125deg,#c97556,#a95139);color:#fff;box-shadow:0 6px 20px #a9513933;
+}
+.runtime .public-profile .profile-identity h2{color:#1b2d50}
+.runtime .public-profile .profile-photo-dialog{background:#fbf9f7;border:1px solid #e5d5cc}
+.runtime .public-profile .profile-photo-dialog::backdrop{background:#101d34e8;backdrop-filter:blur(6px)}
+.runtime .public-profile .profile-photo-dialog img{border-radius:13px;max-height:72dvh}
+.runtime .public-profile .profile-photo-dialog .mc-photo-controls{
+  display:flex;align-items:center;justify-content:center;gap:20px;padding:10px 12px 2px;color:#1b2d50;font-weight:750;
+}
+.runtime .public-profile .profile-photo-dialog .mc-photo-controls button{
+  display:grid;place-items:center;min-width:48px;min-height:44px;border-radius:12px;
+  background:#f2e7e0;color:#1b2d50;border:1px solid #e0cbbf;font-size:1.8rem;cursor:pointer;
+}
+.runtime .public-profile .profile-photo-dialog .mc-photo-controls button:hover{background:#e9d2c5}
+@keyframes mcPhotoEnter{from{opacity:.4;transform:translateX(18px) scale(.985)}to{opacity:1;transform:translateX(0) scale(1)}}
+.runtime .public-profile .profile-photo-dialog img.mc-photo-enter{animation:mcPhotoEnter .36s ease-out both}
+@media(prefers-reduced-motion:reduce){
+  .runtime .public-profile .profile-photo-dialog img.mc-photo-enter{animation:none!important}
+  body.owner-page #profileOptions .contact-card>.actions button:hover::after,
+  body.owner-page #profileOptions .contact-card>.actions a:hover::after,
+  .runtime .public-profile .profile-contact-actions a:hover::after,
+  .runtime .public-profile .profile-share-actions button:hover::after,
+  .runtime .public-profile .profile-share-actions a:hover::after{animation:none!important;opacity:0}
+}
+
+/* Unified Mi Contacto controls, owner dashboard and public card. */
+body.owner-page .runtime #profileOptions .contact-card>.actions button,
+body.owner-page .runtime #profileOptions .contact-card>.actions a,
+body.owner-page .runtime .account-session button,
+body.owner-page .runtime .account-session a,
+.runtime .public-profile .profile-share-actions a,
+.runtime .public-profile .profile-share-actions button,
+.runtime .public-profile .profile-map-links a,
+.runtime .public-profile .profile-contact-actions .profile-action,
+.header .profile-back-directory{
+  position:relative;isolation:isolate;overflow:hidden;border-radius:14px!important;
+  border:1px solid #d7c5bc!important;
+  background:linear-gradient(130deg,#fffdfa,#f4e9e2)!important;
+  color:#1b2d50!important;
+  font-weight:750;box-shadow:0 4px 13px #1b2d500d;
+  transition:transform .2s ease,box-shadow .2s ease,background .2s ease;
+}
+body.owner-page .runtime #profileOptions .contact-card>.actions .owner-feature-cta,
+.runtime .public-profile .profile-action-call{
+  background:linear-gradient(120deg,#b65f45,#d48766)!important;color:#fff!important;
+  border-color:#b65f45!important;
+}
+.runtime .public-profile .profile-action-whatsapp{background:#167650!important;color:#fff!important;border-color:#167650!important}
+body.owner-page .runtime #profileOptions .contact-card>.actions button::after,
+body.owner-page .runtime #profileOptions .contact-card>.actions a::after,
+body.owner-page .runtime .account-session button::after,
+.runtime .public-profile .profile-share-actions a::after,
+.runtime .public-profile .profile-share-actions button::after,
+.runtime .public-profile .profile-map-links a::after,
+.runtime .public-profile .profile-contact-actions .profile-action::after,
+.header .profile-back-directory::after{
+ content:"";position:absolute;inset:0 auto 0 0;width:50%;pointer-events:none;z-index:1;
+ background:linear-gradient(90deg,transparent,#ffffffa8,#d7e0e85e,transparent);
+ transform:translateX(-180%) skewX(-22deg);
+}
+body.owner-page .runtime #profileOptions .contact-card>.actions button:hover,
+body.owner-page .runtime #profileOptions .contact-card>.actions a:hover,
+body.owner-page .runtime .account-session button:hover,
+.runtime .public-profile .profile-share-actions a:hover,
+.runtime .public-profile .profile-share-actions button:hover,
+.runtime .public-profile .profile-map-links a:hover,
+.runtime .public-profile .profile-contact-actions .profile-action:hover,
+.header .profile-back-directory:hover{transform:translateY(-2px);box-shadow:0 10px 22px #1b2d5020}
+body.owner-page .runtime #profileOptions .contact-card>.actions button:hover::after,
+body.owner-page .runtime #profileOptions .contact-card>.actions a:hover::after,
+body.owner-page .runtime .account-session button:hover::after,
+.runtime .public-profile .profile-share-actions a:hover::after,
+.runtime .public-profile .profile-share-actions button:hover::after,
+.runtime .public-profile .profile-map-links a:hover::after,
+.runtime .public-profile .profile-contact-actions .profile-action:hover::after,
+.header .profile-back-directory:hover::after{animation:mcSilverPass .8s ease-out both}
+body.owner-page .runtime #profileOptions .owner-delete-profile{
+ background:#fffaf9!important;color:#aa3535!important;border-color:#e9aaaa!important;
+}
+/* Mobile photo story: slim animated progress track replaces bulky gallery arrows. */
+.runtime .public-profile .profile-photo-dialog{
+ width:min(94vw,700px);max-width:700px;max-height:94dvh;
+ padding:14px!important;overflow:hidden;box-sizing:border-box;
+}
+.runtime .public-profile .profile-photo-dialog .mc-story-progress{
+ display:flex;gap:5px;align-items:center;margin:2px 0 12px;
+}
+.runtime .public-profile .profile-photo-dialog .mc-story-progress-segment{
+ flex:1 1 0;min-width:0;height:5px;padding:0!important;margin:0!important;
+ border:0!important;border-radius:99px;background:#e2d8d2!important;overflow:hidden;cursor:pointer;
+}
+.runtime .public-profile .profile-photo-dialog .mc-story-progress-segment span{
+ display:block;width:100%;height:100%;border-radius:inherit;background:#c97556;transform:scaleX(0);transform-origin:left center;
+}
+.runtime .public-profile .profile-photo-dialog .mc-story-progress-segment.is-complete span{transform:scaleX(1)}
+@keyframes mcStoryFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.runtime .public-profile .profile-photo-dialog .mc-story-progress-segment.is-current span{
+ animation:mcStoryFill 4.5s linear both;
+}
+.runtime .public-profile .profile-photo-dialog #closeProfilePhoto{
+ position:absolute;top:28px;right:16px;z-index:3;margin:0!important;
+ width:34px;height:34px;padding:0!important;border-radius:50%;
+ background:#1b2d50b8!important;color:white!important;border:1px solid #ffffff80!important;
+ font-size:0;cursor:pointer;display:grid;place-items:center;box-shadow:0 4px 14px #1b2d5040;
+}
+.runtime .public-profile .profile-photo-dialog #closeProfilePhoto::after{content:"×";font-size:25px;line-height:1}
+.runtime .public-profile .profile-photo-dialog img{
+ width:auto;max-width:100%;max-height:min(77dvh,800px);object-fit:contain;margin:auto;
+ touch-action:pan-y;user-select:none;
+}
+.runtime .public-profile .profile-photo-dialog .mc-photo-controls{
+ padding:7px 0 0;gap:10px;font-size:.82rem;color:#667085;
+}
+.runtime .public-profile .profile-photo-dialog .mc-photo-controls button{
+ min-width:30px;min-height:30px;font-size:1.2rem;border:0;background:transparent;color:#c97556;
+}
+@media(max-width:600px){
+ .runtime .public-profile .profile-photo-dialog{width:94vw;padding:10px!important;border-radius:19px}
+ .runtime .public-profile .profile-photo-dialog #closeProfilePhoto{top:20px;right:13px}
+ .runtime .public-profile .profile-photo-dialog .mc-photo-controls button{display:none}
+ .runtime .public-profile .profile-photo-dialog img{max-height:76dvh}
+ body.owner-page .runtime #profileOptions .contact-card>.actions>*{border-radius:12px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .runtime .public-profile .profile-photo-dialog .mc-story-progress-segment.is-current span{animation:none;transform:scaleX(1)}
+}
+
+/* Brand palette correction: age notice and expanded photo gallery. */
+.mc-notice-backdrop{background:rgba(19,31,49,.72)!important;backdrop-filter:blur(5px)}
+.mc-notice-dialog{
+ background:#fffdfa!important;color:#27364b!important;
+ border:1px solid #e8d8ce!important;border-radius:22px!important;
+ box-shadow:0 24px 70px #0e203a4a!important;
+}
+.mc-notice-dialog h2{color:#1b2d50!important;letter-spacing:-.025em;line-height:1.18}
+.mc-notice-dialog h3{color:#a8563e!important}
+.mc-notice-scroll{color:#334155!important}
+.mc-notice-scroll a{color:#ad5c43!important;text-underline-offset:3px}
+.mc-notice-actions{border-top-color:#e8d8ce!important}
+.mc-notice-actions button{
+ position:relative;overflow:hidden;border-radius:13px!important;
+ border:1px solid #c97556!important;background:linear-gradient(115deg,#b65f45,#d48766)!important;
+ color:#fff!important;box-shadow:0 6px 18px #ad63432b;
+ transition:transform .2s,box-shadow .2s;
+}
+.mc-notice-actions .mc-notice-decline,.mc-notice-decline{
+ background:#fffdfa!important;color:#9b4f3b!important;border:1px solid #d9b7a6!important;
+ box-shadow:none!important;
+}
+.mc-notice-actions button:hover,.mc-notice-decline:hover{transform:translateY(-2px);box-shadow:0 9px 22px #ad634329}
+.mc-notice-actions button:focus-visible,.mc-notice-scroll a:focus-visible{outline:3px solid #c97556;outline-offset:3px}
+.runtime .public-profile .profile-photo-dialog{
+ border:1px solid #dec9bc!important;
+ background:#fffdfa!important;color:#1b2d50!important;
+ box-shadow:0 24px 65px #0e203a60!important;
+}
+.runtime .public-profile .profile-photo-dialog::backdrop{background:rgba(17,28,46,.84)!important}
+.runtime .public-profile .profile-photo-dialog #expandedProfilePhoto{
+ border:1px solid #e7d8cf!important;border-radius:16px!important;
+ box-shadow:0 7px 23px #1b2d5019;
+}
+.runtime .public-profile .profile-photo-dialog .mc-story-progress-segment{
+ background:#e8dcd3!important;
+}
+.runtime .public-profile .profile-photo-dialog .mc-story-progress-segment span{
+ background:linear-gradient(90deg,#ac5940,#d99678)!important;
+}
+.runtime .public-profile .profile-photo-dialog #closeProfilePhoto{
+ background:#a9543f!important;border:1px solid #fff9!important;color:#fff!important;
+}
+.runtime .public-profile .profile-photo-dialog .mc-photo-controls button{
+ color:#a9543f!important;background:#f5e8df!important;border:1px solid #e3c8b7!important;
+}
+.runtime .public-profile .profile-photo-dialog .mc-photo-counter{color:#1b2d50!important}
+@media(max-width:600px){
+ .mc-notice-dialog{border-radius:18px!important}
+ .mc-notice-dialog h2{font-size:clamp(20px,5vw,28px)!important}
+ .runtime .public-profile .profile-photo-dialog{border-radius:20px!important}
+}
+@media(prefers-reduced-motion:reduce){.mc-notice-actions button{transition:none}}
+
+/* Public profile visual system from owner-provided motion graphics reference. */
+.runtime .public-profile{--mc-cream:#fdfbf7;--mc-navy:#1a2b4c;--mc-terra:#c86d51;background:var(--mc-cream)!important;color:#2b2b2b!important}
+.runtime .public-profile .profile-hero{align-items:start;gap:clamp(18px,3vw,30px)}
+.runtime .public-profile .mc-profile-story{
+ position:relative!important;display:block!important;overflow:hidden!important;isolation:isolate;
+ width:100%;min-width:0;aspect-ratio:4/5;border-radius:24px!important;
+ background:#142039!important;box-shadow:0 18px 40px #1a2b4c30!important;
+ padding:0!important;touch-action:pan-y;
+}
+.runtime .public-profile .mc-inline-story-track{
+ display:flex!important;flex-wrap:nowrap!important;gap:0!important;
+ width:100%;height:100%;transition:transform .7s cubic-bezier(.22,1,.36,1);
+}
+.runtime .public-profile .mc-inline-story-track .profile-photo-open{
+ display:block!important;flex:0 0 100%!important;width:100%!important;height:100%!important;
+ border:0!important;border-radius:0!important;padding:0!important;overflow:hidden;
+ background:#142039!important;box-shadow:none!important;transform:none!important;
+}
+.runtime .public-profile .mc-inline-story-track .profile-photo-open img{
+ display:block!important;width:100%!important;height:100%!important;max-width:none!important;
+ object-fit:cover!important;aspect-ratio:auto!important;border-radius:0!important;
+ transform:scale(1.02);transition:none!important;
+}
+@keyframes mcInlineKen{to{transform:scale(1.1) translate3d(-1.2%,-1%,0)}}
+.runtime .public-profile .mc-inline-story-track .mc-story-active img{animation:mcInlineKen 5s ease-out both}
+.runtime .public-profile .mc-profile-story::after{
+ content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
+ background:linear-gradient(180deg,#0005,transparent 19%,transparent 75%,#0005);
+}
+.runtime .public-profile .mc-inline-story-bars{
+ position:absolute;z-index:3;top:12px;left:12px;right:12px;display:flex;gap:5px;
+}
+.runtime .public-profile .mc-inline-story-bar{
+ flex:1;height:4px;border-radius:10px;overflow:hidden;background:#ffffff70;
+}
+.runtime .public-profile .mc-inline-story-bar i{display:block;width:0;height:100%;background:#fff;border-radius:inherit}
+.runtime .public-profile .mc-inline-story-bar.done i{width:100%}
+@keyframes mcInlineFill{to{width:100%}}
+.runtime .public-profile .mc-inline-story-bar.on i{animation:mcInlineFill 5s linear both}
+.runtime .public-profile .mc-inline-story-count{
+ position:absolute;z-index:3;bottom:12px;right:12px;color:#fff;font-weight:750;
+ background:#1a2b4cb8;border-radius:99px;padding:4px 11px;font-size:.8rem;
+}
+.runtime .public-profile .mc-inline-story-prev,.runtime .public-profile .mc-inline-story-next{
+ position:absolute!important;top:30px;bottom:0;z-index:2;border:0!important;
+ background:transparent!important;color:transparent!important;cursor:pointer;padding:0!important;
+ box-shadow:none!important;border-radius:0!important;transform:none!important;
+}
+.runtime .public-profile .mc-inline-story-prev{left:0;width:32%}
+.runtime .public-profile .mc-inline-story-next{right:0;width:68%}
+.runtime .public-profile .profile-identity{
+ position:relative;background:#fff;border:1px solid #1a2b4c21;border-radius:24px;
+ padding:clamp(18px,2.5vw,26px);box-shadow:0 12px 32px #1a2b4c12;
+}
+.runtime .public-profile .profile-identity::before,
+.runtime .public-profile .profile-share-panel::before{
+ content:"";position:absolute;inset:-1px;border-radius:inherit;padding:2px;pointer-events:none;
+ background:conic-gradient(from var(--mc-directory-angle),transparent,#c86d51 17%,transparent 32%,#1a2b4c 55%,transparent 75%);
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+ -webkit-mask-composite:xor;mask-composite:exclude;animation:mcDirectoryEdge 9s linear infinite;
+}
+.runtime .public-profile .profile-identity h2{color:#1a2b4c!important;letter-spacing:-.035em}
+.runtime .public-profile .profile-identity .description{color:#5c6272!important;line-height:1.65}
+.runtime .public-profile .profile-share-panel{
+ position:relative;background:#fff!important;border:1px solid #1a2b4c21!important;
+ border-radius:24px!important;box-shadow:0 12px 32px #1a2b4c10;
+}
+.runtime .public-profile .featured-card-badge,.runtime .public-profile .featured-heading-badge{
+ background:linear-gradient(110deg,#1a2b4c,#24406f 40%,#c86d51 52%,#24406f 65%,#1a2b4c)!important;
+ background-size:250% 100%!important;animation:mcBadgeGlow 4s linear infinite;
+ color:white!important;
+}
+@keyframes mcBadgeGlow{to{background-position:-250% 0}}
+.runtime .public-profile .profile-contact-actions .profile-action-call{background:#1a2b4c!important;color:#fff!important;border-color:#1a2b4c!important}
+.runtime .public-profile .profile-contact-actions .profile-action-whatsapp{background:#25d366!important;color:#052e16!important;border-color:#25d366!important}
+@media(min-width:950px){.runtime .public-profile .mc-profile-story{aspect-ratio:4/3.1}}
+@media(max-width:640px){
+ .runtime .public-profile .mc-profile-story{aspect-ratio:4/5;border-radius:22px!important}
+ .runtime .public-profile .profile-identity{padding:18px;border-radius:20px}
+}
+@media(prefers-reduced-motion:reduce){
+ .runtime .public-profile .mc-inline-story-track{transition:none!important}
+ .runtime .public-profile .mc-story-active img,
+ .runtime .public-profile .mc-inline-story-bar.on i,
+ .runtime .public-profile .featured-card-badge,
+ .runtime .public-profile .featured-heading-badge,
+ .runtime .public-profile .profile-identity::before,
+ .runtime .public-profile .profile-share-panel::before{animation:none!important}
+ .runtime .public-profile .mc-inline-story-bar.on i{width:100%}
+}
+
+/* Reference fidelity: tapping the image must open the full-screen photo viewer. */
+.runtime .public-profile .mc-inline-story-prev,
+.runtime .public-profile .mc-inline-story-next{
+ pointer-events:none!important;
+}
+.runtime .public-profile .mc-inline-story-track .profile-photo-open{
+ cursor:zoom-in!important;
+}
+.runtime .public-profile .profile-photo-dialog{
+ width:min(95vw,780px)!important;max-width:780px!important;
+ max-height:94dvh!important;padding:12px!important;border-radius:24px!important;
+ background:#fdfbf7!important;
+}
+.runtime .public-profile .profile-photo-dialog .mc-story-progress{
+ position:relative;z-index:2;display:flex!important;gap:5px!important;
+ margin:4px 44px 12px 2px!important;
+}
+.runtime .public-profile .profile-photo-dialog #expandedProfilePhoto{
+ display:block!important;width:auto!important;height:auto!important;
+ max-width:100%!important;max-height:calc(94dvh - 110px)!important;
+ object-fit:contain!important;margin:0 auto!important;
+ border-radius:16px!important;
+}
+.runtime .public-profile .profile-photo-dialog #closeProfilePhoto{
+ top:9px!important;right:11px!important;
+ width:36px!important;height:36px!important;z-index:5!important;
+ background:#a8543a!important;color:#fff!important;
+}
+.runtime .public-profile .profile-photo-dialog .mc-photo-controls{
+ margin:4px 0 0!important;min-height:30px!important;
+}
+.runtime #logout,
+.runtime .account-session #logout,
+body.owner-page .runtime #logout{
+ position:relative!important;display:inline-flex;align-items:center;justify-content:center;
+ isolation:isolate;overflow:hidden;border-radius:14px!important;
+ padding:10px 18px!important;background:linear-gradient(120deg,#fdfbf7,#f1e6de)!important;
+ border:1px solid #d4b6a7!important;color:#1a2b4c!important;
+ font-weight:750!important;box-shadow:0 5px 16px #1a2b4c16!important;
+ transition:transform .22s ease,box-shadow .22s ease!important;
+}
+.runtime #logout[hidden]{display:none!important}
+.runtime #logout::after{
+ content:"";position:absolute;inset:0;pointer-events:none;
+ background:linear-gradient(105deg,transparent 25%,#ffffffb8 49%,transparent 70%);
+ transform:translateX(-125%);
+}
+.runtime #logout:hover{transform:translateY(-2px);box-shadow:0 10px 23px #1a2b4c25!important}
+.runtime #logout:hover::after{transform:translateX(125%);transition:transform .7s ease}
+.runtime #logout:focus-visible{outline:3px solid #c86d51;outline-offset:3px}
+@media(max-width:600px){
+ .runtime .public-profile .profile-photo-dialog{width:96vw!important;padding:9px!important}
+ .runtime .public-profile .profile-photo-dialog #expandedProfilePhoto{max-height:calc(94dvh - 95px)!important}
+}
+
+/* Profile reference layout v8: real photo hero, navigation and QR */
+body.owner-page .header .nav #logout,
+body.owner-page .header #logout,
+body.owner-page #logout,
+body.owner-page .runtime #logout{
+ background:linear-gradient(120deg,#bd654b,#d88465)!important;color:#fff!important;
+ border:1px solid #b95e44!important;border-radius:15px!important;
+ font-size:1rem!important;font-weight:800!important;min-height:48px!important;
+ padding:11px 22px!important;box-shadow:0 8px 20px #ac60422b!important;
+}
+body.owner-page #logout[hidden]{display:none!important}
+body.owner-page #logout:hover{box-shadow:0 12px 26px #ac604245!important}
+.runtime .public-profile{max-width:1280px!important;width:min(100%,1280px)!important;
+ box-sizing:border-box;margin:0 auto!important;padding:clamp(22px,3.5vw,48px)!important;
+ border-radius:32px!important;background:linear-gradient(135deg,#fdfbf8,#f8eee8)!important;
+}
+.runtime .public-profile .profile-hero{
+ display:grid!important;grid-template-columns:minmax(0,1.13fr) minmax(0,.87fr)!important;
+ align-items:stretch!important;gap:clamp(20px,3vw,38px)!important;
+ padding:8px 0 32px!important;border-bottom:1px solid #e6d9d1!important;
+}
+.runtime .public-profile .profile-hero .mc-profile-story{
+ display:block!important;width:100%!important;max-width:none!important;
+ min-height:460px!important;height:clamp(460px,52vw,680px)!important;
+ aspect-ratio:auto!important;border-radius:30px!important;
+}
+.runtime .public-profile .mc-inline-story-track .profile-photo-open img,
+.runtime .public-profile .profile-hero .photo-grid img,
+.runtime .public-profile .profile-hero .photo-grid img:first-child{
+ width:100%!important;height:100%!important;max-height:none!important;
+ aspect-ratio:auto!important;object-fit:cover!important;grid-column:auto!important;
+ border-radius:0!important;
+}
+.runtime .public-profile .profile-identity{
+ display:flex;flex-direction:column;justify-content:center;
+ min-height:0;padding:clamp(24px,3.2vw,46px)!important;
+ border-radius:30px!important;background:#fff!important;
+}
+.runtime .public-profile .profile-identity h2{
+ font-size:clamp(2.4rem,5vw,4.6rem)!important;line-height:1.07!important;
+ margin:0 0 24px!important;overflow-wrap:anywhere;
+}
+.runtime .public-profile .profile-identity h2::after{
+ content:"";display:block;width:110px;height:4px;margin-top:14px;border-radius:10px;
+ background:linear-gradient(90deg,#c66b4e 40%,#1a2b4c 40%);
+}
+.runtime .public-profile .profile-identity>p{font-size:clamp(1rem,1.7vw,1.3rem)!important}
+.runtime .public-profile .profile-identity .description{line-height:1.65!important}
+.runtime .public-profile .profile-contact-actions{
+ display:grid!important;grid-template-columns:1fr 1fr 1fr!important;
+ gap:12px!important;margin:26px 0 16px!important;
+}
+.runtime .public-profile .profile-contact-actions>.profile-action,
+.runtime .public-profile .profile-contact-actions>.profile-directions{
+ min-width:0!important;min-height:76px!important;margin:0!important;
+ display:flex!important;align-items:center;justify-content:center;
+ border-radius:17px!important;font-size:1.05rem!important;
+}
+.runtime .public-profile .profile-contact-actions>.profile-directions{
+ position:relative;display:block!important;padding:0!important;
+ border:0!important;background:transparent!important;
+}
+.runtime .public-profile .profile-directions>summary{
+ list-style:none;display:flex;align-items:center;justify-content:center;gap:10px;
+ min-height:76px;padding:12px!important;box-sizing:border-box;
+ border-radius:17px;background:#c86d51!important;color:#fff!important;
+ font-size:1.05rem!important;font-weight:800!important;cursor:pointer;
+}
+.runtime .public-profile .profile-directions>summary::-webkit-details-marker{display:none}
+.runtime .public-profile .profile-directions>summary::marker{content:""}
+.runtime .public-profile .profile-directions[open]{grid-column:1/-1}
+.runtime .public-profile .mc-directions-visual{
+ height:220px;position:relative;overflow:hidden;border-radius:22px;
+ margin:18px 0 12px;background:#1a2b4c;
+ background-image:repeating-radial-gradient(ellipse at 60% 50%,transparent 0 80px,#ffffff0e 82px 85px,transparent 87px 140px);
+}
+.runtime .public-profile .mc-map-road{position:absolute;display:block;border:4px solid #ffffff35;border-radius:45%;width:90%;height:150%;top:-25%;left:-25%;transform:rotate(16deg)}
+.runtime .public-profile .mc-map-road.road-two{left:30%;transform:rotate(-20deg)}
+.runtime .public-profile .mc-map-road.road-three{left:-55%;transform:rotate(70deg)}
+.runtime .public-profile .mc-map-route{position:absolute;left:14%;top:66%;width:65%;border-top:5px dashed #fff;transform:rotate(-17deg)}
+.runtime .public-profile .mc-map-pin{position:absolute;left:73%;top:24%;width:46px;height:46px;background:#c86d51;border-radius:50% 50% 50% 0;transform:rotate(-45deg);box-shadow:0 7px 20px #0003}
+.runtime .public-profile .mc-map-pin::after{content:"";position:absolute;inset:13px;border-radius:50%;background:#fff}
+.runtime .public-profile .profile-map-links{justify-content:center!important}
+.runtime .public-profile .profile-map-links a{padding:12px 20px!important;border-radius:13px!important}
+.runtime .public-profile .profile-share-panel{
+ display:grid!important;grid-template-columns:minmax(0,1fr) minmax(230px,.7fr);
+ column-gap:20px;align-items:center;justify-items:center;
+ padding:clamp(24px,3vw,40px)!important;border-radius:28px!important;
+}
+.runtime .public-profile .profile-share-panel h3{
+ grid-column:1/-1;text-align:center;font-size:clamp(1.3rem,2.3vw,1.8rem)!important;
+ color:#1a2b4c!important;margin:0 0 20px!important;
+}
+.runtime .public-profile .profile-share-panel .qr{
+ grid-column:2;grid-row:2 / span 3;
+ width:min(100%,290px)!important;height:auto!important;
+ aspect-ratio:1!important;padding:14px!important;
+ border:1px solid #e1d5ce!important;border-radius:20px!important;
+ margin:0 auto!important;background:white!important;
+}
+.runtime .public-profile .profile-share-panel .profile-link{
+ grid-column:1;grid-row:2;text-align:left;width:100%;font-size:1rem!important;
+}
+.runtime .public-profile .profile-share-panel .profile-share-actions{
+ grid-column:1;grid-row:3;width:100%;display:flex;gap:12px;
+}
+.runtime .public-profile .profile-share-panel .profile-share-actions>*{
+ flex:1;min-height:54px;border-radius:15px!important;
+}
+.runtime .public-profile .profile-share-panel #shareStatus{grid-column:1;grid-row:4}
+@media(max-width:760px){
+ .runtime .public-profile{padding:16px!important;border-radius:24px!important}
+ .runtime .public-profile .profile-hero{grid-template-columns:minmax(0,1fr)!important;gap:16px!important}
+ .runtime .public-profile .profile-hero .mc-profile-story{
+  height:auto!important;min-height:0!important;aspect-ratio:4/5!important;
+  max-width:none!important;
+ }
+ .runtime .public-profile .profile-identity{padding:24px!important;min-height:0}
+ .runtime .public-profile .profile-identity h2{font-size:clamp(2rem,9vw,3rem)!important}
+ .runtime .public-profile .profile-contact-actions{grid-template-columns:1fr 1fr!important}
+ .runtime .public-profile .profile-directions{grid-column:1/-1}
+ .runtime .public-profile .profile-share-panel{grid-template-columns:1fr!important}
+ .runtime .public-profile .profile-share-panel h3,
+ .runtime .public-profile .profile-share-panel .qr,
+ .runtime .public-profile .profile-share-panel .profile-link,
+ .runtime .public-profile .profile-share-panel .profile-share-actions,
+ .runtime .public-profile .profile-share-panel #shareStatus{
+  grid-column:1!important;grid-row:auto!important;text-align:center;
+ }
+ .runtime .public-profile .profile-share-panel .qr{width:min(100%,280px)!important;margin:12px auto 20px!important}
+ .runtime .public-profile .profile-share-panel .profile-share-actions{flex-wrap:wrap}
+}
+
+/* Final correction: story progress must be a hairline, never pill-sized buttons. */
+.runtime .public-profile .profile-photo-dialog .mc-story-progress{
+ display:flex!important;align-items:center!important;gap:5px!important;
+ height:4px!important;min-height:4px!important;max-height:4px!important;
+ margin:10px 48px 16px 4px!important;padding:0!important;
+}
+.runtime .public-profile .profile-photo-dialog .mc-story-progress > .mc-story-progress-segment{
+ display:block!important;flex:1 1 0!important;
+ width:auto!important;min-width:0!important;
+ height:4px!important;min-height:4px!important;max-height:4px!important;
+ padding:0!important;margin:0!important;line-height:0!important;
+ border:0!important;border-radius:999px!important;
+ box-shadow:none!important;appearance:none!important;
+ background:#e8dcd3!important;overflow:hidden!important;
+}
+.runtime .public-profile .profile-photo-dialog .mc-story-progress-segment span{
+ display:block!important;height:100%!important;min-height:0!important;
+ border-radius:999px!important;
+}
+@media(max-width:600px){
+ .runtime .public-profile .profile-photo-dialog .mc-story-progress{
+ height:3px!important;min-height:3px!important;max-height:3px!important;
+ margin:8px 44px 14px 3px!important;
+ }
+ .runtime .public-profile .profile-photo-dialog .mc-story-progress > .mc-story-progress-segment{
+ height:3px!important;min-height:3px!important;max-height:3px!important;
+ }
+}
+
+/* Mobile share area: no oversized enclosing card, QR remains easy to scan. */
+@media(max-width:760px){
+ .runtime .public-profile .profile-share-panel{
+  display:flex!important;flex-direction:column!important;align-items:center!important;
+  width:100%!important;min-height:0!important;height:auto!important;
+  padding:18px 8px 22px!important;margin:12px 0 0!important;
+  border:0!important;border-radius:0!important;background:transparent!important;
+  box-shadow:none!important;gap:12px!important;overflow:visible!important;
+ }
+ .runtime .public-profile .profile-share-panel::before,
+ .runtime .public-profile .profile-share-panel::after{
+  content:none!important;display:none!important;
+ }
+ .runtime .public-profile .profile-share-panel h3{
+  margin:0 0 4px!important;font-size:clamp(1.25rem,5vw,1.55rem)!important;
+  line-height:1.25!important;
+ }
+ .runtime .public-profile .profile-share-panel .profile-link{
+  order:3!important;max-width:100%!important;margin:0!important;
+  padding:0 4px!important;overflow-wrap:anywhere!important;
+  word-break:break-word!important;font-size:.9rem!important;
+  line-height:1.4!important;
+ }
+ .runtime .public-profile .profile-share-panel .qr{
+  order:2!important;display:block!important;
+  width:min(66vw,230px)!important;max-width:230px!important;
+  height:auto!important;aspect-ratio:1!important;
+  padding:0!important;margin:4px auto 8px!important;
+  border:0!important;border-radius:0!important;
+  background:transparent!important;box-shadow:none!important;
+ }
+ .runtime .public-profile .profile-share-panel .profile-share-actions{
+  order:4!important;width:100%!important;max-width:430px!important;
+  margin:4px 0 0!important;gap:10px!important;flex-wrap:nowrap!important;
+ }
+ .runtime .public-profile .profile-share-panel .profile-share-actions>*{
+  min-width:0!important;min-height:46px!important;
+  padding:10px 8px!important;font-size:.9rem!important;
+  line-height:1.2!important;
+ }
+ .runtime .public-profile .profile-share-panel #shareStatus{
+  order:5!important;margin:0!important;
+ }
+}

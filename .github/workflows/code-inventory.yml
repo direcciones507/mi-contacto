@@ -1,0 +1,33 @@
+name: ADMIN code inventory acceptance
+on:
+  push:
+    branches: [work/admin-codes-final-20261112, work/admin-buttons-20261112]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  codes-native-browser-excel:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      MC_TEST_NATIVE_POSTGRES_BIN: /usr/lib/postgresql/16/bin
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: python -m pip install openpyxl
+      - name: Native codes, access control, authentication and payments
+        run: node --test --test-concurrency=2 tests/admin-code-inventory.test.mjs tests/commercial-codes.test.mjs tests/email-auth.test.mjs tests/auth-hardening.test.mjs tests/payment-runtime.test.mjs
+      - name: Desktop and phone ADMIN journeys, clipboard and real XLSX files
+        run: |
+          export MC_CHROMIUM="$(command -v google-chrome || command -v chromium)"
+          node scripts/admin-codes-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: admin-codes-evidence
+          path: artifacts/admin-codes/
+          retention-days: 14

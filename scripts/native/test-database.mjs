@@ -19,12 +19,12 @@ export async function nativeTestDatabase({bin}={}){
  async function close(){await Promise.all(restoredPools.map(p=>p.end()));await pool?.end();if(started){await command('pg_ctl',['-D',data,'-m','fast','-w','stop']);started=false;}await rm(root,{recursive:true,force:false});}
  try{
   await command('initdb',['-D',data,'--username=mc_synthetic','--pwfile='+pwfile,'--auth-local=trust','--auth-host=scram-sha-256','--encoding=UTF8','--no-locale']);
-  await command('pg_ctl',['-D',data,'-l',join(root,'postgres.log'),'-o',`-h 127.0.0.1 -p ${port} -k ${root}`,'-w','start']);started=true;
+  await command('pg_ctl',['-D',data,'-l',join(root,'postgres.log'),'-o',`-h 127.0.0.1 -p ${port} ${process.env.MC_TEST_DISABLE_UNIX_SOCKET==='true'?"-k ''":'-k '+root}`,'-w','start']);started=true;
   pool=new Pool({host:'127.0.0.1',port,user:'mc_synthetic',password,database:'postgres',max:12,connectionTimeoutMillis:5000,options:'-c statement_timeout=15000 -c lock_timeout=10000',application_name:'mi-contacto-browser-native'});
   const actual=(await pool.query('SHOW data_directory')).rows[0].data_directory;if(actual!==data)throw Error('DISPOSABLE_CLUSTER_IDENTITY_MISMATCH');
   pool.on('error',()=>{}); // Idle connections are discarded during the explicit test restart.
   pool.close=close;
-  async function restart(){await command('pg_ctl',['-D',data,'-m','fast','-w','stop']);started=false;await command('pg_ctl',['-D',data,'-l',join(root,'postgres.log'),'-o',`-h 127.0.0.1 -p ${port} -k ${root}`,'-w','start']);started=true;}
+  async function restart(){await command('pg_ctl',['-D',data,'-m','fast','-w','stop']);started=false;await command('pg_ctl',['-D',data,'-l',join(root,'postgres.log'),'-o',`-h 127.0.0.1 -p ${port} ${process.env.MC_TEST_DISABLE_UNIX_SOCKET==='true'?"-k ''":'-k '+root}`,'-w','start']);started=true;}
   async function restoredSnapshot(){
    const file=join(root,'synthetic.dump');await command('pg_dump',['-h','127.0.0.1','-p',String(port),'-U','mc_synthetic','--format=custom','--no-owner','--no-acl','-f',file,'postgres']);
    await command('pg_restore',['--list',file]);await pool.query('CREATE DATABASE mc_synthetic_restore');
