@@ -524,3 +524,33 @@ body{background:#fdfbf7;color:#1a2b4c}
 @media(max-width:860px){.hero-grid .motion-preview{width:min(100%,300px)}}
 @media(max-width:480px){.hero-grid .motion-preview{width:min(100% - 32px,290px)}#results .contact-card{padding:16px}}
 @media(prefers-reduced-motion:reduce){.hero-grid .motion-preview,.hero-grid .motion-preview:hover{animation:none!important;transform:none!important;translate:none!important}#results .contact-card{transition:none}}
+
+/* Compact hero and softer editorial eyebrow typography. */
+.hero .eyebrow{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(1rem,1.4vw,1.2rem);
+  font-style:italic;
+  font-weight:600;
+  letter-spacing:.015em;
+  text-transform:none;
+  color:#ae593e;
+  line-height:1.3;
+  margin-bottom:12px;
+}
+.hero{padding-top:36px;padding-bottom:24px}
+.hero-grid{gap:24px;align-items:center}
+.hero .lead{margin-bottom:18px}
+.hero .actions{margin-top:16px}
+.hero .hero-note{margin-top:16px}
+.hero-grid .motion-preview{margin-top:0;margin-bottom:0}
+#directorio.section{padding-top:34px}
+@media(max-width:860px){
+  .hero{padding-top:28px;padding-bottom:16px}
+  .hero-grid{gap:12px}
+  #directorio.section{padding-top:28px}
+}
+@media(max-width:480px){
+  .hero{padding-top:22px;padding-bottom:12px}
+  .hero .eyebrow{font-size:1rem}
+  #directorio.section{padding-top:22px}
+}
