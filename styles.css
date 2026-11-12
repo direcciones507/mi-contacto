@@ -579,3 +579,7 @@ body{background:#fdfbf7;color:#1a2b4c}
 .motion-ready .plans article:nth-child(2){--reveal-delay:110ms}
 .hero .motion-preview{will-change:transform}
 @media(prefers-reduced-motion:reduce){.motion-ring::before,.steps article.reveal-item.is-visible span{animation:none!important}.motion-ready .reveal-item{opacity:1!important;translate:none!important;transition:none!important}}
+
+/* Pointer-driven card tilt; keep autonomous float when not hovered. */
+.hero-grid .motion-preview:hover{animation:none!important;transform:perspective(850px) rotateX(var(--mc-tilt-x,0deg)) rotateY(var(--mc-tilt-y,0deg)) translateY(-8px);transition:transform .22s ease-out,box-shadow .25s ease}
+@media(prefers-reduced-motion:reduce){.hero-grid .motion-preview:hover{transform:none!important}}
