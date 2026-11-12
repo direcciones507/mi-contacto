@@ -1,3 +1,4 @@
+import {inventoryReset} from './reset-code-inventory.mjs';
 import {codeReceiptWorker} from '../codes-runtime.js';
 import {officialRequestPolicy} from '../official-origin.js';
 import {migratingPhotoStorage} from '../storage-migration.js';
@@ -20,6 +21,7 @@ const pool=databasePool();
 const acceptanceReport=env.MC_ACCEPTANCE_BOOTSTRAP==='true'?await bootstrapAcceptance(pool,env):null;
 const latest=(await pool.query("SELECT name FROM micontacto.schema_migrations WHERE name='013_legal_consent.sql'")).rows[0];if(!latest)throw Error('DATABASE_MIGRATIONS_REQUIRED');
 await assertDatabaseReady(pool);
+await inventoryReset(pool,env);
 let storage=env.MC_STORAGE==='r2'?r2PhotoStorage({accountId:env.MC_R2_ACCOUNT_ID,accessKeyId:env.MC_R2_ACCESS_KEY_ID,secretAccessKey:env.MC_R2_SECRET_ACCESS_KEY,bucket:env.MC_R2_BUCKET,reuseExistingBucket:env.MC_R2_REUSE_DIRECCIONES_BUCKET==='true',isolated:env.MC_R2_ISOLATED==='true'}):env.MC_STORAGE==='local'?await localPhotoStorage({root:env.MC_PHOTO_ROOT,isolated:true,allowDeletion:true}):null;
 if(!storage)throw Error('PERSISTENT_STORAGE_REQUIRED');
 if(env.MC_STORAGE==='r2'&&env.MC_R2_MIGRATE_LOCAL==='true'){if(!env.MC_PHOTO_ROOT)throw Error('EXISTING_PHOTO_ROOT_REQUIRED');storage=migratingPhotoStorage(storage,await localPhotoStorage({root:env.MC_PHOTO_ROOT,isolated:true,allowDeletion:true}));}
