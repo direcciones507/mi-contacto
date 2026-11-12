@@ -357,3 +357,34 @@ body.auth-page .auth-card #emailAccess[hidden],body.auth-page .auth-card .auth-f
 /* ADMIN inventory: one compact table and one shared action editor. */
 .codes-admin{min-width:0;max-width:100%}.codes-admin form,.codes-toolbar,.codes-actions{display:flex;flex-wrap:wrap;align-items:end;gap:.65rem;margin:1rem 0}.codes-admin form label{max-width:22rem}.codes-admin form small{flex-basis:100%}.codes-toolbar label{flex:1 1 160px;min-width:0}.codes-admin input,.codes-admin select{max-width:100%}.codes-table-scroll{overflow-x:auto;max-width:100%;border:1px solid #dbe2eb;border-radius:12px}.codes-table{border-collapse:collapse;width:100%;font-size:.85rem;min-width:900px}.codes-table caption{text-align:left;padding:.75rem;font-weight:600}.codes-table th,.codes-table td{padding:.55rem .65rem;text-align:left;border-bottom:1px solid #e2e8f0;vertical-align:middle}.codes-table th{background:#f1f5f9;color:#0f172a;white-space:nowrap}.codes-table tbody tr:nth-child(even){background:#f8fafc}.codes-table code{white-space:nowrap;color:#0f172a}.codes-table button{padding:.4rem .6rem;font-size:.8rem;min-height:36px;margin:.15rem}.codes-table input[type=checkbox]{width:20px;height:20px}.codes-editor{padding:1rem;border:1px solid #94a3b8;border-radius:12px;margin:1rem 0}.codes-editor[hidden]{display:none}.codes-editor label{display:block;max-width:32rem}.codes-actions button{font-size:.85rem}.codes-admin td{overflow-wrap:anywhere}@media(max-width:600px){.codes-actions button{flex:1 1 140px}.codes-admin form button{width:100%}.codes-toolbar label{flex-basis:100%}}
 #adminItems.codes-admin{display:block}
+
+/* MiContacto access experience: reference motion adapted to the live authentication forms. */
+@property --mc-auth-angle{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes mcAuthBorder{to{--mc-auth-angle:360deg}}
+@keyframes mcAuthEnter{from{opacity:0;transform:translateY(24px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes mcAuthRise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes mcAuthGrid{to{background-position:40px 40px}}
+body:has(.auth-card){background:radial-gradient(circle at 12% 15%,#e3e4e8 0,transparent 35%),radial-gradient(circle at 90% 85%,#f4dcd0 0,transparent 40%),#fbf9f6}
+body:has(.auth-card) .runtime{position:relative;isolation:isolate;min-height:calc(100vh - 155px);display:grid;place-items:center;padding:34px 20px 55px}
+body:has(.auth-card) .runtime::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;background-image:linear-gradient(#c7745510 1px,transparent 1px),linear-gradient(90deg,#c7745510 1px,transparent 1px);background-size:40px 40px;animation:mcAuthGrid 24s linear infinite}
+.runtime .auth-card{position:relative;isolation:isolate;max-width:430px;width:100%;margin:0 auto;padding:36px 34px;border-radius:24px;background:#fffdfb;border:1px solid #e9dcd5;box-shadow:0 22px 55px #1b2d501a;animation:mcAuthEnter .8s cubic-bezier(.22,1,.36,1) both;overflow:visible}
+.runtime .auth-card::before{content:"";position:absolute;inset:-2px;border-radius:26px;padding:2px;pointer-events:none;z-index:2;background:conic-gradient(from var(--mc-auth-angle),transparent 0deg,#cf7859 45deg,transparent 115deg,#7d879a 190deg,transparent 285deg,#cf7859 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:mcAuthBorder 7s linear infinite}
+.runtime .auth-card h2{font-size:clamp(1.7rem,3vw,2rem);font-weight:800;letter-spacing:-.035em;color:#1b2d50;margin:0 0 8px;animation:mcAuthRise .7s .1s both}
+.runtime .auth-card .auth-intro{color:#667085;line-height:1.5;margin:0 0 22px;animation:mcAuthRise .7s .18s both}
+.runtime .auth-card .auth-google{border:1px solid #ddd5d0;border-radius:12px;background:#fff;color:#1b2d50;transition:transform .2s,box-shadow .2s,border-color .2s;animation:mcAuthRise .7s .26s both}
+.runtime .auth-card .auth-google:hover{transform:translateY(-2px);border-color:#ce785b;box-shadow:0 8px 20px #1b2d5015}
+.runtime .auth-card #emailAccess>label:not([hidden]){animation:mcAuthRise .7s .35s both}
+.runtime .auth-card #emailAccess>label:nth-of-type(3):not([hidden]){animation-delay:.45s}
+.runtime .auth-card #emailAccess input,.runtime .auth-card #emailAccess select,.runtime .auth-card #confirmEmail input{background:#f7f7f8;border:1px solid #e4e3e4;border-radius:12px;min-height:48px;color:#1b2d50;transition:border-color .25s,box-shadow .25s,transform .25s}
+.runtime .auth-card #emailAccess input:hover,.runtime .auth-card #emailAccess select:hover{border-color:#cb7759}
+.runtime .auth-card #emailAccess input:focus-visible,.runtime .auth-card #emailAccess select:focus-visible,.runtime .auth-card #confirmEmail input:focus-visible{border-color:#c97556;box-shadow:0 0 0 4px #c9755624;outline:0;transform:translateY(-1px)}
+.runtime .auth-card #toggleAuthPassword,.runtime .auth-card #toggleConfirmPassword{background:#f2e8e3;color:#1b2d50;border-color:#e7d7ce;border-radius:9px;transition:transform .2s,background .2s}
+.runtime .auth-card #toggleAuthPassword:hover,.runtime .auth-card #toggleConfirmPassword:hover{background:#ebd3c8;transform:scale(1.04)}
+.runtime .auth-card .auth-submit{position:relative;overflow:hidden;isolation:isolate;background:#c97556;color:white;border:0;border-radius:12px;min-height:50px;font-weight:800;transition:transform .2s,box-shadow .2s,background .2s;animation:mcAuthRise .7s .58s both}
+.runtime .auth-card .auth-submit::before{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 25%,#ffffff55 50%,transparent 75%);transform:translateX(-120%);transition:transform .7s;pointer-events:none;z-index:-1}
+.runtime .auth-card .auth-submit:hover{background:#b95e43;transform:translateY(-2px);box-shadow:0 10px 24px #c9755650}
+.runtime .auth-card .auth-submit:hover::before{transform:translateX(120%)}
+.runtime .auth-card .auth-forgot,.runtime .auth-card .auth-footer a{color:#b45d42}
+.runtime .auth-card .auth-legal-links{color:#7b7e88}
+@media(max-width:520px){body:has(.auth-card) .runtime{padding:22px 14px 36px}.runtime .auth-card{padding:28px 21px;border-radius:20px}.runtime .auth-card::before{border-radius:22px}}
+@media(prefers-reduced-motion:reduce){body:has(.auth-card) .runtime::before,.runtime .auth-card,.runtime .auth-card::before,.runtime .auth-card h2,.runtime .auth-card .auth-intro,.runtime .auth-card .auth-google,.runtime .auth-card #emailAccess>label,.runtime .auth-card .auth-submit{animation:none!important;opacity:1!important;transform:none!important}.runtime .auth-card .auth-submit::before{transition:none}}
