@@ -1,7 +1,7 @@
 name: ADMIN code inventory acceptance
 on:
   push:
-    branches: [work/admin-codes-final-20261112]
+    branches: [work/admin-codes-final-20261112, work/admin-buttons-20261112]
   workflow_dispatch:
 permissions:
   contents: read
