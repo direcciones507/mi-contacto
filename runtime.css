@@ -584,3 +584,105 @@ body.owner-page #profileOptions .contact-card>.actions a:hover::after,
   .runtime .public-profile .profile-share-actions button:hover::after,
   .runtime .public-profile .profile-share-actions a:hover::after{animation:none!important;opacity:0}
 }
+
+/* Unified Mi Contacto controls, owner dashboard and public card. */
+body.owner-page .runtime #profileOptions .contact-card>.actions button,
+body.owner-page .runtime #profileOptions .contact-card>.actions a,
+body.owner-page .runtime .account-session button,
+body.owner-page .runtime .account-session a,
+.runtime .public-profile .profile-share-actions a,
+.runtime .public-profile .profile-share-actions button,
+.runtime .public-profile .profile-map-links a,
+.runtime .public-profile .profile-contact-actions .profile-action,
+.header .profile-back-directory{
+  position:relative;isolation:isolate;overflow:hidden;border-radius:14px!important;
+  border:1px solid #d7c5bc!important;
+  background:linear-gradient(130deg,#fffdfa,#f4e9e2)!important;
+  color:#1b2d50!important;
+  font-weight:750;box-shadow:0 4px 13px #1b2d500d;
+  transition:transform .2s ease,box-shadow .2s ease,background .2s ease;
+}
+body.owner-page .runtime #profileOptions .contact-card>.actions .owner-feature-cta,
+.runtime .public-profile .profile-action-call{
+  background:linear-gradient(120deg,#b65f45,#d48766)!important;color:#fff!important;
+  border-color:#b65f45!important;
+}
+.runtime .public-profile .profile-action-whatsapp{background:#167650!important;color:#fff!important;border-color:#167650!important}
+body.owner-page .runtime #profileOptions .contact-card>.actions button::after,
+body.owner-page .runtime #profileOptions .contact-card>.actions a::after,
+body.owner-page .runtime .account-session button::after,
+.runtime .public-profile .profile-share-actions a::after,
+.runtime .public-profile .profile-share-actions button::after,
+.runtime .public-profile .profile-map-links a::after,
+.runtime .public-profile .profile-contact-actions .profile-action::after,
+.header .profile-back-directory::after{
+ content:"";position:absolute;inset:0 auto 0 0;width:50%;pointer-events:none;z-index:1;
+ background:linear-gradient(90deg,transparent,#ffffffa8,#d7e0e85e,transparent);
+ transform:translateX(-180%) skewX(-22deg);
+}
+body.owner-page .runtime #profileOptions .contact-card>.actions button:hover,
+body.owner-page .runtime #profileOptions .contact-card>.actions a:hover,
+body.owner-page .runtime .account-session button:hover,
+.runtime .public-profile .profile-share-actions a:hover,
+.runtime .public-profile .profile-share-actions button:hover,
+.runtime .public-profile .profile-map-links a:hover,
+.runtime .public-profile .profile-contact-actions .profile-action:hover,
+.header .profile-back-directory:hover{transform:translateY(-2px);box-shadow:0 10px 22px #1b2d5020}
+body.owner-page .runtime #profileOptions .contact-card>.actions button:hover::after,
+body.owner-page .runtime #profileOptions .contact-card>.actions a:hover::after,
+body.owner-page .runtime .account-session button:hover::after,
+.runtime .public-profile .profile-share-actions a:hover::after,
+.runtime .public-profile .profile-share-actions button:hover::after,
+.runtime .public-profile .profile-map-links a:hover::after,
+.runtime .public-profile .profile-contact-actions .profile-action:hover::after,
+.header .profile-back-directory:hover::after{animation:mcSilverPass .8s ease-out both}
+body.owner-page .runtime #profileOptions .owner-delete-profile{
+ background:#fffaf9!important;color:#aa3535!important;border-color:#e9aaaa!important;
+}
+/* Mobile photo story: slim animated progress track replaces bulky gallery arrows. */
+.runtime .public-profile .profile-photo-dialog{
+ width:min(94vw,700px);max-width:700px;max-height:94dvh;
+ padding:14px!important;overflow:hidden;box-sizing:border-box;
+}
+.runtime .public-profile .profile-photo-dialog .mc-story-progress{
+ display:flex;gap:5px;align-items:center;margin:2px 0 12px;
+}
+.runtime .public-profile .profile-photo-dialog .mc-story-progress-segment{
+ flex:1 1 0;min-width:0;height:5px;padding:0!important;margin:0!important;
+ border:0!important;border-radius:99px;background:#e2d8d2!important;overflow:hidden;cursor:pointer;
+}
+.runtime .public-profile .profile-photo-dialog .mc-story-progress-segment span{
+ display:block;width:100%;height:100%;border-radius:inherit;background:#c97556;transform:scaleX(0);transform-origin:left center;
+}
+.runtime .public-profile .profile-photo-dialog .mc-story-progress-segment.is-complete span{transform:scaleX(1)}
+@keyframes mcStoryFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.runtime .public-profile .profile-photo-dialog .mc-story-progress-segment.is-current span{
+ animation:mcStoryFill 4.5s linear both;
+}
+.runtime .public-profile .profile-photo-dialog #closeProfilePhoto{
+ position:absolute;top:28px;right:16px;z-index:3;margin:0!important;
+ width:34px;height:34px;padding:0!important;border-radius:50%;
+ background:#1b2d50b8!important;color:white!important;border:1px solid #ffffff80!important;
+ font-size:0;cursor:pointer;display:grid;place-items:center;box-shadow:0 4px 14px #1b2d5040;
+}
+.runtime .public-profile .profile-photo-dialog #closeProfilePhoto::after{content:"×";font-size:25px;line-height:1}
+.runtime .public-profile .profile-photo-dialog img{
+ width:auto;max-width:100%;max-height:min(77dvh,800px);object-fit:contain;margin:auto;
+ touch-action:pan-y;user-select:none;
+}
+.runtime .public-profile .profile-photo-dialog .mc-photo-controls{
+ padding:7px 0 0;gap:10px;font-size:.82rem;color:#667085;
+}
+.runtime .public-profile .profile-photo-dialog .mc-photo-controls button{
+ min-width:30px;min-height:30px;font-size:1.2rem;border:0;background:transparent;color:#c97556;
+}
+@media(max-width:600px){
+ .runtime .public-profile .profile-photo-dialog{width:94vw;padding:10px!important;border-radius:19px}
+ .runtime .public-profile .profile-photo-dialog #closeProfilePhoto{top:20px;right:13px}
+ .runtime .public-profile .profile-photo-dialog .mc-photo-controls button{display:none}
+ .runtime .public-profile .profile-photo-dialog img{max-height:76dvh}
+ body.owner-page .runtime #profileOptions .contact-card>.actions>*{border-radius:12px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ .runtime .public-profile .profile-photo-dialog .mc-story-progress-segment.is-current span{animation:none;transform:scaleX(1)}
+}
