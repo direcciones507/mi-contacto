@@ -388,3 +388,20 @@ body:has(.auth-card) .runtime::before{content:"";position:absolute;inset:0;point
 .runtime .auth-card .auth-legal-links{color:#7b7e88}
 @media(max-width:520px){body:has(.auth-card) .runtime{padding:22px 14px 36px}.runtime .auth-card{padding:28px 21px;border-radius:20px}.runtime .auth-card::before{border-radius:22px}}
 @media(prefers-reduced-motion:reduce){body:has(.auth-card) .runtime::before,.runtime .auth-card,.runtime .auth-card::before,.runtime .auth-card h2,.runtime .auth-card .auth-intro,.runtime .auth-card .auth-google,.runtime .auth-card #emailAccess>label,.runtime .auth-card .auth-submit{animation:none!important;opacity:1!important;transform:none!important}.runtime .auth-card .auth-submit::before{transition:none}}
+
+/* Soft, continuous motion INSIDE the authentication card, behind live form controls. */
+@keyframes mcAuthInnerDrift{
+  0%{background-position:0% 10%,100% 90%;opacity:.72}
+  50%{background-position:100% 85%,0% 15%;opacity:1}
+  100%{background-position:0% 10%,100% 90%;opacity:.72}
+}
+.runtime .auth-card::after{
+  content:"";position:absolute;inset:2px;border-radius:22px;
+  pointer-events:none;z-index:0;
+  background-image:radial-gradient(ellipse 72% 58% at 15% 20%,rgba(210,117,84,.19),transparent 76%),radial-gradient(ellipse 70% 60% at 85% 80%,rgba(69,82,123,.14),transparent 78%);
+  background-repeat:no-repeat;background-size:170% 170%,170% 170%;
+  animation:mcAuthInnerDrift 13s ease-in-out infinite;
+}
+.runtime .auth-card>*{position:relative;z-index:1}
+@media(max-width:520px){.runtime .auth-card::after{border-radius:18px}}
+@media(prefers-reduced-motion:reduce){.runtime .auth-card::after{animation:none!important;opacity:.7}}
