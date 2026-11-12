@@ -4,7 +4,7 @@ button?.addEventListener('click',async()=>{const status=document.getElementById(
 const photoDialog=document.getElementById('profilePhotoDialog');
 const expandedPhoto=document.getElementById('expandedProfilePhoto');
 const photoButtons=[...document.querySelectorAll('.profile-photo-open')];
-let activePhoto=0,photoTimer=null;
+let activePhoto=0,photoTimer=null,touchStartX=null,suppressNextClick=false;
 function stopPhotoTimer(){if(photoTimer!==null){clearInterval(photoTimer);photoTimer=null;}}
 function showPhoto(index){
  if(!expandedPhoto||!photoButtons.length)return;
@@ -17,6 +17,7 @@ function showPhoto(index){
  expandedPhoto.classList.add('mc-photo-enter');
  const count=photoDialog?.querySelector('.mc-photo-counter');
  if(count)count.textContent=(activePhoto+1)+' / '+photoButtons.length;
+ photoDialog?.querySelectorAll('.mc-story-progress-segment').forEach((segment,i)=>{segment.classList.toggle('is-complete',i<activePhoto);segment.classList.toggle('is-current',i===activePhoto);const fill=segment.querySelector('span');if(fill){fill.style.animation='none';void fill.offsetWidth;fill.style.animation='';}});
 }
 function startPhotoTimer(){
  stopPhotoTimer();
@@ -24,6 +25,9 @@ function startPhotoTimer(){
   photoTimer=setInterval(()=>{if(photoDialog?.open&&!document.hidden)showPhoto(activePhoto+1);},4500);
 }
 if(photoDialog&&expandedPhoto&&photoButtons.length){
+ const progress=document.createElement('div');progress.className='mc-story-progress';progress.setAttribute('aria-label','Progreso de fotografías');
+ photoButtons.forEach((_,i)=>{const segment=document.createElement('button');segment.type='button';segment.className='mc-story-progress-segment';segment.setAttribute('aria-label','Ver fotografía '+(i+1));const fill=document.createElement('span');segment.append(fill);segment.addEventListener('click',()=>{showPhoto(i);startPhotoTimer();});progress.append(segment);});
+ photoDialog.prepend(progress);
  const controls=document.createElement('div');
  controls.className='mc-photo-controls';
  const previous=document.createElement('button');
@@ -36,7 +40,7 @@ if(photoDialog&&expandedPhoto&&photoButtons.length){
  const advance=delta=>{showPhoto(activePhoto+delta);startPhotoTimer();};
  previous.addEventListener('click',()=>advance(-1));
  next.addEventListener('click',()=>advance(1));
- expandedPhoto.addEventListener('click',()=>advance(1));
+ expandedPhoto.addEventListener('click',()=>{if(suppressNextClick){suppressNextClick=false;return;}advance(1);});
  expandedPhoto.style.cursor=photoButtons.length>1?'pointer':'default';
  photoButtons.forEach((button,index)=>button.addEventListener('click',()=>{
   showPhoto(index);if(!photoDialog.open)photoDialog.showModal();startPhotoTimer();
@@ -45,8 +49,10 @@ if(photoDialog&&expandedPhoto&&photoButtons.length){
   if(event.key==='ArrowRight'){event.preventDefault();advance(1);}
   if(event.key==='ArrowLeft'){event.preventDefault();advance(-1);}
  });
- photoDialog.addEventListener('mouseenter',stopPhotoTimer);
- photoDialog.addEventListener('mouseleave',startPhotoTimer);
+ expandedPhoto.addEventListener('touchstart',event=>{touchStartX=event.touches[0]?.clientX??null;},{passive:true});
+ expandedPhoto.addEventListener('touchend',event=>{if(touchStartX===null)return;const delta=(event.changedTouches[0]?.clientX??touchStartX)-touchStartX;touchStartX=null;if(Math.abs(delta)>45){advance(delta<0?1:-1);suppressNextClick=true;}},{passive:true});
+ // Do not pause on desktop hover: the progress line remains continuous.
+
  photoDialog.addEventListener('close',stopPhotoTimer);
  document.addEventListener('visibilitychange',()=>{if(document.hidden)stopPhotoTimer();else if(photoDialog.open)startPhotoTimer();});
 }
