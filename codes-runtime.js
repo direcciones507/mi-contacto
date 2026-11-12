@@ -28,7 +28,16 @@ export function codesRuntime(pool,{secret,provider=null}={}){
  async function history(actor,offset=0){if(!Number.isSafeInteger(offset)||offset<0||offset>10000000)throw Error('INVALID_CODE_PAGE');await transaction(pool,tx=>admin(tx,actor));return (await pool.query('SELECT * FROM micontacto.code_events ORDER BY created_at DESC,id LIMIT 100 OFFSET $1',[offset])).rows;}
  async function redeem(actor,profileId,{code,...extra}){if(Object.keys(extra).length||typeof code!=='string'||!/^MC-[0-9]{16}$/.test(code))throw Error('INVALID_CODE');return transaction(pool,async tx=>{
   const p=(await tx.query('SELECT p.*,a.status AS account_status,cs.enabled AS country_enabled FROM micontacto.profiles p JOIN micontacto.accounts a ON a.id=p.account_id JOIN micontacto.country_settings cs ON cs.code=p.country_code WHERE p.id=$1 AND p.account_id=$2 FOR UPDATE OF p',[profileId,actor])).rows[0];if(!p)throw Error('NOT_FOUND');if(p.account_status!=='ACTIVE'||['BLOCKED','DELETED'].includes(p.status))throw Error('PROFILE_LOCKED');
-  const c=(await tx.query('SELECT * FROM micontacto.commercial_codes WHERE token_hash=$1 FOR UPDATE',[hash(code)])).rows[0];if(!c)throw Error('INVALID_CODE');if(c.state==='USED'&&c.used_profile_id===profileId)return {id:c.id,termId:c.term_id,replayed:true};if(c.state!=='SOLD')throw Error('INVALID_CODE');
+  const c=(await tx.query('SELECT * FROM micontacto.commercial_codes WHERE token_hash=$1 FOR UPDATE',[hash(code)])).rows[0];if(!c)throw Error('INVALID_CODE');if(c.state==='USED'&&c.used_profile_id===profileId)return {id:c.id,termId:c.term_id,replayed:true};if(c.state==='AVAILABLE'){
+   // ADMIN-generated codes may be handed out free before a manual GIFT action.
+   // Treat possession of an unused, unreserved ADMIN code as its gift at redemption.
+   const batch=(await tx.query('SELECT origin FROM micontacto.code_batches WHERE id=$1',[c.batch_id])).rows[0];
+   if(batch?.origin!=='ADMIN')throw Error('INVALID_CODE');
+   await tx.query("UPDATE micontacto.commercial_codes SET state='SOLD',sold_at=now(),owner_id=$2,customer_reference='Canje directo de código ADMIN',payment_reference='REGALO ADMIN' WHERE id=$1",[c.id,actor]);
+   await event(tx,c,actor,'GIFT','Canje directo de código ADMIN');
+   c.state='SOLD';
+  }
+  if(c.state!=='SOLD')throw Error('INVALID_CODE');
   const at=(await tx.query('SELECT micontacto.feature_now() AS at')).rows[0].at;
   await tx.query("UPDATE micontacto.feature_terms f SET state='EXPIRED',remaining_ms=0,anchor_at=NULL,observed_at=$2 WHERE profile_id=$1 AND state='ACTIVE' AND micontacto.feature_remaining(f,$2)=0",[profileId,at]);
   if((await tx.query("SELECT id FROM micontacto.feature_terms WHERE profile_id=$1 AND state IN ('ACTIVE','PAUSED')",[profileId])).rows.length)throw Error('FEATURE_CONFLICT');
