@@ -43,7 +43,7 @@ export async function inventorySmoke(pool,secret){
   const c=(await runtime.list(admin,{isAdmin:true}))[0];await runtime.change(admin,c.id,{action:'RESERVE',reference:'Prueba técnica temporal'});await runtime.change(admin,c.id,{action:'GIFT',reference:'Prueba técnica temporal'});
   const account=randomUUID(),profile=randomUUID();await tx.query("INSERT INTO micontacto.accounts(id,google_subject) VALUES($1,$2)",[account,'code-smoke-'+account]);await tx.query("INSERT INTO micontacto.profiles(id,account_id,display_name,slug,country_code) VALUES($1,$2,'Prueba técnica temporal',$3,'PA')",[profile,account,'code-smoke-'+profile]);
   const redemption=await runtime.redeem(account,profile,{code:c.code});assert.equal(redemption.state,'PAUSED');assert.equal((await runtime.redeem(account,profile,{code:c.code})).replayed,true);
-  await tx.query('ROLLBACK');assert.equal((await pool.query('SELECT count(*)::int AS n FROM micontacto.commercial_codes')).rows[0].n,0);
+  await tx.query('ROLLBACK');assert.equal((await tx.query('SELECT count(*)::int AS n FROM micontacto.commercial_codes')).rows[0].n,0);
   return {initial:0,batches,unique:248,reservation:true,gift:true,redemption:true,redemptionIdempotent:true,temporaryRowsRolledBack:true,final:0};
  }catch(e){await tx.query('ROLLBACK');throw e;}finally{tx.release();}
 }
