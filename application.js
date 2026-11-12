@@ -41,6 +41,9 @@ export function createApplication({pool,secret,origin='https://micontacto.online
  const consent=consentRuntime(pool,legal),moderation=moderationRuntime(pool,profiles),gate=protectionGate({secret,origin,digest:policyDigest(legal),now});
  const reportMac=value=>createHmac('sha256',secret).update('report:'+value).digest('base64url');
  const reportCookie=req=>(req.headers.get('cookie')??'').split(';').map(x=>x.trim()).find(x=>x.startsWith('mc_report='))?.slice(10)??'';
+ // Small bounded process-local cache of already-watermarked output. Authorization is checked on every request.
+ const publicImageCache=new Map();let publicImageBytes=0;
+ const cachedPublicImage=async(key,original,thumbnail)=>{const cacheKey=key+(thumbnail?':thumb':':full');const cached=publicImageCache.get(cacheKey);if(cached){publicImageCache.delete(cacheKey);publicImageCache.set(cacheKey,cached);return cached;}const rendered=await publicPhoto(original,{thumbnail});if(rendered.length<=2*1024*1024){publicImageCache.set(cacheKey,rendered);publicImageBytes+=rendered.length;while(publicImageBytes>12*1024*1024){const oldest=publicImageCache.keys().next().value;const removed=publicImageCache.get(oldest);publicImageCache.delete(oldest);publicImageBytes-=removed.length;}}return rendered;};
  const rates=new Map();
  const readRates=new Map();
  function allowRead(key,max){const minute=Math.floor(now()/60000);for(const[k,v]of readRates)if(v.minute!==minute)readRates.delete(k);const count=(readRates.get(key)?.count??0)+1;if(count>max||!readRates.has(key)&&readRates.size>=4096)return false;readRates.set(key,{minute,count});return true;}
@@ -152,7 +155,7 @@ export function createApplication({pool,secret,origin='https://micontacto.online
     if(user?.id!==row.account_id&&user?.role!=='ADMIN'){
      const p=await publicRow(row.url_country,row.slug);if(!p||!(await profiles.decorate(p)).photos.some(x=>x.id===row.id))throw Error('NOT_FOUND');
     }
-    const image=await storage.get(row.object_key);if(!image)throw Error('NOT_FOUND');return new Response(await publicPhoto(image),{headers:{...headers,'content-type':'image/webp','x-mc-watermark':'center-v1'}});
+    const thumbnail=url.searchParams.get('size')==='card';const key=row.object_key+(thumbnail?':thumb':':full');let processed=publicImageCache.get(key);if(!processed){const image=await storage.get(row.object_key);if(!image)throw Error('NOT_FOUND');processed=await cachedPublicImage(row.object_key,image,thumbnail);}return new Response(processed,{headers:{...headers,'content-type':'image/webp','x-mc-watermark':'center-v1','x-mc-image-variant':thumbnail?'card':'full'}});
    }
    const preview=path.match(/^\/vista-previa\/([a-f0-9-]{36})(\/qr.svg)?$/);
    if(preview&&req.method==='GET'){if(!user)return json(401,{error:'UNAUTHENTICATED'});const p=await profiles.detail(user.id,preview[1]);if(p.sensitiveHold)throw Error('NOT_FOUND');if(preview[2])return new Response(await QRCode.toString(p.url,{type:'svg'}),{headers:{...headers,'content-type':'image/svg+xml'}});if(!p.contactConsent){delete p.phone;delete p.whatsapp;}if(!p.locationConsent){delete p.mapsUrl;delete p.latitude;delete p.longitude;delete p.region;delete p.locality;}if(!p.featured)p.photos=p.photos.filter(x=>x.role==='MAIN');return new Response(publicProfile(p,{preview:true}),{headers:{...headers,'content-type':'text/html; charset=utf-8','content-security-policy':headers['content-security-policy'].replace("frame-ancestors 'none'","frame-ancestors 'self'")}});}
