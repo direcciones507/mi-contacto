@@ -493,3 +493,34 @@ body{background:#fdfbf7;color:#1a2b4c}
 @media(max-width:980px){#directorio .compact-search{grid-template-columns:repeat(2,minmax(0,1fr))}#directorio .compact-search .btn{grid-column:1/-1}}
 @media(max-width:540px){#directorio .compact-search{grid-template-columns:1fr}#directorio .compact-search .btn,#directorio .compact-search.expanded .directory-extra{grid-column:1/-1}.motion-preview .motion-illustration{aspect-ratio:1/1}}
 @media(prefers-reduced-motion:reduce){.motion-illustration .illustration-light,.hero .motion-title-start,.hero h1 em,.motion-preview:hover .illustration-head,.motion-preview:hover .motion-float{animation:none!important}.hero .motion-title-start,.hero h1 em{opacity:1!important;transform:none!important}}
+
+/* Approved polish: smaller floating demo, matching navigation and directory cards. */
+.header .nav-links .home-login{background:#fffaf6;color:#1a2b4c;border:1px solid #d8bdb3;border-radius:14px;box-shadow:none;padding:12px 20px;transition:transform .2s,box-shadow .2s}
+.header .nav-links .home-create{background:linear-gradient(120deg,#c86d51,#de8668);color:#fff;border-radius:14px;box-shadow:0 8px 18px #c86d5130;padding:12px 20px;transition:transform .2s,box-shadow .2s}
+.header .nav-links .home-login:hover,.header .nav-links .home-create:hover{transform:translateY(-2px);box-shadow:0 10px 20px #1a2b4c1a}
+.hero-grid .motion-preview{width:min(100%,310px);max-width:310px;min-width:0;justify-self:center;padding:14px 14px 17px;border-radius:24px;animation:mcPreviewIn .8s cubic-bezier(.22,1,.36,1) .15s both,mcWholeCardFloat 5.5s ease-in-out 1s infinite;transition:box-shadow .35s ease}
+.hero-grid .motion-preview:hover{animation-play-state:paused;translate:0 -9px;box-shadow:0 32px 65px #1a2b4c55}
+.hero-grid .motion-preview .avatar{margin:12px auto 11px;border-radius:18px}
+.hero-grid .motion-preview h2{font-size:1.2rem}
+.hero-grid .motion-preview .preview-buttons{margin-top:16px;gap:6px}
+.hero-grid .motion-preview .preview-buttons span{font-size:.68rem;padding:10px 2px}
+.hero-grid .motion-preview .preview-foot{margin-top:14px;padding-top:10px}
+@keyframes mcWholeCardFloat{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-13px) rotate(1.2deg)}}
+#results .contact-card{border:1px solid #eadbd3;border-radius:24px;background:#fffdfa;box-shadow:0 12px 30px #1a2b4c12;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;padding:22px;overflow:hidden}
+#results .contact-card:hover{transform:translateY(-4px);box-shadow:0 20px 44px #1a2b4c1c;border-color:#c86d51}
+#results .contact-card .directory-card-photo{border-radius:16px}
+#results .contact-card .directory-card-title{color:#1a2b4c;font-weight:800}
+#results .contact-card .directory-card-region{background:#f6eee8;color:#775044;border-radius:999px;padding:5px 11px}
+#results .contact-card.contact-card--featured{background:#fff2b8!important;border-color:#e5b93f!important}
+#results .contact-card.contact-card--featured:hover{box-shadow:0 20px 44px #9b792c30}
+#planes .rates{background:#f7f1eb;border:1px solid #eadbd3;border-radius:20px;padding:16px}
+#planes .rates summary{background:#fffaf6;color:#1a2b4c;border:1px solid #dec9be;border-radius:14px;padding:15px 18px;box-shadow:0 5px 15px #1a2b4c0b;font-weight:750;list-style-position:inside}
+#planes .rates summary:hover{background:#fff1e9;border-color:#c86d51}
+#planes .rates[open] summary{margin-bottom:14px}
+.cta{background:linear-gradient(120deg,#f6e7dc,#fdfbf7 55%,#f4ded1);color:#1a2b4c;border-top:1px solid #eadbd3}
+.cta h2{color:#1a2b4c!important}
+.cta p{color:#5c6272}
+.cta .btn-light{background:linear-gradient(120deg,#c86d51,#de8668);color:#fff;border:0;box-shadow:0 10px 25px #c86d5135}
+@media(max-width:860px){.hero-grid .motion-preview{width:min(100%,300px)}}
+@media(max-width:480px){.hero-grid .motion-preview{width:min(100% - 32px,290px)}#results .contact-card{padding:16px}}
+@media(prefers-reduced-motion:reduce){.hero-grid .motion-preview,.hero-grid .motion-preview:hover{animation:none!important;transform:none!important;translate:none!important}#results .contact-card{transition:none}}
