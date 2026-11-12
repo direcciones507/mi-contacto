@@ -762,3 +762,12 @@ footer .footer strong{color:var(--mc-ink)}
 .header .brand::after{content:"";position:absolute;bottom:-7px;left:22%;right:4%;height:3px;border-radius:999px;background:linear-gradient(90deg,#0750b2,#00c7ef);transform-origin:center;animation:mcBrandUnderline 6s ease-in-out infinite}
 .hero h1 em{background:linear-gradient(105deg,#0b4eaa,#00a5d8,#073b85,#008ad1);background-size:240% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:mcBrandColorFlow 10s ease-in-out infinite}
 @media(prefers-reduced-motion:reduce){.header .brand .brand-icon,.header .brand>span:not(.brand-icon),.header .brand::after,.hero h1 em{animation:none!important}}
+
+
+/* Reveal only while the element is waiting to enter the viewport. */
+.mc-scroll-pending{opacity:0;transform:translate3d(0,22px,0);transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1)}
+.mc-scroll-pending.is-visible{opacity:1;transform:none}
+#results .contact-card{transition:opacity .7s cubic-bezier(.22,1,.36,1),transform .7s cubic-bezier(.22,1,.36,1),box-shadow .2s ease,border-color .2s ease}
+#results .contact-card.mc-scroll-pending{opacity:0;transform:translate3d(0,24px,0)}
+#results .contact-card.is-visible{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){.mc-scroll-pending,#results .contact-card.mc-scroll-pending{opacity:1!important;transform:none!important;transition:none!important}}
