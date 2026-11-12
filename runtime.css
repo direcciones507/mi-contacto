@@ -740,3 +740,94 @@ body.owner-page .runtime #profileOptions .owner-delete-profile{
  .runtime .public-profile .profile-photo-dialog{border-radius:20px!important}
 }
 @media(prefers-reduced-motion:reduce){.mc-notice-actions button{transition:none}}
+
+/* Public profile visual system from owner-provided motion graphics reference. */
+.runtime .public-profile{--mc-cream:#fdfbf7;--mc-navy:#1a2b4c;--mc-terra:#c86d51;background:var(--mc-cream)!important;color:#2b2b2b!important}
+.runtime .public-profile .profile-hero{align-items:start;gap:clamp(18px,3vw,30px)}
+.runtime .public-profile .mc-profile-story{
+ position:relative!important;display:block!important;overflow:hidden!important;isolation:isolate;
+ width:100%;min-width:0;aspect-ratio:4/5;border-radius:24px!important;
+ background:#142039!important;box-shadow:0 18px 40px #1a2b4c30!important;
+ padding:0!important;touch-action:pan-y;
+}
+.runtime .public-profile .mc-inline-story-track{
+ display:flex!important;flex-wrap:nowrap!important;gap:0!important;
+ width:100%;height:100%;transition:transform .7s cubic-bezier(.22,1,.36,1);
+}
+.runtime .public-profile .mc-inline-story-track .profile-photo-open{
+ display:block!important;flex:0 0 100%!important;width:100%!important;height:100%!important;
+ border:0!important;border-radius:0!important;padding:0!important;overflow:hidden;
+ background:#142039!important;box-shadow:none!important;transform:none!important;
+}
+.runtime .public-profile .mc-inline-story-track .profile-photo-open img{
+ display:block!important;width:100%!important;height:100%!important;max-width:none!important;
+ object-fit:cover!important;aspect-ratio:auto!important;border-radius:0!important;
+ transform:scale(1.02);transition:none!important;
+}
+@keyframes mcInlineKen{to{transform:scale(1.1) translate3d(-1.2%,-1%,0)}}
+.runtime .public-profile .mc-inline-story-track .mc-story-active img{animation:mcInlineKen 5s ease-out both}
+.runtime .public-profile .mc-profile-story::after{
+ content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
+ background:linear-gradient(180deg,#0005,transparent 19%,transparent 75%,#0005);
+}
+.runtime .public-profile .mc-inline-story-bars{
+ position:absolute;z-index:3;top:12px;left:12px;right:12px;display:flex;gap:5px;
+}
+.runtime .public-profile .mc-inline-story-bar{
+ flex:1;height:4px;border-radius:10px;overflow:hidden;background:#ffffff70;
+}
+.runtime .public-profile .mc-inline-story-bar i{display:block;width:0;height:100%;background:#fff;border-radius:inherit}
+.runtime .public-profile .mc-inline-story-bar.done i{width:100%}
+@keyframes mcInlineFill{to{width:100%}}
+.runtime .public-profile .mc-inline-story-bar.on i{animation:mcInlineFill 5s linear both}
+.runtime .public-profile .mc-inline-story-count{
+ position:absolute;z-index:3;bottom:12px;right:12px;color:#fff;font-weight:750;
+ background:#1a2b4cb8;border-radius:99px;padding:4px 11px;font-size:.8rem;
+}
+.runtime .public-profile .mc-inline-story-prev,.runtime .public-profile .mc-inline-story-next{
+ position:absolute!important;top:30px;bottom:0;z-index:2;border:0!important;
+ background:transparent!important;color:transparent!important;cursor:pointer;padding:0!important;
+ box-shadow:none!important;border-radius:0!important;transform:none!important;
+}
+.runtime .public-profile .mc-inline-story-prev{left:0;width:32%}
+.runtime .public-profile .mc-inline-story-next{right:0;width:68%}
+.runtime .public-profile .profile-identity{
+ position:relative;background:#fff;border:1px solid #1a2b4c21;border-radius:24px;
+ padding:clamp(18px,2.5vw,26px);box-shadow:0 12px 32px #1a2b4c12;
+}
+.runtime .public-profile .profile-identity::before,
+.runtime .public-profile .profile-share-panel::before{
+ content:"";position:absolute;inset:-1px;border-radius:inherit;padding:2px;pointer-events:none;
+ background:conic-gradient(from var(--mc-directory-angle),transparent,#c86d51 17%,transparent 32%,#1a2b4c 55%,transparent 75%);
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+ -webkit-mask-composite:xor;mask-composite:exclude;animation:mcDirectoryEdge 9s linear infinite;
+}
+.runtime .public-profile .profile-identity h2{color:#1a2b4c!important;letter-spacing:-.035em}
+.runtime .public-profile .profile-identity .description{color:#5c6272!important;line-height:1.65}
+.runtime .public-profile .profile-share-panel{
+ position:relative;background:#fff!important;border:1px solid #1a2b4c21!important;
+ border-radius:24px!important;box-shadow:0 12px 32px #1a2b4c10;
+}
+.runtime .public-profile .featured-card-badge,.runtime .public-profile .featured-heading-badge{
+ background:linear-gradient(110deg,#1a2b4c,#24406f 40%,#c86d51 52%,#24406f 65%,#1a2b4c)!important;
+ background-size:250% 100%!important;animation:mcBadgeGlow 4s linear infinite;
+ color:white!important;
+}
+@keyframes mcBadgeGlow{to{background-position:-250% 0}}
+.runtime .public-profile .profile-contact-actions .profile-action-call{background:#1a2b4c!important;color:#fff!important;border-color:#1a2b4c!important}
+.runtime .public-profile .profile-contact-actions .profile-action-whatsapp{background:#25d366!important;color:#052e16!important;border-color:#25d366!important}
+@media(min-width:950px){.runtime .public-profile .mc-profile-story{aspect-ratio:4/3.1}}
+@media(max-width:640px){
+ .runtime .public-profile .mc-profile-story{aspect-ratio:4/5;border-radius:22px!important}
+ .runtime .public-profile .profile-identity{padding:18px;border-radius:20px}
+}
+@media(prefers-reduced-motion:reduce){
+ .runtime .public-profile .mc-inline-story-track{transition:none!important}
+ .runtime .public-profile .mc-story-active img,
+ .runtime .public-profile .mc-inline-story-bar.on i,
+ .runtime .public-profile .featured-card-badge,
+ .runtime .public-profile .featured-heading-badge,
+ .runtime .public-profile .profile-identity::before,
+ .runtime .public-profile .profile-share-panel::before{animation:none!important}
+ .runtime .public-profile .mc-inline-story-bar.on i{width:100%}
+}
