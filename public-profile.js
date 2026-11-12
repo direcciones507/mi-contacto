@@ -58,3 +58,39 @@ if(photoDialog&&expandedPhoto&&photoButtons.length){
 }
 document.getElementById('closeProfilePhoto')?.addEventListener('click',()=>photoDialog?.close());
 photoDialog?.addEventListener('click',event=>{if(event.target===photoDialog)photoDialog.close();});
+
+/* Inline photo story, adapted from the supplied motion-graphics reference.
+   Keep actual user images and the existing expanded-photo dialog intact. */
+const inlineStory=document.querySelector('.mc-profile-story');
+if(inlineStory){
+ const track=inlineStory.querySelector('.mc-inline-story-track');
+ const frames=[...track.querySelectorAll('.profile-photo-open')];
+ const bars=inlineStory.querySelector('.mc-inline-story-bars');
+ const counter=inlineStory.querySelector('.mc-inline-story-count');
+ let current=0,auto=null,downX=null,swiped=false;
+ frames.forEach((_,i)=>{const bar=document.createElement('span');bar.className='mc-inline-story-bar';bar.innerHTML='<i></i>';bars.append(bar);});
+ const segments=[...bars.children];
+ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const stop=()=>{if(auto){clearTimeout(auto);auto=null;}};
+ const go=(index)=>{
+  current=(index+frames.length)%frames.length;
+  track.style.transform='translateX(-'+current*100+'%)';
+  frames.forEach((frame,i)=>frame.classList.toggle('mc-story-active',i===current));
+  segments.forEach((bar,i)=>{bar.className='mc-inline-story-bar'+(i<current?' done':i===current?' on':'');});
+  counter.textContent=(current+1)+' / '+frames.length;
+  void bars.offsetWidth;
+  if(!reduced&&frames.length>1&&!document.hidden){stop();auto=setTimeout(()=>go(current+1),5000);}
+ };
+ inlineStory.querySelector('.mc-inline-story-prev').addEventListener('click',()=>go(current-1));
+ inlineStory.querySelector('.mc-inline-story-next').addEventListener('click',()=>go(current+1));
+ inlineStory.addEventListener('keydown',event=>{
+  if(event.key==='ArrowLeft'||event.key==='ArrowRight'){event.preventDefault();go(current+(event.key==='ArrowRight'?1:-1));}
+ });
+ inlineStory.addEventListener('pointerdown',event=>{downX=event.clientX;swiped=false;});
+ inlineStory.addEventListener('pointerup',event=>{if(downX===null)return;const dx=event.clientX-downX;downX=null;if(Math.abs(dx)>40){swiped=true;go(current+(dx<0?1:-1));}});
+ track.addEventListener('click',event=>{if(swiped){event.preventDefault();event.stopImmediatePropagation();swiped=false;}},true);
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else go(current);});
+ inlineStory.addEventListener('mouseenter',stop);
+ inlineStory.addEventListener('mouseleave',()=>{if(!reduced)go(current);});
+ go(0);
+}
