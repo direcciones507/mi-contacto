@@ -583,3 +583,37 @@ body{background:#fdfbf7;color:#1a2b4c}
 /* Pointer-driven card tilt; keep autonomous float when not hovered. */
 .hero-grid .motion-preview:hover{animation:none!important;transform:perspective(850px) rotateX(var(--mc-tilt-x,0deg)) rotateY(var(--mc-tilt-y,0deg)) translateY(-8px);transition:transform .22s ease-out,box-shadow .25s ease}
 @media(prefers-reduced-motion:reduce){.hero-grid .motion-preview:hover{transform:none!important}}
+
+/* Unified landing canvas and tighter vertical rhythm, based on the supplied HTML reference. */
+body{background:#fdfbf7}
+main#contenido{background:radial-gradient(ellipse 65% 48% at 7% 8%,#dfe4e9aa 0%,transparent 100%),radial-gradient(ellipse 58% 60% at 94% 48%,#f3dcd1b0 0%,transparent 100%),#fdfbf7}
+main#contenido>.hero,main#contenido>.section,main#contenido>.section.soft{background:transparent}
+main#contenido>.section{padding-top:38px;padding-bottom:38px}
+main#contenido>#directorio{padding-top:22px;padding-bottom:30px}
+main#contenido>#como-funciona{padding-top:30px;padding-bottom:34px}
+main#contenido>#planes{padding-top:34px;padding-bottom:40px}
+#directorio .section-head{gap:10px}
+#directorio .section-head h2{font-size:clamp(2rem,3.25vw,2.7rem)}
+#directorio .section-head p{font-size:clamp(1rem,1.3vw,1.13rem);line-height:1.55}
+#directorio .compact-search{padding:12px 14px;border-radius:23px;gap:9px;margin-top:16px;align-items:center}
+#directorio .compact-search input,#directorio .compact-search select,#directorio .compact-search .btn{height:48px;font-size:1rem}
+#directorio .compact-search .directory-more{line-height:1;padding:0 5px 2px;margin:0;font-size:.78rem}
+#directorio .search-status{margin:12px 0}
+#directorio .directory-grid{margin-top:16px}
+#como-funciona h2,#planes h2{font-size:clamp(2rem,3.2vw,2.65rem)}
+#como-funciona .steps,#planes .plans{margin-top:20px}
+#como-funciona .steps article{padding:22px;min-height:205px}
+#como-funciona .steps article h3{font-size:1.15rem}
+#como-funciona .steps article p{font-size:1rem;line-height:1.55}
+#planes .plan{padding:24px}
+#planes .plan>p:not(.price),#planes .plan li{font-size:1rem;line-height:1.55}
+#registro.cta{margin-top:0}
+@media(max-width:760px){
+ main#contenido>.section{padding-top:28px;padding-bottom:28px}
+ main#contenido>#directorio{padding-top:16px;padding-bottom:24px}
+ main#contenido>#como-funciona{padding-top:24px;padding-bottom:26px}
+ main#contenido>#planes{padding-top:26px;padding-bottom:32px}
+ #directorio .compact-search{padding:11px;gap:8px}
+ #directorio .compact-search input,#directorio .compact-search select,#directorio .compact-search .btn{height:46px}
+ #como-funciona .steps article{min-height:0}
+}
