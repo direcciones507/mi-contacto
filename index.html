@@ -24,6 +24,36 @@ body{overflow-x:hidden;background:radial-gradient(ellipse at 0 12%,#1a2b4c12,tra
 .hero .btn:hover::after,.motion-featured .btn:hover::after{transform:translateX(140%)}
 @media(max-width:760px){.motion-float-qr{right:0}.motion-float-link{left:0}.motion-preview{max-width:calc(100% - 12px)}}
 @media(prefers-reduced-motion:reduce){.hero h1,.hero h1 em,.motion-preview,.motion-preview .avatar::after,.motion-float,.motion-featured{animation:none!important;translate:none!important}.hero h1,.motion-float{opacity:1!important;transform:none!important}}
+</style><style id="mc-landing-visual-v2">
+/* Visual redesign inspired by the approved mockup, scoped to homepage. */
+body{background:#fdfbf7;color:#1a2b4c}
+.header{background:#fdfbf7e8;backdrop-filter:blur(16px);box-shadow:0 7px 28px #1a2b4c12}
+.header .brand{color:#1a2b4c}.header .brand span{color:#c86d51}.brand-icon{background:linear-gradient(135deg,#1a2b4c,#c86d51)}
+.hero{background:transparent;color:#1a2b4c;padding:70px 0 68px;position:relative;isolation:isolate;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:-15%;z-index:-1;pointer-events:none;background:radial-gradient(ellipse 34% 42% at 18% 15%,#1a2b4c16,transparent 75%),radial-gradient(ellipse 30% 40% at 88% 45%,#c86d5127,transparent 80%),radial-gradient(ellipse 30% 36% at 45% 98%,#e8b09c40,transparent 75%);animation:mcAuroraDrift 18s ease-in-out infinite alternate}
+@keyframes mcAuroraDrift{to{transform:translate3d(2%,3%,0) scale(1.07)}}
+.hero-grid{grid-template-columns:1.08fr .92fr;gap:48px}
+.hero .eyebrow{color:#a8543a;font-size:.84rem;letter-spacing:.035em}
+.hero h1{color:#1a2b4c;font-size:clamp(2.8rem,5.4vw,4.9rem);line-height:1.02;font-weight:850}
+.hero .lead{color:#5c6272;font-size:1.1rem;max-width:45ch}
+.hero .hero-note{color:#6a6571}
+.hero .btn-light,.hero .btn-primary,.cta .btn-light{background:linear-gradient(120deg,#c86d51,#d9805f);color:#fff}
+.hero .btn-directory{background:#ffffffb8;color:#1a2b4c;border:1px solid #1a2b4c22}
+.motion-preview{width:min(100%,370px);justify-self:center;padding:18px 18px 22px;border-radius:28px;background:linear-gradient(180deg,#24406f,#1a2b4c);color:#fff;transform:none;text-align:left;box-shadow:0 34px 70px #1a2b4c58}
+.motion-preview .preview-top{color:#f0b9a5;font-weight:650}
+.motion-preview .avatar{width:100%;height:auto;aspect-ratio:1/1;margin:16px auto 14px;border-radius:20px;overflow:hidden;background:linear-gradient(145deg,#2f4a7c,#c86d51)}
+.motion-preview .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.motion-preview h2{color:#fff;font-size:1.45rem}.motion-preview p{color:#ffffffbd}.motion-preview .location{color:#f0b9a5}
+.motion-preview .preview-buttons span{background:#ffffff22;color:#fff;border-radius:12px;padding:13px 2px}
+.motion-preview .preview-buttons span:first-child{background:#25d366;color:#052e16}.motion-preview .preview-buttons span:last-child{background:#4285f4;color:#fff}
+.motion-preview .preview-foot{color:#ffffffa8;border-top-color:#ffffff24}
+.section.soft{background:#f7f1eb}.section .eyebrow.blue{color:#a8543a}
+.section .search,.rates{background:#f7f1eb}.section .btn-primary{background:#1a2b4c;color:white}
+.plan{border-radius:24px;box-shadow:0 12px 35px #1a2b4c12}.plan .price{color:#1a2b4c}.plan .tag{background:#c86d51}
+.cta{background:linear-gradient(135deg,#1a2b4c,#24406f)}
+@media(max-width:860px){.hero-grid{grid-template-columns:1fr;gap:34px}.motion-preview{width:min(100%,350px)}}
+@media(max-width:480px){.hero{padding:38px 0 48px}.motion-preview{width:min(100% - 20px,340px)}}
+@media(prefers-reduced-motion:reduce){.hero::before{animation:none!important}}
 </style></head>
 <body><a class="skip" href="#contenido">Ir al contenido</a><header class="header"><div class="wrap nav"><a class="brand" href="/" aria-label="Mi Contacto, inicio"><span class="brand-icon">✦</span> Mi<span>Contacto</span></a><button id="menuToggle" class="menu-toggle" aria-expanded="false" aria-controls="navLinks">☰ <span class="sr">Abrir menú</span></button><nav id="navLinks" class="nav-links" aria-label="Navegación principal"><a href="#directorio">Directorio</a><a href="#como-funciona">Cómo funciona</a><a href="#planes">Planes</a><a class="btn btn-outline home-login" href="/acceso">Ingresar</a><a class="btn btn-primary home-create" href="/acceso?action=register">Crear perfil</a></nav></div></header>
 <main id="contenido"><section class="hero"><div class="wrap hero-grid"><div><p class="eyebrow">TU IDENTIDAD DIGITAL EN UN SOLO LUGAR</p><h1>Tu contacto.<br><em>Tu conexión.</em></h1><p class="lead">Comparte quién eres, cómo contactarte y cómo llegar a ti con una tarjeta personal y un enlace fácil de recordar.</p><div class="actions"><a class="btn btn-light" href="/mi-perfil">Crear mi perfil gratis</a><a class="btn btn-directory" href="#directorio">Explorar directorio</a></div><p class="hero-note">Un perfil gratuito · Un enlace · Un código QR · Directorio opcional</p></div><div class="preview motion-preview" id="motionPreview"><div class="preview-top"><span class="dot"></span> Vista de tarjeta personal</div><div class="avatar" aria-label="Fotografía de ejemplo de un perfil personal"><img src="/assets/demo-profile.jpg" alt="Fotografía ilustrativa de una mujer sonriente" loading="lazy" referrerpolicy="no-referrer"></div><h2>Tu nombre aquí</h2><p>Tu profesión o actividad</p><span class="location">⌖ Tu ciudad, tu país</span><div class="preview-buttons"><span>WhatsApp</span><span>Llamar</span><span>Cómo llegar</span></div><div class="preview-foot">Comparte tu perfil fácilmente</div><span class="motion-float motion-float-qr" aria-hidden="true">▦ Tu código QR</span><span class="motion-float motion-float-link" aria-hidden="true">↗ Tu enlace</span></div></div></section>
