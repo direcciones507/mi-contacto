@@ -1019,3 +1019,32 @@ body.owner-page #logout:hover{box-shadow:0 12px 26px #ac604245!important}
  .runtime .public-profile .profile-share-panel .qr{width:min(100%,280px)!important;margin:12px auto 20px!important}
  .runtime .public-profile .profile-share-panel .profile-share-actions{flex-wrap:wrap}
 }
+
+/* Final correction: story progress must be a hairline, never pill-sized buttons. */
+.runtime .public-profile .profile-photo-dialog .mc-story-progress{
+ display:flex!important;align-items:center!important;gap:5px!important;
+ height:4px!important;min-height:4px!important;max-height:4px!important;
+ margin:10px 48px 16px 4px!important;padding:0!important;
+}
+.runtime .public-profile .profile-photo-dialog .mc-story-progress > .mc-story-progress-segment{
+ display:block!important;flex:1 1 0!important;
+ width:auto!important;min-width:0!important;
+ height:4px!important;min-height:4px!important;max-height:4px!important;
+ padding:0!important;margin:0!important;line-height:0!important;
+ border:0!important;border-radius:999px!important;
+ box-shadow:none!important;appearance:none!important;
+ background:#e8dcd3!important;overflow:hidden!important;
+}
+.runtime .public-profile .profile-photo-dialog .mc-story-progress-segment span{
+ display:block!important;height:100%!important;min-height:0!important;
+ border-radius:999px!important;
+}
+@media(max-width:600px){
+ .runtime .public-profile .profile-photo-dialog .mc-story-progress{
+ height:3px!important;min-height:3px!important;max-height:3px!important;
+ margin:8px 44px 14px 3px!important;
+ }
+ .runtime .public-profile .profile-photo-dialog .mc-story-progress > .mc-story-progress-segment{
+ height:3px!important;min-height:3px!important;max-height:3px!important;
+ }
+}
