@@ -686,3 +686,57 @@ body.owner-page .runtime #profileOptions .owner-delete-profile{
 @media(prefers-reduced-motion:reduce){
  .runtime .public-profile .profile-photo-dialog .mc-story-progress-segment.is-current span{animation:none;transform:scaleX(1)}
 }
+
+/* Brand palette correction: age notice and expanded photo gallery. */
+.mc-notice-backdrop{background:rgba(19,31,49,.72)!important;backdrop-filter:blur(5px)}
+.mc-notice-dialog{
+ background:#fffdfa!important;color:#27364b!important;
+ border:1px solid #e8d8ce!important;border-radius:22px!important;
+ box-shadow:0 24px 70px #0e203a4a!important;
+}
+.mc-notice-dialog h2{color:#1b2d50!important;letter-spacing:-.025em;line-height:1.18}
+.mc-notice-dialog h3{color:#a8563e!important}
+.mc-notice-scroll{color:#334155!important}
+.mc-notice-scroll a{color:#ad5c43!important;text-underline-offset:3px}
+.mc-notice-actions{border-top-color:#e8d8ce!important}
+.mc-notice-actions button{
+ position:relative;overflow:hidden;border-radius:13px!important;
+ border:1px solid #c97556!important;background:linear-gradient(115deg,#b65f45,#d48766)!important;
+ color:#fff!important;box-shadow:0 6px 18px #ad63432b;
+ transition:transform .2s,box-shadow .2s;
+}
+.mc-notice-actions .mc-notice-decline,.mc-notice-decline{
+ background:#fffdfa!important;color:#9b4f3b!important;border:1px solid #d9b7a6!important;
+ box-shadow:none!important;
+}
+.mc-notice-actions button:hover,.mc-notice-decline:hover{transform:translateY(-2px);box-shadow:0 9px 22px #ad634329}
+.mc-notice-actions button:focus-visible,.mc-notice-scroll a:focus-visible{outline:3px solid #c97556;outline-offset:3px}
+.runtime .public-profile .profile-photo-dialog{
+ border:1px solid #dec9bc!important;
+ background:#fffdfa!important;color:#1b2d50!important;
+ box-shadow:0 24px 65px #0e203a60!important;
+}
+.runtime .public-profile .profile-photo-dialog::backdrop{background:rgba(17,28,46,.84)!important}
+.runtime .public-profile .profile-photo-dialog #expandedProfilePhoto{
+ border:1px solid #e7d8cf!important;border-radius:16px!important;
+ box-shadow:0 7px 23px #1b2d5019;
+}
+.runtime .public-profile .profile-photo-dialog .mc-story-progress-segment{
+ background:#e8dcd3!important;
+}
+.runtime .public-profile .profile-photo-dialog .mc-story-progress-segment span{
+ background:linear-gradient(90deg,#ac5940,#d99678)!important;
+}
+.runtime .public-profile .profile-photo-dialog #closeProfilePhoto{
+ background:#a9543f!important;border:1px solid #fff9!important;color:#fff!important;
+}
+.runtime .public-profile .profile-photo-dialog .mc-photo-controls button{
+ color:#a9543f!important;background:#f5e8df!important;border:1px solid #e3c8b7!important;
+}
+.runtime .public-profile .profile-photo-dialog .mc-photo-counter{color:#1b2d50!important}
+@media(max-width:600px){
+ .mc-notice-dialog{border-radius:18px!important}
+ .mc-notice-dialog h2{font-size:clamp(20px,5vw,28px)!important}
+ .runtime .public-profile .profile-photo-dialog{border-radius:20px!important}
+}
+@media(prefers-reduced-motion:reduce){.mc-notice-actions button{transition:none}}
