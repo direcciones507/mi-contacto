@@ -407,3 +407,27 @@ button[id*="google"], [role="button"][class*="google"]):focus-visible {
     will-change: auto;
   }
 }
+
+
+/* Unified directory cards: visual-only refinement, 2026-11-12 */
+#results{align-items:stretch}
+#results .contact-card{--card-navy:#1a2b4c;--card-terra:#c86d51;position:relative;isolation:isolate;min-height:330px;height:100%;padding:24px;border:1px solid #1a2b4c20;border-radius:28px;background:#fffdfb;box-shadow:0 12px 40px #1a2b4c12;transition:transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s ease;overflow:hidden}
+#results .contact-card:hover{transform:translateY(-4px);box-shadow:0 22px 52px #1a2b4c24}
+#results .contact-card .directory-card-title{font-family:"Plus Jakarta Sans",Inter,system-ui,sans-serif;font-weight:800;letter-spacing:-.025em;color:var(--card-navy);font-size:clamp(1.25rem,2vw,1.65rem);line-height:1.15}
+#results .contact-card .directory-card-body{display:flex;gap:18px;align-items:flex-start;min-width:0}
+#results .contact-card .directory-card-photo-column{flex:0 0 140px;width:140px;gap:10px}
+#results .contact-card .directory-card-photo{width:140px;height:140px;aspect-ratio:1;object-fit:cover;border-radius:20px;box-shadow:0 8px 24px #1a2b4c24;transition:transform .5s cubic-bezier(.22,1,.36,1)}
+#results .contact-card:hover .directory-card-photo{transform:scale(1.035)}
+#results .contact-card .directory-card-details{gap:9px;color:var(--card-navy)}
+#results .contact-card .directory-card-details p{color:var(--card-navy)}
+#results .contact-card .directory-card-description{color:#586073!important;line-height:1.55;-webkit-line-clamp:4;line-clamp:4}
+#results .contact-card .directory-card-region{border-radius:999px;background:#1a2b4c0e;color:var(--card-navy);padding:6px 12px;font-weight:700}
+#results .contact-card.contact-card--featured{background:linear-gradient(145deg,#fff8d7,#ffecab);border:2px solid #e9ae2c;box-shadow:0 16px 48px #b48a2830;padding:23px}
+#results .contact-card.contact-card--featured .directory-card-region{background:#fbdc85;color:#543b16}
+#results .contact-card.contact-card--featured .directory-card-description{color:#4f4a48!important}
+#results .contact-card .featured-directory-badge{position:absolute;right:20px;bottom:18px;top:auto;left:auto;border-radius:999px;background:#176348;color:#fff;padding:9px 16px;font-weight:800;box-shadow:0 8px 22px #17634835}
+#results .contact-card.contact-card--featured::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(110deg,transparent 36%,#ffffff65 50%,transparent 64%);transform:translateX(-140%);animation:mcCardSweep 8s ease-in-out 2s infinite}
+@keyframes mcCardSweep{35%,100%{transform:translateX(140%)}}
+#results .contact-card .directory-card-link{z-index:3}
+@media(max-width:600px){#results .contact-card,#results .contact-card.contact-card--featured{padding:16px;min-height:270px;border-radius:24px}#results .contact-card .directory-card-body{gap:12px}#results .contact-card .directory-card-photo-column{flex:0 0 104px;width:104px}#results .contact-card .directory-card-photo{width:104px;height:104px;border-radius:16px}#results .contact-card .directory-card-title{font-size:1.25rem}#results .contact-card .featured-directory-badge{right:12px;bottom:12px;font-size:.8rem;padding:7px 12px}#results .contact-card .directory-card-description{-webkit-line-clamp:3;line-clamp:3}}
+@media(prefers-reduced-motion:reduce){#results .contact-card,#results .contact-card .directory-card-photo{transition:none}#results .contact-card.contact-card--featured::before{animation:none;display:none}}
