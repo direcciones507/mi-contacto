@@ -1,3 +1,4 @@
+const moreFilters=$('directoryMore'),searchForm=$('searchForm');moreFilters?.addEventListener('click',()=>{const expanded=searchForm.classList.toggle('expanded');moreFilters.setAttribute('aria-expanded',String(expanded));moreFilters.textContent=expanded?'Menos filtros':'Más filtros';});
 import {COUNTRIES} from './countries.js';
 const $=id=>document.getElementById(id),toggle=$('menuToggle'),nav=$('navLinks');
 const closeMenu=()=>{nav?.classList.remove('open');toggle?.setAttribute('aria-expanded','false');};
