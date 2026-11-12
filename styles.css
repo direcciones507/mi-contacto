@@ -749,3 +749,16 @@ footer .footer strong{color:var(--mc-ink)}
   #directorio .directory-pages button{min-height:36px}
   #directorio #loadMore[hidden]{display:none!important}
 }
+
+
+/* Mi Contacto: subtle OG-inspired brand motion on the actual website.
+   Social preview og:image stays static for WhatsApp compatibility. */
+@keyframes mcBrandColorFlow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes mcBrandSparkle{0%,100%{transform:rotate(0deg) scale(1);filter:drop-shadow(0 0 0 transparent)}50%{transform:rotate(10deg) scale(1.12);filter:drop-shadow(0 0 8px #00b7f780)}}
+@keyframes mcBrandUnderline{0%,100%{transform:scaleX(.65);opacity:.55}50%{transform:scaleX(1);opacity:1}}
+.header .brand{position:relative;display:inline-flex;align-items:center;isolation:isolate}
+.header .brand .brand-icon{animation:mcBrandSparkle 5s ease-in-out infinite}
+.header .brand>span:not(.brand-icon){background:linear-gradient(95deg,#0a4ba5,#00a6d8,#15478c,#00a6d8);background-size:240% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:mcBrandColorFlow 9s ease-in-out infinite}
+.header .brand::after{content:"";position:absolute;bottom:-7px;left:22%;right:4%;height:3px;border-radius:999px;background:linear-gradient(90deg,#0750b2,#00c7ef);transform-origin:center;animation:mcBrandUnderline 6s ease-in-out infinite}
+.hero h1 em{background:linear-gradient(105deg,#0b4eaa,#00a5d8,#073b85,#008ad1);background-size:240% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:mcBrandColorFlow 10s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){.header .brand .brand-icon,.header .brand>span:not(.brand-icon),.header .brand::after,.hero h1 em{animation:none!important}}
