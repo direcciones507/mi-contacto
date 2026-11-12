@@ -651,3 +651,66 @@ footer .footer{width:min(1120px,calc(100% - 40px));padding:22px 0}
 footer .footer strong{color:var(--mc-ink)}
 @media(max-width:800px){#planes .plans{grid-template-columns:1fr}#planes .plan.featured{padding:25px}.header .nav{width:calc(100% - 24px)}}
 @media(max-width:600px){.header{padding-top:5px}.header .nav{min-height:56px;padding:7px 12px;border-radius:17px}.header .nav-links{top:64px;left:12px;right:12px;border-radius:17px;background:#fcfaf7;box-shadow:0 12px 35px #1b2d5020}main#contenido>.hero{padding-top:28px}#registro.cta>.wrap{padding:35px 18px;border-radius:24px}#planes .plan.featured .tag{right:14px}}
+
+/* Directorio 2026: tarjetas renovadas sin alterar la jerarquía Destacado/Gratis. */
+@keyframes mcDirectoryShimmer{0%{background-position:0% 10%,100% 80%}50%{background-position:100% 80%,0% 15%}100%{background-position:0% 10%,100% 80%}}
+@keyframes mcDirectoryEdge{to{--mc-directory-angle:360deg}}
+@property --mc-directory-angle{syntax:"<angle>";initial-value:0deg;inherits:false}
+#results .contact-card{
+ position:relative;isolation:isolate;overflow:hidden;
+ border-radius:24px!important;
+ background:#fffdfa!important;border:1px solid #e9d8ce!important;
+ box-shadow:0 12px 30px #1b2d500d;
+ transition:transform .28s cubic-bezier(.22,1,.36,1),box-shadow .28s ease!important;
+ padding:22px!important;gap:14px;
+}
+#results .contact-card::before{
+ content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+ background-image:radial-gradient(ellipse at 5% 12%,#c9755615,transparent 52%),radial-gradient(ellipse at 95% 90%,#7e91ac18,transparent 54%);
+ background-size:165% 165%,165% 165%;background-repeat:no-repeat;
+ animation:mcDirectoryShimmer 16s ease-in-out infinite;
+}
+#results .contact-card:hover{transform:translateY(-5px)!important;box-shadow:0 22px 45px #1b2d5021!important}
+#results .contact-card.contact-card--featured{
+ background:#fff0b6!important;border:1.5px solid #e7b53c!important;
+ box-shadow:0 14px 34px #ac853319;
+}
+#results .contact-card.contact-card--featured::before{
+ background-image:radial-gradient(ellipse at 5% 10%,#fff9d3,transparent 60%),radial-gradient(ellipse at 90% 90%,#f1c66e59,transparent 60%);
+}
+#results .contact-card.contact-card--featured::after{
+ content:"";position:absolute;inset:0;border-radius:inherit;z-index:1;pointer-events:none;padding:2px;
+ background:conic-gradient(from var(--mc-directory-angle),transparent 0deg,#d99d2c 55deg,transparent 135deg,#f7e8b2 220deg,transparent 290deg,#d99d2c 360deg);
+ -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+ -webkit-mask-composite:xor;mask-composite:exclude;
+ animation:mcDirectoryEdge 12s linear infinite;
+}
+#results .contact-card .directory-card-title{font-weight:800;letter-spacing:-.025em;font-size:clamp(1.25rem,2vw,1.5rem);color:#1b2d50!important}
+#results .contact-card.contact-card--featured .directory-card-title,
+#results .contact-card.contact-card--featured .directory-card-details p{color:#161616!important}
+#results .contact-card .directory-card-details p{color:#33435c!important}
+#results .contact-card .directory-card-description{line-height:1.48;max-width:65ch}
+#results .contact-card .directory-card-photo{
+ border-radius:16px!important;box-shadow:0 6px 17px #1b2d5019;
+ transition:transform .35s ease,filter .35s ease;
+}
+#results .contact-card:hover .directory-card-photo{transform:scale(1.025);filter:saturate(1.08)}
+#results .contact-card .directory-card-region{
+ border-radius:999px!important;padding:6px 12px!important;
+ background:#f1eae5!important;color:#8e503d!important;font-weight:600;
+}
+#results .contact-card.contact-card--featured .directory-card-region{background:#ffe3a0!important;color:#644616!important}
+#results .contact-card.contact-card--featured .featured-directory-badge{
+ background:#1b654d!important;color:#fff!important;border-radius:999px;
+ box-shadow:0 6px 17px #1b654d30;padding:9px 17px;
+}
+#results .contact-card .directory-card-link:focus-visible{outline:3px solid #c97556;outline-offset:-4px}
+@media(max-width:600px){
+ #results .contact-card,#results .contact-card.contact-card--featured{padding:17px!important;border-radius:20px!important}
+ #results .contact-card .directory-card-title{font-size:1.16rem}
+ #results .contact-card .directory-card-photo{border-radius:12px!important}
+}
+@media(prefers-reduced-motion:reduce){
+ #results .contact-card::before,#results .contact-card.contact-card--featured::after{animation:none!important}
+ #results .contact-card:hover,#results .contact-card:hover .directory-card-photo{transform:none!important}
+}
