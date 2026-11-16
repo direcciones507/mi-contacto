@@ -85,3 +85,20 @@ jobs:
         run: npm ci --ignore-scripts
       - name: Ejecutar regresiones de autenticación, privacidad, datos y runtime
         run: npm run test:integration
+
+  baseline-regression-diagnostic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/admin-codes-excel-20261110
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Instalar dependencias fijadas de versión actual en Railway
+        run: npm ci --ignore-scripts
+      - name: Diagnosticar regresiones existentes en la rama de producción
+        run: npm run test:integration
