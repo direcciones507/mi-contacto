@@ -29,5 +29,6 @@ jobs:
           node --check tests/featured-publication-selection.test.mjs
           node --check tests/multiple-publications-backend-contract.test.mjs
           node --check tests/multiple-publications-api-contract.test.mjs
+          node --check tests/multiple-publications-link-uniqueness.test.mjs
       - name: Probar estructura y creación múltiple
-        run: node --test tests/account-publications-layout.test.mjs tests/multiple-publications-contract.test.mjs tests/featured-publication-selection.test.mjs tests/multiple-publications-backend-contract.test.mjs tests/multiple-publications-api-contract.test.mjs tests/multi-country-account.test.mjs tests/profile-service.test.mjs tests/profile-postgres.test.mjs
+        run: node --test tests/account-publications-layout.test.mjs tests/multiple-publications-contract.test.mjs tests/featured-publication-selection.test.mjs tests/multiple-publications-backend-contract.test.mjs tests/multiple-publications-api-contract.test.mjs tests/multiple-publications-link-uniqueness.test.mjs tests/multi-country-account.test.mjs tests/profile-service.test.mjs tests/profile-postgres.test.mjs
