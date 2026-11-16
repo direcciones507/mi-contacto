@@ -19,8 +19,9 @@ export function slugConflictResponse(){
  return {status:409,body:{code:"SLUG_TAKEN",message:DUPLICATE_SLUG_MESSAGE}};
 }
 /** Application logic, requires an isolated DB adapter with an atomic transaction.
- * Adapter.createProfile must enforce UNIQUE(country_code,slug), UNIQUE(account_id,country_code), and reserve
- * slug in the same transaction. Never use a preflight check as the final authority.
+ * Adapter.createProfile must enforce UNIQUE(url_country,slug) and reserve the slug
+ * in the same transaction. Multiple publications may belong to one account.
+ * Never use a preflight check as the final authority.
  */
 export async function createProfile(input,{accountId,db,origin="https://micontacto.online"}){
  if(!accountId||!db||typeof db.createProfile!=="function")throw Error("PROFILE_STORAGE_NOT_CONFIGURED");
@@ -32,7 +33,7 @@ export async function createProfile(input,{accountId,db,origin="https://micontac
   if(error?.code==="23505"&&["profiles_country_slug_key","profiles_slug_key"].includes(error?.constraint))return slugConflictResponse();
   if(error?.code==="23505"&&error?.constraint==="profile_slug_reservations_pkey")return slugConflictResponse();
   if(error?.code==="23505"&&["profiles_account_country_key","profiles_account_id_key"].includes(error?.constraint))
-   return {status:409,body:{code:"ACCOUNT_PROFILE_EXISTS",message:"Esta cuenta ya tiene un perfil. Edita su ubicación para cambiar de país."}};
+   return {status:409,body:{code:"ACCOUNT_PROFILE_EXISTS",message:"La base de datos todavía impide crear otra publicación. Verifica la migración 020 antes de continuar."}};
   throw error;
  }
 }
