@@ -212,7 +212,7 @@ export function createApplication({pool,secret,origin='https://micontacto.online
    }
    const checkout=path.match(/^\/api\/profiles\/([a-f0-9-]{36})\/checkout$/);
    if(checkout&&req.method==='POST')return json(201,await payments.prepare(user.id,checkout[1],await body(req)));
-   if(path==='/api/profiles'&&req.method==='GET'){const items=(await pool.query('SELECT id FROM micontacto.profiles WHERE account_id=$1 ORDER BY country_code',[user.id])).rows;return json(200,{items:await Promise.all(items.map(x=>profiles.detail(user.id,x.id)))});}
+   if(path==='/api/profiles'&&req.method==='GET'){const items=(await pool.query('SELECT id FROM micontacto.profiles WHERE account_id=$1 ORDER BY created_at DESC,id DESC',[user.id])).rows;return json(200,{items:await Promise.all(items.map(x=>profiles.detail(user.id,x.id)))});}
    if(path==='/api/profiles'&&req.method==='POST'){const data=await body(req);if(Object.keys(data).some(k=>!['country','linkName','displayName','profession','description'].includes(k)))throw Error('INVALID_PROFILE_FIELDS');if(!(await pool.query('SELECT code FROM micontacto.country_settings WHERE code=$1 AND enabled',[String(data.country).toUpperCase()])).rows.length)throw Error('INVALID_COUNTRY');const r=await profiles.create(user.id,data);return json(r.status,r.body);}
    const location=path.match(/^\/api\/profile-location\/([a-f0-9-]{36})$/);
    if(location&&req.method==='GET'){
