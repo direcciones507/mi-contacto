@@ -1,0 +1,29 @@
+name: Mi Contacto fase 1 - verificacion ligera
+on:
+  push:
+    branches:
+      - feature/mis-publicaciones-real-fase1
+  pull_request:
+    branches:
+      - work/admin-codes-excel-20261110
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  unit-ui:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Comprobar sintaxis de archivos modificados
+        run: |
+          node --check views.js
+          node --check dashboard.js
+          node --check tests/account-publications-layout.test.mjs
+      - name: Probar estructura de cuenta sin alterar tarjetas
+        run: node --test tests/account-publications-layout.test.mjs
