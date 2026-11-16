@@ -49,3 +49,23 @@ jobs:
         run: npm ci --ignore-scripts
       - name: Probar migración con PostgreSQL aislado PGlite
         run: node --test tests/multiple-publications-migration-integration.test.mjs
+
+  migration-native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Instalar dependencias fijadas
+        run: npm ci --ignore-scripts
+      - name: Instalar PostgreSQL nativo aislado
+        run: sudo apt-get update && sudo apt-get install -y postgresql-16
+      - name: Verificar migración 020 en clúster PostgreSQL descartable
+        env:
+          MC_NATIVE_PG_BIN: /usr/lib/postgresql/16/bin
+        run: node --test tests/multiple-publications-native-postgres.test.mjs
