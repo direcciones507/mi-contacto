@@ -26,13 +26,14 @@ test('integración real en PostgreSQL WASM aislado, sin servicios ni pagos',asyn
   });
   await t.test('crear, duplicados por país, sin suplantar propietario ni roles',async()=>{
    const r=await f.request('/api/profiles',{method:'POST',body:{country:'PA',linkName:'persona-sintetica',displayName:'Persona sintética',profession:'Prueba'}});assert.equal(r.status,201);id=(await r.json()).id;
-   assert.equal((await f.request('/api/profiles',{method:'POST',body:{country:'PA',linkName:'otro-enlace',displayName:'Otra ficha'}})).status,409);
+   // La cuenta ya admite múltiples publicaciones: el conflicto debe ser por enlace, no por propietario.
+   assert.equal((await f.request('/api/profiles',{method:'POST',body:{country:'PA',linkName:'persona-sintetica',displayName:'Otra ficha'}})).status,409);
    assert.equal((await f.request('/api/profiles',{as:'other',method:'POST',body:{country:'PA',linkName:'persona-sintetica',displayName:'Otra persona'}})).status,409);
    assert.equal((await f.request('/api/profiles/'+id,{as:'other'})).status,404);
    assert.equal((await f.request('/api/profiles',{method:'POST',body:{country:'CR',linkName:'permitido',displayName:'Persona',role:'ADMIN'}})).status,400);
-   const cr=await f.request('/api/profiles',{method:'POST',body:{country:'CR',linkName:'persona-sintetica',displayName:'Persona sintética CR'}});assert.equal(cr.status,409);
+   // Un enlace usado en PA no reserva el mismo nombre en CR.
+   const lookupCR=await(await f.request('/api/slugs?country=CR&linkName=persona-sintetica')).json();assert.equal(lookupCR.available,true);
    const lookup=await(await f.request('/api/slugs?country=PA&linkName=persona-sintetica')).json();assert.equal(lookup.available,false);
-   for(const country of ['NI','SV','HN','GT','MX','CO'])assert.equal((await f.request('/api/profiles',{method:'POST',body:{country,linkName:'enlace-'+country.toLowerCase(),displayName:'Perfil sintético '+country}})).status,409);
    assert.equal((await(await f.request('/api/profiles')).json()).items.length,1);
    assert.equal((await f.request('/api/profiles',{method:'POST',body:{country:'PE',linkName:'no-permitido',displayName:'Perfil sintético'}})).status,400);
   });
