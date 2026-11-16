@@ -69,3 +69,19 @@ jobs:
         env:
           MC_NATIVE_PG_BIN: /usr/lib/postgresql/18/bin
         run: node --test tests/multiple-publications-native-postgres.test.mjs
+
+  integration-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Instalar dependencias fijadas
+        run: npm ci --ignore-scripts
+      - name: Ejecutar regresiones de autenticación, privacidad, datos y runtime
+        run: npm run test:integration
