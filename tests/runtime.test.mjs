@@ -13,7 +13,7 @@ import {createAuth} from '../auth-runtime.js';
 test('integración real en PostgreSQL WASM aislado, sin servicios ni pagos',async t=>{
  const f=await testFixture({simulation:true});let id,main,version;
  const image=await sharp({create:{width:1200,height:800,channels:3,background:'#155eb1'}}).png().toBuffer();
- const save=extra=>({version,displayName:'Persona sintética',profession:'Oficio de prueba',description:'Texto <seguro>',phone:'+50760000000',whatsapp:'+50760000000',categoryId:f.category,...f.geo.PA,directoryConsent:true,contactConsent:false,locationConsent:false,latitude:null,longitude:null,...extra});
+ const save=extra=>({version,displayName:'Persona sintética',profession:'Oficio de prueba',description:'Texto <seguro>',reference:'',phone:'+50760000000',whatsapp:'+50760000000',categoryId:f.category,...f.geo.PA,directoryConsent:true,contactConsent:false,locationConsent:false,latitude:null,longitude:null,...extra});
  const current=async()=>{const p=await(await f.request('/api/profiles/'+id)).json();version=p.version;return p;};
  try{
   await t.test('autenticación, ADMIN y CSRF',async()=>{
