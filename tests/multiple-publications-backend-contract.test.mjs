@@ -15,7 +15,7 @@ test('alta conserva cuenta, ID independiente y reserva de enlace transaccional',
  assert.match(adapter,/const profileId=randomUUID\(\)/);
  assert.match(adapter,/INSERT INTO micontacto\.profiles/);
  assert.match(adapter,/INSERT INTO micontacto\.profile_slug_reservations/);
- assert.match(adapter,/await client\.query\('COMMIT'\)/);
+ assert.match(adapter,/await client\.query\(['\"]COMMIT['\"]\)/);
 });
 test('migración 020 elimina restricciones de una publicación y mantiene datos',()=>{
  assert.match(migration,/DROP CONSTRAINT IF EXISTS profiles_account_id_key/);
