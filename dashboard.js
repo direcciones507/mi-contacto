@@ -18,6 +18,27 @@ async function loadProfiles(){items=(await api('/api/profiles')).items;$('newPro
 
  if(p.moderationRestricted){card.append(element('p','Restricción administrativa: '+(p.reviewReason??'Solicita revisión.')));const appealReason=element('textarea');appealReason.maxLength=1000;appealReason.setAttribute('aria-label','Motivo de apelación');card.append(appealReason,button('Solicitar revisión o apelar',async()=>{await api('/api/profiles/'+p.id+'/appeal',{method:'POST',body:{reason:appealReason.value}});message('Apelación registrada. La ficha sigue restringida hasta revisión.');}));}if(p.privacyHidden)card.append(element('p','Ficha oculta al público.'));if(p.removalRequest)card.append(element('p','Solicitud de eliminación: '+(p.removalRequest.state==='OPEN'?'pendiente de revisión':'revisada; pendiente de autorización ADMIN')+'. No se ha realizado borrado físico.'));if(!p.removalRequest)actions.append(button(p.privacyHidden?'Mostrar ficha por enlace':'Ocultar ficha',async()=>{await api('/api/profiles/'+p.id+'/privacy',{method:'POST',body:{hidden:!p.privacyHidden}});await loadProfiles();}),button('Eliminar anuncio',async()=>{if(!confirm('Se eliminará únicamente este anuncio, sus fotografías y su enlace/QR. Tu cuenta y tus otros anuncios se conservarán. ¿Continuar?'))return;const phrase=prompt('Para confirmar, escribe exactamente: ELIMINAR ANUNCIO');if(phrase!=='ELIMINAR ANUNCIO')return;await api('/api/profiles/'+p.id,{method:'DELETE',body:{confirm:true,reason:phrase}});message('El anuncio fue eliminado. Tu cuenta y las demás publicaciones se conservan.');const removedWasEditing=editing?.id===p.id;await loadProfiles();if(removedWasEditing)await edit();}));if(p.status==='DRAFT')actions.prepend(button('Publicar mi tarjeta',async()=>{editing=await api('/api/profiles/'+p.id);if(!legalAccepted){await requestPublicationConsent();return;}try{await api('/api/profiles/'+p.id+'/publish',{method:'POST'});}catch(error){if(/localidad|región|profesión|fotografía|publicación|requisito/i.test(error.message)){await edit({id:p.id},true);const notice=element('p','No se pudo publicar: '+error.message+'. Tus datos están guardados. Corrige el requisito indicado y pulsa Guardar y publicar.','error');notice.setAttribute('role','alert');notice.style.cssText='padding:14px;border:1px solid #c44;border-radius:10px;background:#fff1f1;font-weight:700';$('editor').prepend(notice);notice.scrollIntoView({block:'center'});message(notice.textContent);return;}throw error;}await loadProfiles();await edit({id:p.id});showPublishedOverview();message('Tarjeta publicada. Ya puedes abrirla y compartir su enlace o QR. Tu tarjeta aparece en el directorio si autorizaste su visibilidad; Destacado solo cambia el orden.');}));actions.append(button('Destacar mi perfil',async()=>{const disclosure=$('featuredDisclosure');if(!disclosure){message('No se pudo abrir la sección Destacado. Actualiza la página e inténtalo de nuevo.');return;}const selected=await api('/api/profiles/'+p.id);card.append(disclosure);await renderCommercial($('commercial'),{csrf,profile:selected,paymentSandbox,refresh:async()=>{await loadProfiles();const refreshed=await api('/api/profiles/'+p.id);await renderCommercial($('commercial'),{csrf,profile:refreshed,paymentSandbox});}});disclosure.hidden=false;disclosure.open=true;disclosure.scrollIntoView({block:'start',behavior:'smooth'});disclosure.querySelector('input,button,select')?.focus({preventScroll:true});}));if(p.status==='ACTIVE'&&!p.privacyHidden){const a=element('a','Abrir ficha y QR','btn btn-outline');a.href=new URL(p.url).pathname;a.target='_blank';a.rel='noopener';actions.append(a);}card.append(actions);const promoteButton=[...actions.querySelectorAll('button')].find(b=>b.textContent==='Destacar mi perfil');if(promoteButton){promoteButton.classList.add('owner-feature-cta');}if(p.id===items[0]?.id){const status=$('sessionStatus');if(status){status.classList.add('owner-card-session');card.prepend(status);}const featured=$('featuredDisclosure');if(featured){featured.open=false;featured.hidden=true;featured.classList.add('owner-card-featured');}}const removeButton=[...actions.querySelectorAll('button')].find(b=>b.textContent==='Eliminar anuncio');if(removeButton){removeButton.classList.add('owner-delete-profile');const footer=element('div',null,'owner-danger-zone');footer.append(removeButton);card.append(footer);}$('profileCards').append(card);}}
 const form=$('profileForm');
+let editorInitialSnapshot='';
+function editorSnapshot(){return JSON.stringify([...new FormData(form).entries()].map(([key,value])=>[key,value instanceof File?[value.name,value.size,value.lastModified]:value]));}
+function closePublicationEditor(){
+ const hasChanges=editorSnapshot()!==editorInitialSnapshot;
+ if(hasChanges&&!confirm('Tienes cambios sin guardar. ¿Quieres descartarlos y cerrar el formulario?'))return;
+ form.reset();editing=null;
+ $('editor').hidden=true;$('photoTools').hidden=true;
+ $('featuredDisclosure').open=false;$('featuredDisclosure').hidden=true;
+ $('commercial').hidden=true;
+ $('profileOptions').hidden=items.length===0;
+ $('newProfile').scrollIntoView({block:'start',behavior:'smooth'});
+ message('Formulario cerrado. No se creó ninguna publicación.');
+}
+const editorHeader=$('editor').querySelector('h2');
+if(editorHeader){
+ const closeButton=element('button','×','btn btn-secondary');
+ closeButton.type='button';closeButton.setAttribute('aria-label','Cerrar formulario sin publicar');
+ closeButton.title='Cerrar formulario';closeButton.style.cssText='float:right;font-size:26px;line-height:1;padding:4px 12px;margin-left:12px';
+ closeButton.onclick=closePublicationEditor;
+ editorHeader.prepend(closeButton);
+}
 function showPublishedOverview(){if(!editing)return;$('editor').hidden=true;$('photoTools').hidden=true;$('profileOptions').hidden=false;$('publishedOverview').scrollIntoView({block:'start',behavior:'smooth'});}
 // La fotografía principal forma parte del mismo formulario, justo después de la descripción.
 const photoTools=$('photoTools');
@@ -39,7 +60,7 @@ async function edit(p=null,forceEditor=false){$('editor').hidden=true;editing=nu
  if(data){form.region.value=data.topRegionId;await districts();if(data.districtId){form.district.value=data.districtId;await localities();}if(![...form.localityId.options].some(o=>o.value===String(editing.localityId))&&data.locality){const opt=new Option(data.locality.name,data.locality.id);opt.dataset.regionId=editing.regionId;form.localityId.append(opt);}form.localityId.value=editing.localityId??'';}
 
  }else{dial();options(form.region,[],'Selecciona país primero');options(form.localityId,[],'Selecciona región primero');}
- renderPhotos(editing);const showForm=!editing||forceEditor;$('photoTools').hidden=!showForm;$('editor').hidden=!showForm;if(showForm)$('editor').scrollIntoView({block:'start'});
+ renderPhotos(editing);editorInitialSnapshot=editorSnapshot();const showForm=!editing||forceEditor;$('photoTools').hidden=!showForm;$('editor').hidden=!showForm;if(showForm)$('editor').scrollIntoView({block:'start'});
 }
 const photoPreviews=new Set();
 const pendingGalleryPhotos=new Map();
