@@ -4,7 +4,8 @@ import {readFileSync} from 'node:fs';
 const dashboard=readFileSync(new URL('../dashboard.js',import.meta.url),'utf8');
 const migration=readFileSync(new URL('../db/020_multiple_publications_per_account.sql',import.meta.url),'utf8');
 test('nueva publicación abre el formulario existente',()=>{
- assert.match(dashboard,/\$\('newProfile'\)\.onclick=\(\)=>\{return edit\(\);\}/);
+ assert.match(dashboard,/\$\('newProfile'\)\.onclick=async\(\)=>\{/);
+ assert.match(dashboard,/\$\('commercial'\)\.hidden=true;await edit\(\)/);
  assert.match(dashboard,/\$\('newProfile'\)\.hidden=false/);
  assert.match(dashboard,/async function edit\(p=null,forceEditor=false\)/);
  assert.match(dashboard,/form\.reset\(\)/);
