@@ -7,7 +7,7 @@ import {localDatabase} from '../scripts/local-database.mjs';
 test('migración 020 conserva la publicación existente y permite dos enlaces por cuenta',async()=>{
  const {pool}=await localDatabase();
  try{
-  const migrations=readdirSync(new URL('../db/',import.meta.url)).filter(n=>/^\\d{3}_.*\\.sql$/.test(n)).sort();
+  const migrations=readdirSync(new URL('../db/',import.meta.url)).filter(n=>/^\d{3}_.*\.sql$/.test(n)).sort();
   const before=migrations.filter(n=>Number(n.slice(0,3))<20);
   for(const name of before)await pool.query(readFileSync(new URL('../db/'+name,import.meta.url),'utf8'));
   const account=randomUUID(),first=randomUUID(),second=randomUUID();
