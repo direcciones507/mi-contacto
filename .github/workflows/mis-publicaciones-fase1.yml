@@ -33,3 +33,19 @@ jobs:
           node --check tests/multiple-publications-edit-isolation.test.mjs
       - name: Probar estructura y creación múltiple
         run: node --test tests/account-publications-layout.test.mjs tests/multiple-publications-contract.test.mjs tests/featured-publication-selection.test.mjs tests/multiple-publications-backend-contract.test.mjs tests/multiple-publications-api-contract.test.mjs tests/multiple-publications-link-uniqueness.test.mjs tests/multiple-publications-edit-isolation.test.mjs tests/multi-country-account.test.mjs tests/profile-service.test.mjs tests/profile-postgres.test.mjs
+
+  migration-isolated:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Instalar dependencias fijadas
+        run: npm ci --ignore-scripts
+      - name: Probar migración con PostgreSQL aislado PGlite
+        run: node --test tests/multiple-publications-migration-integration.test.mjs
