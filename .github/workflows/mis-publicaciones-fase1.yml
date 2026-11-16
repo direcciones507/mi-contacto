@@ -64,8 +64,8 @@ jobs:
       - name: Instalar dependencias fijadas
         run: npm ci --ignore-scripts
       - name: Instalar PostgreSQL nativo aislado
-        run: sudo apt-get update && sudo apt-get install -y postgresql-16
+        run: sudo apt-get update && sudo apt-get install -y postgresql
       - name: Verificar migración 020 en clúster PostgreSQL descartable
         env:
-          MC_NATIVE_PG_BIN: /usr/lib/postgresql/16/bin
+          MC_NATIVE_PG_BIN: /usr/lib/postgresql/18/bin
         run: node --test tests/multiple-publications-native-postgres.test.mjs
