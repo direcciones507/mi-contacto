@@ -14,8 +14,8 @@ test("duplicado devuelve 409 con mensaje aprobado",async()=>{
  const r=await createProfile(data,{accountId:"account",db});
  assert.equal(r.status,409);assert.match(r.body.message,/ya existe/);
 });
-test("una cuenta no puede crear otro perfil en el mismo país",async()=>{
+test("restricción antigua por país indica que falta migración 020",async()=>{
  const db={createProfile:async()=>{throw Object.assign(new Error("duplicate"),{code:"23505",constraint:"profiles_account_country_key"});}};
  const r=await createProfile(data,{accountId:"account",db});
- assert.equal(r.status,409);assert.equal(r.body.code,"ACCOUNT_PROFILE_EXISTS");
+ assert.equal(r.status,409);assert.equal(r.body.code,"ACCOUNT_PROFILE_EXISTS");assert.match(r.body.message,/migración 020/);
 });
