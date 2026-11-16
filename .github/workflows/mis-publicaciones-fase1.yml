@@ -26,5 +26,6 @@ jobs:
           node --check dashboard.js
           node --check tests/account-publications-layout.test.mjs
           node --check tests/multiple-publications-contract.test.mjs
+          node --check tests/featured-publication-selection.test.mjs
       - name: Probar estructura de cuenta sin alterar tarjetas
-        run: node --test tests/account-publications-layout.test.mjs tests/multiple-publications-contract.test.mjs
+        run: node --test tests/account-publications-layout.test.mjs tests/multiple-publications-contract.test.mjs tests/featured-publication-selection.test.mjs
