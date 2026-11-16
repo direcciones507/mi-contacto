@@ -12,3 +12,7 @@ test('si una publicación falla al abrir, nunca se sustituye por otra de la cuen
 test('el navegador recibe una versión nueva del dashboard',()=>{
  assert.match(views,/dashboard\.js\?v=20261116-multipublicaciones-fase1/);
 });
+
+test('eliminar otra publicación no descarta la edición en curso',()=>{
+ assert.match(dashboard,/const removedWasEditing=editing\?\.id===p\.id;await loadProfiles\(\);if\(removedWasEditing\)await edit\(\)/);
+});
