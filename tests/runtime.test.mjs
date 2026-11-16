@@ -42,7 +42,8 @@ test('integración real en PostgreSQL WASM aislado, sin servicios ni pagos',asyn
    assert.equal((await f.request('/api/profiles/'+id,{method:'PATCH',body:save({latitude:8,longitude:-80})})).status,400);
    assert.equal((await f.request('/api/profiles/'+id,{method:'PATCH',body:save({whatsapp:'60000000'})})).status,400);
    assert.equal((await f.request('/api/profiles/'+id,{method:'PATCH',body:save({slug:'cambiar'})})).status,400);
-   assert.equal((await f.request('/api/profiles/'+id,{method:'PATCH',body:save()})).status,200);
+   const validEdit=await f.request('/api/profiles/'+id,{method:'PATCH',body:save()});
+   assert.equal(validEdit.status,200,'PATCH válido rechazado: '+JSON.stringify(await validEdit.json()));
    assert.equal((await f.request('/api/profiles/'+id,{method:'PATCH',body:save()})).status,409);await current();
    await assert.rejects(f.pool.query("UPDATE micontacto.profiles SET slug='romper' WHERE id=$1",[id]),/PROFILE_IDENTITY_IMMUTABLE/);
    assert.equal((await f.request('/api/profiles/'+id+'/publish',{method:'POST'})).status,400);
