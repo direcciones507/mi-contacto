@@ -771,3 +771,5 @@ footer .footer strong{color:var(--mc-ink)}
 #results .contact-card.mc-scroll-pending{opacity:0;transform:translate3d(0,24px,0)}
 #results .contact-card.is-visible{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.mc-scroll-pending,#results .contact-card.mc-scroll-pending{opacity:1!important;transform:none!important;transition:none!important}}
+
+#comingSoonNotice{position:fixed;top:50%;left:50%;transform:translate(-50%,calc(-50% - 12px));z-index:99999;background:#102a49;color:#fff;border:1px solid #a9c2d6;border-radius:16px;padding:16px 30px;box-shadow:0 16px 45px rgba(0,0,0,.23);font-weight:800;font-size:1.15rem;letter-spacing:.02em;opacity:0;pointer-events:none;transition:opacity .22s ease,transform .22s ease}#comingSoonNotice.visible{opacity:1;transform:translate(-50%,-50%)}@media(max-width:480px){#comingSoonNotice{width:max-content;max-width:90vw;text-align:center}}
